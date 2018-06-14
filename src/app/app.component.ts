@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NgForm }   from '@angular/forms';
-import { SubmissionService } from './submission.service';
+
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SubmissionService } from './submission';
 
 
 @Component({

@@ -1,0 +1,88 @@
+<form #form="ngForm" action="" accept-charset="UTF-8" class="form-horizontal needs-validation is-valid" id="form-with-validation">
+
+  <!-- si può condizionare lo stato dei campi passando 'disabled'-->
+  <h5>Dati personali</h5>
+  <div class="form-row">
+    <div class="form-group col-md-6 mb-3">
+      <label for="name" class="control-label active">Nome</label>
+      <input class="form-control" name="name" type="text" [(ngModel)]="submission.name" id="name">
+
+    </div>
+    <div class="form-group col-md-6 mb-3">
+      <label for="surname" class="control-label active">Cognome</label>
+      <input class="form-control" name="surname" type="text" [(ngModel)]="submission.surname" id="surname">
+
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-2 mb-3">
+      <div class="select-wrapper">        
+        <input type="text" class="dropdown select-dropdown" data-toggle="dropdown" readonly="true" [(ngModel)]="submission.gender">
+        <label for="gender" class="control-label">Sesso</label>
+      </div>
+    </div>  
+
+
+
+      <div class="form-group col-md-4 mb-3">
+        <label for="fiscalcode" class="control-label active">Codice fiscale</label>
+        <input class="form-control" name="fiscalcode" type="text" [(ngModel)]="submission.fiscalcode" id="fiscalcode">
+
+      </div>
+      <div class="form-group col-md-6 mb-3">
+        <label for="birthplace" class="control-label active">Città di nascita</label>
+        <input class="form-control" name="birthplace" type="text" [(ngModel)]="submission.birthplace" id="birthplace">
+
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6 mb-3">
+        <label for="birthprovince" class="control-label active">Provincia di nascita</label>
+        <input class="form-control" name="birthprovince" type="text" [(ngModel)]="submission.birthprovince" id="birthprovince" aria-invalid="false"
+          aria-describedby="birthprovince-error">
+        <span id="birthprovince-error" class="invalid-feedback" style="display: inline;"></span>
+
+      </div>
+      <div class="form-group col-md-6 mb-3 input-group date">
+        <label for="birthdate" class="control-label active">Data di nascita</label>
+        <input class="form-control datepicker" name="birthdate" type="text" [(ngModel)]="submission.birthdate" id="birthdate">
+
+      </div>
+    </div>
+    <h5>Residenza</h5>
+    <div class="form-row">
+      <div class="form-group col-md-6 mb-3">
+        <label for="com_res" class="control-label active">Comune di residenza</label>
+        <input class="form-control" name="com_res" type="text" [(ngModel)]="submission.com_res" id="com_res">
+
+      </div>
+      <div class="form-group col-md-6 mb-3">
+        <label for="prov_res" class="control-label active">Provincia di residenza</label>
+        <input class="form-control" name="prov_res" type="text" [(ngModel)]="submission.prov_res" id="prov_res">
+
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4 mb-3">
+        <label for="via_res" class="control-label active">Via di residenza</label>
+        <input class="form-control" name="via_res" type="text" [(ngModel)]="submission.via_res" id="via_res">
+
+      </div>
+      <div class="form-group col-md-2 mb-3">
+        <label for="civ_res" class="control-label active">Civico</label>
+        <input class="form-control" name="civ_res" type="text" [(ngModel)]="submission.civ_res" id="civ_res">
+
+      </div>
+      <div class="form-group col-md-6 mb-3">
+        <label for="presso" class="control-label active">Presso?</label>
+        <input class="form-control" name="presso" type="text" [(ngModel)]="submission.presso" id="presso">
+
+      </div>
+    </div>
+
+
+    <p>
+      <input class="btn btn-primary" type="submit" value="Aggiorna">
+    </p>
+  
+</form>
