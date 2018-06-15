@@ -9,12 +9,18 @@ import { Assignment } from '../../models/assignment';
   templateUrl: './submission.component.html',  
 })
 
-export class SubmissionComponent implements OnInit {  
+export class SubmissionComponent implements OnInit {    
   submission: Submission;
   private assignmentsArray: FormArray = new FormArray([]); 
   private submissionForm: FormGroup;
 
+  options: object[] = [
+    {key:'m', value:'Maschio'},    
+    {key:'f', value:'Femmmina'}    
+  ]
+
   constructor(private submissionService: SubmissionService) {
+
     this.submissionForm = new FormGroup({
       'name': new FormControl(),
       'surname': new FormControl(),          
@@ -29,6 +35,11 @@ export class SubmissionComponent implements OnInit {
       'civ_res': new FormControl(),          
       'presso': new FormControl(), 
       'assignments': new FormArray([])
+    });
+
+    this.submissionForm.controls['gender'].valueChanges.subscribe(g => 
+    {
+        //this.gender = g;  
     });
   }
 
@@ -50,7 +61,7 @@ export class SubmissionComponent implements OnInit {
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];
     this.submissionService.getSubmission().subscribe((data)=> {
-      this.submissionForm.patchValue(data);      
+      this.submissionForm.patchValue(data);                 
       data.assigments.forEach(element => {
         this.assignments.push(this.buildAssignmentControls());  
       });      

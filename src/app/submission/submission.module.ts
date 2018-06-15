@@ -1,3 +1,4 @@
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
@@ -8,20 +9,23 @@ import { SubmissionService } from './submission.service';
 //components
 import { SubmissionComponent } from './components/submission/submission.component';
 import { AssignmentComponent } from './components/assignment/assignment.component';
+import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/assignment-detail-page.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule    
+    ReactiveFormsModule,    
+    NgbModule.forRoot()
   ], 
   exports: [
     SubmissionComponent
   ],
   declarations: [
     SubmissionComponent,
-    AssignmentComponent
+    AssignmentComponent,
+    AssignmentDetailPageComponent
   ],
   providers: [ 
     SubmissionService 

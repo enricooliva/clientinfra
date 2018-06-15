@@ -18,25 +18,7 @@ export class AppComponent {
   submissions$: Observable<any>;
   constructor(private submissionService: SubmissionService) {}
 
-  ngOnInit(){
-    //modalità asincrona 
-    //this.submissions$ = this.submissionService.getSumbissions();
-    this.submissionService.getSumbissions()
-    .subscribe((data)=> {
-      this.submissions$ = data;
-    },
-    (err: HttpErrorResponse) => {
-      if (err.error instanceof Error) {
-        // client-side error
-        this.errorMessage = `An error occured: ${err.error.message}`;
-      } else {
-        this.errorMessage = `Backend returned code ${err.status}, body was: ${err.message}`;
-      }
-    });
+  ngOnInit(){ 
   }
 
-  onSubmit(form: NgForm){
-    console.log('ci sono');
-    console.log(form.value);
-  }
 }

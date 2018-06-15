@@ -16,11 +16,12 @@
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-2 mb-3">
-      <div class="select-wrapper">
-        <input type="text" class="dropdown select-dropdown" data-toggle="dropdown" readonly="true" formControlName="gender">
-        <label for="gender" class="control-label">Sesso</label>
-      </div>
+    <div class="form-group col-md-2 mb-3">      
+      <label for="gender" class="control-label">Sesso</label>      
+      <select class="custom-select" formControlName="gender" id="gender">   
+          <option value="" disabled selected>Seleziona</option>     
+          <option *ngFor="let opt of options" [ngValue]="opt.key"> {{opt.value}} </option>
+      </select>    
     </div>
 
     <div class="form-group col-md-4 mb-3">
@@ -31,7 +32,6 @@
     <div class="form-group col-md-6 mb-3">
       <label for="birthplace" class="control-label active">Città di nascita</label>
       <input class="form-control" name="birthplace" type="text" formControlName="birthplace" id="birthplace">
-
     </div>
   </div>
   <div class="form-row">
@@ -43,10 +43,18 @@
 
     </div>
     <div class="form-group col-md-6 mb-3 input-group date">
-      <label for="birthdate" class="control-label active">Data di nascita</label>
-      <input class="form-control datepicker" type="text" name="birthdate" formControlName="birthdate" id="birthdate">
-
-    </div>
+        <label for="birthdate" class="control-label active">Data di nascita</label>
+        <div class="input-group">
+            <input class="form-control"  formControlName="birthdate" 
+                   name="birthdate" [displayMonths]="displayMonths" [navigation]="navigation" [outsideDays]="outsideDays"
+                   [showWeekNumbers]="showWeekNumbers" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+              </button>
+            </div>
+        </div>
+      </div>          
   </div>
   <h5>Residenza</h5>
   <div class="form-row">
@@ -74,20 +82,20 @@
     <div class="form-group col-md-6 mb-3">
       <label for="presso" class="control-label active">Presso?</label>
       <input class="form-control" name="presso" type="text" formControlName="presso" id="presso">
-
     </div>
   </div>
 
   <div class="mt-4">
   <h5>Lista incarichi</h5>
-  <table class="table table-striped table-hover table-responsive-md">
+  <div class="table-responsive">
+  <table class="table table-striped table-hover">
       <thead> </thead>
   <tbody formArrayName="assignments">
     <tr *ngFor="let assignment of submissionForm.get('assignments').controls; let i = index;">
       <ng-container formGroupName="{{i}}">
       <td>
         <div class="form-group">
-          <input type="text" formControlName='role' id='role'>
+          <input class="form-control" type="text" formControlName='role' id='role'>
           <label for="role" class="control-label active">Ruolo</label>
         </div>
       </td>
@@ -130,11 +138,13 @@
     </ng-container>
     </tr> 
   </tbody>
-  </table>  
+  </table>
+  </div>  
   </div>
 
-  <p>
-    <input class="btn btn-primary" type="submit" value="Aggiorna">
-  </p>
+  <div class="form-group" class="row">
+    <button type="button" class="btn btn-primary" type="submit">Aggiorna</button>
+    <button type="button" class="btn btn-primary ml-2" (click)="cancel.emit(null)">Annulla</button>
+  </div>
 
 </form>
