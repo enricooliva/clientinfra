@@ -1,10 +1,12 @@
 <!--The whole content below can be removed with the new code.-->
+<app-navigation></app-navigation>
+
 <div class="container">
   <h1>
     Welcome to {{title}}!!
   </h1>
   <hr />
-    <form (ngSubmit)="onSubmit(fm)" #fm="ngForm">        
+    <!-- <form (ngSubmit)="onSubmit(fm)" #fm="ngForm">        
       <div class="form-group">       
         <input type="text" class="form-control" id="name">
         <label for="name">Item Name:</label>
@@ -14,7 +16,8 @@
         <label for="price">Item Price:</label>
       </div>
       <button type="submit" class="btn btn-primary">Add</button>
-    </form>
+    </form> -->
+    <app-submission></app-submission>
 
     <table class="table table-striped table-hover table-responsive mt-4" id="datatable">
       <!-- <thead>
@@ -51,7 +54,7 @@
     </tbody>
     </table>  
   
-    <app-submission></app-submission>
+    
     
 </div>
 

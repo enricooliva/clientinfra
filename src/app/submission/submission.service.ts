@@ -21,10 +21,12 @@ export class SubmissionService {
   }
 
   getSubmission(): Observable<Submission> {    
-    return this.http
+    
+    let res = this.http
        .get<Submission>('http://localhost:8000/api/submissions',{         
           params: new HttpParams().set('userId', '2')        
       });
 
+    return res;
   }
 }

@@ -1,8 +1,12 @@
+
+
 export interface Assignment {
   id: number;
-  name: string;
-}
-
-export interface AssignmentDetail extends Assignment {
-  content?: string;
+  role: string;
+  title: string;
+  institute: string;
+  from: Date;
+  to: Date;
+  document: string;
+  path: string;
 }

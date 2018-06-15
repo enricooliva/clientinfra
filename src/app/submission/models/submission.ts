@@ -15,5 +15,5 @@ export interface Submission {
   civ_res: string;
   presso: string;
     
-  assignments?: Assignment[];
+  assigments?: Assignment[];
 }
