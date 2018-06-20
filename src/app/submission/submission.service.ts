@@ -17,13 +17,13 @@ export class SubmissionService {
 
   getSumbissions() : Observable<any> {
     return this.http
-      .get('http://localhost:8000/api/submissions',httpOptions);
+      .get('http://pcoliva.uniurb.it/api/submissions',httpOptions);
   }
 
   getSubmission(): Observable<Submission> {    
     
     let res = this.http
-       .get<Submission>('http://localhost:8000/api/submissions',{         
+       .get<Submission>('http://pcoliva.uniurb.it/api/submissions',{         
           params: new HttpParams().set('userId', '2')        
       });
 

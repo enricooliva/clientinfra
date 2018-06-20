@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import { AuthService } from '../../core';
 
 @Component({
   selector: 'app-navigation',
@@ -8,7 +9,7 @@ import {Router} from "@angular/router";
 
 export class NavigationComponent implements OnInit {
 
-  constructor() {} 
+  constructor(public authService: AuthService) {} 
 
   goHome() {
     //this.router.navigate(['']); 
@@ -18,6 +19,13 @@ export class NavigationComponent implements OnInit {
     //this.router.navigate(['search']); 
   }
   
+  goLogin(){
+    if (!this.authService.isLoggedIn()){
+      this.authService.login();
+    }
+  }
+
+
   ngOnInit() {
   }
 

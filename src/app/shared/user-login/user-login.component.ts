@@ -7,9 +7,18 @@ import { AuthService } from '../../core';
 })
 export class UserLoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(public authService: AuthService) {    
+   }
 
   ngOnInit() {
+  }
+
+  login() {
+    this.authService.login();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

@@ -73,9 +73,12 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              "node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/bootstrap-italia/dist/js/bootstrap-italia.bundle.min.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

@@ -4,6 +4,7 @@ import { NgForm }   from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SubmissionService } from './submission';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -16,9 +17,22 @@ export class AppComponent {
   errorMessage = '';
 
   submissions$: Observable<any>;
-  constructor(private submissionService: SubmissionService) {}
+  constructor(route: ActivatedRoute) {    
+    console.log("constructor app-root ");
+    let token = null;
+    route.queryParamMap.subscribe(p => {
+      token = p.get("token");
+      if (token){
+        localStorage.setItem("token",token);
+      }else{
+        console.log("no token");
+      }
+    })
+  }
 
-  ngOnInit(){ 
+  ngOnInit(){
+     
+    console.log("init app-root")
   }
 
 }

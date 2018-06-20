@@ -16,7 +16,7 @@ export class SubmissionComponent implements OnInit {
 
   options: object[] = [
     {key:'m', value:'Maschio'},    
-    {key:'f', value:'Femmmina'}    
+    {key:'f', value:'Femmina'}    
   ]
 
   constructor(private submissionService: SubmissionService) {
