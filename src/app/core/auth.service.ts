@@ -1,10 +1,11 @@
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 interface LoginResponse {
   accessToken: string;
@@ -26,15 +27,16 @@ const httpOptions = {
 export class AuthService {
 
   private authUrl: string = 'http://pcoliva.uniurb.it/api';
-  private loggedIn: boolean = false;
+  private loggedIn = new BehaviorSubject<boolean>(false);
+  
   _username = '';
 
-  constructor(private http: HttpClient, public jwtHelper: JwtHelperService) {
-    // look at localStorage to check if the user is logged in
-    this.loggedIn = localStorage.getItem('auth_token') != null;
+  constructor(private http: HttpClient, public jwtHelper: JwtHelperService, private router: Router) {
+    this.loggedIn.next(this.isAuthenticated());
   }
-
+ 
   login() {
+    //il login purtroppo non passa da questo metodo.
 
     //Effetuando la chimamata da una sorgente diversa da quello del server 
     //otteniamo un errore CORS        
@@ -50,19 +52,24 @@ export class AuthService {
       })
   }
 
+  loginWithToken(token: any){        
+    localStorage.setItem("token",token);
+    this.loggedIn.next(this.isAuthenticated());
+  }
+
   /**
    * Log the user out
    */
   logout() {
-    localStorage.removeItem('auth_token');
-    this.loggedIn = false;
+    localStorage.removeItem('token');
+    this.loggedIn.next(false);    
   }
 
   /**
      * Check if the user is logged in
      */
-  isLoggedIn() {
-    return this.loggedIn;
+  get isLoggedIn() {    
+    return this.loggedIn.asObservable();
   }
 
   public get username(): string {

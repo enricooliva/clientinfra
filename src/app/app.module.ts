@@ -15,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 import { NgbDateCustomParserFormatter } from 'src/app/NgbDateCustomParserFormatter';
 import { NotFoundComponent } from './not-found-component/not-found.component';
 import { CoreModule, HttpInterceptorProviders, AuthGuard } from './core';
+import { Router } from '@angular/router';
 
 
 export function tokenGetter() {
@@ -47,5 +48,10 @@ export function tokenGetter() {
 })
 
 
-export class AppModule { }
+export class AppModule {
+   // Diagnostic only: inspect router configuration
+   constructor(router: Router) {
+    console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
+  }
+}
 
