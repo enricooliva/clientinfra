@@ -1,13 +1,53 @@
-<form [formGroup]="submissionForm" (ngSubmit)="register(submissionForm)" accept-charset="UTF-8" class="form-horizontal needs-validation is-valid"
-  id="form-with-validation">
 
+
+
+<form [formGroup]="submissionFormDynamic" (ngSubmit)="register(submissionForm)" accept-charset="UTF-8" class="form-horizontal needs-validation"
+id="form-with-validation"> 
+<h5>Dati personali</h5>
+<div class="form-row">
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.name" [form]="submissionFormDynamic"></app-dynamic-form>
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.surname" [form]="submissionFormDynamic"></app-dynamic-form>
+</div>
+
+<div class="form-row">
+  <app-dynamic-form class="col-md-2 mb-3" [control]="submissionControls.gender" [form]="submissionFormDynamic"></app-dynamic-form>
+  <app-dynamic-form class="col-md-4 mb-3" [control]="submissionControls.fiscalcode" [form]="submissionFormDynamic"></app-dynamic-form>
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.birthplace" [form]="submissionFormDynamic"></app-dynamic-form>
+</div>
+
+<div class="form-row">
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.birthprovince" [form]="submissionFormDynamic"></app-dynamic-form>
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.birthdate" [form]="submissionFormDynamic"></app-dynamic-form>  
+</div>
+
+<h5>Residenza</h5>
+<div class="form-row">
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.com_res" [form]="submissionFormDynamic"></app-dynamic-form>
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.prov_res" [form]="submissionFormDynamic"></app-dynamic-form>  
+</div>
+<div class="form-row">
+  <app-dynamic-form class="col-md-4 mb-3" [control]="submissionControls.via_res" [form]="submissionFormDynamic"></app-dynamic-form>
+  <app-dynamic-form class="col-md-2 mb-3" [control]="submissionControls.civ_res" [form]="submissionFormDynamic"></app-dynamic-form>  
+  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.presso" [form]="submissionFormDynamic"></app-dynamic-form>
+</div>
+
+
+<!-- <div *ngFor="let control of submissionControls" class="form-row">
+  <app-dynamic-form [control]="control" [form]="submissionFormDynamic"></app-dynamic-form>
+</div>-->
+   
+</form> 
+
+<form [formGroup]="submissionForm" (ngSubmit)="register(submissionForm)" accept-charset="UTF-8" class="form-horizontal needs-validation"
+  id="form-with-validation"> 
   <!-- si può condizionare lo stato dei campi passando 'disabled'-->
   <h5>Dati personali</h5>
   <div class="form-row">
-    <div class="form-group col-md-6 mb-3">
+    <div class="form-group col-md-6 mb-3" >
       <label for="name" class="control-label active">Nome</label>
-      <input class="form-control" name="name" type="text" formControlName="name" id="name">
-
+      <input class="form-control"  name="name" type="text" formControlName="name" id="name" 
+                    [ngClass]="{'is-invalid': submissionForm.controls.name.invalid && submissionForm.controls.name.dirty}">
+      <app-show-errors [control]="submissionForm.controls.name"></app-show-errors>   
     </div>
     <div class="form-group col-md-6 mb-3">
       <label for="surname" class="control-label active">Cognome</label>
@@ -16,12 +56,12 @@
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-2 mb-3">      
-      <label for="gender" class="control-label">Sesso</label>      
-      <select class="custom-select" formControlName="gender" id="gender">   
-          <option value="" disabled selected>Seleziona</option>     
-          <option *ngFor="let opt of options" [ngValue]="opt.key"> {{opt.value}} </option>
-      </select>    
+    <div class="form-group col-md-2 mb-3">
+      <label for="gender" class="control-label">Sesso</label>
+      <select class="custom-select" formControlName="gender" id="gender">
+        <option value="" disabled selected>Seleziona</option>
+        <option *ngFor="let opt of options" [ngValue]="opt.key"> {{opt.value}} </option>
+      </select>
     </div>
 
     <div class="form-group col-md-4 mb-3">
@@ -43,18 +83,17 @@
 
     </div>
     <div class="form-group col-md-6 mb-3 input-group date">
-        <label for="birthdate" class="control-label active">Data di nascita</label>
-        <div class="input-group">
-            <input class="form-control"  formControlName="birthdate" 
-                   name="birthdate" [displayMonths]="displayMonths" [navigation]="navigation" [outsideDays]="outsideDays"
-                   [showWeekNumbers]="showWeekNumbers" ngbDatepicker #d="ngbDatepicker">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-              </button>
-            </div>
+      <label for="birthdate" class="control-label active">Data di nascita</label>
+      <div class="input-group">
+        <input class="form-control" formControlName="birthdate" name="birthdate" [displayMonths]="displayMonths" [navigation]="navigation"
+          [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+            <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+          </button>
         </div>
-      </div>          
+      </div>
+    </div>
   </div>
   <h5>Residenza</h5>
   <div class="form-row">
@@ -85,65 +124,84 @@
     </div>
   </div>
 
+  <!-- <div class="mt-4">
+    <h5>Lista incarichi</h5>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead> </thead>
+        <tbody formArrayName="assignments">
+          <tr *ngFor="let assignment of submissionForm.get('assignments').controls; let i = index;">
+            <ng-container formGroupName="{{i}}">
+              <td>
+                <div class="form-group">
+                  <input class="form-control" type="text" formControlName='role' id='role'>
+                  <label for="role" class="control-label active">Ruolo</label>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input class="form-control" type="text" formControlName='title' id='title'>
+                  <label for="title" class="control-label active">Titolo</label>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input class="form-control" type="text" formControlName='institute' id='institute'>
+                  <label for="institute" class="control-label active">Instituto</label>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input class="form-control" type="text" formControlName="from" id='from'>
+                  <label for="from" class="control-label active">Da</label>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input class="form-control" type="text" formControlName='to' id='to'>
+                  <label for="to" class="control-label active">A</label>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input class="form-control" type="text" formControlName='document' id='document'>
+                  <label for="document" class="control-label active">Documento</label>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input class="form-control" type="text" formControlName='path' id='path'>
+                  <label for="path" class="control-label active">Percorso</label>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+
   <div class="mt-4">
-  <h5>Lista incarichi</h5>
-  <div class="table-responsive">
-  <table class="table table-striped table-hover">
-      <thead> </thead>
-  <tbody formArrayName="assignments">
-    <tr *ngFor="let assignment of submissionForm.get('assignments').controls; let i = index;">
-      <ng-container formGroupName="{{i}}">
-      <td>
-        <div class="form-group">
-          <input class="form-control" type="text" formControlName='role' id='role'>
-          <label for="role" class="control-label active">Ruolo</label>
-        </div>
-      </td>
-      <td>
-        <div class="form-group">
-          <input class="form-control" type="text" formControlName='title' id='title'>
-          <label for="title" class="control-label active">Titolo</label>
-        </div>
-      </td>
-      <td>
-        <div class="form-group">
-          <input class="form-control" type="text" formControlName='institute' id='institute'>
-          <label for="institute" class="control-label active">Instituto</label>
-        </div>
-      </td>
-      <td>
-        <div class="form-group">
-          <input class="form-control" type="text" formControlName="from" id='from'>
-          <label for="from" class="control-label active">Da</label>
-        </div>
-      </td>
-      <td>
-        <div class="form-group">
-          <input class="form-control" type="text" formControlName='to' id='to'>
-          <label for="to" class="control-label active">A</label>
-        </div>
-      </td>
-      <td>
-        <div class="form-group">
-          <input class="form-control" type="text" formControlName='document' id='document'>
-          <label for="document" class="control-label active">Documento</label>
-        </div>
-      </td>
-      <td>
-        <div class="form-group">
-          <input class="form-control" type="text" formControlName='path' id='path'>
-          <label for="path" class="control-label active">Percorso</label>
-        </div>
-      </td>
-    </ng-container>
-    </tr> 
-  </tbody>
-  </table>
-  </div>  
+    <h5>Lista incarichi</h5>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead> </thead>
+        <tbody formArrayName="assignments">
+          <tr *ngFor="let assignment of submissionForm.get('assignments').controls; let i = index;">
+            <div [formGroupName]="i">  
+              <app-assignment [group]=assignment></app-assignment> 
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
+  <p>Form value: {{ submissionForm.value | json }}</p>
+  <p>Form status: {{ submissionForm.status | json }}</p>
+
   <div class="form-group" class="row">
-    <button type="button" class="btn btn-primary" type="submit">Aggiorna</button>
+    <button type="button" class="btn btn-primary" type="submit" [disabled]="!submissionForm.valid">Aggiorna</button>
     <button type="button" class="btn btn-primary ml-2" (click)="cancel.emit(null)">Annulla</button>
   </div>
 

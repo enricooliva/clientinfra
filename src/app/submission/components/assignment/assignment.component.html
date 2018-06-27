@@ -1,3 +1,45 @@
-<p>
-  assignment works!
-</p>
+
+<div [formGroup]="assignmentForm">
+<td>
+  <div class="form-group">
+      <input class="form-control" type="text" formControlName='role' id='role'>
+      <label for="role" class="control-label active">Ruolo</label>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <input class="form-control" type="text" formControlName='title' id='title'>
+      <label for="title" class="control-label active">Titolo</label>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <input class="form-control" type="text" formControlName='institute' id='institute'>
+      <label for="institute" class="control-label active">Instituto</label>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <input class="form-control" type="text" formControlName="from" id='from'>
+      <label for="from" class="control-label active">Da</label>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <input class="form-control" type="text" formControlName='to' id='to'>
+      <label for="to" class="control-label active">A</label>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <input class="form-control" type="text" formControlName='document' id='document'>
+      <label for="document" class="control-label active">Documento</label>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <input class="form-control" type="text" formControlName='path' id='path'>
+      <label for="path" class="control-label active">Percorso</label>
+    </div>
+  </td>
+  <div [formGroup]="assignmentForm"></div>

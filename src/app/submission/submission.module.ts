@@ -10,6 +10,9 @@ import { SubmissionService } from './submission.service';
 import { SubmissionComponent } from './components/submission/submission.component';
 import { AssignmentComponent } from './components/assignment/assignment.component';
 import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/assignment-detail-page.component';
+import { SharedModule } from '../shared';
+
+
 
 
 @NgModule({
@@ -17,12 +20,13 @@ import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/as
     CommonModule,
     FormsModule,
     ReactiveFormsModule,    
+    SharedModule,
     NgbModule.forRoot()
   ], 
   exports: [
     SubmissionComponent
   ],
-  declarations: [
+  declarations: [    
     SubmissionComponent,
     AssignmentComponent,
     AssignmentDetailPageComponent

@@ -18,6 +18,7 @@ import { CoreModule, HttpInterceptorProviders, AuthGuard } from './core';
 import { Router } from '@angular/router';
 
 
+
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -25,7 +26,7 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent,
+    NotFoundComponent,    
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
