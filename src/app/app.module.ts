@@ -1,4 +1,4 @@
-import {NgbModule, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbDateParserFormatter, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -16,8 +16,8 @@ import { NgbDateCustomParserFormatter } from 'src/app/NgbDateCustomParserFormatt
 import { NotFoundComponent } from './not-found-component/not-found.component';
 import { CoreModule, HttpInterceptorProviders, AuthGuard } from './core';
 import { Router } from '@angular/router';
-
-
+import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
+import { NgbStringAdapter } from './NgbStringAdapter';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -30,7 +30,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
-    AppRoutingModule, CoreModule,
+    AppRoutingModule, CoreModule, 
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -42,8 +42,8 @@ export function tokenGetter() {
   providers: [
     AuthGuard,  
     SubmissionService,
+    {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
-
   ],
   bootstrap: [AppComponent]
 })

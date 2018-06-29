@@ -6,8 +6,8 @@ export interface Submission {
   surname: string;
   gender: string;
   fiscalcode: string;
-  birthplace: Date;
-  birthprovince: Date;
+  birthplace: string;
+  birthprovince: string;
   birthdate: Date;
   com_res: string;
   prov_res: string;

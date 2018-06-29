@@ -38,15 +38,17 @@ export class SubmissionService {
         key: 'name',
         label: 'Nome',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),      
       new TextboxControl({
         key: 'surname',
         label: 'Cognome',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),      
       new DropdownControl({
         key: 'gender',
@@ -55,71 +57,81 @@ export class SubmissionService {
           {key: 'm',  value: 'Maschio'},
           {key: 'f',  value: 'Femmina'},
         ],        
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),       
       new TextboxControl({
         key: 'fiscalcode',
         label: 'Codice fiscale',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),      
       new TextboxControl({
         key: 'birthplace',
         label: 'Luogo di nascita',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),    
       new TextboxControl({
         key: 'birthprovince',
         label: 'Provincia di nascita',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),    
       new DateControl({
         key: 'birthdate',
         label: 'Data di nascita',
-        value: null,
-        required: true,
-        order: 1
+        value: null, //{ "year": 2017, "month": 2, "day": 25 },
+        validation: {
+          required: true
+        }
       }),    
       new TextboxControl({
         key: 'com_res',
         label: 'Comune di residenza',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),    
       new TextboxControl({
         key: 'prov_res',
         label: 'Provincia di residenza',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),    
       new TextboxControl({
         key: 'via_res',
         label: 'Via di residenza',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),    
       new TextboxControl({
         key: 'civ_res',
         label: 'Civico',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       }),    
       new TextboxControl({
         key: 'presso',
         label: 'Presso',
         value: null,
-        required: true,
-        order: 1
+        validation: {
+          required: true
+        }
       })  
     ]
 

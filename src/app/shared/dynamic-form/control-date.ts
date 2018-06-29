@@ -1,6 +1,6 @@
 import { ControlBase } from './control-base';
 
-export class DateControl extends ControlBase<string> {
+export class DateControl extends ControlBase<Date> {
   controlType = 'datepicker';
   type: Date;
 

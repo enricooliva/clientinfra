@@ -8,10 +8,11 @@ import { ActivatedRoute, NavigationCancel, Router } from '@angular/router';
 import { AuthService } from './core';
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],  
 })
 export class AppComponent {
   title = 'Unipeo client';

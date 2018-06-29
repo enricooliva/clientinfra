@@ -14,8 +14,8 @@
 
     <!--Datapicker-->
     <div class="input-group"  *ngSwitchCase="'datepicker'">
-      <input class="form-control"  [formControlName]="control.key" [id]="control.key" [displayMonths]="displayMonths" [navigation]="navigation"
-          [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" ngbDatepicker #d="ngbDatepicker" 
+      <input class="form-control" placeholder="dd-mm-yyyy" [formControlName]="control.key" [id]="control.key" [displayMonths]="displayMonths" [navigation]="navigation"
+          [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" ngbDatepicker="" #d="ngbDatepicker" 
           [ngClass]="{'is-invalid': form.controls[control.key].invalid && (form.controls[control.key].dirty || form.controls[control.key].touched)}">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">

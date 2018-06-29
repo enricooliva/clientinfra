@@ -1,4 +1,4 @@
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 import { Component, OnInit, Input } from '@angular/core';
 import { Submission } from '../../models/submission';
 import { FormGroup, FormControl, FormArray, NgForm, Validators } from '@angular/forms';
@@ -79,7 +79,10 @@ export class SubmissionComponent implements OnInit {
    this.submission = this.submissionService.getSubmission();
 
     this.submissionService.getSubmission().subscribe((data)=> {          
-      this.submissionForm.patchValue(data);                 
+      
+      this.submissionForm.patchValue(data);     
+      this.submissionFormDynamic.patchValue(data);     
+
       data.assigments.forEach(element => {
         this.assignments.push(this.buildAssignmentControls());  
       });      
@@ -92,7 +95,7 @@ export class SubmissionComponent implements OnInit {
     let group: any = {};
 
     controls.forEach(ctrl => {
-      group[ctrl.key] = ctrl.required ? new FormControl(ctrl.value || '', Validators.required) : new FormControl(ctrl.value || '');
+      group[ctrl.key] =  new FormControl(ctrl.value || '', this.mapValidators(ctrl.validation));
     });
     this.submissionFormDynamic = new FormGroup(group);
     return this.submissionFormDynamic;
@@ -105,8 +108,23 @@ export class SubmissionComponent implements OnInit {
          normalizedObject[key] = array[i]
     }
     return normalizedObject as { [key: string]: T }
-}
+  }
   
+  private mapValidators(validators) {
+    const formValidators = [];
+  
+    if(validators) {
+      for(const validation of Object.keys(validators)) {
+        if(validation === 'required') {
+          formValidators.push(Validators.required);
+        } else if(validation === 'min') {
+          formValidators.push(Validators.min(validators[validation]));
+        }
+      }
+    }
+  
+    return formValidators;
+  }
 
 
   printMyForm() {

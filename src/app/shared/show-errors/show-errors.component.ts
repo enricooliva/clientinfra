@@ -38,7 +38,11 @@ export class ShowErrorsComponent implements OnInit {
   }
  
   private getMessage(type: string, params: any) {
-    return ShowErrorsComponent.errorMessages[type](params);
+    if (Object.keys(ShowErrorsComponent.errorMessages).includes(type))
+      return ShowErrorsComponent.errorMessages[type](params);
+    else{
+      console.log(type);
+    }
   } 
 
   constructor() { }
