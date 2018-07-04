@@ -11,13 +11,14 @@ import { HomeComponent } from './home/home.component';
 import { ShowErrorsComponent } from './show-errors/show-errors.component';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { MessageComponent } from './message/message.component';
+import { ControlGenericListComponent } from './dynamic-form/control-generic-list.component';
 
 @NgModule({
   imports: [
     CommonModule, NgbModule.forRoot(), HttpModule, FormsModule, ReactiveFormsModule
   ],
-  exports: [ NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, DynamicFormComponent, MessageComponent ],
-  declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, DynamicFormComponent, MessageComponent]
+  exports: [ NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, DynamicFormComponent, MessageComponent, ControlGenericListComponent ],
+  declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, DynamicFormComponent, MessageComponent, ControlGenericListComponent]
 })
 
 export class SharedModule { }

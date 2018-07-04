@@ -66,10 +66,6 @@ export class SubmissionService {
     };
   }
 
-
-
-
-
   getSumbissionMetadata() {
     let submissionControls: ControlBase<any>[] = [
       new TextboxControl({
@@ -188,7 +184,7 @@ export class SubmissionService {
       }),
       new ArrayControl({
         key: 'assignments',
-        label: 'Lista assegnamenti',
+        label: 'Lista incarichi',
         value:  null
       })
     ]
@@ -223,7 +219,7 @@ export class SubmissionService {
         }
       }),
       new TextboxControl({
-        key: 'institute',
+        key: 'istitute',
         label: 'Istituto',
         value: null,
         validation: {

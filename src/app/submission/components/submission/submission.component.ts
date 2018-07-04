@@ -29,13 +29,7 @@ export class SubmissionComponent implements OnInit {
     {key:'f', value:'Femmina'}    
   ]
 
-  constructor(private submissionService: SubmissionService) {
-
-    // this.submissionForm.controls['gender'].valueChanges.subscribe(g => 
-    // {
-    //     //this.gender = g;  
-    // });   
-
+  constructor(private submissionService: SubmissionService) {    
     //costruzione dinamica
     let controls = this.submissionService.getSumbissionMetadata();   
     this.submissionControls = this.normalizeArray(controls,'key');
@@ -68,7 +62,7 @@ export class SubmissionComponent implements OnInit {
 
     controls.forEach(ctrl => {
       if (ctrl.controlType ===  'array'){
-        group[ctrl.key] =  new FormArray([]);
+        group[ctrl.key] =  new FormArray([]);                                
       }else{
         group[ctrl.key] =  new FormControl(ctrl.value || '', this.mapValidators(ctrl.validation));
       }      
@@ -109,9 +103,12 @@ export class SubmissionComponent implements OnInit {
       this.submissionService.updateSubmission(this.submissionFormDynamic.value, this.id).subscribe(
         result => console.log(result),
         error => console.log(error)
-      );
-      
+      );      
     }
+  }
+
+  addAssignment(){
+    this.assignments.push(this.toFormGroup(this.submissionService.getAssignmetMetadata()));  
   }
 
   printMyForm() {
