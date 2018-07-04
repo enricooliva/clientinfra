@@ -198,8 +198,7 @@ export class SubmissionService {
         key: 'id',
         label: 'Id',
         value: null,
-        validation: {
-          required: true
+        validation: {        
         }
       }),
       new TextboxControl({
