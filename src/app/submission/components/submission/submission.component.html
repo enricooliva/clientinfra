@@ -52,13 +52,16 @@ id="form-with-validation">
   <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.presso" [form]="submissionFormDynamic"></app-dynamic-form>
 </div>
 
-<div class="mt-4">
+<!-- <div class="mt-4">
   <app-assignment [controls]="assignmetControls" [form]="submissionFormDynamic" [control]="submissionControls.assignments" ></app-assignment>
-</div>
+</div> -->
 
 <div class="mt-4">   
   <app-control-generic-list [controls]="assignmetControls" [form]="submissionFormDynamic" [control]="submissionControls.assignments">
-      <ng-template let-controls="controls" let-item="item">      
+    <ng-template let-controls="controls" let-item="item">    
+      <app-assignment [controls] = "controls" [item]="item"></app-assignment>
+    </ng-template>
+      <!-- <ng-template let-controls="controls" let-item="item">      
           <td>
             <app-dynamic-form class="col-md-4 mb-3" [control]="controls.role" [form]="item"></app-dynamic-form>          
           </td>
@@ -80,7 +83,7 @@ id="form-with-validation">
           <td>
             <app-dynamic-form class="col-md-4 mb-3" [control]="controls.path" [form]="item"></app-dynamic-form>               
           </td>              
-      </ng-template>
+      </ng-template> -->
   </app-control-generic-list> 
   
 </div>

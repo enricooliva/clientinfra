@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ContentChild, TemplateRef, ViewChild, ContentChildren } from '@angular/core';
+import { Component, OnInit, Input, ContentChild, TemplateRef, ViewChild, ContentChildren, QueryList } from '@angular/core';
 import { FormGroup, FormControl, FormArray, NgForm, Validators } from '@angular/forms';
 import { ControlBase } from './control-base';
 
@@ -16,11 +16,12 @@ export class ControlGenericListComponent implements OnInit {
   //la form contenitore
   @Input() form: FormGroup;
         
-  @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
- 
+  @ContentChild(TemplateRef) itemTemplate:  TemplateRef<any>;
+   
   constructor() { }
 
   ngOnInit() {
   }
 
+ 
 }
