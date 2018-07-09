@@ -69,6 +69,7 @@ id="form-with-validation">
 <div formArrayName="assignments">
   <ngx-datatable  class="bootstrap table table-striped" 
     [rows]="this.submissionFormDynamic.get('assignments').value" 
+    [columns]="columns"
     [columnMode]="'force'"
     [rowHeight]="'auto'"   
     [headerHeight]="40"      
@@ -76,45 +77,14 @@ id="form-with-validation">
     [limit]="10"        
     [reorderable]="reorderable">     
 
-    <!--[ngClass]="{'is-invalid': form.controls[control.key].invalid && (form.controls[control.key].dirty|| form.controls[control.key].touched)}"-->
-    <ngx-datatable-column [name]="assignmetControls.id.label" [prop]="assignmetControls.id.key" >     
-      <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column"let-sort="sortFn" let-sortDir="sortDir" >                              
-          <div [formGroupName]="rowIndex">
-            <input autofocus class="form-control" [name]="column.prop" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">              
-          </div>
-          <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-      </ng-template> 
-    </ngx-datatable-column>
+    <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column"let-sort="sortFn" let-sortDir="sortDir" >                              
+        <div [formGroupName]="rowIndex">
+          <input autofocus class="form-control" [name]="column.prop" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">              
+        </div>
+        <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
+    </ng-template> 
 
-    <ngx-datatable-column [name]="assignmetControls.role.label" [prop]="assignmetControls.role.key" >
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" let-sort="sortFn" >                              
-            <div [formGroupName]="rowIndex">
-              <input autofocus class="form-control" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">                
-            </div>
-            <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-        </ng-template>  
-    </ngx-datatable-column>    
-
-    <ngx-datatable-column [name]="assignmetControls.title.label" [prop]="assignmetControls.title.key" >
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" let-sort="sortFn" >                              
-            <div [formGroupName]="rowIndex">
-              <input autofocus class="form-control" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">                
-            </div>
-            <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-        </ng-template>  
-    </ngx-datatable-column> 
-    
-    <ngx-datatable-column [name]="assignmetControls.istitute.label" [prop]="assignmetControls.istitute.key" >
-      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column"  >                              
-          <div [formGroupName]="rowIndex">
-            <input autofocus class="form-control" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">                
-          </div>
-          <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-      </ng-template>  
-    </ngx-datatable-column> 
-
-    <ngx-datatable-column [name]="assignmetControls.from.label" [prop]="assignmetControls.from.key" >
-      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >                              
+    <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >                              
         <div class="input-group" [formGroupName]="rowIndex">
           <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
               [navigation]="navigation"
@@ -129,51 +99,15 @@ id="form-with-validation">
          </div>
         <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
       </ng-template>  
-  </ngx-datatable-column> 
-
-  <ngx-datatable-column [name]="assignmetControls.to.label" [prop]="assignmetControls.to.key" >
-    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >                              
-      <div class="input-group" [formGroupName]="rowIndex">
-        <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
-            [navigation]="navigation"
-            [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" placement="top" ngbDatepicker #d="ngbDatepicker" 
-            [ngClass]="getCellClass(rowIndex,column)">
-          
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-              <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-            </button>
-          </div>
-        </div>
-      <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-    </ng-template>  
-  </ngx-datatable-column> 
-
-  <ngx-datatable-column [name]="assignmetControls.document.label" [prop]="assignmetControls.document.key" >
-      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column"  >                              
-          <div [formGroupName]="rowIndex">
-            <input autofocus class="form-control" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">                
-          </div>
-          <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-      </ng-template>  
-    </ngx-datatable-column> 
-
-    <ngx-datatable-column [name]="assignmetControls.path.label" [prop]="assignmetControls.path.key" >
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column"  >                              
-            <div [formGroupName]="rowIndex">
-              <input autofocus class="form-control" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">                
-            </div>
-            <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-        </ng-template>  
-      </ngx-datatable-column> 
-
+    
   </ngx-datatable>
   
 
 
-
 </div>
  
+
+
 <p>Form value: {{ submissionFormDynamic.value | json }}</p>
 <p>Form status: {{ submissionFormDynamic.status | json }}</p>
 </form> 

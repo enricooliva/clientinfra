@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
 import { Submission } from '../../models/submission';
 import { FormGroup, FormControl, FormArray, NgForm, Validators } from '@angular/forms';
 import { SubmissionService } from '../../submission.service';
@@ -17,6 +17,8 @@ import ControlUtils from '../../../shared/dynamic-form/control-utils';
 
 export class SubmissionComponent implements OnInit {    
   //submission: Observable<Submission>;
+  @ViewChild('textcolumn') public textcolumn: TemplateRef<any>;
+  @ViewChild('datecolumn') public datecolumn: TemplateRef<any>;
 
   private id: number;
   private submissionForm: FormGroup;
@@ -34,17 +36,17 @@ export class SubmissionComponent implements OnInit {
   columns = [];
   editing = [];
 
-  constructor(private submissionService: SubmissionService) {    
+  arrayControl:  ControlBase<any>[];
+ 
+  constructor(private submissionService: SubmissionService) {      
+
     //costruzione dinamica
     let controls = this.submissionService.getSumbissionMetadata();   
     this.submissionControls = ControlUtils.normalizeArray(controls,'key');
     this.submissionFormDynamic = ControlUtils.toFormGroup(controls);    
 
-    controls = this.submissionService.getAssignmetMetadata();   
-    this.assignmetControls = ControlUtils.normalizeArray(controls, 'key');    
-
-    this.columns = controls.map(el => {return { name: el.label, prop: el.key}});    
-
+    this.arrayControl = this.submissionService.getAssignmetMetadata();   
+    this.assignmetControls = ControlUtils.normalizeArray( this.arrayControl , 'key');     
   } 
 
   getCellClass( rowIndex, column ) : any {     
@@ -57,6 +59,13 @@ export class SubmissionComponent implements OnInit {
   get assignments(): FormArray { return this.submissionFormDynamic.get('assignments') as FormArray; }
 
   ngOnInit() {    
+    this.columns =  this.arrayControl.map(el => {
+      return { 
+        name: el.label, 
+        prop: el.key,
+        cellTemplate: this.getTemplateColumn(el)
+      }
+    });    
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
     //this.submission = this.submissionService.getSubmission();
@@ -74,6 +83,19 @@ export class SubmissionComponent implements OnInit {
       this.assignments.patchValue(data.assigments);      
     });    
   } 
+
+
+  private getTemplateColumn(el:ControlBase<any>): TemplateRef<any> {    
+    switch (el.controlType) {
+      case 'text':
+        return this.textcolumn;
+      case 'datepicker':        
+        return this.datecolumn;
+
+      default:
+        return this.textcolumn;
+    }
+  }
 
   onNew(){
     this.submissionForm.reset();
