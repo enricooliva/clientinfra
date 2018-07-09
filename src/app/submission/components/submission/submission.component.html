@@ -52,10 +52,6 @@ id="form-with-validation">
   <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.presso" [form]="submissionFormDynamic"></app-dynamic-form>
 </div>
 
-<!-- <div class="mt-4">
-  <app-assignment [controls]="assignmetControls" [form]="submissionFormDynamic" [control]="submissionControls.assignments" ></app-assignment>
-</div> -->
-
 <div class="mt-4">   
   <app-control-generic-list [controls]="assignmetControls" [form]="submissionFormDynamic" [control]="submissionControls.assignments">
     <ng-template let-controls="controls" let-item="item">    
@@ -64,27 +60,27 @@ id="form-with-validation">
   </app-control-generic-list> 
 </div>
 
-
-
 <div formArrayName="assignments">
   <ngx-datatable  class="bootstrap table table-striped" 
-    [rows]="this.submissionFormDynamic.get('assignments').value" 
+    [rows]="datarows" 
     [columns]="columns"
     [columnMode]="'force'"
     [rowHeight]="'auto'"   
     [headerHeight]="40"      
     [footerHeight]="40"
-    [limit]="10"        
-    [reorderable]="reorderable">     
+    [limit]="10"  
+    [scrollbarH]="true"      
+    [reorderable]="reorderable"
+    (sort)="onSort($event)">     
 
-    <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column"let-sort="sortFn" let-sortDir="sortDir" >                              
-        <div [formGroupName]="rowIndex">
-          <input autofocus class="form-control" [name]="column.prop" [formControlName]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">              
-        </div>
+    <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                                    
+        <div [formGroupName]="rowIndex">          
+            <input autofocus class="form-control" [name]="column.prop" [formControlName]="column.prop" [id]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">                      
+        </div>        
         <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
     </ng-template> 
 
-    <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >                              
+    <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                              
         <div class="input-group" [formGroupName]="rowIndex">
           <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
               [navigation]="navigation"

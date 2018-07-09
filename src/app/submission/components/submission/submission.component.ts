@@ -33,7 +33,7 @@ export class SubmissionComponent implements OnInit {
   ]
 
   datarows = new Array<any>();
-  columns = [];
+  columns = [];  
   editing = [];
 
   arrayControl:  ControlBase<any>[];
@@ -59,6 +59,7 @@ export class SubmissionComponent implements OnInit {
   get assignments(): FormArray { return this.submissionFormDynamic.get('assignments') as FormArray; }
 
   ngOnInit() {    
+
     this.columns =  this.arrayControl.map(el => {
       return { 
         name: el.label, 
@@ -78,8 +79,10 @@ export class SubmissionComponent implements OnInit {
         this.assignments.push(ControlUtils.toFormGroup(this.submissionService.getAssignmetMetadata()));                                 
       });      
       
+      //this.submissionFormDynamic.get('assignments').value
       this.datarows.push(...data.assigments);
       this.datarows= [...this.datarows];
+
       this.assignments.patchValue(data.assigments);      
     });    
   } 
@@ -87,7 +90,7 @@ export class SubmissionComponent implements OnInit {
 
   private getTemplateColumn(el:ControlBase<any>): TemplateRef<any> {    
     switch (el.controlType) {
-      case 'text':
+      case 'textbox':
         return this.textcolumn;
       case 'datepicker':        
         return this.datecolumn;
@@ -128,12 +131,15 @@ export class SubmissionComponent implements OnInit {
     this.editing[rowIndex + '-' + cell] = true;
   }
 
-  // updateValue(event, cell, rowIndex) {
-  //   console.log('inline editing rowIndex', rowIndex)
-  //   this.editing[rowIndex + '-' + cell] = false;
-  //   this.rows[rowIndex][cell] = event.target.value;
-  //   this.rows = [...this.rows];
-  //   console.log('UPDATED!', this.rows[rowIndex][cell]);
-  // }
+  onSort(event) {
+    const sort = event.sorts[0];
+    
+    this.assignments.value.sort((a , b) => {      
+      //return ((a as FormGroup).controls[sort.prop].value.localeCompare((b as FormGroup).controls[sort.prop].value) * (sort.dir === 'desc' ? -1 : 1));
+      return (a[sort.prop].localeCompare(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));
+    });
+
+    this.assignments.patchValue(this.assignments.value);    
+  }
 
 }
