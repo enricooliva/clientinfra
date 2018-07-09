@@ -10,9 +10,9 @@ import { GridModel } from './grid-model'
 @Injectable()
 @Component({
     selector: 'grid',
-    templateUrl: './grid.component.html'
+    templateUrl: './dynamic-table.component.html'
 })
-export class GridComponent<T> implements OnInit, OnDestroy {
+export class DynamicTableComponent<T> implements OnInit, OnDestroy {
     @Input()
     columns: TableColumn[];
 

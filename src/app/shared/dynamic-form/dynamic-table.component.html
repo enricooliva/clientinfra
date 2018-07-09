@@ -31,12 +31,13 @@
         (sort)="onSort($event)">
     </ngx-datatable>
 </div>
-<app-spinner [isRunning]="isLoading"></app-spinner>
+<!-- <app-spinner [isRunning]="isLoading"></app-spinner> -->
 <ng-template #emptyTemplate let-row="row" let-value="value"></ng-template>
+
 <ng-template #idAnchorEditTemplate let-row="row" let-value="value">
-    <a [routerLink]="['edit', value]" class="btn btn-sm btn-outline-primary">
+    <!-- <a [routerLink]="['edit', value]" class="btn btn-sm btn-outline-primary">
         <i class="fa fa-pencil" aria-hidden="true"></i>
-    </a>
+    </a> -->
 </ng-template>
 <ng-template #dateTemplate let-row="row" let-value="value">
     {{value | date:'dd.MM.yyyy' }}
