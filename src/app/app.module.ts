@@ -7,6 +7,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { SubmissionModule } from './submission/submission.module';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { AppComponent } from './app.component';
 import { SubmissionService } from './submission/submission.service';
@@ -19,6 +20,8 @@ import { Router } from '@angular/router';
 import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
 import { NgbStringAdapter } from './NgbStringAdapter';
 
+
+
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -26,11 +29,11 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent,        
+    NotFoundComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
-    AppRoutingModule, CoreModule, 
+    AppRoutingModule, CoreModule, NgxDatatableModule, 
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

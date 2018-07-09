@@ -3,7 +3,6 @@ import { NgForm }   from '@angular/forms';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SubmissionService } from './submission';
 import { ActivatedRoute, NavigationCancel, Router } from '@angular/router';
 import { AuthService } from './core';
 

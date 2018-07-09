@@ -30,6 +30,10 @@ export class SubmissionComponent implements OnInit {
     {key:'f', value:'Femmina'}    
   ]
 
+  datarows = new Array<any>();
+  columns = [];
+  editing = [];
+
   constructor(private submissionService: SubmissionService) {    
     //costruzione dinamica
     let controls = this.submissionService.getSumbissionMetadata();   
@@ -38,7 +42,17 @@ export class SubmissionComponent implements OnInit {
 
     controls = this.submissionService.getAssignmetMetadata();   
     this.assignmetControls = ControlUtils.normalizeArray(controls, 'key');    
+
+    this.columns = controls.map(el => {return { name: el.label, prop: el.key}});    
+
   } 
+
+  getCellClass( rowIndex, column ) : any {     
+    let ctrl = this.assignments.at(rowIndex).get(column.prop);
+    return {      
+      'is-invalid': ctrl.invalid && (ctrl.dirty || ctrl.touched)
+    };
+  }
 
   get assignments(): FormArray { return this.submissionFormDynamic.get('assignments') as FormArray; }
 
@@ -52,8 +66,11 @@ export class SubmissionComponent implements OnInit {
       this.submissionFormDynamic.patchValue(data);     
 
       data.assigments.forEach(element => {
-        this.assignments.push(ControlUtils.toFormGroup(this.submissionService.getAssignmetMetadata()));         
+        this.assignments.push(ControlUtils.toFormGroup(this.submissionService.getAssignmetMetadata()));                                 
       });      
+      
+      this.datarows.push(...data.assigments);
+      this.datarows= [...this.datarows];
       this.assignments.patchValue(data.assigments);      
     });    
   } 
@@ -83,4 +100,18 @@ export class SubmissionComponent implements OnInit {
     console.log('Registration successful.');
     console.log(myForm.value);
   }
+
+  openControl(cell, rowIndex){
+    this.editing = [];
+    this.editing[rowIndex + '-' + cell] = true;
+  }
+
+  // updateValue(event, cell, rowIndex) {
+  //   console.log('inline editing rowIndex', rowIndex)
+  //   this.editing[rowIndex + '-' + cell] = false;
+  //   this.rows[rowIndex][cell] = event.target.value;
+  //   this.rows = [...this.rows];
+  //   console.log('UPDATED!', this.rows[rowIndex][cell]);
+  // }
+
 }

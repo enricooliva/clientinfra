@@ -11,7 +11,7 @@ import { SubmissionComponent } from './components/submission/submission.componen
 import { AssignmentComponent } from './components/assignment/assignment.component';
 import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/assignment-detail-page.component';
 import { SharedModule } from '../shared';
-
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
@@ -21,7 +21,8 @@ import { SharedModule } from '../shared';
     FormsModule,
     ReactiveFormsModule,    
     SharedModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    NgxDatatableModule
   ], 
   exports: [
     SubmissionComponent

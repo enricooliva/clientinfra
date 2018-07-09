@@ -12,13 +12,17 @@ import { ShowErrorsComponent } from './show-errors/show-errors.component';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { MessageComponent } from './message/message.component';
 import { ControlGenericListComponent } from './dynamic-form/control-generic-list.component';
+import { GridComponent } from './dynamic-form/dynamic-table.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
 
 @NgModule({
   imports: [
-    CommonModule, NgbModule.forRoot(), HttpModule, FormsModule, ReactiveFormsModule
+    CommonModule, NgbModule.forRoot(), HttpModule, FormsModule, ReactiveFormsModule, NgxDatatableModule
   ],
   exports: [ NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, DynamicFormComponent, MessageComponent, ControlGenericListComponent ],
-  declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, DynamicFormComponent, MessageComponent, ControlGenericListComponent]
+  declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, 
+    DynamicFormComponent, MessageComponent, ControlGenericListComponent]
 })
 
 export class SharedModule { }
