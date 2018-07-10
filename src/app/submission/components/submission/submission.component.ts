@@ -69,7 +69,7 @@ export class SubmissionComponent implements OnInit {
       return { 
         name: el.label, 
         prop: el.key,
-        cellTemplate: this.getTemplateColumn(el)
+        cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null
       }
     });    
     //lettura della domanda corrente
