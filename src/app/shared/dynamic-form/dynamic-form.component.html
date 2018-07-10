@@ -3,7 +3,7 @@
   <div [ngSwitch]="control.controlType">
     <!--Textbox-->
     <input  class="form-control" *ngSwitchCase="'textbox'" [formControlName]="control.key"
-            [id]="control.key" [type]="control.type"  
+            [id]="control.key" type="text"  
             [ngClass]="{'is-invalid': form.controls[control.key].invalid && (form.controls[control.key].dirty|| form.controls[control.key].touched)}">
 
     <!--Combo-->

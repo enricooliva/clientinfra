@@ -60,8 +60,16 @@ id="form-with-validation">
   </app-control-generic-list> 
 </div>
 
+<input
+  type='text'  class="form-control"
+  style='padding:8px;margin:15px auto;width:30%;'
+  placeholder='Filtro per la colonna ruolo...'
+  (keyup)='updateFilter($event)'
+/>
+
+
 <div formArrayName="assignments">
-  <ngx-datatable  class="bootstrap table table-striped" 
+  <ngx-datatable  class="bootstrap table table-hover" 
     [rows]="datarows" 
     [columns]="columns"
     [columnMode]="'force'"
@@ -81,24 +89,22 @@ id="form-with-validation">
     </ng-template> 
 
     <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                              
-        <div class="input-group" [formGroupName]="rowIndex">
-          <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
-              [navigation]="navigation"
-              [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" placement="top" ngbDatepicker #d="ngbDatepicker" 
-              [ngClass]="getCellClass(rowIndex,column)">
-           
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-              </button>
-            </div>
-         </div>
-        <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-      </ng-template>  
+      <div class="input-group" [formGroupName]="rowIndex">
+        <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
+            [navigation]="navigation"
+            [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" placement="top" ngbDatepicker #d="ngbDatepicker" 
+            [ngClass]="getCellClass(rowIndex,column)">
+          
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+            </button>
+          </div>
+      </div>
+      <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
+    </ng-template>  
     
   </ngx-datatable>
-  
-
 
 </div>
  

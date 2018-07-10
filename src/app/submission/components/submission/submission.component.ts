@@ -9,6 +9,7 @@ import { CustomValidators } from './custom.validators';
 import { ControlBase,  } from '../../../shared/';
 import { ResourceLoader } from '@angular/compiler';
 import ControlUtils from '../../../shared/dynamic-form/control-utils';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-submission',
@@ -19,6 +20,8 @@ export class SubmissionComponent implements OnInit {
   //submission: Observable<Submission>;
   @ViewChild('textcolumn') public textcolumn: TemplateRef<any>;
   @ViewChild('datecolumn') public datecolumn: TemplateRef<any>;
+  
+  @ViewChild(DatatableComponent) table: DatatableComponent;
 
   private id: number;
   private submissionForm: FormGroup;
@@ -32,7 +35,9 @@ export class SubmissionComponent implements OnInit {
     {key:'f', value:'Femmina'}    
   ]
 
-  datarows = new Array<any>();
+  datarows = [];
+  temp = [];
+
   columns = [];  
   editing = [];
 
@@ -82,7 +87,7 @@ export class SubmissionComponent implements OnInit {
       //this.submissionFormDynamic.get('assignments').value
       this.datarows.push(...data.assigments);
       this.datarows= [...this.datarows];
-
+      this.temp = this.datarows;
       this.assignments.patchValue(data.assigments);      
     });    
   } 
@@ -133,13 +138,34 @@ export class SubmissionComponent implements OnInit {
 
   onSort(event) {
     const sort = event.sorts[0];
-    
     this.assignments.value.sort((a , b) => {      
-      //return ((a as FormGroup).controls[sort.prop].value.localeCompare((b as FormGroup).controls[sort.prop].value) * (sort.dir === 'desc' ? -1 : 1));
+      
+      if (typeof a[sort.prop] ===  "number"){
+          return (a[sort.prop]>(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));  
+      }
+
       return (a[sort.prop].localeCompare(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));
+
     });
 
     this.assignments.patchValue(this.assignments.value);    
   }
+
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.temp.filter(function(d) {
+      return d.role.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // update the rows
+    this.datarows =[...temp];
+    this.assignments.patchValue(temp);
+    // Whenever the filter changes, always go back to the first page
+    this.table.offset = 0;
+  }
+
 
 }
