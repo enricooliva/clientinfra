@@ -6,48 +6,40 @@ import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 
 import { GridModel } from './grid-model'
+import { ControlBase } from './control-base';
+import { FormArray, FormGroup } from '@angular/forms';
 
 @Injectable()
 @Component({
-    selector: 'grid',
+    selector: 'app-grid',
     templateUrl: './dynamic-table.component.html'
 })
 export class DynamicTableComponent<T> implements OnInit, OnDestroy {
-    @Input()
+    
+    @ViewChild('textcolumn') public textcolumn: TemplateRef<any>;
+    @ViewChild('datecolumn') public datecolumn: TemplateRef<any>;
+    
+    @ViewChild(DatatableComponent) table: DatatableComponent;
+
+    @Input() metadata: ControlBase<any>[];        
+    @Input() controls: FormArray;
+    @Input() datarows: Array<any>;
+    //la form contenitore
+    @Input() form: FormGroup;
+    
+    @Input() columnMode: any = "force";    
+    @Input() rowHeight: any = "auto" ;    
+    @Input() headerHeight: any ="40" ;  
+    @Input() footerHeight: any ="40" ;  
+    @Input() limit: any ="10" ;  
+    @Input() scrollbarH: any = "true" ;     
+    @Input() reorderable: any ="reorderable" ;             
+    
+    @Output() onFetchDataRequired = new EventEmitter<GridModel<T>>();
+
     columns: TableColumn[];
 
-    private _gridModelInput = new BehaviorSubject<GridModel<T>>(undefined);
-
-    @ViewChild('emptyTemplate') 
-    public emptyTemplate: TemplateRef<any>;
-
-    @ViewChild('idAnchorEditTemplate') 
-    public idAnchorEditTemplate: TemplateRef<any>;
-
-    @ViewChild('dateTemplate') 
-    public dateTemplate: TemplateRef<any>;
-
-    @ViewChild('dateTimeTemplate') 
-    public dateTimeTemplate: TemplateRef<any>;
-
-    // change data to use getter and setter
-    @Input()
-    set gridModelInput(value) {
-        // set the latest value for _data BehaviorSubject
-        if (value !== undefined) {
-            this._gridModelInput.next(value);
-        }
-    };
-
-    get gridModelInput() {
-        // get the latest value from _data BehaviorSubject
-        return this._gridModelInput.getValue();
-    }
-
-    @Output()
-    onFetchDataRequired = new EventEmitter<GridModel<T>>();
-
-    private gridModel: GridModel<T>;
+    private temp = [];
     private isLoading: boolean = false;
     private currentPageLimit: number = 0;
     private pageLimitOptions = [
@@ -61,42 +53,65 @@ export class DynamicTableComponent<T> implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.gridModel = new GridModel<T>();
 
-        this._gridModelInput.subscribe(gridModel => {
-            this.gridModel = gridModel;
-            this.isLoading = false;
-        }, err => console.log(err));
-
-        this.loadPage();
+        this.columns =  this.metadata.map(el => {
+            return { 
+              name: el.label, 
+              prop: el.key,        
+              cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null,
+              width: el.key=='id' ? 50 : null
+            }
+        });  
     }
 
-    protected loadPage(pageEvent = {offset: 0}){
-        this.gridModel.CurrentPageNumber = pageEvent.offset;
-        this.onFetchDataRequired.emit(this.gridModel);
-        this.isLoading = true;
-    }
+    //TODO: spostare nel componente 
+    private getTemplateColumn(el:ControlBase<any>): TemplateRef<any> {    
+        switch (el.controlType) {
+        case 'textbox':
+            return this.textcolumn;
+        case 'datepicker':        
+            return this.datecolumn;        
 
-    protected onSort(event) {
-        if (this.gridModel.SortBy != event.sorts[0].prop) {
-            //this means we are sorting on a new column
-            //so we need to return the paging to the first page
-            this.gridModel.CurrentPageNumber = 0;            
+        default:
+            return this.textcolumn;
         }
-
-        this.gridModel.SortBy = event.sorts[0].prop;
-        this.gridModel.SortDir = event.sorts[0].dir;
-
-        this.loadPage();
     }
 
-    public onLimitChange(limit: any): void {
-        this.gridModel.PageSize = this.currentPageLimit = parseInt(limit, 10);
-        this.gridModel.CurrentPageNumber = 0;
-        this.loadPage();
+    getCellClass( rowIndex, column ) : any {     
+        let ctrl = this.controls.at(rowIndex).get(column.prop);
+        return {      
+          'is-invalid': ctrl.invalid && (ctrl.dirty || ctrl.touched)
+        };
     }
 
     ngOnDestroy(): void {
-        this._gridModelInput.unsubscribe();
+        
     }
+
+    onSort(event) {
+        const sort = event.sorts[0];
+        this.controls.value.sort((a , b) => {                
+            if (typeof a[sort.prop] ===  "number"){
+                return (a[sort.prop]>(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));  
+            }    
+            return (a[sort.prop].localeCompare(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));    
+        });    
+        this.controls.patchValue(this.controls.value);    
+    }
+        
+    updateFilter(event) {
+        const val = event.target.value.toLowerCase();
+
+        // filter our data
+        const temp = this.temp.filter(function(d) {
+            return d.role.toLowerCase().indexOf(val) !== -1 || !val;
+        });
+
+        // update the rows
+        this.datarows = [...temp];
+        this.controls.patchValue(temp);
+        // Whenever the filter changes, always go back to the first page
+        this.table.offset = 0;
+    }
+    
 }

@@ -19,8 +19,7 @@
       <thead> </thead>
       <tbody formArrayName="{{ control.key }}">
         <tr *ngFor="let item of form.get(control.key).controls; let i = index;" [formGroupName]="i">
-          <ng-container *ngTemplateOutlet="itemTemplate; context: {item: item, controls: controls} ">
-              <!-- ; context: {$implicit: item} -->
+          <ng-container *ngTemplateOutlet="itemTemplate; context: {item: item, controls: controls} ">             
           </ng-container>          
         </tr>
       </tbody>  

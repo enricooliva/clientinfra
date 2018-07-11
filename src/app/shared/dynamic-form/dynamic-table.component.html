@@ -1,47 +1,43 @@
-<div class="ngx-datatable material">
-    <div class="datatable-footer datatable-footer-inner">
-        <div class="page-count">
-            Show
-            <select (change)="onLimitChange($event.target.value)" class="page-limit">
-                <option
-                    *ngFor="let option of pageLimitOptions"
-                    [value]="option.value"
-                    [selected]="option.value == currentPageLimit">
-                    {{option.value}}
-                </option>
-            </select>
-            per page
-        </div>
-    </div>
-    <ngx-datatable
-        class="material striped"
-        [columns]="columns"
-        [columnMode]="'force'"
-        [rows]="gridModel.Data"
-        [headerHeight]="'auto'"
-        [footerHeight]="'auto'"
-        [rowHeight]="'auto'"
-        [externalPaging]="true"
-        [externalSorting]="true"
-        [count]="gridModel?.TotalElements"
-        [offset]="gridModel?.CurrentPageNumber"
-        [limit]="gridModel?.PageSize"
-        [loadingIndicator]="isLoading"
-        (page)='loadPage($event)'
-        (sort)="onSort($event)">
-    </ngx-datatable>
-</div>
-<!-- <app-spinner [isRunning]="isLoading"></app-spinner> -->
-<ng-template #emptyTemplate let-row="row" let-value="value"></ng-template>
+<div [formGroup]="form">
+<div formArrayName="assignments">
+<ngx-datatable #table  class="bootstrap" 
+    [rows]="datarows" 
+    [columns]="columns"
+    [columnMode]="columnMode"
+    [rowHeight]="rowHeight"   
+    [headerHeight]="headerHeight"      
+    [footerHeight]="footerHeight"
+    [limit]="limit"  
+    [scrollbarH]="scrollbarH"      
+    [reorderable]="reorderable"
+    (sort)="onSort($event)">     
 
-<ng-template #idAnchorEditTemplate let-row="row" let-value="value">
-    <!-- <a [routerLink]="['edit', value]" class="btn btn-sm btn-outline-primary">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-    </a> -->
-</ng-template>
-<ng-template #dateTemplate let-row="row" let-value="value">
-    {{value | date:'dd.MM.yyyy' }}
-</ng-template>
-<ng-template #dateTimeTemplate let-row="row" let-value="value">
-    {{value | date:'dd.MM.yyyy HH:mm:ss' }}
-</ng-template>
+    <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" 
+        let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                                    
+        <div [formGroupName]="rowIndex">          
+            <input autofocus class="form-control" [name]="column.prop" [formControlName]="column.prop" [id]="column.prop"  
+                type="text" [ngClass]="getCellClass(rowIndex,column)">                      
+        </div>        
+        <app-show-errors [control]="this.controls.at(rowIndex).get(column.prop)"></app-show-errors>             
+    </ng-template> 
+
+    <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" 
+        let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                              
+    <div class="input-group" [formGroupName]="rowIndex">
+        <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
+            [navigation]="navigation"
+            [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" placement="top" ngbDatepicker #d="ngbDatepicker" 
+            [ngClass]="getCellClass(rowIndex,column)">
+        
+        <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+            <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+        </button>
+        </div>
+    </div>    
+    <app-show-errors [control]="this.controls.at(rowIndex).get(column.prop)"></app-show-errors>             
+    </ng-template>      
+
+</ngx-datatable>
+</div>  
+</div>

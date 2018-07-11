@@ -52,63 +52,62 @@ id="form-with-validation">
   <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.presso" [form]="submissionFormDynamic"></app-dynamic-form>
 </div>
 
-<div class="mt-4">   
+<!-- <div class="mt-4">   
   <app-control-generic-list [controls]="assignmetControls" [form]="submissionFormDynamic" [control]="submissionControls.assignments">
     <ng-template let-controls="controls" let-item="item">    
       <app-assignment [controls] = "controls" [item]="item"></app-assignment>
     </ng-template>
   </app-control-generic-list> 
-</div>
-
-<input
-  type='text'  class="form-control"
-  style='padding:8px;margin:15px auto;width:30%;'
-  placeholder='Filtro per la colonna ruolo...'
-  (keyup)='updateFilter($event)'
-/>
+</div> -->
 
 
-<div formArrayName="assignments">
+<!-- <div formArrayName="assignments">
   <ngx-datatable  class="bootstrap table table-hover" 
     [rows]="datarows" 
     [columns]="columns"
     [columnMode]="'force'"
     [rowHeight]="'auto'"   
     [headerHeight]="40"      
-    [footerHeight]="40"
+    [footerHeight]="40"    
     [limit]="10"  
     [scrollbarH]="true"      
     [reorderable]="reorderable"
     (sort)="onSort($event)">     
 
-    <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                                    
+    <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" 
+          let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                                    
         <div [formGroupName]="rowIndex">          
             <input autofocus class="form-control" [name]="column.prop" [formControlName]="column.prop" [id]="column.prop"  type="text" [ngClass]="getCellClass(rowIndex,column)">                      
         </div>        
         <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
     </ng-template> 
 
-    <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                              
+    <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" 
+          let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                              
       <div class="input-group" [formGroupName]="rowIndex">
         <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
             [navigation]="navigation"
             [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" placement="top" ngbDatepicker #d="ngbDatepicker" 
             [ngClass]="getCellClass(rowIndex,column)">
           
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-              <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-            </button>
-          </div>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+            <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+          </button>
+        </div>
       </div>
       <app-show-errors [control]="this.assignments.at(rowIndex).get(column.prop)"></app-show-errors>             
-    </ng-template>  
-    
+    </ng-template>      
   </ngx-datatable>
-
-</div>
- 
-
+</div> -->
+<input
+  type='text'  class="form-control"
+  style='padding:8px;margin:15px auto;width:30%;'
+  placeholder='Filtro per la colonna ruolo...'
+  (keyup)='updateFilter($event)'
+/>
+<app-grid  [datarows]="datarows" [metadata]="arrayMetadata" [form]="submissionFormDynamic" [controls]="this.assignments">
+</app-grid>
 
 <p>Form value: {{ submissionFormDynamic.value | json }}</p>
 <p>Form status: {{ submissionFormDynamic.status | json }}</p>

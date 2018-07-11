@@ -41,7 +41,7 @@ export class SubmissionComponent implements OnInit {
   columns = [];  
   editing = [];
 
-  arrayControl:  ControlBase<any>[];
+  arrayMetadata:  ControlBase<any>[];
  
   constructor(private submissionService: SubmissionService) {      
 
@@ -50,8 +50,8 @@ export class SubmissionComponent implements OnInit {
     this.submissionControls = ControlUtils.normalizeArray(controls,'key');
     this.submissionFormDynamic = ControlUtils.toFormGroup(controls);    
 
-    this.arrayControl = this.submissionService.getAssignmetMetadata();   
-    this.assignmetControls = ControlUtils.normalizeArray( this.arrayControl , 'key');     
+    this.arrayMetadata = this.submissionService.getAssignmetMetadata();   
+    this.assignmetControls = ControlUtils.normalizeArray( this.arrayMetadata , 'key');     
   } 
 
   getCellClass( rowIndex, column ) : any {     
@@ -65,13 +65,14 @@ export class SubmissionComponent implements OnInit {
 
   ngOnInit() {    
 
-    this.columns =  this.arrayControl.map(el => {
-      return { 
-        name: el.label, 
-        prop: el.key,
-        cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null
-      }
-    });    
+    // this.columns =  this.arrayMetadata.map(el => {
+    //   return { 
+    //     name: el.label, 
+    //     prop: el.key,        
+    //     cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null,
+    //     width: el.key=='id' ? 50 : null
+    //   }
+    // });    
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
     //this.submission = this.submissionService.getSubmission();
@@ -92,18 +93,18 @@ export class SubmissionComponent implements OnInit {
     });    
   } 
 
+  //TODO: spostare nel componente 
+  // private getTemplateColumn(el:ControlBase<any>): TemplateRef<any> {    
+  //   switch (el.controlType) {
+  //     case 'textbox':
+  //       return this.textcolumn;
+  //     case 'datepicker':        
+  //       return this.datecolumn;        
 
-  private getTemplateColumn(el:ControlBase<any>): TemplateRef<any> {    
-    switch (el.controlType) {
-      case 'textbox':
-        return this.textcolumn;
-      case 'datepicker':        
-        return this.datecolumn;
-
-      default:
-        return this.textcolumn;
-    }
-  }
+  //     default:
+  //       return this.textcolumn;
+  //   }
+  // }
 
   onNew(){
     this.submissionForm.reset();
@@ -121,37 +122,7 @@ export class SubmissionComponent implements OnInit {
   addAssignment(){
     this.assignments.push(ControlUtils.toFormGroup(this.submissionService.getAssignmetMetadata()));  
   }
-
-  printMyForm() {
-    console.log(this.submissionForm);
-  }
  
-  register(myForm: NgForm) {
-    console.log('Registration successful.');
-    console.log(myForm.value);
-  }
-
-  openControl(cell, rowIndex){
-    this.editing = [];
-    this.editing[rowIndex + '-' + cell] = true;
-  }
-
-  onSort(event) {
-    const sort = event.sorts[0];
-    this.assignments.value.sort((a , b) => {      
-      
-      if (typeof a[sort.prop] ===  "number"){
-          return (a[sort.prop]>(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));  
-      }
-
-      return (a[sort.prop].localeCompare(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));
-
-    });
-
-    this.assignments.patchValue(this.assignments.value);    
-  }
-
-
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
 
@@ -163,8 +134,9 @@ export class SubmissionComponent implements OnInit {
     // update the rows
     this.datarows =[...temp];
     this.assignments.patchValue(temp);
+    
     // Whenever the filter changes, always go back to the first page
-    this.table.offset = 0;
+    //this.table.offset = 0;
   }
 
 
