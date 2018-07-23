@@ -1,3 +1,17 @@
+<div class="btn-toolbar mb-4" role="toolbar">
+    <div class="btn-group">    
+        <button class="btn btn-outline-primary" (click)="add()"  >              
+            <span class="oi oi-plus"></span>
+            <span class="ml-2">Aggiungi</span>
+        </button>    
+        <button class="btn btn-outline-primary" [disabled]="selected.length == 0" (click)="remove()"  >              
+            <span class="oi oi-trash"></span>  
+            <span class="ml-2">Rimuovi</span>
+        </button>
+    </div>
+</div>
+
+
 <div [formGroup]="form">
 <div formArrayName="assignments">
 <ngx-datatable #table  class="bootstrap" 
@@ -9,22 +23,27 @@
     [footerHeight]="footerHeight"
     [limit]="limit"  
     [scrollbarH]="scrollbarH"      
-    [reorderable]="reorderable"
-    (sort)="onSort($event)">     
+    [reorderable]="reorderable"    
+    [externalSorting]="true"
+    [selected]="selected"
+    [selectionType]="'single'"
+    (sort)="onSort($event)"
+    (select)='onSelect($event)'>     
 
     <ng-template #textcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" 
-        let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                                    
+        let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" > 
+        <!-- {{value}} per debug -->                                  
         <div [formGroupName]="rowIndex">          
-            <input autofocus class="form-control" [name]="column.prop" [formControlName]="column.prop" [id]="column.prop"  
+            <input autofocus class="form-control"  [formControlName]="column.prop"   
                 type="text" [ngClass]="getCellClass(rowIndex,column)">                      
         </div>        
-        <app-show-errors [control]="this.controls.at(rowIndex).get(column.prop)"></app-show-errors>             
+        <app-show-errors [control]="getControl(rowIndex,column)"></app-show-errors>             
     </ng-template> 
 
     <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" 
         let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                              
     <div class="input-group" [formGroupName]="rowIndex">
-        <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop" [id]="column.prop" [displayMonths]="displayMonths" 
+        <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop"  [displayMonths]="displayMonths" 
             [navigation]="navigation"
             [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" placement="top" ngbDatepicker #d="ngbDatepicker" 
             [ngClass]="getCellClass(rowIndex,column)">
@@ -35,7 +54,7 @@
         </button>
         </div>
     </div>    
-    <app-show-errors [control]="this.controls.at(rowIndex).get(column.prop)"></app-show-errors>             
+    <app-show-errors [control]="getControl(rowIndex,column)"></app-show-errors>             
     </ng-template>      
 
 </ngx-datatable>

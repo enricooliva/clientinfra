@@ -38,9 +38,9 @@ export class SubmissionComponent implements OnInit {
   datarows = [];
   temp = [];
 
-  columns = [];  
+  columnsAg_grid = [];  
   editing = [];
-
+  defaultColDef = { editable: true };
   arrayMetadata:  ControlBase<any>[];
  
   constructor(private submissionService: SubmissionService) {      
@@ -65,14 +65,14 @@ export class SubmissionComponent implements OnInit {
 
   ngOnInit() {    
 
-    // this.columns =  this.arrayMetadata.map(el => {
-    //   return { 
-    //     name: el.label, 
-    //     prop: el.key,        
-    //     cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null,
-    //     width: el.key=='id' ? 50 : null
-    //   }
-    // });    
+    this.columnsAg_grid =  this.arrayMetadata.map(el => {
+      return { 
+        headerName: el.label, 
+        field: el.key,        
+        //cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null,
+        //width: el.key=='id' ? 50 : null
+      }
+    });    
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
     //this.submission = this.submissionService.getSubmission();

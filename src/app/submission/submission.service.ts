@@ -203,7 +203,7 @@ export class SubmissionService {
       }),
       new TextboxControl({
         key: 'role',
-        label: 'Ruolo',
+        label: 'Ruolo',   
         value: null,
         validation: {
           required: true

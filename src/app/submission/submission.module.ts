@@ -15,6 +15,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,6 +24,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     SharedModule,
     NgbModule.forRoot(),
     NgxDatatableModule
+   
   ], 
   exports: [
     SubmissionComponent

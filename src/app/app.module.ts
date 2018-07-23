@@ -22,6 +22,7 @@ import { NgbStringAdapter } from './NgbStringAdapter';
 
 
 
+
 export function tokenGetter() {
   return localStorage.getItem('token');
 }

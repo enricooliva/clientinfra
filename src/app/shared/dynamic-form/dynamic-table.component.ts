@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { GridModel } from './grid-model'
 import { ControlBase } from './control-base';
 import { FormArray, FormGroup } from '@angular/forms';
+import ControlUtils from './control-utils';
 
 @Injectable()
 @Component({
@@ -22,8 +23,27 @@ export class DynamicTableComponent<T> implements OnInit, OnDestroy {
     @ViewChild(DatatableComponent) table: DatatableComponent;
 
     @Input() metadata: ControlBase<any>[];        
-    @Input() controls: FormArray;
-    @Input() datarows: Array<any>;
+    
+
+    _controls: FormArray
+    @Input()
+    set controls(controls: FormArray){
+        this._controls = controls;
+    };    
+    get controls():FormArray{
+        return this._controls;
+    }
+    
+
+    _datarows: Array<any>
+    @Input() 
+    set datarows(datarows: Array<any>){
+        this._datarows = datarows;
+    };    
+    get datarows(): Array<any>{
+        return this._datarows;
+    }
+    
     //la form contenitore
     @Input() form: FormGroup;
     
@@ -37,9 +57,11 @@ export class DynamicTableComponent<T> implements OnInit, OnDestroy {
     
     @Output() onFetchDataRequired = new EventEmitter<GridModel<T>>();
 
+    //descrizione delle colonne della tabella
     columns: TableColumn[];
+    //riga selezionata        
+    selected = [];
 
-    private temp = [];
     private isLoading: boolean = false;
     private currentPageLimit: number = 0;
     private pageLimitOptions = [
@@ -58,13 +80,14 @@ export class DynamicTableComponent<T> implements OnInit, OnDestroy {
             return { 
               name: el.label, 
               prop: el.key,        
-              cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null,
-              width: el.key=='id' ? 50 : null
+              sortable: true,
+              cellTemplate: this.getTemplateColumn(el), //el.key!=='id' ? this.getTemplateColumn(el) : null,
+              width: el.key=='id' ? 100 : null
             }
         });  
     }
 
-    //TODO: spostare nel componente 
+    //scelta del template per visualizzaze il componente
     private getTemplateColumn(el:ControlBase<any>): TemplateRef<any> {    
         switch (el.controlType) {
         case 'textbox':
@@ -78,11 +101,20 @@ export class DynamicTableComponent<T> implements OnInit, OnDestroy {
     }
 
     getCellClass( rowIndex, column ) : any {     
-        let ctrl = this.controls.at(rowIndex).get(column.prop);
-        return {      
-          'is-invalid': ctrl.invalid && (ctrl.dirty || ctrl.touched)
-        };
+        if (rowIndex<this.controls.length){
+            let ctrl = this.controls.at(rowIndex).get(column.prop);        
+            return {      
+            'is-invalid': ctrl.invalid && (ctrl.dirty || ctrl.touched)
+            };
+        }
     }
+
+    getControl( rowIndex, column ) : any {     
+        if (rowIndex<this.controls.length){
+            return this.controls.at(rowIndex).get(column.prop);                    
+        }
+    }
+
 
     ngOnDestroy(): void {
         
@@ -96,22 +128,52 @@ export class DynamicTableComponent<T> implements OnInit, OnDestroy {
             }    
             return (a[sort.prop].localeCompare(b[sort.prop]) * (sort.dir === 'desc' ? -1 : 1));    
         });    
-        this.controls.patchValue(this.controls.value);    
+        this.controls.patchValue(this.controls.value);   
+        this.datarows = [...this.controls.value]; 
     }
         
-    updateFilter(event) {
-        const val = event.target.value.toLowerCase();
-
-        // filter our data
-        const temp = this.temp.filter(function(d) {
-            return d.role.toLowerCase().indexOf(val) !== -1 || !val;
-        });
-
-        // update the rows
-        this.datarows = [...temp];
-        this.controls.patchValue(temp);
-        // Whenever the filter changes, always go back to the first page
-        this.table.offset = 0;
+    onSelect({ selected }) {
+        //console.log('Select Event', selected, this.selected);
     }
+
+    add(){                 
+        let control = ControlUtils.toFormGroup(this.metadata)   
+        this.controls.push(control);
+        //empty row 
+        this.datarows.push(control.value);      
+
+        this.datarows = [...this.datarows];
+        this.controls.patchValue(this.datarows);
+
+        this.table
+    }
+
+    remove(){
+
+        let index = this.datarows.indexOf(this.selected[0])
+        if (index>-1){                        
+            this.datarows = [...this.controls.value];                   
+            this.datarows.splice(index,1);
+
+            this.controls.patchValue(this.datarows);    
+            this.controls.removeAt(this.controls.length-1);             
+        }
+  
+        this.table.bodyComponent.rowIndexes.forEach(element => {
+            let e = element;
+        });
+        
     
+        this.selected = [];
+        
+    }
+
+    emptyControls() {
+        while (this.controls.length > 0) {
+          this.controls.removeAt(0);
+        }
+      }
+    
+
+
 }
