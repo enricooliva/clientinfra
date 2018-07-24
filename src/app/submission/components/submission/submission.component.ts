@@ -6,22 +6,274 @@ import { SubmissionService } from '../../submission.service';
 import { Assignment } from '../../models/assignment';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { CustomValidators } from './custom.validators';
-import { ControlBase,  } from '../../../shared/';
+import { ControlBase,  } from '../../../shared';
 import { ResourceLoader } from '@angular/compiler';
 import ControlUtils from '../../../shared/dynamic-form/control-utils';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',  
 })
 
-export class SubmissionComponent implements OnInit {    
-  //submission: Observable<Submission>;
-  @ViewChild('textcolumn') public textcolumn: TemplateRef<any>;
-  @ViewChild('datecolumn') public datecolumn: TemplateRef<any>;
-  
-  @ViewChild(DatatableComponent) table: DatatableComponent;
+export class SubmissionComponent implements OnInit {        
+
+  form = new FormGroup({});
+  model: Submission;  
+
+  fields: FormlyFieldConfig[] = [
+    {
+      className: 'section-label',
+      template: '<h5>Dati personali</h5>',
+    },
+    {
+      key: 'id',
+      type: 'input',
+      hideExpression: true,
+      templateOptions: {
+        label: 'Id',   
+        disabled: true       
+      },
+    },
+    {
+      key: 'userId',
+      type: 'input',
+      hideExpression: true,
+      templateOptions: {
+        label: 'UserId',     
+        hide: true         
+      }     
+    },
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup:[
+      {
+        key: 'name',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Nome',     
+          required: true               
+        }     
+      },
+      {
+        key: 'surname',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Cognome',     
+          required: true               
+        }     
+      },
+    ]},
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup:[
+      {
+        key: 'gender',
+        type: 'select',    
+        className: "col-md-2",  
+        templateOptions: {
+          label: 'Genere',     
+          required: true,
+          options: [
+            { value: 'm', label: 'Maschio' },
+            { value: 'f', label: 'Femmina' },
+          ]               
+        }     
+      },
+      {
+        key: 'fiscalcode',
+        type: 'input',
+        className: "col-md-4",
+        templateOptions: {
+          label: 'Codice fiscale',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'birthplace',
+        type: 'input',
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Luogo di nascita',     
+          required: true               
+        }     
+      },  
+    ]},
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup:[
+      {
+        key: 'birthprovince',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Provincia di nascita',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'birthdate',
+        type: 'datepicker',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Data di nascita',     
+          required: true               
+        }     
+      }
+    ]},
+    {
+      className: 'section-label',
+      template: '<h5>Residenza</h5>',
+    },          
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup:[
+      {
+        key: 'com_res',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Comune di residenza',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'prov_res',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Provincia di residenza',     
+          required: true               
+        }     
+      }
+    ]},
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup:[
+      {
+        key: 'via_res',
+        type: 'input',      
+        className: "col-md-4",
+        templateOptions: {
+          label: 'Via di residenza',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'civ_res',
+        type: 'input',      
+        className: "col-md-2",
+        templateOptions: {
+          label: 'Civico',     
+          required: true               
+        }     
+      },
+      {
+        key: 'presso',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Presso',     
+          required: true               
+        }     
+      }
+    ]},
+    {
+      className: 'section-label',
+      template: '<h5>Incarichi</h5>',
+    },   
+    {
+      key: 'assigments',    
+      type: 'repeat',        
+      fieldArray: {
+        fieldGroupClassName: 'row',
+        templateOptions: {
+          btnText: 'Aggiungi',
+        },
+        fieldGroup:[
+          {
+            key: 'id',
+            type: 'input', 
+            hideExpression: true,               
+            templateOptions: {
+              label: 'Id',                   
+            }     
+          },  
+          {
+            key: 'role',
+            type: 'input', 
+            className: 'col-sm-4',                
+            templateOptions: {
+              label: 'Ruolo',     
+              required: true               
+            }     
+          },
+          {
+            key: 'title',
+            type: 'input',      
+            className: 'col-sm-4',           
+            templateOptions: {
+              label: 'Titolo',     
+              required: true               
+            }     
+          },
+          {
+            key: 'istitute',
+            type: 'input',     
+            className: 'col-sm-4',            
+            templateOptions: {
+              label: 'Istituto',     
+              required: true               
+            }     
+          },
+          {
+            key: 'from',
+            type: 'datepicker',   
+            className: 'col-sm-4',              
+            templateOptions: {
+              label: 'Da',     
+              required: true               
+            }     
+          },
+          {
+            key: 'to',
+            type: 'datepicker',    
+            className: 'col-sm-4',             
+            templateOptions: {
+              label: 'A',     
+              required: true               
+            }     
+          },
+          {
+            key: 'document',
+            type: 'input',            
+            className: 'col-sm-4',     
+            templateOptions: {
+              label: 'Documento',     
+              required: true               
+            }     
+          },
+          {
+            key: 'path',
+            type: 'input',        
+            className: 'col-sm-4',         
+            templateOptions: {
+              label: 'Percorso',     
+              required: true               
+            }     
+          },
+
+        ]
+      }
+    }
+
+
+
+  ];
+
 
   private id: number;
   private submissionForm: FormGroup;
@@ -80,8 +332,9 @@ export class SubmissionComponent implements OnInit {
       
       this.id=data.id;
       this.submissionFormDynamic.patchValue(data);     
+      this.model = data;
 
-      data.assigments.forEach(element => {
+      data.assigments.forEach(element => {                
         this.assignments.push(ControlUtils.toFormGroup(this.submissionService.getAssignmetMetadata()));                                 
       });      
       
@@ -92,20 +345,7 @@ export class SubmissionComponent implements OnInit {
       this.assignments.patchValue(data.assigments);      
     });    
   } 
-
-  //TODO: spostare nel componente 
-  // private getTemplateColumn(el:ControlBase<any>): TemplateRef<any> {    
-  //   switch (el.controlType) {
-  //     case 'textbox':
-  //       return this.textcolumn;
-  //     case 'datepicker':        
-  //       return this.datecolumn;        
-
-  //     default:
-  //       return this.textcolumn;
-  //   }
-  // }
-
+ 
   onNew(){
     this.submissionForm.reset();
   }

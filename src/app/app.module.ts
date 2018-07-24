@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { SubmissionService } from './submission/submission.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
-import { NgbDateCustomParserFormatter } from 'src/app/NgbDateCustomParserFormatter';
+import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
 import { NotFoundComponent } from './not-found-component/not-found.component';
 import { CoreModule, HttpInterceptorProviders, AuthGuard } from './core';
 import { Router } from '@angular/router';

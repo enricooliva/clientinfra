@@ -13,9 +13,6 @@ import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/as
 import { SharedModule } from '../shared';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
-
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -23,16 +20,15 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     ReactiveFormsModule,    
     SharedModule,
     NgbModule.forRoot(),
-    NgxDatatableModule
-   
+    NgxDatatableModule,       
   ], 
   exports: [
     SubmissionComponent
   ],
-  declarations: [    
+  declarations: [        
     SubmissionComponent,
     AssignmentComponent,
-    AssignmentDetailPageComponent
+    AssignmentDetailPageComponent,    
   ],
   providers: [ 
     SubmissionService 

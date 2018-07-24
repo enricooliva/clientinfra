@@ -161,11 +161,9 @@ export class DynamicTableComponent<T> implements OnInit, OnDestroy {
   
         this.table.bodyComponent.rowIndexes.forEach(element => {
             let e = element;
-        });
-        
+        });        
     
-        this.selected = [];
-        
+        this.selected = [];        
     }
 
     emptyControls() {
