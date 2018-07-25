@@ -62,20 +62,20 @@ id="form-with-validation">
 <app-grid  [datarows]="datarows" [metadata]="arrayMetadata" [form]="submissionFormDynamic" [controls]="this.assignments">
 </app-grid>
 
+</form> 
 <p>Form value: {{ submissionFormDynamic.value | json }}</p>
 <p>Form status: {{ submissionFormDynamic.status | json }}</p>
-</form> 
 
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form [formGroup]="form" >
   <formly-form [model]="model" [fields]="fields" [form]="form">
     <button type="submit" class="btn btn-primary submit-button">Submit</button>
-    <button type="button" class="btn btn-default" (click)="options.resetModel()">Reset</button>
+    <button type="button" class="btn btn-default">Reset</button>
   </formly-form>
-  <p>Form value: {{ form.value | json }}</p>
-  <p>Form status: {{ form.status | json }}</p>
+ 
 </form>
 
-
+<p>Form value: {{ form.value | json }}</p>
+<p>Form status: {{ form.status | json }}</p>
 
 <app-message class="mb-4"></app-message>
 

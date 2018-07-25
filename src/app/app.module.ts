@@ -19,6 +19,7 @@ import { CoreModule, HttpInterceptorProviders, AuthGuard } from './core';
 import { Router } from '@angular/router';
 import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
 import { NgbStringAdapter } from './NgbStringAdapter';
+import { TableTypeComponent } from './shared/dynamic-form/table-type.component';
 
 
 
@@ -30,7 +31,8 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    TableTypeComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 

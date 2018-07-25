@@ -187,25 +187,20 @@ export class SubmissionComponent implements OnInit {
     },   
     {
       key: 'assigments',    
-      type: 'repeat',        
-      fieldArray: {
-        fieldGroupClassName: 'row',
-        templateOptions: {
-          btnText: 'Aggiungi',
-        },
+      type: 'table',        
+      fieldArray: {        
         fieldGroup:[
           {
             key: 'id',
-            type: 'input', 
-            hideExpression: true,               
+            type: 'input',  
+            hideExpression: false,                      
             templateOptions: {
               label: 'Id',                   
             }     
           },  
           {
             key: 'role',
-            type: 'input', 
-            className: 'col-sm-4',                
+            type: 'input',             
             templateOptions: {
               label: 'Ruolo',     
               required: true               
@@ -214,7 +209,6 @@ export class SubmissionComponent implements OnInit {
           {
             key: 'title',
             type: 'input',      
-            className: 'col-sm-4',           
             templateOptions: {
               label: 'Titolo',     
               required: true               
@@ -222,8 +216,7 @@ export class SubmissionComponent implements OnInit {
           },
           {
             key: 'istitute',
-            type: 'input',     
-            className: 'col-sm-4',            
+            type: 'input',                 
             templateOptions: {
               label: 'Istituto',     
               required: true               
@@ -231,8 +224,7 @@ export class SubmissionComponent implements OnInit {
           },
           {
             key: 'from',
-            type: 'datepicker',   
-            className: 'col-sm-4',              
+            type: 'datepicker',               
             templateOptions: {
               label: 'Da',     
               required: true               
@@ -240,8 +232,7 @@ export class SubmissionComponent implements OnInit {
           },
           {
             key: 'to',
-            type: 'datepicker',    
-            className: 'col-sm-4',             
+            type: 'datepicker',                             
             templateOptions: {
               label: 'A',     
               required: true               
@@ -249,8 +240,7 @@ export class SubmissionComponent implements OnInit {
           },
           {
             key: 'document',
-            type: 'input',            
-            className: 'col-sm-4',     
+            type: 'input',                            
             templateOptions: {
               label: 'Documento',     
               required: true               
@@ -258,8 +248,7 @@ export class SubmissionComponent implements OnInit {
           },
           {
             key: 'path',
-            type: 'input',        
-            className: 'col-sm-4',         
+            type: 'input',                         
             templateOptions: {
               label: 'Percorso',     
               required: true               
@@ -270,10 +259,7 @@ export class SubmissionComponent implements OnInit {
       }
     }
 
-
-
   ];
-
 
   private id: number;
   private submissionForm: FormGroup;
@@ -289,8 +275,7 @@ export class SubmissionComponent implements OnInit {
 
   datarows = [];
   temp = [];
-
-  columnsAg_grid = [];  
+  
   editing = [];
   defaultColDef = { editable: true };
   arrayMetadata:  ControlBase<any>[];
@@ -316,15 +301,7 @@ export class SubmissionComponent implements OnInit {
   get assignments(): FormArray { return this.submissionFormDynamic.get('assignments') as FormArray; }
 
   ngOnInit() {    
-
-    this.columnsAg_grid =  this.arrayMetadata.map(el => {
-      return { 
-        headerName: el.label, 
-        field: el.key,        
-        //cellTemplate: el.key!=='id' ? this.getTemplateColumn(el) : null,
-        //width: el.key=='id' ? 50 : null
-      }
-    });    
+   
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
     //this.submission = this.submissionService.getSubmission();
@@ -378,6 +355,4 @@ export class SubmissionComponent implements OnInit {
     // Whenever the filter changes, always go back to the first page
     //this.table.offset = 0;
   }
-
-
 }

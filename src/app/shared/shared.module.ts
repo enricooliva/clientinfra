@@ -19,6 +19,7 @@ import { DynamicTableComponent } from './dynamic-form/dynamic-table.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DatepickerTypeComponent } from './dynamic-form/datapicker-type.component';
 import { RepeatTypeComponent } from './dynamic-form/repeat-type.component';
+import { TableTypeComponent } from './dynamic-form/table-type.component';
 
 
 @NgModule({
@@ -35,7 +36,9 @@ import { RepeatTypeComponent } from './dynamic-form/repeat-type.component';
         component: DatepickerTypeComponent, 
         wrappers: ['fieldset','label']
       },
-      { name: 'repeat', component: RepeatTypeComponent },],
+      { name: 'repeat', component: RepeatTypeComponent },
+      { name: 'table', component: TableTypeComponent },
+      ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
       ]

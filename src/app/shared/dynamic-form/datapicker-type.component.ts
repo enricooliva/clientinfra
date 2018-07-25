@@ -7,6 +7,7 @@ import { FieldType } from '@ngx-formly/core';
   <!--Datapicker-->
   <div class="input-group">    
     <input class="form-control" 
+        container='body'
         placeholder="dd-mm-yyyy"         
         [formControl]="formControl"                
         [displayMonths]="displayMonths" 
