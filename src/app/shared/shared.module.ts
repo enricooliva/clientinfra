@@ -37,7 +37,20 @@ import { TableTypeComponent } from './dynamic-form/table-type.component';
         wrappers: ['fieldset','label']
       },
       { name: 'repeat', component: RepeatTypeComponent },
-      { name: 'table', component: TableTypeComponent },
+      { name: 'datatable', 
+        component: TableTypeComponent, 
+        defaultOptions: {
+          templateOptions: {
+            columnMode: "force",    
+            rowHeight: "auto",    
+            headerHeight: "30",
+            footerHeight: "30",
+            limit: "5",
+            scrollbarH: "true",
+            reorderable: "reorderable"
+          },
+        }, 
+      },
       ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },

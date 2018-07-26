@@ -1,77 +1,30 @@
 
 <div class="btn-toolbar mb-4" role="toolbar">
-  <div class="btn-group">    
-    <button class="btn btn-default" (click)="onNew()"  >              
+  <div class="btn-group btn-group-sm">    
+    <button class="btn btn-outline-primary" (click)="onNew()"  >              
         <span class="oi oi-document"></span>
         <span class="ml-2">Nuovo</span>
     </button>    
-    <button class="btn btn-default" [disabled]="!submissionFormDynamic.valid" (click)="onSubmit()" >              
+    <button class="btn btn-outline-primary" [disabled]="!form.valid" (click)="onSubmit()" >              
         <span class="oi oi-arrow-top"></span>  
         <span class="ml-2">Aggiorna</span>
     </button>
-    <button class="btn btn-default">
+    <button class="btn btn-outline-primary">
         <span class="oi oi-reload iconic" title="reload" aria-hidden="true"></span>
         <span class="ml-2">Ricarica</span>
     </button>   
-    <button class="btn btn-default">
+    <button class="btn btn-outline-primary">
         <span class="oi oi-trash"></span>
         <span class="ml-2">Rimuovi</span>
       </button>
   </div>
 </div>
 
-<form [formGroup]="submissionFormDynamic" accept-charset="UTF-8" class="form-horizontal needs-validation"
-id="form-with-validation"> 
-<app-dynamic-form *ngIf="false" class="col-md-6 mb-3" [control]="submissionControls.id" [form]="submissionFormDynamic"></app-dynamic-form>
-<app-dynamic-form *ngIf="false" class="col-md-6 mb-3" [control]="submissionControls.userId" [form]="submissionFormDynamic"></app-dynamic-form>
-<h5>Dati personali</h5>
-<div class="form-row">
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.name" [form]="submissionFormDynamic"></app-dynamic-form>
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.surname" [form]="submissionFormDynamic"></app-dynamic-form>
-</div>
-
-<div class="form-row">
-  <app-dynamic-form class="col-md-2 mb-3" [control]="submissionControls.gender" [form]="submissionFormDynamic"></app-dynamic-form>
-  <app-dynamic-form class="col-md-4 mb-3" [control]="submissionControls.fiscalcode" [form]="submissionFormDynamic"></app-dynamic-form>
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.birthplace" [form]="submissionFormDynamic"></app-dynamic-form>
-</div>
-
-<div class="form-row">
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.birthprovince" [form]="submissionFormDynamic"></app-dynamic-form>
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.birthdate" [form]="submissionFormDynamic"></app-dynamic-form>  
-</div>
-
-<h5>Residenza</h5>
-<div class="form-row">
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.com_res" [form]="submissionFormDynamic"></app-dynamic-form>
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.prov_res" [form]="submissionFormDynamic"></app-dynamic-form>  
-</div>
-<div class="form-row">
-  <app-dynamic-form class="col-md-4 mb-3" [control]="submissionControls.via_res" [form]="submissionFormDynamic"></app-dynamic-form>
-  <app-dynamic-form class="col-md-2 mb-3" [control]="submissionControls.civ_res" [form]="submissionFormDynamic"></app-dynamic-form>  
-  <app-dynamic-form class="col-md-6 mb-3" [control]="submissionControls.presso" [form]="submissionFormDynamic"></app-dynamic-form>
-</div>
-
-<input
-  type='text'  class="form-control"
-  style='padding:8px;margin:15px auto;width:30%;'
-  placeholder='Filtro per la colonna ruolo...'
-  (keyup)='updateFilter($event)'
-/>
-
-<app-grid  [datarows]="datarows" [metadata]="arrayMetadata" [form]="submissionFormDynamic" [controls]="this.assignments">
-</app-grid>
-
-</form> 
-<p>Form value: {{ submissionFormDynamic.value | json }}</p>
-<p>Form status: {{ submissionFormDynamic.status | json }}</p>
-
 <form [formGroup]="form" >
   <formly-form [model]="model" [fields]="fields" [form]="form">
-    <button type="submit" class="btn btn-primary submit-button">Submit</button>
-    <button type="button" class="btn btn-default">Reset</button>
-  </formly-form>
- 
+    <!-- <button type="submit" class="btn btn-primary submit-button">Submit</button>
+    <button type="button" class="btn btn-default">Reset</button> -->
+  </formly-form> 
 </form>
 
 <p>Form value: {{ form.value | json }}</p>
