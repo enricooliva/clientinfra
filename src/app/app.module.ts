@@ -21,12 +21,10 @@ import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker
 import { NgbStringAdapter } from './NgbStringAdapter';
 import { TableTypeComponent } from './shared/dynamic-form/table-type.component';
 
-
-
-
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
+
 
 @NgModule({
   declarations: [
@@ -37,6 +35,7 @@ export function tokenGetter() {
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
     AppRoutingModule, CoreModule, NgxDatatableModule, 
+    
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -57,7 +56,7 @@ export function tokenGetter() {
 
 export class AppModule {
    // Diagnostic only: inspect router configuration
-   constructor(router: Router) {
+  constructor(router: Router) {
     console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
   }
 }

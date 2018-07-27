@@ -16,8 +16,7 @@ import { AuthService } from './core';
 export class AppComponent {
   title = 'Unipeo client';
   errorMessage = '';
-
-  submissions$: Observable<any>;
+  
   constructor(public router: Router, route1: ActivatedRoute, private authService: AuthService) {    
     console.log("constructor app-root ");
     let token = null;

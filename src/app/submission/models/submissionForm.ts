@@ -1,4 +1,75 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
+
+//definizione della riga di assegnamento
+export const assigmentForm: FormlyFieldConfig[] = [
+  {
+    key: 'id',
+    type: 'input',  
+    hideExpression: false,             
+    templateOptions: {
+      label: 'Id',     
+      disabled: true              
+    }     
+  },  
+  {
+    key: 'role',
+    type: 'input',                           
+    templateOptions: {
+      label: 'Ruolo',     
+      required: true               
+    }     
+  },
+  {
+    key: 'title',
+    type: 'input',      
+    templateOptions: {
+      label: 'Titolo',     
+      required: true               
+    }     
+  },
+  {
+    key: 'istitute',
+    type: 'input',                 
+    templateOptions: {
+      label: 'Istituto',     
+      required: true               
+    }     
+  },
+  {
+    key: 'from',
+    type: 'datepicker',               
+    templateOptions: {
+      label: 'Da',     
+      required: true               
+    }     
+  },
+  {
+    key: 'to',
+    type: 'datepicker',                             
+    templateOptions: {
+      label: 'A',     
+      required: true               
+    }     
+  },
+  {
+    key: 'document',
+    type: 'input',                            
+    templateOptions: {
+      label: 'Documento',     
+      required: true               
+    }     
+  },
+  {
+    key: 'path',
+    type: 'input',                         
+    templateOptions: {
+      label: 'Percorso',     
+      required: true               
+    }     
+  },
+]     
+
+//definizione della finestra principale
 export const fieldsForm: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -158,81 +229,20 @@ export const fieldsForm: FormlyFieldConfig[] = [
         }     
       }
     ]},
-    {
-      className: 'section-label',
-      template: '<h5>Incarichi</h5>',
-    },   
+    // {
+    //   className: 'section-label',
+    //   template: '<h5>Incarichi</h5>',
+    // },   
     {
       key: 'assigments',    
-      type: 'datatable',        
+      type: 'datatable',    
+      wrappers: ['accordion'],
+      templateOptions: { label: 'Incarichi' },    
       fieldArray: {        
-        fieldGroup:[
-          {
-            key: 'id',
-            type: 'input',  
-            hideExpression: false,             
-            templateOptions: {
-              label: 'Id',     
-              disabled: true              
-            }     
-          },  
-          {
-            key: 'role',
-            type: 'input',                           
-            templateOptions: {
-              label: 'Ruolo',     
-              required: true               
-            }     
-          },
-          {
-            key: 'title',
-            type: 'input',      
-            templateOptions: {
-              label: 'Titolo',     
-              required: true               
-            }     
-          },
-          {
-            key: 'istitute',
-            type: 'input',                 
-            templateOptions: {
-              label: 'Istituto',     
-              required: true               
-            }     
-          },
-          {
-            key: 'from',
-            type: 'datepicker',               
-            templateOptions: {
-              label: 'Da',     
-              required: true               
-            }     
-          },
-          {
-            key: 'to',
-            type: 'datepicker',                             
-            templateOptions: {
-              label: 'A',     
-              required: true               
-            }     
-          },
-          {
-            key: 'document',
-            type: 'input',                            
-            templateOptions: {
-              label: 'Documento',     
-              required: true               
-            }     
-          },
-          {
-            key: 'path',
-            type: 'input',                         
-            templateOptions: {
-              label: 'Percorso',     
-              required: true               
-            }     
-          },
-        ]
+        fieldGroup: assigmentForm,
       }
     }
   ];
+
+ 
+    

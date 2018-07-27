@@ -1,18 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationCancel } from '@angular/router';
+import { Router, NavigationCancel, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../core';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'  
+  templateUrl: './home.component.html',    
 })
 export class HomeComponent implements OnInit {
+  
+  navs = [
+    { title: 'Gestione', links: [
+      { href: 'submissions', text: 'Domanda' },
+    ]}    
+  ];
 
   constructor(private authService: AuthService, private router: Router) {
     let token = null;
     router.events.subscribe(s => {
-      if (s instanceof NavigationCancel) {
-        let params = new URLSearchParams(s.url.split('/')[1]);
+      if (s instanceof NavigationEnd) {
+        let params = new URLSearchParams(s.url.split('/home')[1]);
         token = params.get('token');        
         if (token){
             authService.loginWithToken(token);

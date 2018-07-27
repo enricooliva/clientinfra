@@ -1,0 +1,32 @@
+<!-- <section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Procedura selettiva</h1>
+        <p class="lead text-muted">Procedura selettiva progressioni economiche orizzontali.</p>
+        <p>
+          <button class="btn btn-primary my-2" type="button"  (click)="btnClick();" >Accedi alla procedura selettiva</button>        
+        </p>
+    </div>
+</section> -->
+
+
+<app-navigation></app-navigation>
+<!-- d-none d-md-block bg-light -->
+<div class="container-fluid">
+    <div class="row mt-4">
+        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+            <div class="sidebar-sticky" *ngFor="let nav of navs">
+                <h5>{{ nav.title }}</h5>
+                <ul class="nav nav-pills flex-column">
+                    <li *ngFor="let link of nav.links" class="nav-item">
+                        <a [routerLink]="link.href" class="nav-link">
+                            <i class="fa fa-fw fa-dashboard"></i>&nbsp; {{ link.text }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="main-container col-md-10">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

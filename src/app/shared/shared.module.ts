@@ -10,7 +10,6 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 
 import { UserLoginComponent } from './user-login/user-login.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { HomeComponent } from './home/home.component';
 import { ShowErrorsComponent } from './show-errors/show-errors.component';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { MessageComponent } from './message/message.component';
@@ -20,6 +19,11 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DatepickerTypeComponent } from './dynamic-form/datapicker-type.component';
 import { RepeatTypeComponent } from './dynamic-form/repeat-type.component';
 import { TableTypeComponent } from './dynamic-form/table-type.component';
+import { PanelWrapperComponent } from './dynamic-form/panel-wrapper.component';
+import { AccordionWrapperComponent } from './dynamic-form/accordion-wrapper.component';
+import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../core';
+
 
 
 @NgModule({
@@ -30,12 +34,13 @@ import { TableTypeComponent } from './dynamic-form/table-type.component';
     FormsModule, 
     ReactiveFormsModule, 
     NgxDatatableModule,
+    RouterModule,
     FormlyModule.forRoot({
       types: [{
         name: 'datepicker',      
         component: DatepickerTypeComponent, 
         wrappers: ['fieldset','label']
-      },
+      },      
       { name: 'repeat', component: RepeatTypeComponent },
       { name: 'datatable', 
         component: TableTypeComponent, 
@@ -52,6 +57,10 @@ import { TableTypeComponent } from './dynamic-form/table-type.component';
         }, 
       },
       ],
+      wrappers: [
+        { name: 'panel', component: PanelWrapperComponent },
+        { name: 'accordion', component: AccordionWrapperComponent },
+      ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
       ]
@@ -60,8 +69,7 @@ import { TableTypeComponent } from './dynamic-form/table-type.component';
   ],
   exports: [ 
     NavigationComponent, 
-    UserLoginComponent, 
-    HomeComponent, 
+    UserLoginComponent,     
     ShowErrorsComponent, 
     DynamicFormComponent, 
     MessageComponent, 
@@ -69,10 +77,10 @@ import { TableTypeComponent } from './dynamic-form/table-type.component';
     DynamicTableComponent, 
     DatepickerTypeComponent, 
     RepeatTypeComponent,
-    FormlyModule
+    FormlyModule,    
   ],
-  declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, HomeComponent, ShowErrorsComponent, 
-    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent]
+  declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
+    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent]
 })
 
 export class SharedModule { }

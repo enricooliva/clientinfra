@@ -12,7 +12,9 @@ import { AssignmentComponent } from './components/assignment/assignment.componen
 import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/assignment-detail-page.component';
 import { SharedModule } from '../shared';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
+import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../core';
+import { HomeComponent } from './home/home.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -20,15 +22,18 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     ReactiveFormsModule,    
     SharedModule,
     NgbModule.forRoot(),
-    NgxDatatableModule,       
+    NgxDatatableModule,      
+    RouterModule,
   ], 
   exports: [
-    SubmissionComponent
+    SubmissionComponent,
+    HomeComponent
   ],
   declarations: [        
     SubmissionComponent,
     AssignmentComponent,
     AssignmentDetailPageComponent,    
+    HomeComponent
   ],
   providers: [ 
     SubmissionService 

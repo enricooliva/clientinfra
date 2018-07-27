@@ -7,7 +7,7 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 @Component({
   selector: 'app-table-type',
   template: `
-  <div class="btn-toolbar mb-4" role="toolbar">
+  <div class="btn-toolbar mb-2" role="toolbar">
     <div class="btn-group btn-group-sm">    
         <button class="btn btn-outline-primary" (click)="addFirst()"  >              
             <span class="oi oi-plus"></span>
