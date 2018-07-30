@@ -5,14 +5,21 @@ import { AuthService } from '../../core';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',    
+  styleUrls: ['./home.component.css'],  
 })
 export class HomeComponent implements OnInit {
   
+  //configurazione menu
   navs = [
-    { title: 'Gestione', links: [
-      { href: 'submissions', text: 'Domanda' },
+    {title: 'Gestione', links: [
+      { href: 'submissions', text: 'Utente', permissions: ['ADMIN'] },
+    ]},    
+    {title: 'Funzionali', links: [
+      { href: 'submissions', text: 'Domanda', permissions: ['ADMIN', 'USER'] },
+      { href: 'submissions', text: 'Lista domande', permissions: ['ADMIN'] },
     ]}    
   ];
+
 
   constructor(private authService: AuthService, private router: Router) {
     let token = null;
@@ -22,7 +29,7 @@ export class HomeComponent implements OnInit {
         token = params.get('token');        
         if (token){
             authService.loginWithToken(token);
-            this.router.navigate(['submissions']);
+            this.router.navigate(['home/submissions']);
           }else{
             console.log("no token");
           }    

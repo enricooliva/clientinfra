@@ -36,4 +36,8 @@ export class NavigationComponent implements OnInit {
     this.authService.logout(); 
     this.router.navigate(['home']);                     // {3}
   }
+
+  getName(){
+    return this.authService.username;
+  }
 }

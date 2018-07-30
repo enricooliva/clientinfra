@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, NavigationCancel, Router } from '@angular/router';
 import { AuthService } from './core';
-
+import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 
 
 @Component({
@@ -17,9 +17,17 @@ export class AppComponent {
   title = 'Unipeo client';
   errorMessage = '';
   
-  constructor(public router: Router, route1: ActivatedRoute, private authService: AuthService) {    
+  constructor(public router: Router, private authService: AuthService, private rolesService: NgxRolesService) {    
     console.log("constructor app-root ");
     let token = null;
+
+    // const perm = ["ADMIN", "EDITOR"];
+    // this.permissionsService.loadPermissions(perm);
+
+    rolesService.addRoles({
+        'USER': ['canReadSubmission'],
+        'ADMIN': ['canReadSubmission', 'canReadUsers','canEditUsers','canCreatUser'],       
+      });
 
     router.events.subscribe(s => {
       if (s instanceof NavigationCancel) {
@@ -27,13 +35,14 @@ export class AppComponent {
         token = params.get('token');        
         if (token){
             authService.loginWithToken(token);
-            this.router.navigate(['submissions']);
+            this.router.navigate(['home']);
           }else{
             console.log("no token");
           }    
       }
     });
 
+    authService.reload();
     // route1.queryParamMap.subscribe(p => {
     //   token = p.get("token");
     //   if (token){

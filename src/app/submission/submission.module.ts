@@ -15,6 +15,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '../core';
 import { HomeComponent } from './home/home.component';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +25,7 @@ import { HomeComponent } from './home/home.component';
     SharedModule,
     NgbModule.forRoot(),
     NgxDatatableModule,      
-    RouterModule,
+    RouterModule   
   ], 
   exports: [
     SubmissionComponent,

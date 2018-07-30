@@ -22,8 +22,7 @@ import { TableTypeComponent } from './dynamic-form/table-type.component';
 import { PanelWrapperComponent } from './dynamic-form/panel-wrapper.component';
 import { AccordionWrapperComponent } from './dynamic-form/accordion-wrapper.component';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '../core';
-
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 
 @NgModule({
@@ -35,6 +34,7 @@ import { AuthGuard } from '../core';
     ReactiveFormsModule, 
     NgxDatatableModule,
     RouterModule,
+    NgxPermissionsModule,
     FormlyModule.forRoot({
       types: [{
         name: 'datepicker',      
@@ -78,6 +78,7 @@ import { AuthGuard } from '../core';
     DatepickerTypeComponent, 
     RepeatTypeComponent,
     FormlyModule,    
+    NgxPermissionsModule
   ],
   declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent]

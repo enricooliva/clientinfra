@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
 import { NgbStringAdapter } from './NgbStringAdapter';
 import { TableTypeComponent } from './shared/dynamic-form/table-type.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
+
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -34,7 +36,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
-    AppRoutingModule, CoreModule, NgxDatatableModule, 
+    AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(),
     
     JwtModule.forRoot({
       config: {

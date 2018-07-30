@@ -6,6 +6,7 @@ import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 interface LoginResponse {
   accessToken: string;
@@ -25,13 +26,14 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-
+  
   private authUrl: string = 'http://pcoliva.uniurb.it/api';
   private loggedIn = new BehaviorSubject<boolean>(false);
   
   _username = '';
+  _roles  = [''];
 
-  constructor(private http: HttpClient, public jwtHelper: JwtHelperService, private router: Router) {
+  constructor(private http: HttpClient, public jwtHelper: JwtHelperService, private router: Router, private permissionsService: NgxPermissionsService ) {
     this.loggedIn.next(this.isAuthenticated());
   }
  
@@ -55,13 +57,27 @@ export class AuthService {
   loginWithToken(token: any){        
     localStorage.setItem("token",token);
     this.loggedIn.next(this.isAuthenticated());
+    this.reload()    
   }
+
+  reload(): any {
+    if (this.isAuthenticated()){
+      const helper = new JwtHelperService();
+      const decodedToken = helper.decodeToken(localStorage.getItem('token'));
+      this._username = decodedToken['name'];
+      this._roles = decodedToken['roles'];      
+      this.permissionsService.loadPermissions(this._roles);
+    }
+  }
+
+
 
   /**
    * Log the user out
    */
   logout() {
     localStorage.removeItem('token');
+    this.permissionsService.flushPermissions();
     this.loggedIn.next(false);    
   }
 
@@ -76,6 +92,10 @@ export class AuthService {
     return this._username;
   }
 
+  public get roles(): string[] {
+    return this._roles;
+  }
+
   // ...
   public isAuthenticated(): boolean {
 
@@ -85,10 +105,6 @@ export class AuthService {
     // true or false
     return !this.jwtHelper.isTokenExpired(token);
   }
-
-
-
-
 
   /**
    * Handle any errors from the API
