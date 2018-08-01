@@ -8,13 +8,28 @@
     </div>
 </section> -->
 
-<app-navigation></app-navigation>
+
+
 <!-- d-none d-md-block bg-light -->
+<app-navigation></app-navigation>
 <div class="container-fluid">
-    <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky" >
-            <div *ngFor="let nav of navs">
+    <div class="row flex-xl-nowrap">
+        <div class="col-12 col-lg-2" style="border-right: 1px solid rgba(0, 0, 0, 0.1)">
+            <div class="d-lg-none d-flex py-2 px-4 align-items-center text-body sidebar-collapsed" (click)="sidebarCollapsed = !sidebarCollapsed"
+                role="button">
+                <span class="mr-auto">Menu</span>
+                <button class="btn btn-link p-0" aria-controls="doc-nav" [attr.aria-expanded]="!sidebarCollapsed" aria-label="Toggle documentation navigation">
+                    <svg class="align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30" focusable="false">
+                        <title>Menu</title>
+                        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10"
+                            d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg>
+                </button>
+            </div>
+            <app-side-nav id="doc-nav"
+            [ngbCollapse]="sidebarCollapsed"
+            [entries]="navs" class="d-lg-block my-3 collpase sidebar"></app-side-nav>
+            <!-- <div *ngFor="let nav of navs">
                 <h5>{{ nav.title }}</h5>
                 <ul class="nav flex-column">
                     <div *ngFor="let link of nav.links">
@@ -25,18 +40,21 @@
                     </li>
                     </div>
                 </ul>
-            </div>
-            </div>  
-        </nav>
-        <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            </div> -->
+        </div>
+        <div class="col-12 col-lg-10">
+            <!-- <header class="bg-light pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
+
+            </header>            -->
             <router-outlet></router-outlet>
+            <app-message class="mb-4"></app-message>           
         </div>
     </div>
-</div> 
+</div>
 
 
 
-    <!-- <div class="row">
+<!-- <div class="row">
         <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <router-outlet></router-outlet>
         </div>

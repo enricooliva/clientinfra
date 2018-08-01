@@ -15,6 +15,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '../core';
 import { HomeComponent } from './home/home.component';
+import { UserComponent } from './components/user/user.component';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { HomeComponent } from './home/home.component';
     SubmissionComponent,
     AssignmentComponent,
     AssignmentDetailPageComponent,    
-    HomeComponent
+    HomeComponent, UserComponent
   ],
   providers: [ 
     SubmissionService 

@@ -21,6 +21,8 @@ import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker
 import { NgbStringAdapter } from './NgbStringAdapter';
 import { TableTypeComponent } from './shared/dynamic-form/table-type.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { UserService } from './submission/user.service';
+
 
 
 export function tokenGetter() {
@@ -32,7 +34,7 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     NotFoundComponent,
-    TableTypeComponent
+    TableTypeComponent,    
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
@@ -49,6 +51,7 @@ export function tokenGetter() {
   providers: [
     AuthGuard,  
     SubmissionService,
+    UserService,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],

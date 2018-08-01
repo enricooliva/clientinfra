@@ -33,7 +33,7 @@ Aggiungere in angular.js
 
  "styles": [
               "node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [
                "node_modules/bootstrap-italia/dist/js/bootstrap-italia.bundle.min.js"

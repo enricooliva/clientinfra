@@ -23,6 +23,7 @@ import { PanelWrapperComponent } from './dynamic-form/panel-wrapper.component';
 import { AccordionWrapperComponent } from './dynamic-form/accordion-wrapper.component';
 import { RouterModule } from '@angular/router';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { SideNavComponent } from './side-nav/side-nav.component';
 
 
 @NgModule({
@@ -78,10 +79,12 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     DatepickerTypeComponent, 
     RepeatTypeComponent,
     FormlyModule,    
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    SideNavComponent,
+    NgbModule
   ],
   declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
-    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent]
+    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, SideNavComponent]
 })
 
 export class SharedModule { }

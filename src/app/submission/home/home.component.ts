@@ -5,14 +5,14 @@ import { AuthService } from '../../core';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',    
-  styleUrls: ['./home.component.css'],  
+  styleUrls: ['./home.component.scss'],  
 })
 export class HomeComponent implements OnInit {
-  
+  sidebarCollapsed = true;
   //configurazione menu
   navs = [
     {title: 'Gestione', links: [
-      { href: 'submissions', text: 'Utente', permissions: ['ADMIN'] },
+      { href: 'users', text: 'Utente', permissions: ['ADMIN'] },
     ]},    
     {title: 'Funzionali', links: [
       { href: 'submissions', text: 'Domanda', permissions: ['ADMIN', 'USER'] },

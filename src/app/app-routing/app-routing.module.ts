@@ -4,12 +4,14 @@ import { AuthGuard }                from '../core/auth.guard';
 import { NotFoundComponent } from '../not-found-component/not-found.component';
 import { HomeComponent } from '../submission/home/home.component';
 import { SubmissionComponent } from '../submission/components/submission/submission.component';
+import { UserComponent } from '../submission/components/user/user.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url
   { path: '', redirectTo: '/home', pathMatch:'full' },
   { path: 'home',  component: HomeComponent, children:[
       { path: 'submissions',  component: SubmissionComponent,  canActivate:[AuthGuard] },     
+      { path: 'users',  component: UserComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }
 ];
