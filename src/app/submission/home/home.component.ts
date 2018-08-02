@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   //configurazione menu
   navs = [
     {title: 'Gestione', links: [
-      { href: 'users', text: 'Utente', permissions: ['ADMIN'] },
+      { href: 'users', text: 'Utenti', permissions: ['ADMIN'] },
     ]},    
     {title: 'Funzionali', links: [
       { href: 'submissions', text: 'Domanda', permissions: ['ADMIN', 'USER'] },

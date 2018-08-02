@@ -25,6 +25,16 @@ export class UserService {
       );
   }
 
+  getUser(id: number): Observable<any> {
+    return this.http
+      .get('http://pcoliva.uniurb.it/api/users', {
+        params: new HttpParams().set('userId', id.toString())
+      }).pipe(
+        catchError(this.handleError('getuser'))
+      );
+    }
+  
+
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
     this.messageService.add('UserService: ' + message);

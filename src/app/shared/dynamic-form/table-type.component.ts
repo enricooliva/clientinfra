@@ -2,18 +2,18 @@ import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core'
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
 import { TableColumn } from '@swimlane/ngx-datatable/release/types';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-table-type',
   template: `
-  <div class="btn-toolbar mb-2" role="toolbar">
+  <div class="btn-toolbar mb-2" role="toolbar" *ngIf="!to.hidetoolbar">
     <div class="btn-group btn-group-sm">    
-        <button class="btn btn-outline-primary" (click)="addFirst()"  >              
+        <button class="btn btn-outline-primary border-0 rounded-0" (click)="addFirst()"  >              
             <span class="oi oi-plus"></span>
             <span class="ml-2">Aggiungi</span>
         </button>    
-        <button class="btn btn-outline-primary" [disabled]="selected.length == 0" (click)="removeSelected()"  >              
+        <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="selected.length == 0" (click)="removeSelected()"  >              
             <span class="oi oi-trash"></span>  
             <span class="ml-2">Rimuovi</span>
         </button>
@@ -23,8 +23,8 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 <ngx-datatable
   #table  class="bootstrap" 
   [rows]="model"
-  [columns]="columns"
-  [columnMode]="columnMode"
+  [columns]="to.columns"
+  [columnMode]="to.columnMode"
   [rowHeight]="to.rowHeight"   
   [headerHeight]="to.headerHeight"      
   [footerHeight]="to.footerHeight"
@@ -35,9 +35,10 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
   [selected]="selected"
   [selectionType]="'single'"
   (sort)="onSort($event)"
-  (select)='onSelect($event)'>     
+  (select)='onSelect($event)'
+  (activate)='onEvents($event)'>     
   
-  <ng-template #genericcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column">
+  <ng-template #defaultcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
     <formly-field             
       [model]="getModel(model,column,rowIndex)"
       [field]="getFields(field,column, rowIndex)"
@@ -46,6 +47,11 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
     </formly-field>
   </ng-template>  
   
+  <ng-template #valuecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
+    {{ value }}
+  </ng-template>  
+
+
 </ngx-datatable>
 `
 })
@@ -57,22 +63,56 @@ export class TableTypeComponent extends FieldArrayType {
     super(builder);
   }
 
-  @ViewChild('genericcolumn') public genericcolumn: TemplateRef<any>;
-
+  @ViewChild('defaultcolumn') public defaultColumn: TemplateRef<any>;
+  @ViewChild('valuecolumn') public valuecolumn: TemplateRef<any>;
   //descrizione delle colonne della tabella
   columns: TableColumn[];
   selected = [];
 
   ngOnInit() {
-    this.columns =  this.field.fieldArray.fieldGroup.map(el => {      
-      return { 
-        name: el.templateOptions.label, 
-        prop: el.key,                        
-        sortable: true,      
-        cellTemplate: this.genericcolumn,             
-      }
-    });
-    
+
+    if (typeof this.to.columns !== 'undefined'){
+      //configurazione basata sulla dichiarazione delle colonne nel json 
+      // modalità implicità di costruzione delle colonne 
+        // columns: [
+        //   { name: 'Id', prop: 'id', width: 10},
+        //   { name: 'Nome utente', prop: 'name' },
+        //   { name: 'Email', prop: 'email' },
+        // ],
+      this.to.columns.forEach(column =>  { 
+        column.cellTemplate = this.defaultColumn; 
+        if (('cellTemplate' in column)) 
+          column.cellTemplate = this[column.cellTemplate];       
+        });
+
+    } else{
+      //costruzione dinamica delle colonne partendo dai campi aggiunta eventuali proprietà 
+      //di colonna all'interno delle template option dei campi
+      //
+      this.to.columns =  this.field.fieldArray.fieldGroup.map(el => {      
+        
+        let c = { 
+          name: el.templateOptions.label, 
+          prop: el.key,                                  
+          cellTemplate: this.defaultColumn                  
+        }
+        
+        if ('column' in el.templateOptions){
+          //copio tutte le proprietà relativa alla colonna 
+          Object.keys(el.templateOptions.column).forEach(prop => {
+            if (prop=='cellTemplate'){
+              c.cellTemplate = this[el.templateOptions.column[prop]]
+            }else{
+              c[prop] = el.templateOptions.column[prop]
+            }
+          }
+          );
+        }
+
+        return c;
+      });
+    }
+
     this.field.fieldArray.fieldGroup.forEach(element => {
       element.wrappers = ['fieldset']
     });
@@ -105,6 +145,14 @@ export class TableTypeComponent extends FieldArrayType {
   onSelect({ selected }) {
       //console.log('Select Event', selected, this.selected);
   }
+
+  onEvents(event) {
+    if (event.type == "dblclick" && typeof this.to.onDblclickRow !== "undefined"){
+      this.to.onDblclickRow(event);    
+    }
+  }
+
+
   addFirst(){
     this.add();    
   }
