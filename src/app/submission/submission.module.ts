@@ -17,6 +17,7 @@ import { AuthGuard } from '../core';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './components/user/users.component';
 import { UserComponent } from './components/user/user.component';
+import { LoadingModule } from 'ngx-loading';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { UserComponent } from './components/user/user.component';
     SharedModule,
     NgbModule.forRoot(),
     NgxDatatableModule,      
-    RouterModule   
+    RouterModule,
+    LoadingModule   
   ], 
   exports: [
     SubmissionComponent,

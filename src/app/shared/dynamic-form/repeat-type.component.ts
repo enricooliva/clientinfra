@@ -4,8 +4,14 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
 @Component({
   selector: 'formly-repeat-section',
   template: `
+  <div>  
+    <button class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="add()"  >              
+      <span class="oi oi-plus"></span>
+      <span class="ml-2">Aggiungi</span>
+    </button>  
+  </div>
   <div class="table-responsive-md">
-  <table class="table table-striped">
+  <table class="table">
   <tbody>
     <tr *ngFor="let field of field.fieldGroup; let i = index;">
       <formly-group       
@@ -13,17 +19,18 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
         [field]="field"
         [options]="options"
         [form]="formControl">
-        <div class="col-sm-2 d-flex align-items-end mb-3">
-          <button class="btn btn-danger" type="button" (click)="remove(i)">Remove</button>
-        </div>
+        <div class="col-md-2 align-self-center">
+        <button class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="remove(i)"  >              
+          <span class="oi oi-trash"></span>  
+          <span class="ml-2">Rimuovi</span>
+        </button>
+        </div>        
       </formly-group>
     </tr>
   </tbody>
   </table>
   </div>
-    <div style="margin:30px 0;">
-      <button class="btn btn-primary" type="button" (click)="add()">{{ field.fieldArray.templateOptions.btnText }}</button>
-    </div>
+
   `,
 })
 

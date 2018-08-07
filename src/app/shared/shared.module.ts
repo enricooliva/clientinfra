@@ -24,6 +24,8 @@ import { AccordionWrapperComponent } from './dynamic-form/accordion-wrapper.comp
 import { RouterModule } from '@angular/router';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SideNavComponent } from './side-nav/side-nav.component';
+import { QueryBuilderComponent } from './query-builder/query-builder.component';
+import { GenericTypeComponent } from './dynamic-form/generic-type.component';
 
 
 @NgModule({
@@ -37,11 +39,32 @@ import { SideNavComponent } from './side-nav/side-nav.component';
     RouterModule,
     NgxPermissionsModule,
     FormlyModule.forRoot({
-      types: [{
-        name: 'datepicker',      
-        component: DatepickerTypeComponent, 
-        wrappers: ['fieldset','label']
-      },      
+      types: [
+      { name: 'generic', component: GenericTypeComponent, wrappers: ['fieldset','label'] },
+      { name: 'string', extends: 'input' },
+      {
+        name: 'number',
+        extends: 'input',
+        defaultOptions: {
+          templateOptions: {
+            type: 'number',
+          },
+        },
+      },
+      {
+        name: 'integer',
+        extends: 'input',
+        defaultOptions: {
+          templateOptions: {
+            type: 'number',
+          },
+        },
+      },
+      { name: 'object', extends: 'formly-group' },
+      { name: 'boolean', extends: 'checkbox' },
+      { name: 'enum', extends: 'select' },
+      { name: 'datepicker', component: DatepickerTypeComponent, wrappers: ['fieldset','label'] },      
+      { name: 'date', extends: 'datepicker'},
       { name: 'repeat', component: RepeatTypeComponent },
       { name: 'datatable', 
         component: TableTypeComponent, 
@@ -81,10 +104,12 @@ import { SideNavComponent } from './side-nav/side-nav.component';
     FormlyModule,    
     NgxPermissionsModule,
     SideNavComponent,
-    NgbModule
+    QueryBuilderComponent,
+    NgbModule,
+    GenericTypeComponent 
   ],
   declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
-    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, SideNavComponent]
+    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, SideNavComponent, QueryBuilderComponent, GenericTypeComponent ]
 })
 
 export class SharedModule { }

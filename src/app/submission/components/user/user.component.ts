@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { fieldsForm } from '../../models/submissionForm'
 import { FormGroup, FormArray } from '@angular/forms';
 import { UserService } from '../../user.service';
-import { _appIdRandomProviderFactory } from '@angular/core/src/application_tokens';
-import { ActivatedRoute } from '../../../../../node_modules/@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user',
   template: `
   <div class="container-fluid">
+  
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
   <div class="btn-toolbar mb-4" role="toolbar">
   <div class="btn-group btn-group-sm">    
@@ -46,7 +46,7 @@ import { ActivatedRoute } from '../../../../../node_modules/@angular/router';
 
 
 export class UserComponent implements OnInit {
-
+  isLoading = true;
   userRow: FormlyFieldConfig[] = [
     {
       fieldGroupClassName: 'row',
@@ -137,6 +137,7 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.userService.getUser(params['id']).subscribe((data) => {
+        this.isLoading = false;
         this.model = data;
       });
   

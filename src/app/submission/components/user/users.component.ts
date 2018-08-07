@@ -4,22 +4,29 @@ import { fieldsForm } from '../../models/submissionForm'
 import { FormGroup, FormArray } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserComponent } from './user.component';
 
 @Component({
   selector: 'app-user',
   template: `
-  
+
+
   <div class="container-fluid">
+    
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
   <div class="btn-toolbar mb-4" role="toolbar">
   <div class="btn-group btn-group-sm">    
      
-    <button class="btn btn-outline-primary border-0 rounded-0">
-        <span class="oi oi-reload iconic" title="reload" aria-hidden="true"></span>
-        <span class="ml-2">Ricarica</span>
+    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onFind()">
+        <span class="oi oi-magnifying-glass iconic" title="reload" aria-hidden="true" ></span>
+        <span class="ml-2">Cerca</span>
     </button>   
 
   </div>
   </div>
+
+  <app-query-builder [metadata]="this.userRow[0].fieldArray.fieldGroup"></app-query-builder>
 
   <form [formGroup]="form" >
   <formly-form [model]="model" [fields]="fields" [form]="form">
@@ -39,7 +46,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 export class UsersComponent implements OnInit {
   
- 
+  isLoading = false;
   userRow: FormlyFieldConfig[] = [
     {
       key: 'users',
@@ -64,7 +71,7 @@ export class UsersComponent implements OnInit {
         fieldGroup: [
           {
             key: 'id',
-            type: 'input',
+            type: 'number',
             hideExpression: false,
             templateOptions: {
               label: 'Id',
@@ -74,7 +81,7 @@ export class UsersComponent implements OnInit {
           },
           {
             key: 'name',
-            type: 'input',
+            type: 'string',
             templateOptions: {
               label: 'Nome utente',
               required: true,
@@ -83,7 +90,7 @@ export class UsersComponent implements OnInit {
           },
           {
             key: 'email',
-            type: 'input',
+            type: 'string',
             templateOptions: {
               label: 'Email',
               required: true,
@@ -107,12 +114,7 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe((data) => {
-      this.model = {
-        users: data
-      };
-
-    });
+    
   }
 
   onDblclickRow(event) {
@@ -122,5 +124,15 @@ export class UsersComponent implements OnInit {
     }
   }
 
+  onFind(){
+    this.isLoading = true;
+    this.userService.getUsers().subscribe((data) => {
+      this.isLoading = false;
+      this.model = {
+        users: data
+      };
+
+    });
+  }
 
 }

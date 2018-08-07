@@ -27,6 +27,7 @@
     "@swimlane/ngx-datatable": "^13.0.1",
     "bootstrap-italia": "^0.9.5",
     "core-js": "^2.5.4",
+    "ngx-loading": "^1.0.14",
     "ngx-permissions": "^5.0.0",
     "rxjs": "^6.2.1",
     "zone.js": "^0.8.26"
