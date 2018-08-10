@@ -21,6 +21,8 @@
       </li>
     </ul>
   </div>
+  <a  class="btn btn-primary my-2 my-sm-0" href="http://pcoliva.uniurb.it/redirect" 
+  *ngIf="!(isLoggedIn$ | async) as isLoggedIn" >Login google</a>
   <!-- <button class="btn btn-primary my-2 my-sm-0" (click)="goLogin()">Login</button> -->
   <a  class="btn btn-primary my-2 my-sm-0" href="http://pcoliva.uniurb.it/api/loginSaml" 
   *ngIf="!(isLoggedIn$ | async) as isLoggedIn else logout" >Login</a>

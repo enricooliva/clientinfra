@@ -17,10 +17,18 @@ const httpOptions = {
 export class UserService {
 
   constructor(private http: HttpClient, public messageService: MessageService ) { }
-
-  getUsers(): Observable<any> {
+  
+  query(model): Observable<any> {    
     return this.http
-      .get('http://pcoliva.uniurb.it/api/users', httpOptions).pipe(
+      .post<any>('http://pcoliva.uniurb.it/api/users/query', model, httpOptions ).pipe(
+        catchError(this.handleError('query'))
+      );
+  }
+
+  getUsers(model): Observable<any> {
+    
+    return this.http
+      .get<any>('http://pcoliva.uniurb.it/api/users', { headers: httpOptions.headers, params: model }).pipe(
         catchError(this.handleError('getusers'))
       );
   }

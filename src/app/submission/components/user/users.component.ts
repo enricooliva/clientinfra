@@ -26,7 +26,7 @@ import { UserComponent } from './user.component';
   </div>
   </div>
 
-  <app-query-builder [metadata]="this.userRow[0].fieldArray.fieldGroup"></app-query-builder>
+  <app-query-builder [metadata]="this.userRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
 
   <form [formGroup]="form" >
   <formly-form [model]="model" [fields]="fields" [form]="form">
@@ -124,12 +124,12 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  onFind(){
-    this.isLoading = true;
-    this.userService.getUsers().subscribe((data) => {
+  onFind(model){
+    this.isLoading = true;    
+    this.userService.query(model).subscribe((data) => {
       this.isLoading = false;
       this.model = {
-        users: data
+        users: data.data
       };
 
     });

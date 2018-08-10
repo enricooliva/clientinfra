@@ -1,34 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { FieldType, FormlyConfig } from '@ngx-formly/core';
+import { FieldType, FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-generic-type',
   template: `
   <!--Generic-->
-  <ng-container [ngSwitch]="field.type">  
-    <ng-container *ngFor="let type of types">  
-    <formly-field *ngSwitchCase="type"
-      [model]="field.model"
-      [form]="form"
-      [field]="field"
-      [options]="options">
-    </formly-field>   
-    </ng-container>  
-  </ng-container>
+  <formly-field *ngIf="genericField"
+    [form]="form"
+    [field]="genericField"
+    [options]="options">
+  </formly-field>
   `,
   styles: []
 })
 export class GenericTypeComponent extends FieldType implements OnInit {
-
-  types: string[];
+  genericField: FormlyFieldConfig;  
 
   constructor(private formlyConfig: FormlyConfig){
-    super();
-    this.types = Object.keys(this.formlyConfig.types).filter(x => x != 'generic');
+    super();   
   }
 
   ngOnInit() {
-    this.field.wrappers = [];        
+    Object.defineProperty(this.field.templateOptions, 'field', {
+      set: (field) => {
+        field = {
+          ...this.field,
+          wrappers: [],
+          ...field,
+        };
+        this.formlyConfig.getMergedField(field);
+        this.genericField = field;
+      },
+      configurable: true,
+    });
   }
 
 }

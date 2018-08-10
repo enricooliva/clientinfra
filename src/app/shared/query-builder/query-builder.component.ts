@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -11,6 +11,8 @@ import { takeUntil, startWith, tap } from 'rxjs/operators';
 })
 export class QueryBuilderComponent implements OnInit, OnChanges {
   onDestroy$ = new Subject<void>();
+  
+  @Output() find =  new  EventEmitter();
 
   public defaultOperatorMap: {[key: string]: string[]} = {
     string: ['=', '!=', 'contains', 'like'],
@@ -65,7 +67,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
             },
           },
           {
-            key: 'valueInput',
+            key: 'value',
             type: 'generic',
             className: "col-md-4",
             hideExpression: true,
@@ -81,15 +83,15 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                   tap(selectedField => {                   
                     if (this.keymetadata[selectedField] ){          
                                            
-                      field.formControl.reset();
-                      field.hideExpression = false;
-                      field.type = this.keymetadata[selectedField].type
-      
-                      if (this.keymetadata[selectedField].type == 'number'){
-                        field.templateOptions.type = 'number';
-                      } else{
-                        field.templateOptions.type = null;
-                      }                    
+                      field.formControl.reset();                                          
+                      field.hide = false;
+                      field.hideExpression = false;                      
+                      field.templateOptions.field = {                     
+                        type: this.keymetadata[selectedField].type,
+                        templateOptions: {
+                          type: this.keymetadata[selectedField].type,                        
+                        },
+                      }
                     }
                   }),
                 ).subscribe();
@@ -183,6 +185,38 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     // Cache reference to array object, so it won't be computed next time and trigger a rerender.
     this.operatorsCache[field] = operators;
     return operators;
+  }
+
+  onFind() {
+    //esempio di output
+    // {
+    //   "condition": "and",
+    //   "rules": [
+    //     {
+    //       "field": "age",
+    //       "operator": "<=",
+    //       "entity": "physical",
+    //       "value": 2
+    //     },
+    //     {
+    //       "field": "birthday",
+    //       "operator": "=",
+    //       "value": "2018-08-03",
+    //       "entity": "nonphysical"
+    //     },
+
+    //controllare eventuali errori
+    //elaborare il modello 
+    //rilanciare l'evento 
+    
+    if (!this.form.invalid){
+      this.find.emit(this.model);
+    }else{
+      console.log('Errori nella finestra');
+    }
+
+
+    return null;
   }
 
 }
