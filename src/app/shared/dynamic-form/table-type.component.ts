@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, KeyValueDiffers } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
 import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 import { Router } from '@angular/router';
+import { isEmpty } from 'rxjs/operators';
 
 @Component({
   selector: 'app-table-type',
@@ -59,18 +60,23 @@ import { Router } from '@angular/router';
 // <h1>Model</h1>
 // <pre>{{ model | json }}</pre>
 export class TableTypeComponent extends FieldArrayType {
-  constructor(builder: FormlyFormBuilder) {    
+  differ: any;
+
+  constructor(builder: FormlyFormBuilder, private differs: KeyValueDiffers) {    
     super(builder);
+    
+		this.differ = differs.find({}).create();
   }
 
+  
   @ViewChild('defaultcolumn') public defaultColumn: TemplateRef<any>;
   @ViewChild('valuecolumn') public valuecolumn: TemplateRef<any>;
   //descrizione delle colonne della tabella
   columns: TableColumn[];
   selected = [];
 
-  ngOnInit() {
-
+  ngOnInit() {    
+    
     if (typeof this.to.columns !== 'undefined'){
       //configurazione basata sulla dichiarazione delle colonne nel json 
       // modalità implicità di costruzione delle colonne 
@@ -111,6 +117,7 @@ export class TableTypeComponent extends FieldArrayType {
 
         return c;
       });
+      
     }
 
     this.field.fieldArray.fieldGroup.forEach(element => {
@@ -118,6 +125,7 @@ export class TableTypeComponent extends FieldArrayType {
     });
     
   }
+ 
 
   getFields( field: FormlyFieldConfig, column: TableColumn, rowIndex: number ) : any {         
     let result = field.fieldGroup[rowIndex].fieldGroup.find(f => f.key === column.prop);
@@ -162,4 +170,10 @@ export class TableTypeComponent extends FieldArrayType {
       this.remove(index);
       this.selected = [];       
   }
+
+  ngDoCheck() {    
+    let ma = this.model as Array<any>;    
+    this.model = ma.filter(x => Object.keys(x).length !== 0);    
+     
+	}
 }
