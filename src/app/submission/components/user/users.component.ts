@@ -9,25 +9,12 @@ import { UserComponent } from './user.component';
 @Component({
   selector: 'app-user',
   template: `
-
-
-  <div class="container-fluid">
     
-  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
-  <div class="btn-toolbar mb-4" role="toolbar">
-  <div class="btn-group btn-group-sm">    
-     
-    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onFind()">
-        <span class="oi oi-magnifying-glass iconic" title="reload" aria-hidden="true" ></span>
-        <span class="ml-2">Cerca</span>
-    </button>   
-
-  </div>
-  </div>
-
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
+  <h4>Ricerca</h4>
   <app-query-builder [metadata]="this.userRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
 
+  <h4>Risultati</h4>
   <form [formGroup]="form" >
   <formly-form [model]="model" [fields]="fields" [form]="form">
     
@@ -36,8 +23,7 @@ import { UserComponent } from './user.component';
 
   <p>Form value: {{ form.value | json }}</p>
   <p>Form status: {{ form.status | json }}</p>
-
-  </div>
+  
   `  
 })
 
@@ -127,11 +113,11 @@ export class UsersComponent implements OnInit {
   onFind(model){
     this.isLoading = true;    
     this.userService.query(model).subscribe((data) => {
-      this.isLoading = false;
-      this.model = {
-        users: data.data
-      };
+      this.isLoading = false;   
 
+      this.model=  {
+        users: data.data
+      }
     });
   }
 

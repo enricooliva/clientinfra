@@ -1,8 +1,24 @@
-<div *ngIf="messageService.messages.length">
-
-    <h2>Messages</h2>
-    <button class="clear"
-            (click)="messageService.clear()">clear</button>
-    <div *ngFor='let message of messageService.messages'> {{message}} </div>
-  
-  </div>
+<footer class="card fixed-bottom">
+        <!-- *ngIf="messageService.messages.length" -->
+        <h5 class="card-header">
+                Area messaggi <span *ngIf="messageService.messages.length" class="badge badge-primary badge-pill">{{messageService.messages.length}}</span>
+                <button class="btn btn-sm btn-link float-right" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+                        aria-controls="collapseMessage">
+                        <span *ngIf="isCollapsed" class="oi oi-chevron-top"></span>
+                        <span *ngIf="!isCollapsed" class="oi oi-chevron-bottom"></span>
+                </button>
+        </h5>
+        <div id="collapseMessage" [ngbCollapse]="isCollapsed">
+                <div class="card-body">
+                        <ul class="list-group list-group-flush" style="max-height: 100px;overflow-y: auto;">
+                                <li *ngFor='let inframessage of messageService.messages' class="list-group-item {{ cssClass(inframessage) }}" style="height: 30px; padding: 3px 10px;">
+                                {{inframessage.message}}
+                                </li>
+                        </ul>
+                </div>
+        </div>
+        <!-- <div class="card-body"  style="max-height: 100px;overflow-y: scroll;">    
+                <div *ngFor='let inframessage of messageService.messages' class="{{ cssClass(inframessage) }}" > {{inframessage.message}} 
+                </div>
+        </div>           -->
+</footer>

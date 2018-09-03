@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Submission } from './models/submission';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 
@@ -21,6 +21,7 @@ export class UserService {
   query(model): Observable<any> {    
     return this.http
       .post<any>('http://pcoliva.uniurb.it/api/users/query', model, httpOptions ).pipe(
+        tap(sub => this.messageService.info('Ricerca effettuata con successo')),
         catchError(this.handleError('query'))
       );
   }
@@ -29,6 +30,7 @@ export class UserService {
     
     return this.http
       .get<any>('http://pcoliva.uniurb.it/api/users', { headers: httpOptions.headers, params: model }).pipe(
+        tap(sub => this.messageService.info('Lettura utenti effettuata con successo')),
         catchError(this.handleError('getusers'))
       );
   }
@@ -38,24 +40,19 @@ export class UserService {
       .get('http://pcoliva.uniurb.it/api/users', {
         params: new HttpParams().set('userId', id.toString())
       }).pipe(
+        tap(sub => this.messageService.info('Lettura utente effettuata con successo')),
         catchError(this.handleError('getuser'))
       );
     }
   
-
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-    this.messageService.add('UserService: ' + message);
-  }
  
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
+      
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+      this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

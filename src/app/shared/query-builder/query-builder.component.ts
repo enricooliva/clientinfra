@@ -30,8 +30,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
       type: 'repeat',
       wrappers: ['accordion'],      
       templateOptions: {
-        label: 'Condizioni',   
-        columnMode: 'force',       
+        label: 'Condizioni',             
       },
       fieldArray: {
         fieldGroupClassName: 'row',   
@@ -69,8 +68,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
           {
             key: 'value',
             type: 'generic',
-            className: "col-md-4",
-            hideExpression: true,
+            className: "col-md-4",        
             templateOptions: {
               label: 'Valore',
               required: true,              
@@ -83,13 +81,11 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                   tap(selectedField => {                   
                     if (this.keymetadata[selectedField] ){          
                                            
-                      field.formControl.reset();                                          
-                      field.hide = false;
-                      field.hideExpression = false;                      
+                      field.formControl.reset();                                                          
                       field.templateOptions.field = {                     
                         type: this.keymetadata[selectedField].type,
                         templateOptions: {
-                          type: this.keymetadata[selectedField].type,                        
+                          type: this.keymetadata[selectedField].type,                                               
                         },
                       }
                     }
@@ -133,7 +129,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
       options.push({value: element.key, label: element.templateOptions.label});          
     });
     field.templateOptions.options = options;
-    
+    //this.model.rules.push({field: options[0].value})
   }
 
    // ----------OnChanges Implementation----------
@@ -188,31 +184,10 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   }
 
   onFind() {
-    //esempio di output
-    // {
-    //   "condition": "and",
-    //   "rules": [
-    //     {
-    //       "field": "age",
-    //       "operator": "<=",
-    //       "entity": "physical",
-    //       "value": 2
-    //     },
-    //     {
-    //       "field": "birthday",
-    //       "operator": "=",
-    //       "value": "2018-08-03",
-    //       "entity": "nonphysical"
-    //     },
-
-    //controllare eventuali errori
-    //elaborare il modello 
-    //rilanciare l'evento 
-    
     if (!this.form.invalid){
       this.find.emit(this.model);
     }else{
-      console.log('Errori nella finestra');
+      console.log('Finestra non valida');
     }
 
 

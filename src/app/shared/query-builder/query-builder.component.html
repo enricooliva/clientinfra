@@ -2,10 +2,12 @@
   <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">
       
   </formly-form> 
-
-  <button class="btn btn-outline-primary border-0 rounded-0" (click)="onFind()">
-      <span class="oi oi-magnifying-glass iconic" title="reload" aria-hidden="true" ></span>
-      <span class="ml-2">Cerca</span>
-    </button>  
-
+  <div class="btn-toolbar mb-4" role="toolbar">
+    <div class="btn-group btn-group-sm">  
+      <button class="btn btn-outline-primary border-0 rounded-0" (click)="onFind()">
+        <span class="oi oi-magnifying-glass iconic" title="reload" aria-hidden="true" ></span>
+        <span class="ml-2">Cerca</span>
+      </button>  
+    </div>
+  </div>  
 </form>

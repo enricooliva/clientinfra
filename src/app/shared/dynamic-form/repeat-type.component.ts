@@ -9,11 +9,8 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
       <span class="oi oi-plus"></span>
       <span class="ml-2">Aggiungi</span>
     </button>  
-  </div>
-  <div class="table-responsive-md">
-  <table class="table">
-  <tbody>
-    <tr *ngFor="let field of field.fieldGroup; let i = index;">
+  </div>   
+    <div *ngFor="let field of field.fieldGroup; let i = index;">
       <formly-group       
         [model]="model[i]"
         [field]="field"
@@ -25,10 +22,7 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
           <span class="ml-2">Rimuovi</span>
         </button>
         </div>        
-      </formly-group>
-    </tr>
-  </tbody>
-  </table>
+      </formly-group>  
   </div>
 
   `,
