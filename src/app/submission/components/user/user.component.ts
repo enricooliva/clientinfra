@@ -136,6 +136,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      this.userService.clearMessage();
       this.userService.getUser(params['id']).subscribe((data) => {
         this.isLoading = false;
         this.model = data;

@@ -28,11 +28,17 @@ export class GenericTypeComponent extends FieldType implements OnInit {
           wrappers: [],
           ...field,
         };
-        this.formlyConfig.getMergedField(field);
+        this.formlyConfig.getMergedField(field);      
         this.genericField = field;
       },
       configurable: true,
-    });
+    });    
+    
+    this.field.templateOptions.disabled = true;
+    this.field.templateOptions.field = {      
+      type: 'string',          
+    };    
+    
   }
 
 }

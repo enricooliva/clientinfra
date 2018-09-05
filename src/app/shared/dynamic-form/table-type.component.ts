@@ -172,8 +172,10 @@ export class TableTypeComponent extends FieldArrayType {
   }
 
   ngDoCheck() {    
-    let ma = this.model as Array<any>;    
-    this.model = ma.filter(x => Object.keys(x).length !== 0);    
+
+    //fix per la tabella di risultato query
+    //let ma = this.model as Array<any>;    
+    //this.model = ma.filter(x => Object.keys(x).length !== 0);    
      
 	}
 }

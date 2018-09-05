@@ -18,6 +18,10 @@ export class UserService {
 
   constructor(private http: HttpClient, public messageService: MessageService ) { }
   
+  clearMessage() {
+    this.messageService.clear();
+  }
+
   query(model): Observable<any> {    
     return this.http
       .post<any>('http://pcoliva.uniurb.it/api/users/query', model, httpOptions ).pipe(

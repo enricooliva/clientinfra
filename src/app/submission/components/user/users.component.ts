@@ -112,6 +112,7 @@ export class UsersComponent implements OnInit {
 
   onFind(model){
     this.isLoading = true;    
+    this.userService.clearMessage();
     this.userService.query(model).subscribe((data) => {
       this.isLoading = false;   
 

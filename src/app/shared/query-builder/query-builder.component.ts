@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-query-builder',
@@ -41,14 +42,16 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
             className: "col-md-3",         
             templateOptions: {
               label: 'Campo',                   
-            }
+              required: true
+            }        
           },        
           {
             key: 'operator',
             type: 'select',
-            className: "col-md-2",
+            className: "col-md-2",            
             templateOptions: {
-              label: 'Operatore',              
+              label: 'Operatore',          
+              required: true
             },
             lifecycle: {
               onInit: (form, field) => {                
@@ -59,7 +62,9 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                   tap(selectedField => {                                     
                     field.formControl.setValue('');
                     if (this.keymetadata[selectedField] )                     
-                      field.templateOptions.options = this.getOptions(this.getOperators(selectedField));                                                        
+                      field.templateOptions.options = this.getOptions(this.getOperators(selectedField));  
+                      if (field.templateOptions.options[0] !== undefined) 
+                        field.formControl.setValue(field.templateOptions.options[0].value);                                                                           
                   }),
                 ).subscribe();
               },
@@ -68,26 +73,27 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
           {
             key: 'value',
             type: 'generic',
-            className: "col-md-4",        
-            templateOptions: {
+            className: "col-md-4",                                            
+            templateOptions: {            
               label: 'Valore',
-              required: true,              
+              disabled: true,
+              required: true,                                                       
             },       
             lifecycle: {
-              onInit: (form, field) => {                      
+              onInit: (form, field) => {                                             
                 form.get('field').valueChanges.pipe(
                   takeUntil(this.onDestroy$),
                   startWith(form.get('field').value),
                   tap(selectedField => {                   
-                    if (this.keymetadata[selectedField] ){          
-                                           
+                    if (this.keymetadata[selectedField]){                                                     
                       field.formControl.reset();                                                          
-                      field.templateOptions.field = {                     
+                      field.templateOptions.field = {                                         
                         type: this.keymetadata[selectedField].type,
                         templateOptions: {
-                          type: this.keymetadata[selectedField].type,                                               
+                          type: this.keymetadata[selectedField].type,                                                                      
                         },
                       }
+                      field.templateOptions.disabled = false;
                     }
                   }),
                 ).subscribe();
@@ -116,7 +122,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   // private defaultTemplateTypes: string[] = [
   //  'string', 'number', 'time', 'date', 'category', 'boolean', 'multiselect'];
 
-  constructor() { }
+  constructor(public messageService: MessageService) { }
 
   // ----------OnInit Implementation----------
 
@@ -128,7 +134,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
       //generare la select dei campi // array di options
       options.push({value: element.key, label: element.templateOptions.label});          
     });
-    field.templateOptions.options = options;
+    field.templateOptions.options = options;  
     //this.model.rules.push({field: options[0].value})
   }
 
@@ -187,11 +193,34 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     if (!this.form.invalid){
       this.find.emit(this.model);
     }else{
-      console.log('Finestra non valida');
+      this.messageService.clear();
+      this.messageService.error("Condizioni di ricerca non valide");         
+      //this.getFormValidationErrors();            
     }
-
-
     return null;
   }
 
+  
+  /**
+   * Gets form validation errors
+   * Estrae e logga tutti i codici die errore della form
+   */
+  getFormValidationErrors() {      
+
+  let fa = this.form.controls['rules'] as FormArray;
+    
+    for (let index = 0; index < fa.controls.length; index++) {
+      const fg = fa.controls[index] as FormGroup;  
+      Object.keys(fg.controls).forEach(key => {    
+      const controlErrors: ValidationErrors = fg.get(key).errors;      
+      if (controlErrors != null) {
+          Object.keys(controlErrors).forEach(keyError => {                        
+            //this.messageService.error("Condizioni di ricerca non valide");    
+            console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+          });
+        }
+      });
+    
+    }
+  }
 }
