@@ -20,6 +20,7 @@ import { fieldsForm } from '../../models/submissionForm'
 
 export class SubmissionComponent implements OnInit {        
 
+  isLoading = false;
   form = new FormGroup({});
   model: Submission;  
   fields: FormlyFieldConfig[] = fieldsForm;
@@ -37,15 +38,32 @@ export class SubmissionComponent implements OnInit {
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
     //this.submission = this.submissionService.getSubmission();
+    this.isLoading = true;
     this.submissionService.getSubmission().subscribe((data)=> {          
       
       this.id=data.id;  
       this.model = data;    
+      this.isLoading = false;
     });    
   } 
  
   onNew(){
-  
+    this.model = null;
+    this.form.reset();
+
+  }
+
+  onReload(){
+    //sono nello stato nuovo
+    if(this.model != null && this.model.id !== null){
+      this.isLoading=true;
+      this.submissionService.getSubmissionByUserId(this.model.user_id).subscribe((data)=> {          
+        
+        this.id=data.id;  
+        this.model = data;    
+        this.isLoading = false;
+      }); 
+    }
   }
 
   onSubmit() {

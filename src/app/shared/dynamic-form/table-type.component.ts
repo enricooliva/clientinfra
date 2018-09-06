@@ -4,6 +4,7 @@ import { FormlyFieldConfig, FieldArrayType, FormlyFormBuilder } from '@ngx-forml
 import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 import { Router } from '@angular/router';
 import { isEmpty } from 'rxjs/operators';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-table-type',
@@ -86,9 +87,11 @@ export class TableTypeComponent extends FieldArrayType {
         //   { name: 'Email', prop: 'email' },
         // ],
       this.to.columns.forEach(column =>  { 
-        column.cellTemplate = this.defaultColumn; 
-        if (('cellTemplate' in column)) 
-          column.cellTemplate = this[column.cellTemplate];       
+        if (column.cellTemplate == undefined){
+          column.cellTemplate = this.defaultColumn; 
+          if (('cellTemplate' in column)) 
+            column.cellTemplate = this[column.cellTemplate];       
+        }
         });
 
     } else{
@@ -102,7 +105,8 @@ export class TableTypeComponent extends FieldArrayType {
           prop: el.key,                                  
           cellTemplate: this.defaultColumn                  
         }
-        
+        el.templateOptions.label = "";
+         
         if ('column' in el.templateOptions){
           //copio tutte le proprietà relativa alla colonna 
           Object.keys(el.templateOptions.column).forEach(prop => {
@@ -118,11 +122,7 @@ export class TableTypeComponent extends FieldArrayType {
         return c;
       });
       
-    }
-
-    this.field.fieldArray.fieldGroup.forEach(element => {
-      element.wrappers = ['fieldset']
-    });
+    }   
     
   }
  

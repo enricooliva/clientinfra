@@ -37,6 +37,23 @@ export class SubmissionService {
     return res;
   }
 
+  getSubmissionByUserId(userId: number): Observable<Submission> {
+
+    if (userId>0){
+    let res = this.http
+      .get<Submission>('http://pcoliva.uniurb.it/api/submissions', {
+        params: new HttpParams().set('userId', userId.toString())
+      }).pipe(
+        tap(sub => this.messageService.info('Lettura domanda effetuata con successo')),
+        catchError(this.handleError('getSubmissionByUserId', null))
+      );
+
+    return res;
+    }
+  }
+
+
+
   updateSubmission(submission: Submission, id: number): any {
     const url = `${'http://pcoliva.uniurb.it/api/submissions'}/${id}`;
     let res = this.http.put<Submission>(url, submission, httpOptions)

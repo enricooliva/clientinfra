@@ -1,6 +1,7 @@
 import { Assignment } from './assignment';
 
 export interface Submission {
+  user_id: number;
   id: number;
   name: string;
   surname: string;

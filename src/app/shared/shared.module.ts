@@ -40,7 +40,7 @@ import { GenericTypeComponent } from './dynamic-form/generic-type.component';
     NgxPermissionsModule,
     FormlyModule.forRoot({
       types: [
-      { name: 'generic', component: GenericTypeComponent, wrappers: ['fieldset','label'] },
+      { name: 'generic', component: GenericTypeComponent, wrappers: ['form-field'] },
       { name: 'string', extends: 'input' },
       {
         name: 'number',
@@ -63,7 +63,7 @@ import { GenericTypeComponent } from './dynamic-form/generic-type.component';
       { name: 'object', extends: 'formly-group' },
       { name: 'boolean', extends: 'checkbox' },
       { name: 'enum', extends: 'select' },
-      { name: 'datepicker', component: DatepickerTypeComponent, wrappers: ['fieldset','label'] },      
+      { name: 'datepicker', component: DatepickerTypeComponent, wrappers: ['form-field'] },      
       { name: 'date', extends: 'datepicker'},
       { name: 'repeat', component: RepeatTypeComponent },
       { name: 'datatable', 
