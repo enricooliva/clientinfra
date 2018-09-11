@@ -81,17 +81,26 @@ export const fieldsForm: FormlyFieldConfig[] = [
       hideExpression: true,
       templateOptions: {
         label: 'Id',   
-        disabled: true       
+        disabled: true      
       },
     },
     {
-      key: 'userId',
-      type: 'input',
-      hideExpression: true,
+      key: 'user_id',
+      type: 'external',     
+      wrappers: [], 
       templateOptions: {
-        label: 'UserId',     
-        hide: true         
-      }     
+        label: 'UserId',                     
+        type: 'string',       
+        entityName: 'user',
+        codeProp:'',
+        descriptionProp: 'name'
+      },
+      modelOptions: {
+        updateOn: 'blur',
+      }, //necessario per il corretto evento di decodifica 
+      //TODO richiesta impostazione dall'interno del custom template external
+      //al impostandolo dall'interno del template è troppo tardi perchè il componente è
+      //già creato
     },
     {
       fieldGroupClassName: 'row',

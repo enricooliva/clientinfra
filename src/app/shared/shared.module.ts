@@ -26,7 +26,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { QueryBuilderComponent } from './query-builder/query-builder.component';
 import { GenericTypeComponent } from './dynamic-form/generic-type.component';
-
+import { ExternalTypeComponent } from './dynamic-form/external-type.component';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
@@ -38,9 +39,11 @@ import { GenericTypeComponent } from './dynamic-form/generic-type.component';
     NgxDatatableModule,
     RouterModule,
     NgxPermissionsModule,
+    LoadingModule,
     FormlyModule.forRoot({
       types: [
       { name: 'generic', component: GenericTypeComponent, wrappers: ['form-field'] },
+      { name: 'external', component: ExternalTypeComponent },
       { name: 'string', extends: 'input' },
       {
         name: 'number',
@@ -87,6 +90,7 @@ import { GenericTypeComponent } from './dynamic-form/generic-type.component';
       ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
+        { name: 'notfound', message: 'Non trovato' },        
       ]
     }),
     FormlyBootstrapModule
@@ -106,10 +110,11 @@ import { GenericTypeComponent } from './dynamic-form/generic-type.component';
     SideNavComponent,
     QueryBuilderComponent,
     NgbModule,
-    GenericTypeComponent 
+    GenericTypeComponent,
+    ExternalTypeComponent 
   ],
   declarations: [UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
-    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, SideNavComponent, QueryBuilderComponent, GenericTypeComponent ]
+    DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent, DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent ]
 })
 
 export class SharedModule { }

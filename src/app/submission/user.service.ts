@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Submission } from './models/submission';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService } from '../shared';
+import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 
 
@@ -14,7 +14,11 @@ const httpOptions = {
 };
 
 @Injectable()
-export class UserService {
+export class UserService implements ServiceQuery {
+
+  getById(id: any) {       
+    return this.getUser(id);
+  }
 
   constructor(private http: HttpClient, public messageService: MessageService ) { }
   
@@ -44,7 +48,12 @@ export class UserService {
       .get('http://pcoliva.uniurb.it/api/users', {
         params: new HttpParams().set('userId', id.toString())
       }).pipe(
-        tap(sub => this.messageService.info('Lettura utente effettuata con successo')),
+        tap(sub => {
+          if (sub)
+            this.messageService.info('Lettura utente effettuata con successo')
+          else 
+            this.messageService.info('Utente non trovato')
+        }),
         catchError(this.handleError('getuser'))
       );
     }

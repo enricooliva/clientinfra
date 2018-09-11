@@ -1,3 +1,9 @@
+import { Observable } from "rxjs";
+
+export interface ServiceQuery {
+    getById(id: any):  Observable<any>;
+}
+
 export interface RuleSet {
     condition: string;
     rules: Array<RuleSet | Rule>;

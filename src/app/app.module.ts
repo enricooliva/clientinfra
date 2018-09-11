@@ -52,6 +52,7 @@ export function tokenGetter() {
     AuthGuard,  
     SubmissionService,
     UserService,
+    {provide: 'userService', useClass: UserService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],
