@@ -5,6 +5,8 @@ import { takeUntil, startWith, tap, distinctUntilChanged } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ServiceQuery } from '../query-builder/query-builder.interfaces';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LookupComponent } from '../lookup/lookup.component';
 
 @Component({
   selector: 'app-external-type',
@@ -41,7 +43,9 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
   service: ServiceQuery;
   public isLoading = false;
 
-  constructor(private formlyConfig: FormlyConfig, private injector: Injector) {
+  nodecode = false;
+
+  constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal) {
     super();       
     this.service = this.injector.get('userService') as ServiceQuery;
   }
@@ -54,22 +58,27 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
         ...this.field,
         wrappers: ['form-field'],
         templateOptions: { 
-          ...this.field.templateOptions, 
+          ...this.field.templateOptions,
+          keyup: (field, event: KeyboardEvent ) => { 
+            if (event.key == "F4" ){
+              this.open();
+            }          
+          },                
           //e necessario inserire anche updateon blur nel principale 
           modelOptions: {
             updateOn: 'blur'
           }
-        },
+        },        
         type: this.field.templateOptions.type,            
         lifecycle: {          
           onInit: (form, field) => {
-                        
+                                  
             field.formControl.valueChanges.pipe(
               distinctUntilChanged(),
               takeUntil(this.onDestroy$),
               startWith(field.formControl.value),
               tap(selectedField => {                
-                if (field.formControl.value ){
+                if (field.formControl.value && !this.nodecode){
                   this.isLoading = true;
                   this.service.getById(field.formControl.value).subscribe((data)=> {
                     this.isLoading = false;
@@ -112,9 +121,36 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
 
   }
 
+  setDescription(data: any){
+      //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
+      if (this.field.templateOptions.descriptionProp in data)
+        this.extDescription = data[this.field.templateOptions.descriptionProp];
+  }
+
+  setcode(data: any){
+      if (this.field.templateOptions.codeProp in data)
+        this.codeField.formControl.setValue(data[this.field.templateOptions.codeProp]);
+  }
+
+
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+  }
+
+  open(){
+    const modalRef = this.modalService.open(LookupComponent, {
+      size: 'lg'
+    })
+    modalRef.result.then((result)=>{
+      this.nodecode = true
+      this.setcode(result);
+      this.setDescription(result);
+      this.nodecode = false
+    },(reason) => {      
+    });
+    modalRef.componentInstance.metadata = this.service.getMetadata();
+
   }
   
 }

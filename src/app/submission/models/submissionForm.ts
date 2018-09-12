@@ -90,11 +90,16 @@ export const fieldsForm: FormlyFieldConfig[] = [
       wrappers: [], 
       templateOptions: {
         label: 'UserId',                     
-        type: 'string',       
+        type: 'string',           
+        keyup: (field, event: KeyboardEvent ) => { 
+          if (event.key == "F4" ){
+            //&& event.keyCode=="keyf"
+          }          
+        },             
         entityName: 'user',
-        codeProp:'',
-        descriptionProp: 'name'
-      },
+        codeProp:'id',
+        descriptionProp: 'name',                
+      },      
       modelOptions: {
         updateOn: 'blur',
       }, //necessario per il corretto evento di decodifica 

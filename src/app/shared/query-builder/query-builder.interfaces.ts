@@ -2,6 +2,8 @@ import { Observable } from "rxjs";
 
 export interface ServiceQuery {
     getById(id: any):  Observable<any>;
+    getMetadata(): any;
+    query(filters: any): Observable<any>;
 }
 
 export interface RuleSet {

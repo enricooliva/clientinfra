@@ -15,7 +15,7 @@ import { element } from 'protractor';
             <span class="oi oi-plus"></span>
             <span class="ml-2">Aggiungi</span>
         </button>    
-        <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="selected.length == 0" (click)="removeSelected()"  >              
+        <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="to.selected.length == 0" (click)="removeSelected()"  >              
             <span class="oi oi-trash"></span>  
             <span class="ml-2">Rimuovi</span>
         </button>
@@ -34,7 +34,7 @@ import { element } from 'protractor';
   [scrollbarH]="to.scrollbarH"      
   [reorderable]="to.reorderable"    
   [externalSorting]="true"
-  [selected]="selected"
+  [selected]="to.selected"
   [selectionType]="'single'"
   (sort)="onSort($event)"
   (select)='onSelect($event)'
@@ -74,10 +74,19 @@ export class TableTypeComponent extends FieldArrayType {
   @ViewChild('valuecolumn') public valuecolumn: TemplateRef<any>;
   //descrizione delle colonne della tabella
   columns: TableColumn[];
-  selected = [];
+  //selected = [];
 
   ngOnInit() {    
-    
+
+    if (!('selected' in this.to)){
+      Object.defineProperty(this.to,'selected',{
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+      this.to.selected= [];
+    }
+
     if (typeof this.to.columns !== 'undefined'){
       //configurazione basata sulla dichiarazione delle colonne nel json 
       // modalità implicità di costruzione delle colonne 
@@ -125,7 +134,6 @@ export class TableTypeComponent extends FieldArrayType {
     }   
     
   }
- 
 
   getFields( field: FormlyFieldConfig, column: TableColumn, rowIndex: number ) : any {         
     let result = field.fieldGroup[rowIndex].fieldGroup.find(f => f.key === column.prop);
@@ -166,9 +174,9 @@ export class TableTypeComponent extends FieldArrayType {
   }
 
   removeSelected(){
-      let index = this.model.indexOf(this.selected[0])
+      let index = this.model.indexOf(this.to.selected[0])
       this.remove(index);
-      this.selected = [];       
+      this.to.selected = [];       
   }
 
   ngDoCheck() {    

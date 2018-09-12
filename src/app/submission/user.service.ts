@@ -5,6 +5,7 @@ import { Submission } from './models/submission';
 import { map, catchError, tap } from 'rxjs/operators';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 
 const httpOptions = {
@@ -15,6 +16,40 @@ const httpOptions = {
 
 @Injectable()
 export class UserService implements ServiceQuery {
+
+  getMetadata() {
+    return  [
+      {
+        key: 'id',
+        type: 'number',
+        hideExpression: false,
+        templateOptions: {
+          label: 'Id',
+          disabled: true,
+          column: { width: 10, cellTemplate: 'valuecolumn'}
+        }
+      },
+      {
+        key: 'name',
+        type: 'string',
+        templateOptions: {
+          label: 'Nome utente',
+          required: true,
+          column: { cellTemplate: 'valuecolumn'}
+        }
+      },
+      {
+        key: 'email',
+        type: 'string',
+        templateOptions: {
+          label: 'Email',
+          required: true,
+          column: { cellTemplate: 'valuecolumn'}
+        }
+      }
+    ];
+    
+  }
 
   getById(id: any) {       
     return this.getUser(id);

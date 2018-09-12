@@ -1,4 +1,4 @@
-import {NgbModule, NgbDateParserFormatter, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbDateParserFormatter, NgbDateAdapter, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -49,6 +49,7 @@ export function tokenGetter() {
     })   
   ],  
   providers: [
+    NgbActiveModal,
     AuthGuard,  
     SubmissionService,
     UserService,
