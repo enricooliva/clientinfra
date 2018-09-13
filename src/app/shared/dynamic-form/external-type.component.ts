@@ -60,7 +60,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     if (this.codeField == undefined) {
       let tmpfield = {
         ...this.field,
-        wrappers: ['form-field'],
+        wrappers: ['form-field'],//addons
         templateOptions: { 
           ...this.field.templateOptions,
           keyup: (field, event: KeyboardEvent ) => { 

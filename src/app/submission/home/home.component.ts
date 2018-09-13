@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
       { href: 'users', text: 'Utenti', permissions: ['ADMIN'] },
     ]},    
     {title: 'Funzionali', links: [
-      { href: 'submissions', text: 'Domanda', permissions: ['ADMIN', 'USER'] },
+      { href: 'submission', text: 'Domanda', permissions: ['ADMIN', 'USER'] },
       { href: 'submissions', text: 'Lista domande', permissions: ['ADMIN'] },
     ]}    
   ];
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
         token = params.get('token');        
         if (token){
             authService.loginWithToken(token);
-            this.router.navigate(['home/submissions']);
+            this.router.navigate(['home/submission']);
           }else{
             console.log("no token");
           }    

@@ -25,6 +25,8 @@ import { UserService } from './submission/user.service';
 
 
 
+
+
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -34,7 +36,7 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     NotFoundComponent,
-    TableTypeComponent,    
+    TableTypeComponent,        
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
@@ -54,6 +56,7 @@ export function tokenGetter() {
     SubmissionService,
     UserService,
     {provide: 'userService', useClass: UserService},
+    {provide: 'submissionService', useClass: SubmissionService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],

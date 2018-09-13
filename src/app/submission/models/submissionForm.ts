@@ -37,7 +37,7 @@ export const assigmentForm: FormlyFieldConfig[] = [
   },
   {
     key: 'from',
-    type: 'datepicker',               
+    type: 'date',               
     templateOptions: {
       label: 'Da',     
       required: true               
@@ -45,7 +45,7 @@ export const assigmentForm: FormlyFieldConfig[] = [
   },
   {
     key: 'to',
-    type: 'datepicker',                             
+    type: 'date',                             
     templateOptions: {
       label: 'A',     
       required: true               
@@ -90,20 +90,16 @@ export const fieldsForm: FormlyFieldConfig[] = [
       wrappers: [], 
       templateOptions: {
         label: 'UserId',                     
-        type: 'string',           
-        keyup: (field, event: KeyboardEvent ) => { 
-          if (event.key == "F4" ){
-            //&& event.keyCode=="keyf"
-          }          
-        },             
+        type: 'string',                         
         entityName: 'user',
         codeProp:'id',
         descriptionProp: 'name',                
       },      
       modelOptions: {
         updateOn: 'blur',
-      }, //necessario per il corretto evento di decodifica 
-      //TODO richiesta impostazione dall'interno del custom template external
+      }, //necessario per il corretto evento di decodifica non sono riuscito a spostarlo nel template???
+
+      //richiesta impostazione dall'interno del custom template external
       //al impostandolo dall'interno del template è troppo tardi perchè il componente è
       //già creato
     },
@@ -178,7 +174,7 @@ export const fieldsForm: FormlyFieldConfig[] = [
       },  
       {
         key: 'birthdate',
-        type: 'datepicker',      
+        type: 'date',      
         className: "col-md-6",
         templateOptions: {
           label: 'Data di nascita',     

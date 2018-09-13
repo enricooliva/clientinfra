@@ -29,6 +29,7 @@ import { GenericTypeComponent } from './dynamic-form/generic-type.component';
 import { ExternalTypeComponent } from './dynamic-form/external-type.component';
 import { LoadingModule } from 'ngx-loading';
 import { LookupComponent } from './lookup/lookup.component';
+import { ExternalqueryComponent } from './query-builder/externalquery.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { LookupComponent } from './lookup/lookup.component';
       types: [
       { name: 'generic', component: GenericTypeComponent, wrappers: ['form-field'] },
       { name: 'external', component: ExternalTypeComponent },
+      { name: 'externalquery', component: ExternalqueryComponent },
       { name: 'string', extends: 'input' },
       {
         name: 'number',
@@ -113,13 +115,14 @@ import { LookupComponent } from './lookup/lookup.component';
     NgbModule,
     GenericTypeComponent,
     ExternalTypeComponent,
-    LookupComponent
+    LookupComponent,
+    ExternalqueryComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
-    SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent 
+    SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent 
   ],
   entryComponents: [LookupComponent]
 })

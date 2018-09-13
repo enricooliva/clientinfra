@@ -18,6 +18,7 @@ import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './components/user/users.component';
 import { UserComponent } from './components/user/user.component';
 import { LoadingModule } from 'ngx-loading';
+import { SubmissionsComponent } from './components/submission/submissions.component';
 
 
 @NgModule({
@@ -33,10 +34,11 @@ import { LoadingModule } from 'ngx-loading';
   ], 
   exports: [
     SubmissionComponent,
-    HomeComponent, UserComponent   
+    HomeComponent, UserComponent, SubmissionsComponent   
   ],
   declarations: [        
     SubmissionComponent,
+    SubmissionsComponent,
     AssignmentComponent,
     AssignmentDetailPageComponent,    
     HomeComponent, UsersComponent, UserComponent

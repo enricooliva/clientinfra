@@ -1,8 +1,9 @@
 import { Observable } from "rxjs";
+import { FormlyFieldConfig } from "@ngx-formly/core";
 
 export interface ServiceQuery {
     getById(id: any):  Observable<any>;
-    getMetadata(): any;
+    getMetadata(): FormlyFieldConfig[];
     query(filters: any): Observable<any>;
 }
 

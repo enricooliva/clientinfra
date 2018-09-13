@@ -61,7 +61,7 @@ export class LookupComponent implements OnInit {
 
   
 
-  constructor(public activeModal: NgbActiveModal, private injector: Injector,) {
+  constructor(public activeModal: NgbActiveModal, private injector: Injector) {
   
   }  
 

@@ -17,7 +17,7 @@ const httpOptions = {
 @Injectable()
 export class UserService implements ServiceQuery {
 
-  getMetadata() {
+  getMetadata():FormlyFieldConfig[] {
     return  [
       {
         key: 'id',
@@ -36,7 +36,7 @@ export class UserService implements ServiceQuery {
           label: 'Nome utente',
           required: true,
           column: { cellTemplate: 'valuecolumn'}
-        }
+        }        
       },
       {
         key: 'email',

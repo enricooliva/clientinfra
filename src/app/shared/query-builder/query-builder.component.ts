@@ -86,13 +86,8 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                   startWith(form.get('field').value),
                   tap(selectedField => {                   
                     if (this.keymetadata[selectedField]){                                                     
-                      field.formControl.reset();                                                          
-                      field.templateOptions.field = {                                         
-                        type: this.keymetadata[selectedField].type,
-                        templateOptions: {
-                          type: this.keymetadata[selectedField].type,                                                                      
-                        },
-                      }
+                      field.formControl.reset(); 
+                      this.setField(field,selectedField);
                       field.templateOptions.disabled = false;
                     }
                   }),
@@ -126,13 +121,35 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
 
   // ----------OnInit Implementation----------
 
+  setField(field: any, selectedField: string){
+    if (this.keymetadata[selectedField].type!=='external'){                                                        
+      field.templateOptions.field = {                                         
+        type: this.keymetadata[selectedField].type,
+        templateOptions: {
+          type: this.keymetadata[selectedField].type,                                                                      
+        }
+      }
+      
+    }else{
+      field.templateOptions.field = {                                         
+        type: 'externalquery',
+        templateOptions: { ...this.keymetadata[selectedField].templateOptions }
+      };
+    }
+  }
+  
+  
+
   ngOnInit() {   
     let field = this.rules[0].fieldArray.fieldGroup[0]; 
     let options = new Array();
     this.metadata.forEach(element => {
       this.keymetadata[element.key] = element;
       //generare la select dei campi // array di options
-      options.push({value: element.key, label: element.templateOptions.label});          
+      
+      //se il campo non ha key e label allora non puo essere inserito
+      if (element.key && element.templateOptions && element.templateOptions.label)
+        options.push({value: element.key, label: element.templateOptions.label});          
     });
     field.templateOptions.options = options;  
     //this.model.rules.push({field: options[0].value})
@@ -167,6 +184,9 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     let type = fieldObject.type;
 
     if (type) {
+      if (type === 'external')
+        type = (fieldObject.templateOptions.type || 'string');
+        
       if (type === 'input')
         type = (fieldObject.templateOptions.type || 'string');
 

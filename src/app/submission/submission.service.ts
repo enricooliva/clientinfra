@@ -3,9 +3,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Submission } from './models/submission';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService } from '../shared';
+import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { InfraMessageType } from '../shared/message/message';
+import { fieldsForm } from './models/submissionForm';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 
 const httpOptions = {
@@ -15,10 +17,184 @@ const httpOptions = {
 };
 
 @Injectable()
-export class SubmissionService {
+export class SubmissionService implements ServiceQuery {
+
+  getById(id: any): Observable<any> {
+    return this.getSubmissionById(id);
+  }
+
+  getMetadata(): FormlyFieldConfig[] {    
+    return [
+      {
+        key: 'id',
+        type: 'number',
+        hideExpression: true,
+        templateOptions: {
+          label: 'Id',   
+          disabled: true      
+        },
+      },
+      {
+        key: 'user_id',
+        type: 'external',     
+        wrappers: [], 
+        templateOptions: {
+          label: 'UserId',                     
+          type: 'string',                         
+          entityName: 'user',
+          codeProp:'id',
+          descriptionProp: 'name',                
+        },      
+        modelOptions: {
+          updateOn: 'blur',
+        }, //necessario per il corretto evento di decodifica non sono riuscito a spostarlo nel template???  
+      },
+      {
+        key: 'name',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Nome',     
+          required: true               
+        }     
+      },
+      {
+        key: 'surname',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Cognome',     
+          required: true               
+        }     
+      },
+      {
+        key: 'gender',
+        type: 'select',    
+        className: "col-md-2",  
+        templateOptions: {
+          label: 'Genere',     
+          required: true,
+          options: [
+            { value: 'm', label: 'Maschio' },
+            { value: 'f', label: 'Femmina' },
+          ]               
+        }     
+      },
+      {
+        key: 'fiscalcode',
+        type: 'input',
+        className: "col-md-4",
+        templateOptions: {
+          label: 'Codice fiscale',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'birthplace',
+        type: 'input',
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Luogo di nascita',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'birthprovince',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Provincia di nascita',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'birthdate',
+        type: 'date',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Data di nascita',     
+          required: true               
+        }     
+      },
+      {
+        key: 'com_res',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Comune di residenza',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'prov_res',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Provincia di residenza',     
+          required: true               
+        }     
+      },
+      {
+        key: 'via_res',
+        type: 'input',      
+        className: "col-md-4",
+        templateOptions: {
+          label: 'Via di residenza',     
+          required: true               
+        }     
+      },  
+      {
+        key: 'civ_res',
+        type: 'input',      
+        className: "col-md-2",
+        templateOptions: {
+          label: 'Civico',     
+          required: true               
+        }     
+      },
+      {
+        key: 'presso',
+        type: 'input',      
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Presso',     
+          required: true               
+        }     
+      }
+    ];
+  }
+
+  clearMessage() {
+    this.messageService.clear();
+  }
+
+  query(model): Observable<any> {    
+    return this.http
+      .post<any>('http://pcoliva.uniurb.it/api/submissions/query', model, httpOptions ).pipe(
+        tap(sub => this.messageService.info('Ricerca effettuata con successo')),
+        catchError(this.handleError('query'))
+      );
+  }
 
   constructor(private http: HttpClient, public messageService: MessageService ) { }
 
+  getSubmissionById(id: number): Observable<any> {
+    return this.http
+      .get('http://pcoliva.uniurb.it/api/submissions', {
+        params: new HttpParams().set('Id', id.toString())
+      }).pipe(
+        tap(sub => {
+          if (sub)
+            this.messageService.info('Lettura effettuata con successo')
+          else 
+            this.messageService.info('Domanda non trovata')
+        }),
+        catchError(this.handleError('getuser'))
+      );
+    }
+  
+ 
+  
   getSumbissions(): Observable<any> {
     return this.http
       .get('http://pcoliva.uniurb.it/api/submissions', httpOptions);
@@ -83,5 +259,7 @@ export class SubmissionService {
       return of(result as T);
     };
   }
+  
 
+  
 }
