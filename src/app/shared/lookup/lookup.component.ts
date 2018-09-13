@@ -3,6 +3,7 @@ import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bo
 import { ServiceQuery } from '..';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import ControlUtils from '../dynamic-form/control-utils';
 
 @Component({
   selector: 'app-lookup',
@@ -13,7 +14,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 // ng g c shared/lookup -s true  --spec false
 export class LookupComponent implements OnInit {
 
-  @Input() entityname;  
+  @Input() entityName;  
   isLoading: boolean = false;
   service: ServiceQuery;
 
@@ -27,9 +28,12 @@ export class LookupComponent implements OnInit {
   resultMetadata: FormlyFieldConfig[];
 
   closeResult: string;
-  selected: [];
+  selected: null;
 
   ngOnInit(): void {    
+    const servicename = ControlUtils.getServiceName(this.entityName)
+    this.service = this.injector.get(servicename) as ServiceQuery;
+
     this.researchMetadata = this.service.getMetadata();
     this.resultMetadata =  [
       {
@@ -58,7 +62,7 @@ export class LookupComponent implements OnInit {
   
 
   constructor(public activeModal: NgbActiveModal, private injector: Injector,) {
-    this.service = this.injector.get('userService') as ServiceQuery;
+  
   }  
 
 

@@ -7,6 +7,7 @@ import { FormControl } from '@angular/forms';
 import { ServiceQuery } from '../query-builder/query-builder.interfaces';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LookupComponent } from '../lookup/lookup.component';
+import ControlUtils from './control-utils';
 
 @Component({
   selector: 'app-external-type',
@@ -17,8 +18,8 @@ import { LookupComponent } from '../lookup/lookup.component';
       class="col-md-4" 
       [form]="form"
       [field]="codeField"
-      [options]="options">
-    </formly-field>  
+      [options]="options">      
+    </formly-field> 
     <div class="col-md-8">    
       <Label *ngIf="descriptionField.templateOptions.label">{{ descriptionField.templateOptions.label }} </Label>
       <input type="text" class="form-control" [value]="extDescription"  readonly>    
@@ -47,11 +48,14 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
 
   constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal) {
     super();       
-    this.service = this.injector.get('userService') as ServiceQuery;
+    
+
   }
 
   ngOnInit() {
-    
+    const servicename = ControlUtils.getServiceName(this.to.entityName)
+    this.service = this.injector.get(servicename) as ServiceQuery;
+
     this.field.wrappers = [];   
     if (this.codeField == undefined) {
       let tmpfield = {
@@ -67,7 +71,12 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
           //e necessario inserire anche updateon blur nel principale 
           modelOptions: {
             updateOn: 'blur'
-          }
+          },
+          //commento perchè il bottone appare leggermente dissalineato
+          // addonRight:{
+          //   class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',      
+          //   onClick: (to, fieldType, $event) => this.open(),
+          // }
         },        
         type: this.field.templateOptions.type,            
         lifecycle: {          
@@ -149,7 +158,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
       this.nodecode = false
     },(reason) => {      
     });
-    modalRef.componentInstance.metadata = this.service.getMetadata();
+    modalRef.componentInstance.entityName = this.to.entityName;
 
   }
   

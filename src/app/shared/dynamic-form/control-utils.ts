@@ -3,6 +3,10 @@ import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 
 export default class ControlUtils {
    
+    static getServiceName(entityName: string){
+      return entityName + 'Service';
+    }
+
     static toFormGroup(controls: ControlBase<any>[] ) {
         let group: any = {};
     
