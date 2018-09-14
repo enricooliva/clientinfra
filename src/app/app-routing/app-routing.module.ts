@@ -12,7 +12,8 @@ const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url
   { path: '', redirectTo: '/home', pathMatch:'full' },
   { path: 'home',  component: HomeComponent, children:[
-      { path: 'submission',  component: SubmissionComponent,  canActivate:[AuthGuard] },     
+      { path: 'submission',  component: SubmissionComponent,  canActivate:[AuthGuard] }, 
+      { path: 'submission/:id',  component: SubmissionComponent,  canActivate:[AuthGuard] },     
       { path: 'submissions',  component: SubmissionsComponent,  canActivate:[AuthGuard] },     
       { path: 'users',  component: UsersComponent, canActivate:[AuthGuard] },     //canActivate:[AuthGuard]
       { path: 'user/:id',  component: UserComponent,  canActivate:[AuthGuard] },     

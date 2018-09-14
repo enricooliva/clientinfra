@@ -3,6 +3,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { ServiceQuery } from '../../../shared';
 import ControlUtils from '../../../shared/dynamic-form/control-utils';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -44,7 +45,7 @@ export class SubmissionsComponent implements OnInit {
   resultMetadata: FormlyFieldConfig[];
 
   
-  constructor(private injector: Injector) { }
+  constructor(private injector: Injector, private router: Router ) { }
 
   ngOnInit() {
 
@@ -63,7 +64,8 @@ export class SubmissionsComponent implements OnInit {
             scrollbarH: true,        
             limit: "50",
             hidetoolbar: true, 
-            selected: [],                         
+            selected: [],            
+            onDblclickRow: (event) => this.onDblclickRow(event)                 
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
@@ -76,6 +78,14 @@ export class SubmissionsComponent implements OnInit {
       ];
 
   }
+
+  onDblclickRow(event) {
+    //, {relativeTo: this.route}
+    if (event.type === 'dblclick') {          
+      this.router.navigate(['home/submission', event.row.id]);
+    }
+  }
+
 
 
   onFind(model){

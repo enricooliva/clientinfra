@@ -181,7 +181,7 @@ export class SubmissionService implements ServiceQuery {
   getSubmissionById(id: number): Observable<any> {
     return this.http
       .get('http://pcoliva.uniurb.it/api/submissions', {
-        params: new HttpParams().set('Id', id.toString())
+        params: new HttpParams().set('id', id.toString())
       }).pipe(
         tap(sub => {
           if (sub)

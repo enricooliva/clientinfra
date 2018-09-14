@@ -31,12 +31,14 @@
                 <!-- menu laterale -->
                 <app-side-nav id="doc-nav" [ngbCollapse]="sidebarCollapsed" [entries]="navs" class="d-lg-block py-2 collpase sidebar"></app-side-nav>
             </div>
-            <div class="col-12 col-lg-10">
-                <div class="mb-3 mt-2">
+            <div  class="col-12 col-lg-10">
+                <div class="mt-2" style="padding-bottom: 100px;">
                     <router-outlet></router-outlet>
                 </div>
+                <app-message></app-message>
             </div>
         </div>
+       
     </div>
-<!-- </div> -->
-<app-message ></app-message>
+    <!-- </div> -->
+   

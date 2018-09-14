@@ -13,44 +13,45 @@
     min-height: 100%;
     height: 100%;
     /* Negative indent footer by its height */
-    margin: 0 auto -120px 0;
+    margin: 0 auto 50px 0;
     /* Pad bottom by footer height */
-    padding: 0 0 118px 0;
+    padding: 0 0 50px 0;
   }
 
-  .footer {   
-    //padding: 3rem 0;
-    // margin-top: 3rem;
-    //font-size: 85%;
-    // background-color: #f7f7f7;
-    // text-align: left;   
-
-    // p {
-    //   margin-bottom: 0;
-    // }
-  
-    // a {
-    //   font-weight: 500;
-    //   color: #55595c;
-    // }    
-  }
-  
   .social-buttons > iframe {
     margin-left: 0.75rem;
   }
-  
+
   .sidebar-collapsed {
     margin-left: -15px;
     margin-right: -15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
   }
   
   .sidebar {
-    height: calc(100vh - 48px);
     position: sticky;
     top: 2rem;
   }
+
+  .footer {
+    //padding: 3rem 0;
+    // margin-top: 3rem;
+    font-size: 85%;
+    // background-color: #f7f7f7;
+    text-align: left;
   
+    p {
+      margin-bottom: 0;
+    }
+  
+    a {
+      font-weight: 500;
+      //color: #55595c;
+    }
+  }
+
+
   header.title {
     margin-left: -15px;
     margin-right: -15px;

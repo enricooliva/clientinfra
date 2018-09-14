@@ -12,6 +12,7 @@ import ControlUtils from '../../../shared/dynamic-form/control-utils';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { fieldsForm } from '../../models/submissionForm'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-submission',
@@ -29,22 +30,33 @@ export class SubmissionComponent implements OnInit {
  
   defaultColDef = { editable: true };
  
-  constructor(private submissionService: SubmissionService) {         
+  constructor(private submissionService: SubmissionService, private route: ActivatedRoute) {         
   } 
 
 
   ngOnInit() {    
-   
+       
+    this.route.params.subscribe(params => {
+      if (params['id']){
+        this.isLoading = true;    
+        this.submissionService.clearMessage();
+        this.submissionService.getSubmissionById(params['id']).subscribe((data) => {
+          this.isLoading = false;
+          this.model = data;
+        });
+      }
+    });
+
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
     //this.submission = this.submissionService.getSubmission();
-    this.isLoading = true;
-    this.submissionService.getSubmission().subscribe((data)=> {          
+    // this.isLoading = true;
+    // this.submissionService.getSubmission().subscribe((data)=> {          
       
-      this.id=data.id;  
-      this.model = data;    
-      this.isLoading = false;
-    });    
+    //   this.id=data.id;  
+    //   this.model = data;    
+    //   this.isLoading = false;
+    // });    
   } 
  
   onNew(){
