@@ -22,6 +22,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     time: ['=', '!=', '>', '>=', '<', '<='],
     date: ['=', '!=', '>', '>=', '<', '<='],
     enum: ['=', '!=', 'in', 'not in'],
+    select: ['=', '!=', 'in', 'not in'],
     boolean: ['=']
   };
 
@@ -57,8 +58,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
               onInit: (form, field) => {                
               
                 form.get('field').valueChanges.pipe(
-                  takeUntil(this.onDestroy$),
-                  startWith(form.get('field').value),
+                  takeUntil(this.onDestroy$),                 
                   tap(selectedField => {                                     
                     field.formControl.setValue('');
                     if (this.keymetadata[selectedField] )                     
@@ -82,8 +82,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
             lifecycle: {
               onInit: (form, field) => {                                             
                 form.get('field').valueChanges.pipe(
-                  takeUntil(this.onDestroy$),
-                  startWith(form.get('field').value),
+                  takeUntil(this.onDestroy$),                  
                   tap(selectedField => {                   
                     if (this.keymetadata[selectedField]){                                                     
                       field.formControl.reset(); 
@@ -124,8 +123,9 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   setField(field: any, selectedField: string){
     if (this.keymetadata[selectedField].type!=='external'){                                                        
       field.templateOptions.field = {                                         
-        type: this.keymetadata[selectedField].type,
+        type: this.keymetadata[selectedField].type,        
         templateOptions: {
+          ...this.keymetadata[selectedField].templateOptions,
           type: this.keymetadata[selectedField].type,                                                                      
         }
       }

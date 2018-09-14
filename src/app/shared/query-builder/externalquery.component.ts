@@ -32,8 +32,7 @@ export class ExternalqueryComponent  extends FieldType implements OnInit {
             if (event.key == "F4" ){
               this.open();
             }          
-          },                      
-          //commento perchè il bottone appare leggermente dissalineato
+          },                                
           addonRight:{
             class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',      
             onClick: (to, fieldType, $event) => this.open(),
