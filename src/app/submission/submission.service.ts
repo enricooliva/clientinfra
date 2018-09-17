@@ -200,6 +200,7 @@ export class SubmissionService implements ServiceQuery {
       .get('http://pcoliva.uniurb.it/api/submissions', httpOptions);
   }
 
+  //per debug
   getSubmission(): Observable<Submission> {
 
     let res = this.http
@@ -231,13 +232,25 @@ export class SubmissionService implements ServiceQuery {
 
 
   updateSubmission(submission: Submission, id: number): any {
-    const url = `${'http://pcoliva.uniurb.it/api/submissions'}/${id}`;
-    let res = this.http.put<Submission>(url, submission, httpOptions)
-      .pipe(
-        tap(sub => this.messageService.info('Aggiornamento effettuato con successo')),
-        catchError(this.handleError('updateSubmission', submission))
-      );
-    return res;
+    if (id){
+      //aggiorna la submission esiste PUT
+      const url = `${'http://pcoliva.uniurb.it/api/submissions'}/${id}`;
+      let res = this.http.put<Submission>(url, submission, httpOptions)
+        .pipe(
+          tap(sub => this.messageService.info('Aggiornamento effettuato con successo')),
+          catchError(this.handleError('updateSubmission', submission))
+        );
+      return res;
+    }else{
+      //crea una nuova submission POST
+      const url = `${'http://pcoliva.uniurb.it/api/submissions'}`;
+      let res = this.http.post<Submission>(url, submission, httpOptions)
+        .pipe(
+          tap(sub => this.messageService.info('Creazione effettuata con successo')),
+          catchError(this.handleError('updateSubmission', submission))
+        );
+      return res;
+    }
   }  
   
   /**
@@ -253,7 +266,7 @@ export class SubmissionService implements ServiceQuery {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.messageService.error(`${operation} failed: ${error.message}`);
+      this.messageService.error(`${operation} failed: ${error.message} details: ${error.error.message}`  );
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

@@ -4,6 +4,8 @@ import { FormGroup } from '@angular/forms';
 import { ServiceQuery } from '../../../shared';
 import ControlUtils from '../../../shared/dynamic-form/control-utils';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
+import { Page } from '../../../shared/lookup/page';
 
 
 
@@ -56,16 +58,19 @@ export class SubmissionsComponent implements OnInit {
     this.resultMetadata =  [
       {
           key: 'data',
-          type: 'datatable',
+          type: 'datatablelookup',
           wrappers: ['accordion'],      
           templateOptions: {
             label: 'Domande',   
             columnMode: 'force',
-            scrollbarH: true,        
-            limit: "50",
+            headerHeight: 50,
+            footerHeight: 50,
+            scrollbarH: true,             
             hidetoolbar: true, 
-            selected: [],            
-            onDblclickRow: (event) => this.onDblclickRow(event)                 
+            selected: [],                        
+            page: new Page(2),
+            onDblclickRow: (event) => this.onDblclickRow(event),
+            onSetPage: (pageInfo) => this.onSetPage(pageInfo)                                     
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
@@ -85,18 +90,38 @@ export class SubmissionsComponent implements OnInit {
       this.router.navigate(['home/submission', event.row.id]);
     }
   }
+  
+  querymodel = {
+    rules: new Array<any>(),    
+  };
 
+  onSetPage(pageInfo){      
+    if (pageInfo.limit)
+      this.querymodel['limit']= pageInfo.limit;     
+    if (this.model.data.length>0){
+      this.querymodel['page']=pageInfo.offset + 1;     
+      this.onFind(this.querymodel);
+    }
+  }
 
 
   onFind(model){
+    this.querymodel.rules = model.rules;  
+
     this.isLoading = true;    
     //this.service.clearMessage();
-    try{
-      this.service.query(model).subscribe((data) => {
+    try{      
+      this.service.query(this.querymodel).subscribe((data) => {
+        const to = this.resultMetadata[0].templateOptions;
         this.isLoading = false;   
         this.model=  {
           data: data.data
         }
+
+        to.page.totalElements = data.total; // data.to;
+        to.page.pageNumber = data.current_page-1;
+        to.page.size = data.per_page;        
+        
       }, err => {
         this.isLoading=false;
         console.error('Oops:', err.message);

@@ -30,6 +30,7 @@ import { ExternalTypeComponent } from './dynamic-form/external-type.component';
 import { LoadingModule } from 'ngx-loading';
 import { LookupComponent } from './lookup/lookup.component';
 import { ExternalqueryComponent } from './query-builder/externalquery.component';
+import { TableLookupTypeComponent } from './dynamic-form/tablelookup-type.component';
 
 @NgModule({
   imports: [
@@ -86,6 +87,20 @@ import { ExternalqueryComponent } from './query-builder/externalquery.component'
           },
         }, 
       },
+      { name: 'datatablelookup', 
+        component: TableLookupTypeComponent, 
+        defaultOptions: {
+          templateOptions: {
+            columnMode: "force",    
+            rowHeight: "auto",    
+            headerHeight: "30",
+            footerHeight: "30",
+            limit: "100",
+            scrollbarH: "true",
+            reorderable: "reorderable"
+          },
+        }, 
+      },
       ],
       wrappers: [
         { name: 'panel', component: PanelWrapperComponent },
@@ -116,13 +131,14 @@ import { ExternalqueryComponent } from './query-builder/externalquery.component'
     GenericTypeComponent,
     ExternalTypeComponent,
     LookupComponent,
-    ExternalqueryComponent
+    ExternalqueryComponent,
+    TableLookupTypeComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
-    SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent 
+    SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, TableLookupTypeComponent 
   ],
   entryComponents: [LookupComponent]
 })

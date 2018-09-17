@@ -50,7 +50,7 @@ import { element } from 'protractor';
   </ng-template>  
   
   <ng-template #valuecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
-    {{ value }}
+    {{ value }}    
   </ng-template>  
 
 

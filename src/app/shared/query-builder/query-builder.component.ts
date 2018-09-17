@@ -103,7 +103,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   form = new FormGroup({});
   options: FormlyFormOptions = {};
   model = {
-    rules: new Array<any>(),
+    rules: new Array<any>(),    
   };
 
   private fields: FormlyFieldConfig[] = this.rules;    
