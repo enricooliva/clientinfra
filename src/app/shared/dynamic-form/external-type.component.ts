@@ -60,7 +60,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     if (this.codeField == undefined) {
       let tmpfield = {
         ...this.field,
-        wrappers: ['form-field'],//addons
+        wrappers: ['form-field','addons'],//addons
         templateOptions: { 
           ...this.field.templateOptions,
           keyup: (field, event: KeyboardEvent ) => { 
@@ -71,12 +71,11 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
           //e necessario inserire anche updateon blur nel principale 
           modelOptions: {
             updateOn: 'blur'
-          },
-          //commento perchè il bottone appare leggermente dissalineato
-          // addonRight:{
-          //   class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',      
-          //   onClick: (to, fieldType, $event) => this.open(),
-          // }
+          },          
+          addonRight:{
+             class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',      
+             onClick: (to, fieldType, $event) => this.open(),
+          }
         },        
         type: this.field.templateOptions.type,            
         lifecycle: {          

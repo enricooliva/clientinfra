@@ -6,8 +6,9 @@
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 @import "~bootstrap/dist/css/bootstrap.css"; 
 
-// styles in src/style directory are applied to the whole page  
-  
+  // styles in src/style directory are applied to the whole page  
+  .oi { top: 0px !important; }
+
   /* Wrapper for page content to push down footer */
   #wrap {
     min-height: 100%;
