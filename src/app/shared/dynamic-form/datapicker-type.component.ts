@@ -17,14 +17,15 @@ import { FieldType } from '@ngx-formly/core';
         ngbDatepicker="" #d="ngbDatepicker" 
         [ngClass]="{'is-invalid': formControl.invalid && (formControl.dirty || formControl.touched)}">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-          <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+        <button class="btn btn-outline-secondary input-group-text oi oi-calendar" (click)="d.toggle()" type="button">
+         
         </button>
     </div>
   </div>
   `,
   styles: []
 })
+//<img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
 export class DatepickerTypeComponent extends FieldType {
 
   ngOnInit() {
