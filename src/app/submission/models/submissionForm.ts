@@ -92,6 +92,7 @@ export const fieldsForm: FormlyFieldConfig[] = [
         label: 'UserId',                     
         type: 'string',                         
         entityName: 'user',
+        entityLabel: 'Utenti',
         codeProp:'id',
         descriptionProp: 'name',                
       },      

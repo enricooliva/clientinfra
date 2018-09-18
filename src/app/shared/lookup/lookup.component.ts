@@ -4,6 +4,7 @@ import { ServiceQuery } from '..';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import ControlUtils from '../dynamic-form/control-utils';
+import { Page } from './page';
 
 @Component({
   selector: 'app-lookup',
@@ -14,7 +15,9 @@ import ControlUtils from '../dynamic-form/control-utils';
 // ng g c shared/lookup -s true  --spec false
 export class LookupComponent implements OnInit {
 
-  @Input() entityName;  
+  @Input() entityName; 
+  @Input() entityLabel;
+
   isLoading: boolean = false;
   service: ServiceQuery;
 
@@ -38,16 +41,17 @@ export class LookupComponent implements OnInit {
     this.resultMetadata =  [
       {
           key: 'data',
-          type: 'datatable',
+          type: 'datatablelookup',
           wrappers: ['accordion'],      
           templateOptions: {
-            label: 'Utenti',   
+            label: this.entityLabel,   
             columnMode: 'force',
-            scrollbarH: false,        
-            limit: "50",
+            scrollbarH: false,                  
             hidetoolbar: true, 
             selected: [],             
-            onDblclickRow: (event) => this.onDblclickRow(event)                
+            page: new Page(2),
+            onDblclickRow: (event) => this.onDblclickRow(event),
+            onSetPage: (pageInfo) => this.onSetPage(pageInfo)                                             
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
@@ -78,14 +82,43 @@ export class LookupComponent implements OnInit {
   }
   
   onFind(model){
+    this.querymodel.rules = model.rules;  
     this.isLoading = true;        
-    this.service.query(model).subscribe((data) => {
+    try{
+    this.service.query(this.querymodel).subscribe((data) => {
+      const to = this.resultMetadata[0].templateOptions;
       this.isLoading = false;   
       this.model=  {
         data: data.data
       }
-    });
+      to.page.totalElements = data.total; 
+      to.page.pageNumber = data.current_page-1;
+      to.page.size = data.per_page;        
+        
+      }, err => {
+        this.isLoading=false;
+        console.error('Oops:', err.message);
+      });
+    }catch(e){
+      this.isLoading = false;
+      console.error(e);
+    }
   }
+
+  querymodel = {
+    rules: new Array<any>(),    
+  };
+
+  onSetPage(pageInfo){      
+    if (pageInfo.limit)
+      this.querymodel['limit']= pageInfo.limit;     
+    if (this.model.data.length>0){
+      this.querymodel['page']=pageInfo.offset + 1;     
+      this.onFind(this.querymodel);
+    }
+  }
+
+
 
   // private getDismissReason(reason: any): string {
   //   if (reason === ModalDismissReasons.ESC) {

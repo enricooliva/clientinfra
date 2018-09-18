@@ -158,6 +158,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     },(reason) => {      
     });
     modalRef.componentInstance.entityName = this.to.entityName;
+    modalRef.componentInstance.entityLabel = this.to.entityLabel;
 
   }
   
