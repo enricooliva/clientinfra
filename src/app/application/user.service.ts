@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { Submission } from './models/submission';
+import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { AppConstants } from '../app-constants';
 
 
 const httpOptions = {
@@ -16,6 +16,8 @@ const httpOptions = {
 
 @Injectable()
 export class UserService implements ServiceQuery {
+
+  _baseURL: string;
 
   getMetadata():FormlyFieldConfig[] {
     return  [
@@ -55,7 +57,9 @@ export class UserService implements ServiceQuery {
     return this.getUser(id);
   }
 
-  constructor(private http: HttpClient, public messageService: MessageService ) { }
+  constructor(private http: HttpClient, public messageService: MessageService ) {
+    this._baseURL = AppConstants.baseApiURL;
+  }
   
   clearMessage() {
     this.messageService.clear();
@@ -63,7 +67,7 @@ export class UserService implements ServiceQuery {
 
   query(model): Observable<any> {    
     return this.http
-      .post<any>('http://pcoliva.uniurb.it/api/users/query', model, httpOptions ).pipe(
+      .post<any>(this._baseURL+'/users/query', model, httpOptions ).pipe(
         tap(sub => this.messageService.info('Ricerca effettuata con successo')),
         catchError(this.handleError('query'))
       );
@@ -72,7 +76,7 @@ export class UserService implements ServiceQuery {
   getUsers(model): Observable<any> {
     
     return this.http
-      .get<any>('http://pcoliva.uniurb.it/api/users', { headers: httpOptions.headers, params: model }).pipe(
+      .get<any>(this._baseURL+'/users', { headers: httpOptions.headers, params: model }).pipe(
         tap(sub => this.messageService.info('Lettura utenti effettuata con successo')),
         catchError(this.handleError('getusers'))
       );
@@ -80,7 +84,7 @@ export class UserService implements ServiceQuery {
 
   getUser(id: number): Observable<any> {
     return this.http
-      .get('http://pcoliva.uniurb.it/api/users', {
+      .get(this._baseURL+'/users', {
         params: new HttpParams().set('userId', id.toString())
       }).pipe(
         tap(sub => {
@@ -94,15 +98,31 @@ export class UserService implements ServiceQuery {
     }
   
  
+  remove(id: number){
+    return this.http.delete(this._baseURL+'/users/'+ id.toString()).pipe(
+      tap(ok => {        
+          this.messageService.clear();
+          this.messageService.info('Eliminazione utente effettuata con successo')                  
+      }),
+      catchError(  
+        this.handleError("remove",null)
+      )
+    );
+  }
+
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       
       console.error(error); // log to console instead
 
-      // TODO: better job of transforming error for user consumption
+      //better job of transforming error for user consumption
       this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
+      if (operation=='remove')
+        throw(error);
+
       return of(result as T);
     };
   }

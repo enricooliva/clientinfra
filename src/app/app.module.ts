@@ -4,13 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
-import { SubmissionModule } from './submission/submission.module';
+import { ApplicationModule } from './application/application.module';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { AppComponent } from './app.component';
-import { SubmissionService } from './submission/submission.service';
+import { ApplicationService } from './application/application.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
@@ -21,7 +21,7 @@ import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker
 import { NgbStringAdapter } from './NgbStringAdapter';
 import { TableTypeComponent } from './shared/dynamic-form/table-type.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { UserService } from './submission/user.service';
+import { UserService } from './application/user.service';
 
 
 
@@ -39,7 +39,7 @@ export function tokenGetter() {
     TableTypeComponent,        
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, SubmissionModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
+    BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
     AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(),
     
     JwtModule.forRoot({
@@ -53,10 +53,10 @@ export function tokenGetter() {
   providers: [
     NgbActiveModal,
     AuthGuard,  
-    SubmissionService,
+    ApplicationService,
     UserService,
     {provide: 'userService', useClass: UserService},
-    {provide: 'submissionService', useClass: SubmissionService},
+    {provide: 'applicationService', useClass: ApplicationService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],

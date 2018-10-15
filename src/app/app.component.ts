@@ -14,7 +14,7 @@ import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
   styleUrls: ['./app.component.scss'],  
 })
 export class AppComponent {
-  title = 'Unipeo client';
+  title = 'Uniconv client';
   errorMessage = '';
   
   constructor(public router: Router, private authService: AuthService, private rolesService: NgxRolesService) {    
@@ -24,10 +24,10 @@ export class AppComponent {
     // const perm = ["ADMIN", "EDITOR"];
     // this.permissionsService.loadPermissions(perm);
 
-    rolesService.addRoles({
-        'USER': ['canReadSubmission'],
-        'ADMIN': ['canReadSubmission', 'canReadUsers','canEditUsers','canCreatUser'],       
-      });
+    // rolesService.addRoles({
+    //     'USER': ['canReadSubmission'],
+    //     'ADMIN': ['canReadSubmission', 'canReadUsers','canEditUsers','canCreatUser'],       
+    //   });
 
     router.events.subscribe(s => {
       if (s instanceof NavigationCancel) {

@@ -10,7 +10,7 @@ import { Page } from '../../../shared/lookup/page';
 
 
 @Component({
-  selector: 'app-submissions',
+  selector: 'app-convenzionis',
   template: `
 
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
@@ -33,7 +33,7 @@ import { Page } from '../../../shared/lookup/page';
 
 //ng g c submission/components/submission/submissions -s true --spec false -t true --flat true
 
-export class SubmissionsComponent implements OnInit {
+export class ConvenzioniComponent implements OnInit {
   isLoading: boolean = false;
   service: ServiceQuery;
 
@@ -51,7 +51,7 @@ export class SubmissionsComponent implements OnInit {
 
   ngOnInit() {
 
-    const servicename = ControlUtils.getServiceName('submission');
+    const servicename = ControlUtils.getServiceName('application');
     this.service = this.injector.get(servicename) as ServiceQuery;
 
     this.researchMetadata = this.service.getMetadata();
@@ -68,7 +68,7 @@ export class SubmissionsComponent implements OnInit {
             scrollbarH: true,             
             hidetoolbar: true, 
             selected: [],                        
-            page: new Page(2),
+            page: new Page(25),
             onDblclickRow: (event) => this.onDblclickRow(event),
             onSetPage: (pageInfo) => this.onSetPage(pageInfo)                                     
           },
@@ -87,7 +87,7 @@ export class SubmissionsComponent implements OnInit {
   onDblclickRow(event) {
     //, {relativeTo: this.route}
     if (event.type === 'dblclick') {          
-      this.router.navigate(['home/submission', event.row.id]);
+      this.router.navigate(['home/convenzioni', event.row.id]);
     }
   }
   

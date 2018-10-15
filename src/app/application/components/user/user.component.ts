@@ -17,11 +17,11 @@ import { ActivatedRoute } from '@angular/router';
         <span class="oi oi-arrow-top"></span>  
         <span class="ml-2">Aggiorna</span>
     </button>
-    <button class="btn btn-outline-primary border-0 rounded-0">
+    <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!isReloadable">
         <span class="oi oi-reload iconic" title="reload" aria-hidden="true"></span>
         <span class="ml-2">Ricarica</span>
     </button>   
-    <button class="btn btn-outline-primary border-0 rounded-0">
+    <button class="btn btn-outline-primary border-0 rounded-0"  [disabled]="!form.valid" (click)="onRemove()">
         <span class="oi oi-trash"></span>
         <span class="ml-2">Rimuovi</span>
       </button>
@@ -34,13 +34,14 @@ import { ActivatedRoute } from '@angular/router';
   </formly-form> 
   </form>
 
-  <p>Form value: {{ form.value | json }}</p>
-  <p>Form status: {{ form.status | json }}</p>
-  <p>Model: {{ model | json }}</p>
-
   </div>
   `
 })
+// <p>Form value: {{ form.value | json }}</p>
+//   <p>Form status: {{ form.status | json }}</p>
+//   <p>Model: {{ model | json }}</p>
+
+
 
 //ng g c submission/components/user -s true --spec false -t true
 
@@ -143,6 +144,24 @@ export class UserComponent implements OnInit {
       });
   
     });
+  }
+
+  onRemove() {
+    this.userService.remove(this.model['id']).subscribe(
+      prop => {
+        this.model = null;
+      },      
+      error => { // error path
+        
+      }
+    );
+  }
+
+  get isReloadable(){
+    if (this.model == null)
+      return false;
+
+    return this.model['id'] != null;
   }
 
 }

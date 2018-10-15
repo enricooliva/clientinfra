@@ -4,11 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 //services
-import { SubmissionService } from './submission.service';
+import { ApplicationService } from './application.service';
 
 //components
-import { SubmissionComponent } from './components/submission/submission.component';
-import { AssignmentComponent } from './components/assignment/assignment.component';
+import { ConvenzioneComponent } from './components/convenzione/convenzione.component';
 import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/assignment-detail-page.component';
 import { SharedModule } from '../shared';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -18,7 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './components/user/users.component';
 import { UserComponent } from './components/user/user.component';
 import { LoadingModule } from 'ngx-loading';
-import { SubmissionsComponent } from './components/submission/submissions.component';
+import { ConvenzioniComponent } from './components/convenzione/convenzioni.component';
 
 
 @NgModule({
@@ -33,18 +32,17 @@ import { SubmissionsComponent } from './components/submission/submissions.compon
     LoadingModule   
   ], 
   exports: [
-    SubmissionComponent,
-    HomeComponent, UserComponent, SubmissionsComponent   
+    ConvenzioneComponent,
+    HomeComponent, UserComponent, ConvenzioniComponent   
   ],
   declarations: [        
-    SubmissionComponent,
-    SubmissionsComponent,
-    AssignmentComponent,
+    ConvenzioneComponent,
+    ConvenzioniComponent,    
     AssignmentDetailPageComponent,    
     HomeComponent, UsersComponent, UserComponent
   ],
   providers: [ 
-    SubmissionService 
+    ApplicationService 
   ], 
 })
-export class SubmissionModule { }
+export class ApplicationModule { }

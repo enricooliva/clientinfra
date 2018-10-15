@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { AppConstants } from '../app-constants';
 
 interface LoginResponse {
   accessToken: string;
@@ -27,7 +28,7 @@ const httpOptions = {
 })
 export class AuthService {
   
-  private authUrl: string = 'http://pcoliva.uniurb.it/api';
+  private authUrl: string; //= 'http://pcoliva.uniurb.it/api';
   private loggedIn = new BehaviorSubject<boolean>(false);
   
   _username = '';
@@ -35,6 +36,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService, private router: Router, private permissionsService: NgxPermissionsService ) {
     this.loggedIn.next(this.isAuthenticated());
+    this.authUrl = AppConstants.baseURL;
   }
  
   login() {

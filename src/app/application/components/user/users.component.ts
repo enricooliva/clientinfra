@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { fieldsForm } from '../../models/submissionForm'
 import { FormGroup, FormArray } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { ActivatedRoute, Router } from '@angular/router';
