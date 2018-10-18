@@ -5,4 +5,5 @@ export interface Convenzione {
     dipartimemto_cd_dip: number;
     nominativo_docente: string;
     emittente: string;    
+    user: any;
 }

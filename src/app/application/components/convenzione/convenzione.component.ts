@@ -5,7 +5,7 @@ import { ApplicationService } from '../../application.service';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
-
+import { startWith  } from 'rxjs/operators';
 @Component({
   selector: 'app-convenzione',
   templateUrl: './convenzione.component.html',  
@@ -30,13 +30,13 @@ export class ConvenzioneComponent implements OnInit {
       label: 'Id',   
       disabled: true      
     },
-  },
+  }, 
   {
     key: 'user_id',
     type: 'external',     
     wrappers: [], 
     templateOptions: {
-      label: 'UserId',                     
+      label: 'Utente',                     
       type: 'string',                         
       entityName: 'user',
       entityLabel: 'Utenti',
@@ -77,7 +77,7 @@ export class ConvenzioneComponent implements OnInit {
       className: "col-md-6",
       templateOptions: {
         options: this.service.getDipartimenti(),
-        valueProp: 'dip_id',
+        valueProp: 'cd_dip',
         labelProp: 'nome_breve',
         label: 'Dipartimento',     
         required: true               
@@ -88,7 +88,7 @@ export class ConvenzioneComponent implements OnInit {
       type: 'input',
       className: "col-md-6",
       templateOptions: {
-        label: 'Nominativo docente',     
+        label: 'Direttore di dipartimento',     
         required: true               
       }     
     },  
@@ -97,10 +97,13 @@ export class ConvenzioneComponent implements OnInit {
     fieldGroupClassName: 'row',
     fieldGroup:[
     {
-      key: 'emittente',
+      key: 'tipoemittenti_codice',
       type: 'select',
       className: "col-md-6",
       templateOptions: {
+        options: this.service.getEmittenti(),
+        valueProp: 'codice',
+        labelProp: 'descrizione',
         label: 'Autorizzato da',     
         required: true               
       }     
@@ -165,11 +168,19 @@ export class ConvenzioneComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.service.updateConvenzione(this.form.value, this.id).subscribe(
+      
+      var tosubmit = {...this.model, ...this.form.value};
+      this.service.updateConvenzione(tosubmit, this.model.id).subscribe(
         result => console.log(result),
         error => console.log(error)
       );      
     }
+  }
+
+  onGenerate(){
+    if (this.form.valid) {
+        this.service.generatePDF(this.model.id);
+    }  
   }
 
 

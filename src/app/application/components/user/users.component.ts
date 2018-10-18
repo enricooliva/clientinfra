@@ -10,7 +10,7 @@ import { UserComponent } from './user.component';
   template: `
     
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
-  <h4>Ricerca</h4>
+  <h4>Ricerca Utenti</h4>
   <app-query-builder [metadata]="this.userRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
 
   <h4>Risultati</h4>

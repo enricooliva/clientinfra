@@ -15,7 +15,7 @@ import { Page } from '../../../shared/lookup/page';
 
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
 
-  <h4>Ricerca</h4>
+  <h4>Ricerca Convenzioni</h4>
   <app-query-builder [metadata]="researchMetadata" (find)="onFind($event)" ></app-query-builder>
 
   <h4>Risultati</h4>

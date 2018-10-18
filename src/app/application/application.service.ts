@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { map, catchError, tap, startWith  } from 'rxjs/operators';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { InfraMessageType } from '../shared/message/message';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Convenzione } from './convenzione';
-
+import { saveAs } from 'file-saver';
+ 
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -173,10 +174,25 @@ export class ApplicationService implements ServiceQuery {
   }
 
 
-  getDipartimenti(): any {
+  getDipartimenti(): Observable<any> {        
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
   }
 
+  getEmittenti(): any {
+    return this.http.get(this._baseURL + '/convenzioni/emittenti', httpOptions);    
+  }
+
+  generatePDF(id: number) {      
+    this.http.get(this._baseURL + '/convenzioni/generapdf/'+id.toString(), { responseType: 'blob' }).subscribe(
+      (response) => {
+        var blob = new Blob([response], { type: 'application/pdf' });
+        saveAs(blob, 'convenzionePreview.pdf');
+    },
+    e => {  console.log(e); }  
+    );    
+  }
+
+  
 
   /**
    * Handle Http operation that failed.
