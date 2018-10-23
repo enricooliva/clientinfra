@@ -6,4 +6,5 @@ export interface Convenzione {
     nominativo_docente: string;
     emittente: string;    
     user: any;
+    dipartimento: any;
 }

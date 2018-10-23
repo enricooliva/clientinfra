@@ -5,7 +5,9 @@ import { ApplicationService } from '../../application.service';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
-import { startWith  } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { takeUntil, startWith, tap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-convenzione',
   templateUrl: './convenzione.component.html',  
@@ -13,6 +15,7 @@ import { startWith  } from 'rxjs/operators';
 
 export class ConvenzioneComponent implements OnInit {        
 
+  onDestroy$ = new Subject<void>();
   isLoading = false;
   form = new FormGroup({});
   model: Convenzione;  
@@ -67,8 +70,7 @@ export class ConvenzioneComponent implements OnInit {
         required: true,                 
       }     
     }]
-  }, 
-  {
+  },   {
     fieldGroupClassName: 'row',
     fieldGroup:[
     {
@@ -81,7 +83,7 @@ export class ConvenzioneComponent implements OnInit {
         labelProp: 'nome_breve',
         label: 'Dipartimento',     
         required: true               
-      }     
+      },        
     },  
     {
       key: 'nominativo_docente',
@@ -90,7 +92,22 @@ export class ConvenzioneComponent implements OnInit {
       templateOptions: {
         label: 'Direttore di dipartimento',     
         required: true               
-      }     
+      },
+      lifecycle: {
+        onInit: (form, field) => {          
+          form.get('dipartimemto_cd_dip').valueChanges.pipe(
+            takeUntil(this.onDestroy$),
+            //startWith(form.get('dipartimemto_cd_dip').value),
+            tap(codiceDip => {
+              if (codiceDip){
+                this.service.getDirettoreDipartimento(codiceDip).subscribe((res)=>{
+                  field.formControl.setValue(res.nome_esteso);                
+                })
+              }              
+            }),
+          ).subscribe();
+        },
+      },       
     },  
   ]},
   {
@@ -135,6 +152,7 @@ export class ConvenzioneComponent implements OnInit {
       }
     });
 
+ 
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
     //this.submission = this.submissionService.getSubmission();
@@ -147,6 +165,11 @@ export class ConvenzioneComponent implements OnInit {
     // });    
   } 
  
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
   onNew(){
     this.model = null;
     this.form.reset();
@@ -157,8 +180,8 @@ export class ConvenzioneComponent implements OnInit {
     //sono nello stato nuovo
     if(this.model != null && this.model.id !== null){
       this.isLoading=true;
-      this.service.getConvenzioneByUserId(this.model.user_id).subscribe((data)=> {          
-        
+      this.service.getConvenzioneById(this.model.id).subscribe((data)=> {          
+        this.form.reset();
         this.id=data.id;  
         this.model = data;    
         this.isLoading = false;
@@ -168,11 +191,21 @@ export class ConvenzioneComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      
+      this.isLoading=true;
       var tosubmit = {...this.model, ...this.form.value};
       this.service.updateConvenzione(tosubmit, this.model.id).subscribe(
-        result => console.log(result),
-        error => console.log(error)
+        result => {
+          this.form.reset();
+          this.isLoading = false;
+          this.id=tosubmit.id;  
+          this.model = tosubmit;    
+          console.log(result)
+        },
+        error => {
+          this.isLoading = false;
+          console.log(error)
+        }
+        
       );      
     }
   }

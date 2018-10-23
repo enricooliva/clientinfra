@@ -2,15 +2,15 @@
 
 <div class="btn-toolbar mb-4" role="toolbar">
   <div class="btn-group btn-group-sm">    
-    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onNew()"  >              
+    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onNew()" >              
         <span class="oi oi-document"></span>
         <span class="ml-2">Nuovo</span>
     </button>    
-    <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid" (click)="onSubmit()" >              
+    <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
         <span class="oi oi-arrow-top"></span>  
         <span class="ml-2">Aggiorna</span>
     </button>
-    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onReload()">
+    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onReload()"  [disabled]="!form.dirty">
         <span class="oi oi-reload iconic" title="reload" aria-hidden="true" ></span>
         <span class="ml-2">Ricarica</span>
     </button>   
@@ -20,7 +20,7 @@
       </button>
   </div>
 </div>
-
+<h4>Convenzione</h4>
 <form [formGroup]="form" >
   <formly-form [model]="model" [fields]="fields" [form]="form">
     <!-- <button type="submit" class="btn btn-primary submit-button">Submit</button>
@@ -28,11 +28,13 @@
   </formly-form> 
 </form>
 
+<br>
+<br>
 
 <div>
-  <button class="btn btn-primary border-0 rounded-0" (click)="onGenerate()"  >              
+  <button class="btn btn-primary border-0 rounded-0" (click)="onGenerate()" [disabled]="form.dirty" >              
     <span class="oi oi-document"></span>
-    <span class="ml-2">Genera pdf</span>
+    <span class="ml-2">Scarica convezione</span>
   </button>  
 </div>
 

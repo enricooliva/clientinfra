@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap, startWith  } from 'rxjs/operators';
+import { map, catchError, tap, startWith, takeUntil  } from 'rxjs/operators';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { InfraMessageType } from '../shared/message/message';
@@ -9,7 +9,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Convenzione } from './convenzione';
 import { saveAs } from 'file-saver';
- 
+import { Subject } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -67,15 +67,18 @@ export class ApplicationService implements ServiceQuery {
           label: 'Descrizione Titolo',
           required: true,
         },
-      },
+      },      
       {
         key: 'dipartimemto_cd_dip',
         type: 'select',
         className: "col-md-6",
         templateOptions: {
-          label: 'Dipartimento',
-          required: true
-        }
+          options: this.getDipartimenti(),
+          valueProp: 'cd_dip',
+          labelProp: 'nome_breve',
+          label: 'Dipartimento',     
+          required: true               
+        },         
       },
       {
         key: 'nominativo_docente',
@@ -87,14 +90,17 @@ export class ApplicationService implements ServiceQuery {
         }
       },
       {
-        key: 'emittente',
+        key: 'tipoemittenti_codice',
         type: 'select',
         className: "col-md-6",
         templateOptions: {
-          label: 'Autorizzato da',
-          required: true
-        }
-      },
+          options: this.getEmittenti(),
+          valueProp: 'codice',
+          labelProp: 'descrizione',
+          label: 'Autorizzato da',     
+          required: true               
+        }     
+      }
     ];
   }
 
@@ -123,7 +129,7 @@ export class ApplicationService implements ServiceQuery {
           else
             this.messageService.info('Domanda non trovata')
         }),
-        catchError(this.handleError('getuser'))
+        catchError(this.handleError('getConvenzioneById'))
       );
   }
 
@@ -178,6 +184,10 @@ export class ApplicationService implements ServiceQuery {
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
   }
 
+  getDirettoreDipartimento(codiceDip): Observable<any> {
+    return this.http.get(this._baseURL + '/dipartimenti/direttore/'+codiceDip.toString(), httpOptions);  
+  }
+
   getEmittenti(): any {
     return this.http.get(this._baseURL + '/convenzioni/emittenti', httpOptions);    
   }
@@ -213,6 +223,7 @@ export class ApplicationService implements ServiceQuery {
       return of(result as T);
     };
   }
+
 
 
 
