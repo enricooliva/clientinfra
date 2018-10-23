@@ -6,7 +6,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
 import { Subject, of } from 'rxjs';
-import { takeUntil, startWith, tap } from 'rxjs/operators';
+import { takeUntil, startWith, tap, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-convenzione',
@@ -95,7 +95,8 @@ export class ConvenzioneComponent implements OnInit {
       },
       lifecycle: {
         onInit: (form, field) => {          
-          form.get('dipartimemto_cd_dip').valueChanges.pipe(
+          form.get('dipartimemto_cd_dip').valueChanges.pipe(     
+            distinctUntilChanged(),     
             takeUntil(this.onDestroy$),
             //startWith(form.get('dipartimemto_cd_dip').value),
             tap(codiceDip => {
@@ -193,12 +194,17 @@ export class ConvenzioneComponent implements OnInit {
     if (this.form.valid) {
       this.isLoading=true;
       var tosubmit = {...this.model, ...this.form.value};
-      this.service.updateConvenzione(tosubmit, this.model.id).subscribe(
+      this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
         result => {
           this.form.reset();
           this.isLoading = false;
-          this.id=tosubmit.id;  
-          this.model = tosubmit;    
+          if (tosubmit.id){
+            this.id=tosubmit.id;  
+            this.model = tosubmit;    
+          }else{
+            this.id=result.id;  
+            this.model = result;
+          }
           console.log(result)
         },
         error => {

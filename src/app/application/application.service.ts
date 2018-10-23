@@ -169,10 +169,13 @@ export class ApplicationService implements ServiceQuery {
       return res;
     } else {
       //crea una nuova Convenzione POST
+      convenzione.stato_avanzamento = 'incomp';
       const url = `${this._baseURL + '/convenzioni'}`;
       let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
         .pipe(
-          tap(sub => this.messageService.info('Creazione effettuata con successo')),
+          tap(sub => 
+            this.messageService.info('Creazione effettuata con successo')
+          ),
           catchError(this.handleError('updateConvenzione', convenzione))
         );
       return res;
