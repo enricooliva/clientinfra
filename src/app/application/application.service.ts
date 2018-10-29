@@ -10,6 +10,7 @@ import { AppConstants } from '../app-constants';
 import { Convenzione } from './convenzione';
 import { saveAs } from 'file-saver';
 import { Subject } from 'rxjs';
+import { error } from '@angular/compiler/src/util';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -133,8 +134,6 @@ export class ApplicationService implements ServiceQuery {
       );
   }
 
-
-
   getConvenzioni(): Observable<any> {
     return this.http
       .get(this._baseURL + '/convenzioni', httpOptions);
@@ -155,15 +154,13 @@ export class ApplicationService implements ServiceQuery {
     }
   }
 
-
-
   updateConvenzione(convenzione: Convenzione, id: number): any {
     if (id) {
       //aggiorna la Convenzione esiste PUT
       const url = `${this._baseURL + '/convenzioni'}/${id}`;
       let res = this.http.put<Convenzione>(url, convenzione, httpOptions)
         .pipe(
-          tap(sub => this.messageService.info('Aggiornamento effettuato con successo')),
+          tap(sub => this.messageService.info('Aggiornamento effettuato con successo')),                    
           catchError(this.handleError('updateConvenzione', convenzione))
         );
       return res;
@@ -191,7 +188,7 @@ export class ApplicationService implements ServiceQuery {
     return this.http.get(this._baseURL + '/dipartimenti/direttore/'+codiceDip.toString(), httpOptions);  
   }
 
-  getEmittenti(): any {
+  getEmittenti(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/emittenti', httpOptions);    
   }
 
@@ -204,8 +201,6 @@ export class ApplicationService implements ServiceQuery {
     e => {  console.log(e); }  
     );    
   }
-
-  
 
   /**
    * Handle Http operation that failed.
@@ -220,7 +215,7 @@ export class ApplicationService implements ServiceQuery {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.messageService.error(`${operation} failed: ${error.message} details: ${error.error.message}`);
+      this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

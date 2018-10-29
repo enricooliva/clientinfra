@@ -24,25 +24,35 @@ export class MessageService {
   messages: InfraMessage[] = [];
  
    
-  success(message: string, keepAfterRouteChange = false) {
+  success(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
+    this.post(deletePreviusMessage);
     this.messages.push({message: message, type:InfraMessageType.Success});
   }
 
-  error(message: string, keepAfterRouteChange = false) {
+  error(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
+    this.post(deletePreviusMessage);
     this.messages.push({message: message, type:InfraMessageType.Error});
   }
 
-  info(message: string, keepAfterRouteChange = false) {
+  info(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
+    this.post(deletePreviusMessage);
     this.messages.push({message: message, type:InfraMessageType.Info});
   }
 
-  warn(message: string, keepAfterRouteChange = false) {
+  warn(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
+    this.post(deletePreviusMessage);
     this.messages.push({type: InfraMessageType.Warning, message});
   }
-  add(messageType: InfraMessageType, message: string, keepAfterRouteChange = false) {
+  add(messageType: InfraMessageType, message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
+    this.post(deletePreviusMessage);
     this.messages.push( {message: message, type: messageType });
   }
  
+  private post(deletePreviusMessage){
+    if (deletePreviusMessage)
+      this.clear();
+  }
+
   clear() {
     this.messages = [];
   }

@@ -46,10 +46,11 @@ export class LookupComponent implements OnInit {
           templateOptions: {
             label: this.entityLabel,   
             columnMode: 'force',
-            scrollbarH: false,                  
-            hidetoolbar: true, 
+            scrollbarH: true,                
+            hidetoolbar: true,        
+            rowHeight: 50,             
             selected: [],             
-            page: new Page(2),
+            page: new Page(20),
             onDblclickRow: (event) => this.onDblclickRow(event),
             onSetPage: (pageInfo) => this.onSetPage(pageInfo)                                             
           },

@@ -8,21 +8,21 @@
     </button>    
     <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
         <span class="oi oi-arrow-top"></span>  
-        <span class="ml-2">Aggiorna</span>
+        <span class="ml-2">Aggiorna</span>        
     </button>
-    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onReload()"  [disabled]="!form.dirty">
+    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onReload()"  [disabled]="isNew || !form.dirty">
         <span class="oi oi-reload iconic" title="reload" aria-hidden="true" ></span>
         <span class="ml-2">Ricarica</span>
     </button>   
-    <button class="btn btn-outline-primary border-0 rounded-0">
+    <!-- <button class="btn btn-outline-primary border-0 rounded-0">
         <span class="oi oi-trash"></span>
         <span class="ml-2">Rimuovi</span>
-      </button>
+      </button> -->
   </div>
 </div>
 <h4>Convenzione</h4>
-<form [formGroup]="form" >
-  <formly-form [model]="model" [fields]="fields" [form]="form">
+<form *ngIf='model' [formGroup]="form" >
+  <formly-form  [model]="model" [fields]="fields" [form]="form">
     <!-- <button type="submit" class="btn btn-primary submit-button">Submit</button>
     <button type="button" class="btn btn-default">Reset</button> -->
   </formly-form> 

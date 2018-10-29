@@ -22,6 +22,8 @@ import { NgbStringAdapter } from './NgbStringAdapter';
 import { TableTypeComponent } from './shared/dynamic-form/table-type.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from './application/user.service';
+import { AziendaService } from './application/azienda.service';
+
 
 
 
@@ -55,8 +57,10 @@ export function tokenGetter() {
     AuthGuard,  
     ApplicationService,
     UserService,
+    AziendaService,
     {provide: 'userService', useClass: UserService},
     {provide: 'applicationService', useClass: ApplicationService},
+    {provide: 'aziendaService', useClass: AziendaService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],

@@ -1,6 +1,8 @@
 export * from './core.module'
 export * from './auth.service';
 export * from './auth.guard';
+export * from './base-entity';
+export * from './form-state';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';

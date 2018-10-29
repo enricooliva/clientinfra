@@ -12,7 +12,7 @@ import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/as
 import { SharedModule } from '../shared';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '../core';
+import { AuthGuard, CoreModule } from '../core';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './components/user/users.component';
 import { UserComponent } from './components/user/user.component';
@@ -29,7 +29,8 @@ import { ConvenzioniComponent } from './components/convenzione/convenzioni.compo
     NgbModule.forRoot(),
     NgxDatatableModule,      
     RouterModule,
-    LoadingModule   
+    LoadingModule,
+    CoreModule 
   ], 
   exports: [
     ConvenzioneComponent,
