@@ -32,6 +32,7 @@ import { LookupComponent } from './lookup/lookup.component';
 import { ExternalqueryComponent } from './query-builder/externalquery.component';
 import { TableLookupTypeComponent } from './dynamic-form/tablelookup-type.component';
 import { ExternalobjTypeComponent } from './dynamic-form/externalobj-type.component';
+import { SelectTypeComponent } from './dynamic-form/select-type.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { ExternalobjTypeComponent } from './dynamic-form/externalobj-type.compon
       { name: 'external', component: ExternalTypeComponent },
       { name: 'externalquery', component: ExternalqueryComponent },
       { name: 'externalobject', component: ExternalobjTypeComponent },
+      { name: 'selectinfra', component: SelectTypeComponent },
       { name: 'string', extends: 'input' },
       {
         name: 'number',
@@ -135,14 +137,15 @@ import { ExternalobjTypeComponent } from './dynamic-form/externalobj-type.compon
     LookupComponent,
     ExternalqueryComponent,
     TableLookupTypeComponent,
-    ExternalobjTypeComponent
+    ExternalobjTypeComponent,
+    SelectTypeComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
     SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
-    TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent 
+    TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent 
   ],
   entryComponents: [LookupComponent]
 })

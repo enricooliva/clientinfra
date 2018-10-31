@@ -70,7 +70,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroup: [
           {
             key: 'dipartimemto_cd_dip',
-            type: 'select',
+            type: 'selectinfra',
             className: "col-md-6",
             templateOptions: {
               options: [],
@@ -78,23 +78,12 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               labelProp: 'nome_breve',
               label: 'Dipartimento',
               required: true,
-            },
-            lifecycle: {              
-              onInit: (form, field) => {
-                field.formControl.valueChanges.pipe(
-                  distinctUntilChanged(),
-                  takeUntil(this.onDestroy$),
-                  filter(() => this.isLoading && (field.templateOptions.options as Array<any>).length == 1),
-                  tap(cod => { 
-                    field.templateOptions.options = [this.model.dipartimento] 
-                  })
-                ).subscribe();
-
-                field.templateOptions.options = [this.model.dipartimento];
-                this.service.getDipartimenti().subscribe((data)=> {
-                  field.templateOptions.options = data
-                });
-              }
+              inizialization: () => {
+                return this.model.dipartimento
+              },
+              populateAsync: () => {
+                return this.service.getDipartimenti()
+              }                    
             }
           },
           {
@@ -131,34 +120,21 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroup: [
           {
             key: 'tipoemittenti_codice',
-            type: 'select',
+            type: 'selectinfra',
             className: "col-md-6",
             templateOptions: {
               options: [],
               valueProp: 'codice',
               labelProp: 'descrizione',
               label: 'Autorizzato da',
-              required: true
-              
-            },
-            lifecycle: {
-              onInit: (form, field) => {
-                field.formControl.valueChanges.pipe(
-                  distinctUntilChanged(),
-                  takeUntil(this.onDestroy$),
-                  filter(() => this.isLoading && (field.templateOptions.options as Array<any>).length == 1),
-                  tap(cod => { 
-                    field.templateOptions.options = [this.model.tipoemittente] 
-                  })
-                ).subscribe();
-
-                field.templateOptions.options = [this.model.tipoemittente];
-                this.service.getEmittenti().subscribe((data)=> {
-                  field.templateOptions.options = data
-                });
-              }
-              
-            }
+              required: true,
+              inizialization: () => {
+                return this.model.tipoemittente
+              },
+              populateAsync: () => {
+                return this.service.getEmittenti()
+              }              
+            }       
           }]
       },
       {
