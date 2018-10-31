@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { FieldType, FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { takeUntil, startWith, tap, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ServiceQuery } from '../query-builder/query-builder.interfaces';
@@ -30,7 +30,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
 
   onDestroy$ = new Subject<void>();
   service: ServiceQuery;
-  public isLoading = false;
+  public isLoading = false;  
 
   nodecode = false;
   extDescription: FormlyFieldConfig = null;
@@ -41,7 +41,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     this.onDestroy$.complete();
   }
 
-  ngOnInit() {
+  ngOnInit() {    
     const servicename = ControlUtils.getServiceName(this.to.entityName)
     this.service = this.injector.get(servicename) as ServiceQuery;
     
@@ -67,6 +67,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           fieldInit.formControl.valueChanges.pipe(
             distinctUntilChanged(),
             takeUntil(this.onDestroy$),
+            filter(() => !this.options.formState.isLoading),
             //startWith(field.formControl.value),
             tap(selectedField => {
               if (fieldInit.formControl.value && !this.nodecode) {

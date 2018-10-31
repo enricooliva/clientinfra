@@ -6,7 +6,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
 import { Subject, of } from 'rxjs';
-import { takeUntil, startWith, tap, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { FormState } from 'src/app/core';
 
 @Component({
@@ -16,9 +16,8 @@ import { FormState } from 'src/app/core';
 
 export class ConvenzioneComponent implements OnInit, OnDestroy {
 
-  formState: FormState;
-  onDestroy$ = new Subject<void>();
-  isLoading = false;  
+  
+  onDestroy$ = new Subject<void>();  
   form = new FormGroup({});
   model: Convenzione;
   fields: FormlyFieldConfig[] =
@@ -46,6 +45,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           entityLabel: 'Utenti',
           codeProp: 'id',
           descriptionProp: 'name',
+          isLoading: this.isLoading
         },
       },
       {
@@ -79,8 +79,17 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               label: 'Dipartimento',
               required: true,
             },
-            lifecycle: {
+            lifecycle: {              
               onInit: (form, field) => {
+                field.formControl.valueChanges.pipe(
+                  distinctUntilChanged(),
+                  takeUntil(this.onDestroy$),
+                  filter(() => this.isLoading && (field.templateOptions.options as Array<any>).length == 1),
+                  tap(cod => { 
+                    field.templateOptions.options = [this.model.dipartimento] 
+                  })
+                ).subscribe();
+
                 field.templateOptions.options = [this.model.dipartimento];
                 this.service.getDipartimenti().subscribe((data)=> {
                   field.templateOptions.options = data
@@ -102,6 +111,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
                 form.get('dipartimemto_cd_dip').valueChanges.pipe(
                   distinctUntilChanged(),
                   takeUntil(this.onDestroy$),
+                  filter(() => !this.isLoading),
                   //startWith(form.get('dipartimemto_cd_dip').value),
                   tap(codiceDip => {
                     if (codiceDip) {
@@ -129,14 +139,25 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               labelProp: 'descrizione',
               label: 'Autorizzato da',
               required: true
+              
             },
             lifecycle: {
               onInit: (form, field) => {
+                field.formControl.valueChanges.pipe(
+                  distinctUntilChanged(),
+                  takeUntil(this.onDestroy$),
+                  filter(() => this.isLoading && (field.templateOptions.options as Array<any>).length == 1),
+                  tap(cod => { 
+                    field.templateOptions.options = [this.model.tipoemittente] 
+                  })
+                ).subscribe();
+
                 field.templateOptions.options = [this.model.tipoemittente];
                 this.service.getEmittenti().subscribe((data)=> {
                   field.templateOptions.options = data
                 });
               }
+              
             }
           }]
       },
@@ -157,15 +178,28 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
             },
           },
         ]
-      }
+    }
 
     ]
-
+  options: FormlyFormOptions = {
+    formState: {
+      isLoading: false,
+    },
+  };
 
 
   private id: number;
 
   defaultColDef = { editable: true };
+
+  private _isLoading:boolean = false;
+  get isLoading():boolean {
+      return this._isLoading;
+  }
+  set isLoading(value:boolean) {
+      this._isLoading = value;
+      this.options.formState.isLoading = value;
+  }
 
   constructor(private service: ApplicationService, private route: ActivatedRoute) {    
   }
@@ -176,35 +210,36 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     
+     //modello vuoto
+    this.model = {
+      user_id: null,
+      id: null,
+      descrizione_titolo: '',
+      dipartimemto_cd_dip: '',
+      nominativo_docente: '',
+      emittente: '',
+      user: { id: null, name: null},
+      dipartimento: { cd_dip: null, nome_breve: ''},
+      stato_avanzamento: null,
+      tipoemittente: { codice: null, descrizione: '' },
+      azienda: { id_esterno: null, denominazione: ''}          
+    }
+    
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isLoading = true;
         this.service.clearMessage();
-        this.service.getConvenzioneById(params['id']).subscribe((data) => {
-          this.isLoading = false;
-          this.form = new FormGroup({});
-          this.model = data;
-
+        this.service.getConvenzioneById(params['id']).subscribe((data) => {                    
+          try{
+            this.options.resetModel(data);          
+            this.isLoading = false;                    
+          }catch(e){
+            console.log(e);
+            this.isLoading = false;                    
+          }
         });
-      }else{
-        //modello vuoto
-        this.model = {
-          user_id: null,
-          id: null,
-          descrizione_titolo: '',
-          dipartimemto_cd_dip: '',
-          nominativo_docente: '',
-          emittente: '',
-          user: { id: null, name: null},
-          dipartimento: { cd_dip: null, nome_breve: ''},
-          stato_avanzamento: null,
-          tipoemittente: { codice: null, descrizione: '' },
-          azienda: { id_esterno: null, denominazione: ''}          
-        }
       }
-     
     });
-
 
     //lettura della domanda corrente
     //const personId = this.route.snapshot.params['id'];   
@@ -232,15 +267,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   onReload() {
     //sono nello stato nuovo
     if (this.model != null && this.model.id !== null) {
-      this.isLoading = true;
-      let id = this.model.id;
-      this.form.reset();
-      this.model = null;
-      //this.form = new FormGroup({});
-      this.service.getConvenzioneById(id).subscribe((data) => {                  
+     this.isLoading = true;                  
+      this.service.getConvenzioneById(this.model.id).subscribe((data) => {                          
+        this.options.resetModel(data);;            
         this.isLoading = false;
-        this.id = data.id;    
-        this.model = data;            
       });
     }
   }
@@ -248,19 +278,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
+      var tosubmit = { ...this.model, ...this.form.value };            
       this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
-        result => {
-          this.form.reset();
-          this.isLoading = false;
-          if (tosubmit.id) {
-            this.id = tosubmit.id;
-            this.model = tosubmit;
-          } else {
-            this.id = result.id;
-            this.model = result;
-          }
-          console.log(result)
+        result => {                      
+          this.options.resetModel(result);                
+          this.isLoading = false;          
         },
         error => {
           this.isLoading = false;

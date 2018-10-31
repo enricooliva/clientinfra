@@ -160,7 +160,10 @@ export class ApplicationService implements ServiceQuery {
       const url = `${this._baseURL + '/convenzioni'}/${id}`;
       let res = this.http.put<Convenzione>(url, convenzione, httpOptions)
         .pipe(
-          tap(sub => this.messageService.info('Aggiornamento effettuato con successo')),                    
+          tap(sub => {
+            this.messageService.info('Aggiornamento effettuato con successo');
+            return sub;
+          }),                    
           catchError(this.handleError('updateConvenzione', convenzione))
         );
       return res;
@@ -178,7 +181,6 @@ export class ApplicationService implements ServiceQuery {
       return res;
     }
   }
-
 
   getDipartimenti(): Observable<any> {        
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);

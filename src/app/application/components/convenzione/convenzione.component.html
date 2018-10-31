@@ -1,6 +1,6 @@
 <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
 
-<div class="btn-toolbar mb-4" role="toolbar">
+<div class="sticky-top btn-toolbar mb-4" role="toolbar">
   <div class="btn-group btn-group-sm">    
     <button class="btn btn-outline-primary border-0 rounded-0" (click)="onNew()" >              
         <span class="oi oi-document"></span>
@@ -14,15 +14,15 @@
         <span class="oi oi-reload iconic" title="reload" aria-hidden="true" ></span>
         <span class="ml-2">Ricarica</span>
     </button>   
-    <!-- <button class="btn btn-outline-primary border-0 rounded-0">
-        <span class="oi oi-trash"></span>
-        <span class="ml-2">Rimuovi</span>
-      </button> -->
+    <button class="btn btn-outline-primary border-0 rounded-0">
+        <span class="oi oi-magnifying-glass"></span>
+        <span class="ml-2">Ricerca</span>
+      </button>
   </div>
 </div>
 <h4>Convenzione</h4>
 <form *ngIf='model' [formGroup]="form" >
-  <formly-form  [model]="model" [fields]="fields" [form]="form">
+  <formly-form  [model]="model" [fields]="fields" [form]="form" [options]="options">
     <!-- <button type="submit" class="btn btn-primary submit-button">Submit</button>
     <button type="button" class="btn btn-default">Reset</button> -->
   </formly-form> 
