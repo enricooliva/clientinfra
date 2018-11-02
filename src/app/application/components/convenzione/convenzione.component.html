@@ -20,6 +20,9 @@
       </button>
   </div>
 </div>
+
+<app-navstepper-wrapper [steps]="steps"></app-navstepper-wrapper>
+
 <h4>Convenzione</h4>
 <form *ngIf='model' [formGroup]="form" >
   <formly-form  [model]="model" [fields]="fields" [form]="form" [options]="options">

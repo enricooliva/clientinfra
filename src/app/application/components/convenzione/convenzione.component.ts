@@ -8,6 +8,7 @@ import { Convenzione } from '../../convenzione';
 import { Subject, of } from 'rxjs';
 import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { FormState } from 'src/app/core';
+import { StepType } from 'src/app/shared';
 
 @Component({
   selector: 'app-convenzione',
@@ -154,7 +155,21 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
             },
           },
         ]
-    }
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+        {
+          key: 'premessa',
+          type: 'textarea',
+          className: "col-md-12",
+          templateOptions: {
+            label: 'Premessa',
+            placeholder: 'Inserire premessa',                   
+            required: true,
+          },
+        }]
+      }
 
     ]
   options: FormlyFormOptions = {
@@ -162,6 +177,60 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       isLoading: false,
     },
   };
+
+  // steps: StepType[] = [
+  //   {
+  //     label: 'Personal data',
+  //     fields: [
+  //       {
+  //         key: 'firstname',
+  //         type: 'input',
+  //         templateOptions: {
+  //           label: 'First name',
+  //           required: true,
+  //         },
+  //       },
+  //       {
+  //         key: 'age',
+  //         type: 'input',
+  //         templateOptions: {
+  //           type: 'number',
+  //           label: 'Age',
+  //           required: true,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: 'Destination',
+  //     fields: [
+  //       {
+  //         key: 'country',
+  //         type: 'input',
+  //         templateOptions: {
+  //           label: 'Country',
+  //           required: true,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: 'Day of the trip',
+  //     fields: [
+  //       {
+  //         key: 'day',
+  //         type: 'input',
+  //         templateOptions: {
+  //           type: 'date',
+  //           label: 'Day of the trip',
+  //           required: true,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // ];
+
+
 
 
   private id: number;

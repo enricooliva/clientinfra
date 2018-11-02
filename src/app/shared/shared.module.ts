@@ -33,6 +33,7 @@ import { ExternalqueryComponent } from './query-builder/externalquery.component'
 import { TableLookupTypeComponent } from './dynamic-form/tablelookup-type.component';
 import { ExternalobjTypeComponent } from './dynamic-form/externalobj-type.component';
 import { SelectTypeComponent } from './dynamic-form/select-type.component';
+import { NavstepperWrapperComponent } from './dynamic-form/navstepper-wrapper.component';
 
 @NgModule({
   imports: [
@@ -138,14 +139,16 @@ import { SelectTypeComponent } from './dynamic-form/select-type.component';
     ExternalqueryComponent,
     TableLookupTypeComponent,
     ExternalobjTypeComponent,
-    SelectTypeComponent
+    SelectTypeComponent,
+    NavstepperWrapperComponent    
+    
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
     SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
-    TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent 
+    TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, NavstepperWrapperComponent
   ],
   entryComponents: [LookupComponent]
 })

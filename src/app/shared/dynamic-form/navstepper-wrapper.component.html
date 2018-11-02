@@ -1,0 +1,27 @@
+<div>    
+        <ul class="nav nav-tabs">
+            <div class="liner"></div>
+            <div *ngFor="let step of steps; let index = index; let last = last;">
+                <!-- circular user icon -->
+                <li>
+                    <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" data-toggle="tab">
+                        <span class="round-tabs one">
+                            {{ index }}
+                        </span>
+                    </a>
+                </li>
+            </div>
+        </ul>        
+    </div>
+
+    <ng-template>
+        <formly-form [form]="form.at(activedStep)" [model]="model" [fields]="steps[activedStep].fields" [options]="options[activedStep]">
+        </formly-form>
+    </ng-template>
+
+    <div>
+        <button *ngIf="activedStep !== 0" class="btn btn-primary" type="button" (click)="prevStep(activedStep)">Back</button>
+        <button *ngIf="!last" class="btn btn-primary" type="button" [disabled]="!form.at(activedStep).valid" (click)="nextStep(activedStep)">Next</button>
+        <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">Submit</button>
+    </div>
+</div>
