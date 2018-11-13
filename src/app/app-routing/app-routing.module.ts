@@ -7,6 +7,7 @@ import { ConvenzioneComponent } from '../application/components/convenzione/conv
 import { UsersComponent } from '../application/components/user/users.component';
 import { UserComponent } from '../application/components/user/user.component';
 import { ConvenzioniComponent } from '../application/components/convenzione/convenzioni.component';
+import { TestTabComponent } from '../application/pages/test-tab.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: 'convenzioni/:id',  component: ConvenzioneComponent,  canActivate:[AuthGuard] },     
       { path: 'convenzioni',  component: ConvenzioniComponent,  canActivate:[AuthGuard] },     
       { path: 'users',  component: UsersComponent, canActivate:[AuthGuard] },     //canActivate:[AuthGuard]
-      { path: 'user/:id',  component: UserComponent,  canActivate:[AuthGuard] },     
+      { path: 'user/:id',  component: UserComponent,  canActivate:[AuthGuard] }, 
+      { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }
 ];

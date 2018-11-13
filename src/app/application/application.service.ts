@@ -82,26 +82,82 @@ export class ApplicationService implements ServiceQuery {
         },         
       },
       {
-        key: 'nominativo_docente',
+        key: 'resp_scientifico',
         type: 'input',
         className: "col-md-6",
         templateOptions: {
-          label: 'Nominativo docente',
+          label: 'Responsabile scientifico',
           required: true
         }
       },
       {
-        key: 'tipoemittenti_codice',
+        key: 'azienda',
+        type: 'external',
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Azienda',
+          type: 'string',
+          entityName: 'azienda',
+          entityLabel: 'Aziende',
+          codeProp: 'id_esterno',
+          descriptionProp: 'denominazione',
+        },
+      },
+      {
+        key: 'tipopagamento_codice',
         type: 'select',
         className: "col-md-6",
         templateOptions: {
-          options: this.getEmittenti(),
+          options: this.getPagamenti(),
           valueProp: 'codice',
           labelProp: 'descrizione',
-          label: 'Autorizzato da',     
+          label: 'Pagamento',     
           required: true               
         }     
-      }
+      },
+      {
+        key: 'ambito',
+        type: 'select',
+        className: "col-md-4",
+        templateOptions: {
+          options: [
+            {label: 'Istituzionale', value: 'instituzionale'},
+            {label: 'Commerciale', value: 'commercicale'},
+          ],
+          label: 'Ambito',            
+          required: true,
+        },
+      },
+      {
+        key: 'tipopagamenti_codice',
+        type: 'select',
+        className: "col-md-4",
+        templateOptions: {
+          options: this.getPagamenti(),
+          valueProp: 'codice',
+          labelProp: 'descrizione',
+          label: 'Modalità di pagamento',
+          required: true          
+        }               
+      },
+      {
+        key: 'corrispettivo',
+        type: 'input',
+        className: "col-md-6",
+        templateOptions: {            
+          label: 'Corrispettivo iva esclusa se applicabile',            
+          required: true,
+        },
+      },
+      {
+        key: 'importo',
+        type: 'input',
+        className: "col-md-6",
+        templateOptions: {            
+          label: 'Importo iva esclusa ove applicabile',            
+          required: true,
+        },
+      },         
     ];
   }
 
@@ -190,8 +246,8 @@ export class ApplicationService implements ServiceQuery {
     return this.http.get(this._baseURL + '/dipartimenti/direttore/'+codiceDip.toString(), httpOptions);  
   }
 
-  getEmittenti(): Observable<any> {
-    return this.http.get(this._baseURL + '/convenzioni/emittenti', httpOptions);    
+  getPagamenti(): Observable<any> {
+    return this.http.get(this._baseURL + '/convenzioni/pagamenti', httpOptions);    
   }
 
   generatePDF(id: number) {      

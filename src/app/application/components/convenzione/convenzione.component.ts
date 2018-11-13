@@ -16,8 +16,14 @@ import { StepType } from 'src/app/shared';
 })
 
 export class ConvenzioneComponent implements OnInit, OnDestroy {
-
   
+  // 'descrizione_titolo',
+  // 'dipartimemto_cd_dip',
+  // 'resp_scientifico',
+  // 'ambito',
+  // 'durata',
+  // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
+
   onDestroy$ = new Subject<void>();  
   form = new FormGroup({});
   model: Convenzione;
@@ -88,29 +94,28 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
             }
           },
           {
-            key: 'nominativo_docente',
+            key: 'resp_scientifico',
             type: 'input',
             className: "col-md-6",
             templateOptions: {
-              label: 'Direttore di dipartimento',
-              required: true,
-              disabled: true
+              label: 'Responsabile scientifico',
+              required: true            
             },
             lifecycle: {
               onInit: (form, field) => {
-                form.get('dipartimemto_cd_dip').valueChanges.pipe(
-                  distinctUntilChanged(),
-                  takeUntil(this.onDestroy$),
-                  filter(() => !this.isLoading),
-                  //startWith(form.get('dipartimemto_cd_dip').value),
-                  tap(codiceDip => {
-                    if (codiceDip) {
-                      this.service.getDirettoreDipartimento(codiceDip).subscribe((res) => {
-                        field.formControl.setValue(res.nome_esteso);
-                      })
-                    }
-                  }),
-                ).subscribe();
+                // form.get('dipartimemto_cd_dip').valueChanges.pipe(
+                //   distinctUntilChanged(),
+                //   takeUntil(this.onDestroy$),
+                //   filter(() => !this.isLoading),
+                //   //startWith(form.get('dipartimemto_cd_dip').value),
+                //   tap(codiceDip => {
+                //     if (codiceDip) {
+                //       this.service.getDirettoreDipartimento(codiceDip).subscribe((res) => {
+                //         field.formControl.setValue(res.nome_esteso);
+                //       })
+                //     }
+                //   }),
+                // ).subscribe();
               },
             },
           },
@@ -119,24 +124,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       {
         fieldGroupClassName: 'row',
         fieldGroup: [
-          {
-            key: 'tipoemittenti_codice',
-            type: 'selectinfra',
-            className: "col-md-6",
-            templateOptions: {
-              options: [],
-              valueProp: 'codice',
-              labelProp: 'descrizione',
-              label: 'Autorizzato da',
-              required: true,
-              inizialization: () => {
-                return this.model.tipoemittente
-              },
-              populateAsync: () => {
-                return this.service.getEmittenti()
-              }              
-            }       
-          }]
+   ]
       },
       {
         fieldGroupClassName: 'row',
@@ -160,15 +148,69 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroupClassName: 'row',
         fieldGroup: [
         {
-          key: 'premessa',
-          type: 'textarea',
-          className: "col-md-12",
+          key: 'ambito',
+          type: 'select',
+          className: "col-md-4",
           templateOptions: {
-            label: 'Premessa',
-            placeholder: 'Inserire premessa',                   
+            options: [
+              {label: 'Istituzionale', value: 'istituzionale'},
+              {label: 'Commerciale', value: 'commerciale'},
+            ],
+            label: 'Ambito',            
             required: true,
           },
-        }]
+        },    
+        {
+          key: 'durata',
+          type: 'number',
+          className: "col-md-4",
+          templateOptions: {            
+            label: 'Durata in mesi',            
+            required: true,
+          },
+        },
+        {
+          key: 'tipopagamenti_codice',
+          type: 'selectinfra',
+          className: "col-md-4",
+          templateOptions: {
+            options: [],
+            valueProp: 'codice',
+            labelProp: 'descrizione',
+            label: 'Modalità di pagamento',
+            required: true,
+            inizialization: () => {
+              return this.model.tipopagamento
+            },
+            populateAsync: () => {
+              return this.service.getPagamenti()
+            }              
+          }       
+        }
+        ]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+        {
+          key: 'corrispettivo',
+          type: 'input',
+          className: "col-md-6",
+          templateOptions: {            
+            label: 'Corrispettivo iva esclusa se applicabile',            
+            required: true,
+          },
+        },
+        {
+          key: 'importo',
+          type: 'input',
+          className: "col-md-6",
+          templateOptions: {            
+            label: 'Importo iva esclusa ove applicabile',            
+            required: true,
+          },
+        },     
+        ]
       }
 
     ]
@@ -177,60 +219,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       isLoading: false,
     },
   };
-
-  // steps: StepType[] = [
-  //   {
-  //     label: 'Personal data',
-  //     fields: [
-  //       {
-  //         key: 'firstname',
-  //         type: 'input',
-  //         templateOptions: {
-  //           label: 'First name',
-  //           required: true,
-  //         },
-  //       },
-  //       {
-  //         key: 'age',
-  //         type: 'input',
-  //         templateOptions: {
-  //           type: 'number',
-  //           label: 'Age',
-  //           required: true,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     label: 'Destination',
-  //     fields: [
-  //       {
-  //         key: 'country',
-  //         type: 'input',
-  //         templateOptions: {
-  //           label: 'Country',
-  //           required: true,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     label: 'Day of the trip',
-  //     fields: [
-  //       {
-  //         key: 'day',
-  //         type: 'input',
-  //         templateOptions: {
-  //           type: 'date',
-  //           label: 'Day of the trip',
-  //           required: true,
-  //         },
-  //       },
-  //     ],
-  //   },
-  // ];
-
-
 
 
   private id: number;
@@ -266,7 +254,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       user: { id: null, name: null},
       dipartimento: { cd_dip: null, nome_breve: ''},
       stato_avanzamento: null,
-      tipoemittente: { codice: null, descrizione: '' },
+      tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: ''}          
     }
     
@@ -276,7 +264,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         this.service.clearMessage();
         this.service.getConvenzioneById(params['id']).subscribe((data) => {                    
           try{
-            this.options.resetModel(data);          
+            let d = data as Convenzione;
+            this.options.resetModel(d);          
             this.isLoading = false;                    
           }catch(e){
             console.log(e);

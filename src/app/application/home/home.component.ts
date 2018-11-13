@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
     {title: 'Funzionali', links: [
       { href: 'convenzione', text: 'Convenzione', permissions: ['ADMIN', 'USER'] },
       { href: 'convenzioni', text: 'Lista convenzioni', permissions: ['ADMIN'] },
+      { href: 'test', text: 'Multi step form', permissions: ['ADMIN'] },
     ]}    
   ];
 

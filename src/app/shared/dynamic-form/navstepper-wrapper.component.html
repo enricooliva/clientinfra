@@ -1,27 +1,29 @@
-<div>    
-        <ul class="nav nav-tabs">
-            <div class="liner"></div>
-            <div *ngFor="let step of steps; let index = index; let last = last;">
-                <!-- circular user icon -->
-                <li>
-                    <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" data-toggle="tab">
-                        <span class="round-tabs one">
-                            {{ index }}
-                        </span>
-                    </a>
-                </li>
-            </div>
-        </ul>        
+<!-- nav-justified  -->
+<form [formGroup]="form">
+<ngb-tabset  #tabs="ngbTabset" type="pills" [justify]="'justified'" (tabChange)="onTabChange($event)">
+  
+    <div *ngFor="let step of steps; let index = index; let last = last;">
+            <!--  [disabled]="index > 0 && !form.at(index-1)?.valid" -->
+        <ngb-tab id="tab-{{index}}">
+            <ng-template ngbTabTitle >                
+                <button class="btn rounded-circle mr-2"><span class="h6">{{ index }}</span></button>
+                <span class="h6">{{ getStepTitle(index) }}</span>                
+            </ng-template>
+            <ng-template ngbTabContent>
+                <formly-form [form]="form.at(index)" [model]="model" [fields]="steps[index].fields" [options]="options[index]">
+                </formly-form>
+            </ng-template>
+        </ngb-tab>
     </div>
+</ngb-tabset>
 
-    <ng-template>
-        <formly-form [form]="form.at(activedStep)" [model]="model" [fields]="steps[activedStep].fields" [options]="options[activedStep]">
-        </formly-form>
-    </ng-template>
-
-    <div>
-        <button *ngIf="activedStep !== 0" class="btn btn-primary" type="button" (click)="prevStep(activedStep)">Back</button>
-        <button *ngIf="!last" class="btn btn-primary" type="button" [disabled]="!form.at(activedStep).valid" (click)="nextStep(activedStep)">Next</button>
-        <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">Submit</button>
-    </div>
+<!-- [disabled]="!form.at(activedStep).valid"
+    [disabled]="!form.valid"-->
+<div>
+    <button *ngIf="selectedTab !== 'tab-0'" class="btn btn-primary mr-2" type="button" (click)="prevStep(activedStep)">Indietro</button>
+    <button *ngIf="!last" class="btn btn-primary" type="button" [disabled]="nextState"  (click)="nextStep(activedStep)">Avanti</button>     
 </div>
+
+</form>
+
+<p>Form value: {{ form.value | json }}</p>

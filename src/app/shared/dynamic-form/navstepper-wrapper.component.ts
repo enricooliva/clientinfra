@@ -1,92 +1,110 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterContentInit } from '@angular/core';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
+import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 //ng g c shared/dynamic-form/navstepperWrapper -s true --spec false -t true
 
 
 export interface StepType {
   label: string;
-  fields: FormlyFieldConfig[];
+  fields: FormlyFieldConfig[];  
 }
 
 @Component({
   selector: 'app-navstepper-wrapper',
-  template: `
-
-  <ngb-tabset type="pills" class="nav-justified" [justify]="fill"  >
-  <div *ngFor="let step of steps; let index = index; let last = last;">
-  <ngb-tab [disabled]="index !== 0 && !form.at(index - 1)?.valid">
-  <ng-template ngbTabTitle><b>Fancy</b> {{ index }}</ng-template>
-  <ng-template ngbTabContent>
-  <formly-form [form]="form.at(index)" [model]="model" [fields]="steps[index].fields" [options]="options[index]">
-  </formly-form>
-  </ng-template>
-  </ngb-tab>
-  </div>
-  </ngb-tabset>
-
-  <div>
-  <div class="board-inner" id="status-buttons">
-      <ul class="nav nav-pills nav-fill" id="myTab">
-          <div class="liner"></div>
-          <div *ngFor="let step of steps; let index = index; let last = last;">
-              <!-- circular user icon -->
-              <li class="nav-item">
-                  <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" data-toggle="tab">
-                      <span class="round-tabs one">
-                          {{ index }}
-                      </span>
-                  </a>
-              </li>
-          </div>
-      </ul>
-      <div class="clearfix"></div>
-  </div>
-
- 
-      <formly-form [form]="form.at(activedStep)" [model]="model" [fields]="steps[activedStep].fields" [options]="options[activedStep]">
-      </formly-form>
- 
-
-  <div>
-      <button *ngIf="activedStep !== 0" class="btn btn-primary" type="button" (click)="prevStep(activedStep)">Back</button>
-      <button *ngIf="!last" class="btn btn-primary" type="button" [disabled]="!form.at(activedStep).valid" (click)="nextStep(activedStep)">Next</button>
-      <button *ngIf="last" class="btn btn-primary" [disabled]="!form.valid" type="submit">Submit</button>
-  </div>
-</div>
-  `,
-  styles: []
+  templateUrl: './navstepper-wrapper.component.html',
+  styleUrls: ['./navstepper-wrapper.component.css']
 })
 
 
 //<i class="glyphicon glyphicon-user"></i>
 export class NavstepperWrapperComponent implements OnInit {
+  
+  @ViewChild('tabs') tabs:NgbTabset;
 
+  
   @Input()
   steps: StepType[];
 
   model={};
-  form: FormArray;
+  form = new FormArray([]);  
   options: FormlyFormOptions[];
+  fields: FormlyFieldConfig;
 
   activedStep = 0;  
 
   last = false;
+  
+  _selectedTab = 'tab-0';
 
-  constructor() { }
+  constructor() { 
+  
+  }
 
-  ngOnInit() {
-    this.form = new FormArray(this.steps.map(() => new FormGroup({})));
+  ngOnInit() {            
+    //this.form = new FormArray(this.steps.map(()=> new FormGroup({})));
     this.options = this.steps.map(() => <FormlyFormOptions> {});
+    
   }
 
   prevStep(step) {
+    if (step==0)
+        return;
     this.activedStep = step - 1;
+    this.selectActiveStep();
   }
 
   nextStep(step) {
+    if (step == this.steps.length-1){
+        return true;
+    }        
     this.activedStep = step + 1;
+    this.selectActiveStep();
+  }  
+
+  public get nextState(): boolean{
+    if (this.form.at(this.activedStep)){
+      return !this.form.at(this.activedStep).valid
+    }
+    return true;
   }
+
+  selectActiveStep(){
+    this.tabs.select('tab-'+ this.activedStep);
+  }
+
+  
+  public get lastIndex() : string {
+    return 'tab-'+ (this.steps.length-1);
+  }
+
+  public get selectedTab() : string {
+    return this._selectedTab;
+  }
+
+  
+  public set selectedTab(value : string) {
+      this._selectedTab = value;
+      this.activedStep = +value.replace('tab-','');
+  }
+  
+
+  getStepTitle(index){
+      let step = this.steps[index];
+      if (step && step.label){
+          return step.label
+      }
+      return "Passo "+index;
+  }
+
+  onTabChange($event){
+    this.selectedTab = $event.nextId        
+    if (this.lastIndex == $event.nextId as string){
+        this.last=true;
+    }else{
+        this.last=false;
+    }
+ }
 
 }

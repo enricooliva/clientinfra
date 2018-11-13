@@ -44,7 +44,7 @@ export class SelectTypeComponent extends FieldType implements OnInit, OnDestroy 
           });
         }
       }
-    }
+    }    
   }
-
+  
 }

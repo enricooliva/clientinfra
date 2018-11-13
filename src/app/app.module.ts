@@ -23,6 +23,8 @@ import { TableTypeComponent } from './shared/dynamic-form/table-type.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from './application/user.service';
 import { AziendaService } from './application/azienda.service';
+import { TestTabComponent } from './application/pages/test-tab.component';
+
 
 
 
@@ -38,7 +40,8 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     NotFoundComponent,
-    TableTypeComponent,        
+    TableTypeComponent,
+    TestTabComponent,    
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 

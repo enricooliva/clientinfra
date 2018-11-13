@@ -34,6 +34,8 @@ import { TableLookupTypeComponent } from './dynamic-form/tablelookup-type.compon
 import { ExternalobjTypeComponent } from './dynamic-form/externalobj-type.component';
 import { SelectTypeComponent } from './dynamic-form/select-type.component';
 import { NavstepperWrapperComponent } from './dynamic-form/navstepper-wrapper.component';
+import { TabTypeComponent } from './dynamic-form/tab-type.component';
+import { FormInfraComponent } from './dynamic-form/form-infra.component';
 
 @NgModule({
   imports: [
@@ -53,6 +55,7 @@ import { NavstepperWrapperComponent } from './dynamic-form/navstepper-wrapper.co
       { name: 'externalquery', component: ExternalqueryComponent },
       { name: 'externalobject', component: ExternalobjTypeComponent },
       { name: 'selectinfra', component: SelectTypeComponent },
+      { name: 'tab', component: TabTypeComponent },
       { name: 'string', extends: 'input' },
       {
         name: 'number',
@@ -140,15 +143,17 @@ import { NavstepperWrapperComponent } from './dynamic-form/navstepper-wrapper.co
     TableLookupTypeComponent,
     ExternalobjTypeComponent,
     SelectTypeComponent,
-    NavstepperWrapperComponent    
-    
+    NavstepperWrapperComponent,
+    TabTypeComponent,    
+    FormInfraComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
     SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
-    TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, NavstepperWrapperComponent
+    TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, TabTypeComponent,
+    FormInfraComponent
   ],
   entryComponents: [LookupComponent]
 })

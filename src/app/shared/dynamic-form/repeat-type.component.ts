@@ -30,6 +30,7 @@ import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
 
 export class RepeatTypeComponent extends FieldArrayType {
   constructor(builder: FormlyFormBuilder) {
-    super(builder);
+    super(builder);        
+    this.add
   }
 }
