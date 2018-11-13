@@ -179,7 +179,7 @@ export class ApplicationService implements ServiceQuery {
 
   getConvenzioneById(id: number): Observable<any> {
     return this.http
-      .get(this._baseURL + '/convenzioni/'+id.toString()).pipe(
+      .get<Convenzione>(this._baseURL + '/convenzioni/'+id.toString()).pipe(
         tap(sub => {
           if (sub)
             this.messageService.info('Lettura effettuata con successo')

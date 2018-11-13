@@ -263,9 +263,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.service.clearMessage();
         this.service.getConvenzioneById(params['id']).subscribe((data) => {                    
-          try{
-            let d = data as Convenzione;
-            this.options.resetModel(d);          
+          try{            
+            this.options.resetModel(data);          
             this.isLoading = false;                    
           }catch(e){
             console.log(e);
