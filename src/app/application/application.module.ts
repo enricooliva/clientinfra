@@ -18,7 +18,7 @@ import { UsersComponent } from './components/user/users.component';
 import { UserComponent } from './components/user/user.component';
 import { LoadingModule } from 'ngx-loading';
 import { ConvenzioniComponent } from './components/convenzione/convenzioni.component';
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -30,7 +30,8 @@ import { ConvenzioniComponent } from './components/convenzione/convenzioni.compo
     NgxDatatableModule,      
     RouterModule,
     LoadingModule,
-    CoreModule 
+    CoreModule, 
+    PdfViewerModule
   ], 
   exports: [
     ConvenzioneComponent,

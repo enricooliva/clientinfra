@@ -29,15 +29,29 @@
   </formly-form> 
 </form>
 
+<div *ngIf="isLoadedPdf" class="mb-1 text-center">
+  <button class="btn btn-outline-primary border-0 rounded-0" (click)="prevPage()" [disabled]="page === 1">Prev</button>
+  <span> {{ page }} / {{ totalPages }} </span>
+  <button class="btn btn-outline-primary border-0 rounded-0" (click)="nextPage()" [disabled]="page === totalPages">Next</button>
+</div>
+<!-- [render-text]="true" -->
+<pdf-viewer *ngIf="isLoadedPdf" [src]="pdfSrc"           
+          [show-all]="false"
+          [autoresize]="true"
+          [original-size]="false"
+          [page]="page"
+          (after-load-complete)="afterLoadComplete($event)"          
+></pdf-viewer>
+
 <br>
 <br>
 
-<div>
+<!-- <div>
   <button class="btn btn-primary border-0 rounded-0" (click)="onGenerate()" [disabled]="form.dirty" >              
     <span class="oi oi-document"></span>
     <span class="ml-2">Scarica convezione</span>
   </button>  
-</div>
+</div> -->
 
 <p>Form value: {{ form.value | json }}</p>
 <p>Form status: {{ form.status | json }}</p>

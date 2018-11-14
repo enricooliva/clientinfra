@@ -6,9 +6,11 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
 import { Subject, of } from 'rxjs';
+
 import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { FormState } from 'src/app/core';
 import { StepType } from 'src/app/shared';
+import { read } from 'fs';
 
 @Component({
   selector: 'app-convenzione',
@@ -23,6 +25,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'ambito',
   // 'durata',
   // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
+  
 
   onDestroy$ = new Subject<void>();  
   form = new FormGroup({});
@@ -211,8 +214,23 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           },
         },     
         ]
-      }
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+        {
+          key: 'nome_originale',
+          type: 'file',
+          className: "col-md-6",
+          templateOptions: {            
+            label: '',            
+            required: true,   
+            onSelected: ($img) => this.onFileSelected($img)         
+          },                    
+        }
 
+        ]
+      }
     ]
   options: FormlyFormOptions = {
     formState: {
@@ -255,7 +273,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       dipartimento: { cd_dip: null, nome_breve: ''},
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
-      azienda: { id_esterno: null, denominazione: ''}          
+      azienda: { id_esterno: null, denominazione: ''}                
     }
     
     this.route.params.subscribe(params => {
@@ -349,5 +367,45 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     // Whenever the filter changes, always go back to the first page
     //this.table.offset = 0;
+  }
+
+  page: number = 1;
+  totalPages: number;
+  pdfSrc: string;
+  isLoadedPdf = false;
+
+  onFileSelected($img) {
+    //let $img: any = selectedFile //document.querySelector('#file');
+
+    if (typeof (FileReader) !== 'undefined') {
+      let reader = new FileReader();
+  
+      reader.onload = (e: any) => {        
+        this.pdfSrc = e.target.result;
+      };
+  
+      if ($img == undefined){
+        reader.readAsArrayBuffer(new Blob());
+        this.isLoadedPdf = false;
+      }else{
+        reader.readAsArrayBuffer($img);
+        this.isLoadedPdf = true;
+      }
+      
+      
+    }
+  }
+
+  afterLoadComplete(pdfData: any) {
+    this.totalPages = pdfData.numPages;
+    this.isLoadedPdf = true;
+  }
+
+  nextPage() {
+    this.page++;
+  }
+
+  prevPage() {
+    this.page--;
   }
 }

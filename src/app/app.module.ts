@@ -8,7 +8,6 @@ import { ApplicationModule } from './application/application.module';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
 import { AppComponent } from './app.component';
 import { ApplicationService } from './application/application.service';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,11 +23,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from './application/user.service';
 import { AziendaService } from './application/azienda.service';
 import { TestTabComponent } from './application/pages/test-tab.component';
-
-
-
-
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 export function tokenGetter() {
@@ -45,7 +40,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
-    AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(),
+    AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(), PdfViewerModule,
     
     JwtModule.forRoot({
       config: {

@@ -36,6 +36,7 @@ import { SelectTypeComponent } from './dynamic-form/select-type.component';
 import { NavstepperWrapperComponent } from './dynamic-form/navstepper-wrapper.component';
 import { TabTypeComponent } from './dynamic-form/tab-type.component';
 import { FormInfraComponent } from './dynamic-form/form-infra.component';
+import { InputFileComponent } from './dynamic-form/input-file/input-file.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { FormInfraComponent } from './dynamic-form/form-infra.component';
     LoadingModule,
     FormlyModule.forRoot({
       types: [
+      { name: 'file', component: InputFileComponent, wrappers: ['form-field'] },
       { name: 'generic', component: GenericTypeComponent, wrappers: ['form-field'] },
       { name: 'external', component: ExternalTypeComponent },
       { name: 'externalquery', component: ExternalqueryComponent },
@@ -145,7 +147,8 @@ import { FormInfraComponent } from './dynamic-form/form-infra.component';
     SelectTypeComponent,
     NavstepperWrapperComponent,
     TabTypeComponent,    
-    FormInfraComponent
+    FormInfraComponent,
+    InputFileComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -153,7 +156,8 @@ import { FormInfraComponent } from './dynamic-form/form-infra.component';
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
     SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
     TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, TabTypeComponent,
-    FormInfraComponent
+    FormInfraComponent,
+    InputFileComponent
   ],
   entryComponents: [LookupComponent]
 })
