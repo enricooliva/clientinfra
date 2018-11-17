@@ -64,51 +64,66 @@ export class TestTabComponent implements OnInit {
       ],
     },
   ];
-  
+
   fieldtabs: FormlyFieldConfig[] = [
     {
       key: 'conv',
-      type: 'tab',      
+      type: 'tab',
       fieldGroup: [
-        {          
-          fieldGroup: [{
-            key: 'firstname',
-            type: 'input',
-            templateOptions: {
-              label: 'First name',
-              required: true,
+        {
+          fieldGroup: [
+            {
+              key: 'firstname',
+              type: 'input',
+              templateOptions: {
+                label: 'First name',
+                required: true,
+              },
             },
-          },
-          {
-            key: 'age',
-            type: 'input',
-            templateOptions: {
-              type: 'number',
-              label: 'Age',
-              required: true,
+            {
+              key: 'age',
+              type: 'input',
+              templateOptions: {
+                type: 'number',
+                label: 'Age',
+                required: true,
+              },
             },
-          }]
+          ],
+          templateOptions: {
+            label: 'Personal data'
+          }
         },
         {
-          fieldGroup: [{
-            key: 'country',
-            type: 'input',
-            templateOptions: {
-              label: 'Country',
-              required: true,
+          fieldGroup: [
+            {
+              key: 'country',
+              type: 'input',
+              templateOptions: {
+                label: 'Country',
+                required: true,
+              },
             },
-          }]
+          ],
+          templateOptions: {
+            label: 'Destination'
+          }
         },
         {
-          fieldGroup: [{
-            key: 'day',
-            type: 'input',
-            templateOptions: {
-              type: 'date',
-              label: 'Day of the trip',
-              required: true,
+          fieldGroup: [
+            {
+              key: 'day',
+              type: 'input',
+              templateOptions: {
+                type: 'date',
+                label: 'Day of the trip',
+                required: true,
+              },
             },
-          }]
+          ],
+          templateOptions: {
+            label: 'Day of the trip'
+          }
         }
       ],
 

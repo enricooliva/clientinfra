@@ -25,7 +25,6 @@ import { AziendaService } from './application/azienda.service';
 import { TestTabComponent } from './application/pages/test-tab.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
-
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -36,8 +35,8 @@ export function tokenGetter() {
     AppComponent,
     NotFoundComponent,
     TableTypeComponent,
-    TestTabComponent,    
-  ],
+    TestTabComponent, 
+],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
     AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(), PdfViewerModule,

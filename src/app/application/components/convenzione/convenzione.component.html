@@ -34,14 +34,21 @@
   <span> {{ page }} / {{ totalPages }} </span>
   <button class="btn btn-outline-primary border-0 rounded-0" (click)="nextPage()" [disabled]="page === totalPages">Next</button>
 </div>
-<!-- [render-text]="true" -->
-<pdf-viewer *ngIf="isLoadedPdf" [src]="pdfSrc"           
-          [show-all]="false"
-          [autoresize]="true"
-          [original-size]="false"
-          [page]="page"
-          (after-load-complete)="afterLoadComplete($event)"          
+<!-- [render-text]="true"     style="display: block;" -->
+
+<div *ngIf="isLoadedPdf"  class="container shadow p-3 mb-3 bg-white">
+<pdf-viewer  [src]="pdfSrc"           
+    [show-all]="false"
+    [autoresize]="true"
+    [original-size]="false"
+    [page]="page"      
+    (after-load-complete)="afterLoadComplete($event)"          
 ></pdf-viewer>
+</div>
+<!-- <section id="viewer">
+  Simple PDF Viewer: open the test.pdf at the second page 
+  <simple-pdf-viewer #pdfSimpleViewer [src]=""></simple-pdf-viewer>
+</section> -->
 
 <br>
 <br>

@@ -1,5 +1,5 @@
 
-import { Component, OnInit, OnDestroy, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, TemplateRef, ViewChild, Sanitizer } from '@angular/core';
 import { FormGroup, FormControl, FormArray, NgForm, Validators } from '@angular/forms';
 import { ApplicationService } from '../../application.service';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
@@ -11,6 +11,8 @@ import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/op
 import { FormState } from 'src/app/core';
 import { StepType } from 'src/app/shared';
 import { read } from 'fs';
+import { SafeHtml } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-convenzione',
@@ -18,16 +20,17 @@ import { read } from 'fs';
 })
 
 export class ConvenzioneComponent implements OnInit, OnDestroy {
-  
+
   // 'descrizione_titolo',
   // 'dipartimemto_cd_dip',
   // 'resp_scientifico',
   // 'ambito',
   // 'durata',
   // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
-  
 
-  onDestroy$ = new Subject<void>();  
+
+
+  onDestroy$ = new Subject<void>();
   form = new FormGroup({});
   model: Convenzione;
   fields: FormlyFieldConfig[] =
@@ -93,7 +96,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               },
               populateAsync: () => {
                 return this.service.getDipartimenti()
-              }                    
+              }
             }
           },
           {
@@ -102,7 +105,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
             className: "col-md-6",
             templateOptions: {
               label: 'Responsabile scientifico',
-              required: true            
+              required: true
             },
             lifecycle: {
               onInit: (form, field) => {
@@ -127,7 +130,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       {
         fieldGroupClassName: 'row',
         fieldGroup: [
-   ]
+        ]
       },
       {
         fieldGroupClassName: 'row',
@@ -150,88 +153,89 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       {
         fieldGroupClassName: 'row',
         fieldGroup: [
-        {
-          key: 'ambito',
-          type: 'select',
-          className: "col-md-4",
-          templateOptions: {
-            options: [
-              {label: 'Istituzionale', value: 'istituzionale'},
-              {label: 'Commerciale', value: 'commerciale'},
-            ],
-            label: 'Ambito',            
-            required: true,
-          },
-        },    
-        {
-          key: 'durata',
-          type: 'number',
-          className: "col-md-4",
-          templateOptions: {            
-            label: 'Durata in mesi',            
-            required: true,
-          },
-        },
-        {
-          key: 'tipopagamenti_codice',
-          type: 'selectinfra',
-          className: "col-md-4",
-          templateOptions: {
-            options: [],
-            valueProp: 'codice',
-            labelProp: 'descrizione',
-            label: 'Modalità di pagamento',
-            required: true,
-            inizialization: () => {
-              return this.model.tipopagamento
+          {
+            key: 'ambito',
+            type: 'select',
+            className: "col-md-4",
+            templateOptions: {
+              options: [
+                { label: 'Istituzionale', value: 'istituzionale' },
+                { label: 'Commerciale', value: 'commerciale' },
+              ],
+              label: 'Ambito',
+              required: true,
             },
-            populateAsync: () => {
-              return this.service.getPagamenti()
-            }              
-          }       
-        }
+          },
+          {
+            key: 'durata',
+            type: 'number',
+            className: "col-md-4",
+            templateOptions: {
+              label: 'Durata in mesi',
+              required: true,
+            },
+          },
+          {
+            key: 'tipopagamenti_codice',
+            type: 'selectinfra',
+            className: "col-md-4",
+            templateOptions: {
+              options: [],
+              valueProp: 'codice',
+              labelProp: 'descrizione',
+              label: 'Modalità di pagamento',
+              required: true,
+              inizialization: () => {
+                return this.model.tipopagamento
+              },
+              populateAsync: () => {
+                return this.service.getPagamenti()
+              }
+            }
+          }
         ]
       },
       {
         fieldGroupClassName: 'row',
         fieldGroup: [
-        {
-          key: 'corrispettivo',
-          type: 'input',
-          className: "col-md-6",
-          templateOptions: {            
-            label: 'Corrispettivo iva esclusa se applicabile',            
-            required: true,
+          {
+            key: 'corrispettivo',
+            type: 'input',
+            className: "col-md-6",
+            templateOptions: {
+              label: 'Corrispettivo iva esclusa se applicabile',
+              required: true,
+            },
           },
-        },
-        {
-          key: 'importo',
-          type: 'input',
-          className: "col-md-6",
-          templateOptions: {            
-            label: 'Importo iva esclusa ove applicabile',            
-            required: true,
+          {
+            key: 'importo',
+            type: 'input',
+            className: "col-md-6",
+            templateOptions: {
+              label: 'Importo iva esclusa ove applicabile',
+              required: true,
+            },
           },
-        },     
         ]
       },
       {
         fieldGroupClassName: 'row',
         fieldGroup: [
-        {
-          key: 'nome_originale',
-          type: 'file',
-          className: "col-md-6",
-          templateOptions: {            
-            label: '',            
-            required: true,   
-            onSelected: ($img) => this.onFileSelected($img)         
-          },                    
-        }
+          {
+            key: 'nome_originale',
+            type: 'file',
+            className: "col-md-6",
+            templateOptions: {
+              label: '',
+              required: true,
+              onSelected: ($img) => this.onFileSelected($img)
+            },
+          }
 
         ]
       }
-    ]
+    ];
+
   options: FormlyFormOptions = {
     formState: {
       isLoading: false,
@@ -243,25 +247,25 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
   defaultColDef = { editable: true };
 
-  private _isLoading:boolean = false;
-  get isLoading():boolean {
-      return this._isLoading;
+  private _isLoading: boolean = false;
+  get isLoading(): boolean {
+    return this._isLoading;
   }
-  set isLoading(value:boolean) {
-      this._isLoading = value;
-      this.options.formState.isLoading = value;
-  }
-
-  constructor(private service: ApplicationService, private route: ActivatedRoute) {    
+  set isLoading(value: boolean) {
+    this._isLoading = value;
+    this.options.formState.isLoading = value;
   }
 
-  get isNew(): boolean{
-    return this.model==null || this.model.id == null 
+  constructor(private service: ApplicationService, private route: ActivatedRoute) {
+  }
+
+  get isNew(): boolean {
+    return this.model == null || this.model.id == null
   }
 
   ngOnInit() {
-    
-     //modello vuoto
+
+    //modello vuoto
     this.model = {
       user_id: null,
       id: null,
@@ -269,24 +273,24 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       dipartimemto_cd_dip: '',
       nominativo_docente: '',
       emittente: '',
-      user: { id: null, name: null},
-      dipartimento: { cd_dip: null, nome_breve: ''},
+      user: { id: null, name: null },
+      dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
-      azienda: { id_esterno: null, denominazione: ''}                
+      azienda: { id_esterno: null, denominazione: '' }
     }
-    
+
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isLoading = true;
         this.service.clearMessage();
-        this.service.getConvenzioneById(params['id']).subscribe((data) => {                    
-          try{            
-            this.options.resetModel(data);          
-            this.isLoading = false;                    
-          }catch(e){
+        this.service.getConvenzioneById(params['id']).subscribe((data) => {
+          try {
+            this.options.resetModel(data);
+            this.isLoading = false;
+          } catch (e) {
             console.log(e);
-            this.isLoading = false;                    
+            this.isLoading = false;
           }
         });
       }
@@ -312,15 +316,15 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   onNew() {
     this.form.reset();
     //this.model = null;
-  
+
   }
 
   onReload() {
     //sono nello stato nuovo
     if (this.model != null && this.model.id !== null) {
-     this.isLoading = true;                  
-      this.service.getConvenzioneById(this.model.id).subscribe((data) => {                          
-        this.options.resetModel(data);;            
+      this.isLoading = true;
+      this.service.getConvenzioneById(this.model.id).subscribe((data) => {
+        this.options.resetModel(data);;
         this.isLoading = false;
       });
     }
@@ -329,11 +333,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };            
+      var tosubmit = { ...this.model, ...this.form.value };
       this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
-        result => {                      
-          this.options.resetModel(result);                
-          this.isLoading = false;          
+        result => {
+          this.options.resetModel(result);
+          this.isLoading = false;
         },
         error => {
           this.isLoading = false;
@@ -379,20 +383,21 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     if (typeof (FileReader) !== 'undefined') {
       let reader = new FileReader();
-  
-      reader.onload = (e: any) => {        
+
+      reader.onload = (e: any) => {
         this.pdfSrc = e.target.result;
+        //this.pdfSimpleViewer.openDocument(new Uint8Array(e.target.result));
       };
-  
-      if ($img == undefined){
+
+      if ($img == undefined) {
         reader.readAsArrayBuffer(new Blob());
         this.isLoadedPdf = false;
-      }else{
+      } else {
         reader.readAsArrayBuffer($img);
         this.isLoadedPdf = true;
       }
-      
-      
+
+
     }
   }
 
@@ -408,4 +413,13 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   prevPage() {
     this.page--;
   }
+
+  // public innerHtml: SafeHtml;
+  // public setInnerHtml(pdfurl: string) {
+  //   this.innerHtml = this._sanitizer.bypassSecurityTrustHtml(
+  //     "<object data='" + pdfurl + "' type='application/pdf' class='embed-responsive-item'>" +
+  //     "Object " + pdfurl + " failed" +
+  //     "</object>");
+  // }
+
 }

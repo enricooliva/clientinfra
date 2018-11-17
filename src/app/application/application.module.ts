@@ -30,8 +30,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     NgxDatatableModule,      
     RouterModule,
     LoadingModule,
-    CoreModule, 
-    PdfViewerModule
+    CoreModule,  
+    PdfViewerModule    
   ], 
   exports: [
     ConvenzioneComponent,
