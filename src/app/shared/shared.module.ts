@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {FormlyModule} from '@ngx-formly/core';
 import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { UserLoginComponent } from './user-login/user-login.component';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -37,6 +37,7 @@ import { NavstepperWrapperComponent } from './dynamic-form/navstepper-wrapper.co
 import { TabTypeComponent } from './dynamic-form/tab-type.component';
 import { FormInfraComponent } from './dynamic-form/form-infra.component';
 import { InputFileComponent } from './dynamic-form/input-file/input-file.component';
+import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component';
 
 @NgModule({
   imports: [
@@ -121,7 +122,8 @@ import { InputFileComponent } from './dynamic-form/input-file/input-file.compone
         { name: 'notfound', message: 'Non trovato' },        
       ]
     }),
-    FormlyBootstrapModule
+    FormlyBootstrapModule,
+    PdfViewerModule,
   ],
   exports: [ 
     NavigationComponent, 
@@ -148,7 +150,8 @@ import { InputFileComponent } from './dynamic-form/input-file/input-file.compone
     NavstepperWrapperComponent,
     TabTypeComponent,    
     FormInfraComponent,
-    InputFileComponent
+    InputFileComponent,
+    PdfInfraComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -157,7 +160,8 @@ import { InputFileComponent } from './dynamic-form/input-file/input-file.compone
     SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
     TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, TabTypeComponent,
     FormInfraComponent,
-    InputFileComponent
+    InputFileComponent,
+    PdfInfraComponent
   ],
   entryComponents: [LookupComponent]
 })

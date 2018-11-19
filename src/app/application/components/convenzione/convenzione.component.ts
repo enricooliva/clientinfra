@@ -28,8 +28,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'durata',
   // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
 
-
-
   onDestroy$ = new Subject<void>();
   form = new FormGroup({});
   model: Convenzione;
@@ -367,46 +365,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   
   }
 
-  page: number = 1;
-  totalPages: number;
-  pdfSrc: string;
-  isLoadedPdf = false;
-
-  onFileSelected($img) {
-    //let $img: any = selectedFile //document.querySelector('#file');
-
-    if (typeof (FileReader) !== 'undefined') {
-      let reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.pdfSrc = e.target.result;
-        //this.pdfSimpleViewer.openDocument(new Uint8Array(e.target.result));
-      };
-
-      if ($img == undefined) {
-        reader.readAsArrayBuffer(new Blob());
-        this.isLoadedPdf = false;
-      } else {
-        reader.readAsArrayBuffer($img);
-        this.isLoadedPdf = true;
-      }
-
-
-    }
+  pdfFile: File;  
+  onFileSelected($img) {  
+    this.pdfFile = $img;
   }
 
-  afterLoadComplete(pdfData: any) {
-    this.totalPages = pdfData.numPages;
-    this.isLoadedPdf = true;
-  }
-
-  nextPage() {
-    this.page++;
-  }
-
-  prevPage() {
-    this.page--;
-  }
 
   // public innerHtml: SafeHtml;
   // public setInnerHtml(pdfurl: string) {
