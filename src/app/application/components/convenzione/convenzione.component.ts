@@ -223,10 +223,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroup: [
           {
             key: 'nome_originale',
-            type: 'file',
+            type: 'fileinput',
             className: "col-md-6",
             templateOptions: {
-              label: '',
+              label: 'Seleziona convenzione',
               required: true,
               onSelected: ($img) => this.onFileSelected($img)
             },
@@ -364,13 +364,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     const temp = this.temp.filter(function (d) {
       return d.role.toLowerCase().indexOf(val) !== -1 || !val;
     });
-
-    // update the rows
-    //this.datarows =[...temp];
-    //this.assignments.patchValue(temp);
-
-    // Whenever the filter changes, always go back to the first page
-    //this.table.offset = 0;
+  
   }
 
   page: number = 1;

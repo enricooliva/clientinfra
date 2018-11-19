@@ -51,7 +51,7 @@ import { InputFileComponent } from './dynamic-form/input-file/input-file.compone
     LoadingModule,
     FormlyModule.forRoot({
       types: [
-      { name: 'file', component: InputFileComponent, wrappers: ['form-field'] },
+      { name: 'fileinput', component: InputFileComponent },
       { name: 'generic', component: GenericTypeComponent, wrappers: ['form-field'] },
       { name: 'external', component: ExternalTypeComponent },
       { name: 'externalquery', component: ExternalqueryComponent },
