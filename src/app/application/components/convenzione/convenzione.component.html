@@ -28,8 +28,8 @@
     <button type="button" class="btn btn-default">Reset</button> -->
   </formly-form> 
 </form>
-
-<app-pdf-infra [pdfFile]="pdfFile"></app-pdf-infra>
+<!-- [pdfFile]="model.convenzione_pdf" -->
+<app-pdf-infra *ngIf="pdfSrc" [pdfSrc]="pdfSrc" ></app-pdf-infra>
 <!-- <section id="viewer">
   Simple PDF Viewer: open the test.pdf at the second page 
   <simple-pdf-viewer #pdfSimpleViewer [src]=""></simple-pdf-viewer>

@@ -210,7 +210,7 @@ export class ApplicationService implements ServiceQuery {
     }
   }
 
-  updateConvenzione(convenzione: Convenzione, id: number): any {
+  updateConvenzione(convenzione: Convenzione, id: number): any {   
     if (id) {
       //aggiorna la Convenzione esiste PUT
       const url = `${this._baseURL + '/convenzioni'}/${id}`;

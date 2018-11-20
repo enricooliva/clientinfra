@@ -3,8 +3,7 @@ import { FieldType, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-input-file',
-  template: `
-  
+  template: `  
     <formly-field *ngIf="inputField"
       [model]="model"
       [field]="inputField"
@@ -24,10 +23,8 @@ export class InputFileComponent extends FieldType implements OnInit{
     super();         
   }
 
-  ngOnInit() {
-    
+  ngOnInit() {    
     if (!this.inputField){
-
       if (!this.to.accept) {
         this.to.accept = 'application/pdf';
       }
@@ -48,8 +45,7 @@ export class InputFileComponent extends FieldType implements OnInit{
           },
           addonRight: {
             class: 'btn btn-outline-secondary oi oi-delete d-flex align-items-center',
-            onClick: (to, fieldType, $event) => this.reset(),
-            
+            onClick: (to, fieldType, $event) => this.reset(),            
           }
         }
       }
@@ -61,7 +57,7 @@ export class InputFileComponent extends FieldType implements OnInit{
   onFileChanged(event) {
     let selFile = event.target.files[0] as File;
     if (selFile){
-      this.inputField.formControl.setValue(selFile.name);
+      this.inputField.formControl.setValue(selFile.name);      
       //let $img = this.fileInput.nativeElement.files[0];
       this.to.onSelected(selFile)
     }

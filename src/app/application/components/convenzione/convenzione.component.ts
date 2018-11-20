@@ -6,12 +6,14 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
 import { Subject, of } from 'rxjs';
+import { encode, decode } from 'base64-arraybuffer';
 
 import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { FormState } from 'src/app/core';
 import { StepType } from 'src/app/shared';
 import { read } from 'fs';
 import { SafeHtml } from '@angular/platform-browser';
+import { $ } from 'protractor';
 
 
 @Component({
@@ -220,7 +222,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroupClassName: 'row',
         fieldGroup: [
           {
-            key: 'nome_originale',
+            key: 'nome_originale_file_convenzione',
             type: 'fileinput',
             className: "col-md-6",
             templateOptions: {
@@ -275,7 +277,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
-      azienda: { id_esterno: null, denominazione: '' }
+      azienda: { id_esterno: null, denominazione: '' },
+      convenzione_pdf: { filename:'', filetype:'', value: null},
+      nome_originale_file_convenzione: '',
     }
 
     this.route.params.subscribe(params => {
@@ -285,6 +289,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         this.service.getConvenzioneById(params['id']).subscribe((data) => {
           try {
             this.options.resetModel(data);
+            if (data.convenzione_pdf.value){
+              this.pdfSrc = decode(data.convenzione_pdf.value)
+            }
+
             this.isLoading = false;
           } catch (e) {
             console.log(e);
@@ -322,7 +330,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     if (this.model != null && this.model.id !== null) {
       this.isLoading = true;
       this.service.getConvenzioneById(this.model.id).subscribe((data) => {
-        this.options.resetModel(data);;
+        this.options.resetModel(data);
         this.isLoading = false;
       });
     }
@@ -365,11 +373,23 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   
   }
 
-  pdfFile: File;  
+  pdfSrc: ArrayBuffer;  
   onFileSelected($img) {  
-    this.pdfFile = $img;
+    //this.pdfFile = $img;
+    //this.model.convenzione_pdf = $img;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {    
+      this.pdfSrc = e.target.result;
+      this.model.convenzione_pdf = {
+        filename: $img.name,
+        filetype: $img.type,
+        value: encode(e.target.result),
+        //npm install base64-arraybuffer
+        //value_str: this.ab2str(e.target.result),
+      };  
+    }    
+    reader.readAsArrayBuffer($img); 
   }
-
 
   // public innerHtml: SafeHtml;
   // public setInnerHtml(pdfurl: string) {
