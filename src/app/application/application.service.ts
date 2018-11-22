@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap, startWith, takeUntil  } from 'rxjs/operators';
+import { map, catchError, tap, startWith, takeUntil } from 'rxjs/operators';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { InfraMessageType } from '../shared/message/message';
@@ -11,6 +11,7 @@ import { Convenzione } from './convenzione';
 import { saveAs } from 'file-saver';
 import { Subject } from 'rxjs';
 import { error } from '@angular/compiler/src/util';
+import { ConvenzioneComponent } from './components/convenzione/convenzione.component';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -22,6 +23,199 @@ const httpOptions = {
 export class ApplicationService implements ServiceQuery {
 
   _baseURL: string;
+
+  getInformazioniDescrittiveFields(comp: Convenzione): FormlyFieldConfig[] {
+    return [
+      {
+        className: 'section-label',
+        template: '<h5>Dati compilatore</h5>',
+      },
+      {
+        key: 'id',
+        type: 'input',
+        hideExpression: true,
+        templateOptions: {
+          label: 'Id',
+          disabled: true
+        },
+      },
+      {
+        key: 'user',
+        type: 'externalobject',
+        templateOptions: {
+          label: 'Utente',
+          type: 'string',
+          entityName: 'user',
+          entityLabel: 'Utenti',
+          codeProp: 'id',
+          descriptionProp: 'name',
+          isLoading: false,
+        },
+      },
+      {
+        className: 'section-label',
+        template: '<h5>Intestazione</h5>',
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'descrizione_titolo',
+            type: 'input',
+            className: "col-12",
+            templateOptions: {
+              label: 'Descrizione Titolo',
+              required: true,
+            }
+          }]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'dipartimemto_cd_dip',
+            type: 'selectinfra',
+            className: "col-md-6",
+            templateOptions: {
+              options: [],
+              valueProp: 'cd_dip',
+              labelProp: 'nome_breve',
+              label: 'Dipartimento',
+              required: true,
+              inizialization: () => {
+                return comp.dipartimento
+              },
+              populateAsync: () => {
+                return this.getDipartimenti()
+              }
+            }
+          },
+          {
+            key: 'resp_scientifico',
+            type: 'input',
+            className: "col-md-6",
+            templateOptions: {
+              label: 'Responsabile scientifico',
+              required: true
+            },
+          },
+        ]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+        ]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'azienda',
+            type: 'externalobject',
+            className: "col-md-12",
+            templateOptions: {
+              label: 'Azienda',
+              type: 'string',
+              entityName: 'azienda',
+              entityLabel: 'Aziende',
+              codeProp: 'id_esterno',
+              descriptionProp: 'denominazione',
+            },
+          },
+        ]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'ambito',
+            type: 'select',
+            className: "col-md-4",
+            templateOptions: {
+              options: [
+                { label: 'Istituzionale', value: 'istituzionale' },
+                { label: 'Commerciale', value: 'commerciale' },
+              ],
+              label: 'Ambito',
+              required: true,
+            },
+          },
+          {
+            key: 'durata',
+            type: 'number',
+            className: "col-md-4",
+            templateOptions: {
+              label: 'Durata in mesi',
+              required: true,
+            },
+          },
+          {
+            key: 'tipopagamenti_codice',
+            type: 'selectinfra',
+            className: "col-md-4",
+            templateOptions: {
+              options: [],
+              valueProp: 'codice',
+              labelProp: 'descrizione',
+              label: 'Modalità di pagamento',
+              required: true,
+              inizialization: () => {
+                return comp.tipopagamento
+              },
+              populateAsync: () => {
+                return this.getPagamenti()
+              }
+            }
+          }
+        ]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'corrispettivo',
+            type: 'number',
+            className: "col-md-6",
+            templateOptions: {
+              label: 'Corrispettivo iva esclusa se applicabile',
+              required: true,
+            },
+          },
+          {
+            key: 'importo',
+            type: 'number',
+            className: "col-md-6",
+            templateOptions: {
+              label: 'Importo iva esclusa ove applicabile',
+              required: true,
+            },
+          },
+        ]
+      },
+    ];
+  }
+
+  getConvenzioneFields(comp: Convenzione): FormlyFieldConfig[] {
+    return [
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'convenzione_pdf',
+            type: 'pdfviewerinput',
+            className: "col-md-12",
+            templateOptions: {
+              label: 'Seleziona convenzione',
+              required: true,
+              filevalue: 'filevalue',
+              filename: 'filename'
+            },
+          }
+        ]
+      },
+    ];
+  }
+
 
   getById(id: any): Observable<any> {
     return this.getConvenzioneById(id);
@@ -68,7 +262,7 @@ export class ApplicationService implements ServiceQuery {
           label: 'Descrizione Titolo',
           required: true,
         },
-      },      
+      },
       {
         key: 'dipartimemto_cd_dip',
         type: 'select',
@@ -77,9 +271,9 @@ export class ApplicationService implements ServiceQuery {
           options: this.getDipartimenti(),
           valueProp: 'cd_dip',
           labelProp: 'nome_breve',
-          label: 'Dipartimento',     
-          required: true               
-        },         
+          label: 'Dipartimento',
+          required: true
+        },
       },
       {
         key: 'resp_scientifico',
@@ -111,9 +305,9 @@ export class ApplicationService implements ServiceQuery {
           options: this.getPagamenti(),
           valueProp: 'codice',
           labelProp: 'descrizione',
-          label: 'Pagamento',     
-          required: true               
-        }     
+          label: 'Pagamento',
+          required: true
+        }
       },
       {
         key: 'ambito',
@@ -121,10 +315,10 @@ export class ApplicationService implements ServiceQuery {
         className: "col-md-4",
         templateOptions: {
           options: [
-            {label: 'Istituzionale', value: 'instituzionale'},
-            {label: 'Commerciale', value: 'commercicale'},
+            { label: 'Istituzionale', value: 'instituzionale' },
+            { label: 'Commerciale', value: 'commercicale' },
           ],
-          label: 'Ambito',            
+          label: 'Ambito',
           required: true,
         },
       },
@@ -137,15 +331,15 @@ export class ApplicationService implements ServiceQuery {
           valueProp: 'codice',
           labelProp: 'descrizione',
           label: 'Modalità di pagamento',
-          required: true          
-        }               
+          required: true
+        }
       },
       {
         key: 'corrispettivo',
         type: 'input',
         className: "col-md-6",
-        templateOptions: {            
-          label: 'Corrispettivo iva esclusa se applicabile',            
+        templateOptions: {
+          label: 'Corrispettivo iva esclusa se applicabile',
           required: true,
         },
       },
@@ -153,11 +347,11 @@ export class ApplicationService implements ServiceQuery {
         key: 'importo',
         type: 'input',
         className: "col-md-6",
-        templateOptions: {            
-          label: 'Importo iva esclusa ove applicabile',            
+        templateOptions: {
+          label: 'Importo iva esclusa ove applicabile',
           required: true,
         },
-      },         
+      },
     ];
   }
 
@@ -179,7 +373,7 @@ export class ApplicationService implements ServiceQuery {
 
   getConvenzioneById(id: number): Observable<any> {
     return this.http
-      .get<Convenzione>(this._baseURL + '/convenzioni/'+id.toString()).pipe(
+      .get<Convenzione>(this._baseURL + '/convenzioni/' + id.toString()).pipe(
         tap(sub => {
           if (sub)
             this.messageService.info('Lettura effettuata con successo')
@@ -210,7 +404,7 @@ export class ApplicationService implements ServiceQuery {
     }
   }
 
-  updateConvenzione(convenzione: Convenzione, id: number): any {   
+  updateConvenzione(convenzione: Convenzione, id: number): any {
     if (id) {
       //aggiorna la Convenzione esiste PUT
       const url = `${this._baseURL + '/convenzioni'}/${id}`;
@@ -219,7 +413,7 @@ export class ApplicationService implements ServiceQuery {
           tap(sub => {
             this.messageService.info('Aggiornamento effettuato con successo');
             return sub;
-          }),                    
+          }),
           catchError(this.handleError('updateConvenzione', convenzione))
         );
       return res;
@@ -229,7 +423,7 @@ export class ApplicationService implements ServiceQuery {
       const url = `${this._baseURL + '/convenzioni'}`;
       let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
         .pipe(
-          tap(sub => 
+          tap(sub =>
             this.messageService.info('Creazione effettuata con successo')
           ),
           catchError(this.handleError('updateConvenzione', convenzione))
@@ -238,26 +432,26 @@ export class ApplicationService implements ServiceQuery {
     }
   }
 
-  getDipartimenti(): Observable<any> {        
+  getDipartimenti(): Observable<any> {
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
   }
 
   getDirettoreDipartimento(codiceDip): Observable<any> {
-    return this.http.get(this._baseURL + '/dipartimenti/direttore/'+codiceDip.toString(), httpOptions);  
+    return this.http.get(this._baseURL + '/dipartimenti/direttore/' + codiceDip.toString(), httpOptions);
   }
 
   getPagamenti(): Observable<any> {
-    return this.http.get(this._baseURL + '/convenzioni/pagamenti', httpOptions);    
+    return this.http.get(this._baseURL + '/convenzioni/pagamenti', httpOptions);
   }
 
-  generatePDF(id: number) {      
-    this.http.get(this._baseURL + '/convenzioni/generapdf/'+id.toString(), { responseType: 'blob' }).subscribe(
+  generatePDF(id: number) {
+    this.http.get(this._baseURL + '/convenzioni/generapdf/' + id.toString(), { responseType: 'blob' }).subscribe(
       (response) => {
         var blob = new Blob([response], { type: 'application/pdf' });
         saveAs(blob, 'convenzionePreview.pdf');
-    },
-    e => {  console.log(e); }  
-    );    
+      },
+      e => { console.log(e); }
+    );
   }
 
   /**

@@ -15,6 +15,6 @@
     </div>
   </div>  
   <div *ngIf="isLoadedPdf" class="shadow p-3 mb-3 bg-white">
-    <pdf-viewer *ngIf="field.formControl.value" [src]="field.formControl.value" [show-all]="false" [autoresize]="true" [original-size]="originalSize"
+    <pdf-viewer *ngIf="field.formControl.value" [src]="pdfSrc" [show-all]="false" [autoresize]="true" [original-size]="originalSize"
       [page]="page" (after-load-complete)="afterLoadComplete($event)" [zoom]="zoom"></pdf-viewer>
   </div>

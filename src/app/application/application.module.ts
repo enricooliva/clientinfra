@@ -18,6 +18,7 @@ import { UsersComponent } from './components/user/users.component';
 import { UserComponent } from './components/user/user.component';
 import { LoadingModule } from 'ngx-loading';
 import { ConvenzioniComponent } from './components/convenzione/convenzioni.component';
+import { MultistepSchematipoComponent } from './pages/multistep-schematipo.component';
 
 
 @NgModule({
@@ -34,13 +35,13 @@ import { ConvenzioniComponent } from './components/convenzione/convenzioni.compo
   ], 
   exports: [
     ConvenzioneComponent,
-    HomeComponent, UserComponent, ConvenzioniComponent   
+    HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent   
   ],
   declarations: [        
     ConvenzioneComponent,
     ConvenzioniComponent,    
     AssignmentDetailPageComponent,    
-    HomeComponent, UsersComponent, UserComponent
+    HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent
   ],
   providers: [ 
     ApplicationService 

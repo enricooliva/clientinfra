@@ -23,10 +23,12 @@ export class PdfTypeComponent extends FieldType implements OnInit {
 
   ngOnInit() {   
     this.field.formControl.valueChanges.subscribe((value )=>{
-        if (value){
+        if (value){          
           this.isLoadedPdf=true;
+          this.pdfSrc = decode(value);
         }else{
           this.isLoadedPdf= false;
+          this.pdfSrc = null;
         }
     });
     

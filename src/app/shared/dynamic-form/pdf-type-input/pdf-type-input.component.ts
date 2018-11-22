@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormlyFieldConfig, FieldType } from '@ngx-formly/core';
-
+import { encode, decode } from 'base64-arraybuffer';
 @Component({
   selector: 'app-pdf-type-input',
   template: `
@@ -29,13 +29,14 @@ export class PdfTypeInputComponent  extends FieldType implements OnInit {
   }
 
   onFileChanged(event) {        
+    this.field.formControl.markAsDirty();
     let selFile = event; //event.target.files[0] as File;
     if (selFile){      
       //load pdf 
       const reader = new FileReader();
       reader.onload = (e: any) => {    
         //console.log(e.target.result);              
-        this.pdfviewer.formControl.setValue(e.target.result);        
+        this.pdfviewer.formControl.setValue(encode(e.target.result));        
       }
       reader.readAsArrayBuffer(selFile); 
     }else{

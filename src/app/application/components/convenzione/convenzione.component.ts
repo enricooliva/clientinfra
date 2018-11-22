@@ -33,223 +33,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject<void>();
   form = new FormGroup({});
   model: Convenzione;
-  fields: FormlyFieldConfig[] =
-    [
-      {
-        className: 'section-label',
-        template: '<h5>Dati compilatore</h5>',
-      },
-      {
-        key: 'id',
-        type: 'input',
-        hideExpression: true,
-        templateOptions: {
-          label: 'Id',
-          disabled: true
-        },
-      },
-      {
-        key: 'user',
-        type: 'externalobject',
-        templateOptions: {
-          label: 'Utente',
-          type: 'string',
-          entityName: 'user',
-          entityLabel: 'Utenti',
-          codeProp: 'id',
-          descriptionProp: 'name',
-          isLoading: this.isLoading
-        },
-      },
-      {
-        className: 'section-label',
-        template: '<h5>Intestazione</h5>',
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'descrizione_titolo',
-            type: 'input',
-            className: "col-12",
-            templateOptions: {
-              label: 'Descrizione Titolo',
-              required: true,
-            }
-          }]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'dipartimemto_cd_dip',
-            type: 'selectinfra',
-            className: "col-md-6",
-            templateOptions: {
-              options: [],
-              valueProp: 'cd_dip',
-              labelProp: 'nome_breve',
-              label: 'Dipartimento',
-              required: true,
-              inizialization: () => {
-                return this.model.dipartimento
-              },
-              populateAsync: () => {
-                return this.service.getDipartimenti()
-              }
-            }
-          },
-          {
-            key: 'resp_scientifico',
-            type: 'input',
-            className: "col-md-6",
-            templateOptions: {
-              label: 'Responsabile scientifico',
-              required: true
-            },
-            lifecycle: {
-              onInit: (form, field) => {
-                // form.get('dipartimemto_cd_dip').valueChanges.pipe(
-                //   distinctUntilChanged(),
-                //   takeUntil(this.onDestroy$),
-                //   filter(() => !this.isLoading),
-                //   //startWith(form.get('dipartimemto_cd_dip').value),
-                //   tap(codiceDip => {
-                //     if (codiceDip) {
-                //       this.service.getDirettoreDipartimento(codiceDip).subscribe((res) => {
-                //         field.formControl.setValue(res.nome_esteso);
-                //       })
-                //     }
-                //   }),
-                // ).subscribe();
-              },
-            },
-          },
-        ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-        ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'azienda',
-            type: 'externalobject',
-            className: "col-md-12",
-            templateOptions: {
-              label: 'Azienda',
-              type: 'string',
-              entityName: 'azienda',
-              entityLabel: 'Aziende',
-              codeProp: 'id_esterno',
-              descriptionProp: 'denominazione',
-            },
-          },
-        ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'ambito',
-            type: 'select',
-            className: "col-md-4",
-            templateOptions: {
-              options: [
-                { label: 'Istituzionale', value: 'istituzionale' },
-                { label: 'Commerciale', value: 'commerciale' },
-              ],
-              label: 'Ambito',
-              required: true,
-            },
-          },
-          {
-            key: 'durata',
-            type: 'number',
-            className: "col-md-4",
-            templateOptions: {
-              label: 'Durata in mesi',
-              required: true,
-            },
-          },
-          {
-            key: 'tipopagamenti_codice',
-            type: 'selectinfra',
-            className: "col-md-4",
-            templateOptions: {
-              options: [],
-              valueProp: 'codice',
-              labelProp: 'descrizione',
-              label: 'Modalità di pagamento',
-              required: true,
-              inizialization: () => {
-                return this.model.tipopagamento
-              },
-              populateAsync: () => {
-                return this.service.getPagamenti()
-              }
-            }
-          }
-        ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'corrispettivo',
-            type: 'input',
-            className: "col-md-6",
-            templateOptions: {
-              label: 'Corrispettivo iva esclusa se applicabile',
-              required: true,
-            },
-          },
-          {
-            key: 'importo',
-            type: 'input',
-            className: "col-md-6",
-            templateOptions: {
-              label: 'Importo iva esclusa ove applicabile',
-              required: true,
-            },
-          },
-        ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'convenzione_pdf',
-            type: 'pdfviewerinput',
-            className: "col-md-12",
-            templateOptions: {
-              label: 'Seleziona convenzione',
-              required: true,    
-              filevalue: 'filevalue',
-              filename: 'filename'        
-            },
-          }          
-        ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'nome_originale_file_convenzione',
-            type: 'fileinput',
-            className: "col-md-6",
-            templateOptions: {
-              label: 'Seleziona convenzione',
-              required: true,
-              onSelected: ($img) => this.onFileSelected($img)
-            },
-          }          
-        ]
-      }
-    ];
+  
+  fields: FormlyFieldConfig[]; 
 
   options: FormlyFormOptions = {
     formState: {
@@ -263,22 +48,18 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   defaultColDef = { editable: true };
 
   private _isLoading: boolean = false;
+  
   get isLoading(): boolean {
     return this._isLoading;
   }
+
   set isLoading(value: boolean) {
     this._isLoading = value;
     this.options.formState.isLoading = value;
   }
 
   constructor(private service: ApplicationService, private route: ActivatedRoute) {
-  }
 
-  get isNew(): boolean {
-    return this.model == null || this.model.id == null
-  }
-
-  ngOnInit() {
 
     //modello vuoto
     this.model = {
@@ -297,17 +78,22 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       nome_originale_file_convenzione: '',
     }
 
+    this.fields = service.getInformazioniDescrittiveFields(this.model).concat(service.getConvenzioneFields(this.model));
+  }
+
+  get isNew(): boolean {
+    return this.model == null || this.model.id == null
+  }
+
+  ngOnInit() {
+
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isLoading = true;
         this.service.clearMessage();
         this.service.getConvenzioneById(params['id']).subscribe((data) => {
           try {
-            this.options.resetModel(data);
-            if (data.convenzione_pdf.value){
-              this.pdfSrc = decode(data.convenzione_pdf.value)
-            }
-
+            this.options.resetModel(data);          
             this.isLoading = false;
           } catch (e) {
             console.log(e);
@@ -316,17 +102,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         });
       }
     });
-
-    //lettura della domanda corrente
-    //const personId = this.route.snapshot.params['id'];   
-    //this.submission = this.submissionService.getSubmission();
-    // this.isLoading = true;
-    // this.submissionService.getSubmission().subscribe((data)=> {          
-
-    //   this.id=data.id;  
-    //   this.model = data;    
-    //   this.isLoading = false;
-    // });    
   }
 
   ngOnDestroy(): void {
@@ -364,9 +139,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.service.messageService.error(error);
           console.log(error)
-        }
-
-      );
+        });
     }
   }
 
@@ -388,23 +161,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   
   }
 
-  pdfSrc: ArrayBuffer;  
-  onFileSelected($img) {  
-    //this.pdfFile = $img;
-    //this.model.convenzione_pdf = $img;
-    const reader = new FileReader();
-    reader.onload = (e: any) => {    
-      this.pdfSrc = e.target.result;
-      this.model.convenzione_pdf = {
-        filename: $img.name,
-        filetype: $img.type,
-        filevalue: encode(e.target.result),
-        //npm install base64-arraybuffer
-        //value_str: this.ab2str(e.target.result),
-      };  
-    }    
-    reader.readAsArrayBuffer($img); 
-  }
 
   // public innerHtml: SafeHtml;
   // public setInnerHtml(pdfurl: string) {

@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
     {title: 'Funzionali', links: [
       { href: 'convenzione', text: 'Convenzione', permissions: ['ADMIN', 'USER'] },
       { href: 'convenzioni', text: 'Lista convenzioni', permissions: ['ADMIN'] },
+      { href: 'multistep-schematipo', text: 'Inserimento convenzione schema tipo', permissions: ['ADMIN'] },
       { href: 'test', text: 'Multi step form', permissions: ['ADMIN'] },
     ]}    
   ];
