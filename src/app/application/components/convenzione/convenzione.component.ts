@@ -222,6 +222,20 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroupClassName: 'row',
         fieldGroup: [
           {
+            key: 'convenzione_pdf.value',
+            type: 'pdfviewer',
+            className: "col-md-6",
+            templateOptions: {
+              label: 'Seleziona convenzione',
+              required: true,            
+            },
+          }          
+        ]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
             key: 'nome_originale_file_convenzione',
             type: 'fileinput',
             className: "col-md-6",
@@ -230,8 +244,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               required: true,
               onSelected: ($img) => this.onFileSelected($img)
             },
-          }
-
+          }          
         ]
       }
     ];

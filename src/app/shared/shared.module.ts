@@ -38,6 +38,8 @@ import { TabTypeComponent } from './dynamic-form/tab-type.component';
 import { FormInfraComponent } from './dynamic-form/form-infra.component';
 import { InputFileComponent } from './dynamic-form/input-file/input-file.component';
 import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component';
+import { PdfTypeComponent } from './dynamic-form/pdf-type/pdf-type.component';
+import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-input.component';
 
 @NgModule({
   imports: [
@@ -52,6 +54,7 @@ import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component'
     LoadingModule,
     FormlyModule.forRoot({
       types: [
+      { name: 'pdfviewer', component: PdfTypeComponent, wrappers: ['form-field']},
       { name: 'fileinput', component: InputFileComponent },
       { name: 'generic', component: GenericTypeComponent, wrappers: ['form-field'] },
       { name: 'external', component: ExternalTypeComponent },
@@ -151,7 +154,8 @@ import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component'
     TabTypeComponent,    
     FormInfraComponent,
     InputFileComponent,
-    PdfInfraComponent
+    PdfInfraComponent,
+    PdfTypeComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -161,7 +165,9 @@ import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component'
     TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, TabTypeComponent,
     FormInfraComponent,
     InputFileComponent,
-    PdfInfraComponent
+    PdfInfraComponent,
+    PdfTypeComponent,
+    PdfTypeInputComponent
   ],
   entryComponents: [LookupComponent]
 })

@@ -28,7 +28,7 @@ export class InputFileComponent extends FieldType implements OnInit{
       if (!this.to.accept) {
         this.to.accept = 'application/pdf';
       }
-      this.inputField = {
+      this.field = {
         ...this.field,
         wrappers: ['form-field','addons'],
         type: 'input',
@@ -50,7 +50,8 @@ export class InputFileComponent extends FieldType implements OnInit{
         }
       }
       
-      this.formlyConfig.getMergedField(this.inputField);
+      this.formlyConfig.getMergedField(this.field);      
+      this.inputField = this.field;
     }
   }
 
