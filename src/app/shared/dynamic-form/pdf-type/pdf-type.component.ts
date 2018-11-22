@@ -16,12 +16,20 @@ export class PdfTypeComponent extends FieldType implements OnInit {
   zoom = 1.0;
   originalSize: boolean = true;
   isLoadedPdf: boolean = false;
-  pdfSrc: ArrayBuffer;
-  filename: string;
+  pdfSrc: ArrayBuffer;  
 
-  @ViewChild('filePdfInput') public filePdfInput: ElementRef;
 
-  ngOnInit() {           
+  //@ViewChild('filePdfInput') public filePdfInput: ElementRef;
+
+  ngOnInit() {   
+    this.field.formControl.valueChanges.subscribe((value )=>{
+        if (value){
+          this.isLoadedPdf=true;
+        }else{
+          this.isLoadedPdf= false;
+        }
+    });
+    
   }
 
   afterLoadComplete(pdfData: any) {
@@ -47,7 +55,7 @@ export class PdfTypeComponent extends FieldType implements OnInit {
   onFileChanged(event) {    
     let selFile = event.target.files[0] as File;
     if (selFile){
-      this.filename =selFile.name;      
+      //this.filename =selFile.name;      
       //load pdf 
       const reader = new FileReader();
       reader.onload = (e: any) => {    
@@ -60,32 +68,18 @@ export class PdfTypeComponent extends FieldType implements OnInit {
   }
 
   reset() {    
-    this.filename =null;    
+    //this.filename =null;    
     this.pdfSrc = null;
     this.field.formControl.setValue(null);
     this.field.formControl.markAsTouched();
-    this.filePdfInput.nativeElement.value = "";   
+    //this.filePdfInput.nativeElement.value = "";   
     this.isLoadedPdf= false;
   }
 
   onClick(){
-    this.filePdfInput.nativeElement.click();
+    //this.filePdfInput.nativeElement.click();
   }
 
-  onPopulate(field: FormlyFieldConfig) {
-  //   field.fieldGroup =  [{
-  //     key: 'nome_originale_file_convenzione',
-  //     type: 'fileinput',
-  //     className: "col-md-6",
-  //     templateOptions: {
-  //       disabled: true,
-  //       required: true,
-  //       onSelected: ($img) => this.onFileSelected($img)
-  //     },
-  //   }
-  // ]     
-    
-  }
 
 
 }

@@ -54,6 +54,7 @@ import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-in
     LoadingModule,
     FormlyModule.forRoot({
       types: [
+      { name: 'pdfviewerinput', component: PdfTypeInputComponent, wrappers: ['form-field']},
       { name: 'pdfviewer', component: PdfTypeComponent, wrappers: ['form-field']},
       { name: 'fileinput', component: InputFileComponent },
       { name: 'generic', component: GenericTypeComponent, wrappers: ['form-field'] },

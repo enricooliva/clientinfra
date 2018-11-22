@@ -222,12 +222,14 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroupClassName: 'row',
         fieldGroup: [
           {
-            key: 'convenzione_pdf.value',
-            type: 'pdfviewer',
-            className: "col-md-6",
+            key: 'convenzione_pdf',
+            type: 'pdfviewerinput',
+            className: "col-md-12",
             templateOptions: {
               label: 'Seleziona convenzione',
-              required: true,            
+              required: true,    
+              filevalue: 'filevalue',
+              filename: 'filename'        
             },
           }          
         ]
@@ -291,7 +293,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
-      convenzione_pdf: { filename:'', filetype:'', value: null},
+      convenzione_pdf: { filename:'', filetype:'', filevalue: null},
       nome_originale_file_convenzione: '',
     }
 
@@ -396,7 +398,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.model.convenzione_pdf = {
         filename: $img.name,
         filetype: $img.type,
-        value: encode(e.target.result),
+        filevalue: encode(e.target.result),
         //npm install base64-arraybuffer
         //value_str: this.ab2str(e.target.result),
       };  

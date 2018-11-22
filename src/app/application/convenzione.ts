@@ -3,8 +3,8 @@ import { BaseEntity } from "../core/base-entity";
 export interface FileInfra {
     filename: string,
     filetype: string,
-    value: ArrayBuffer,
-    //value_str: string,
+    // per visualizzare il pdf | string è in base64 
+    filevalue: ArrayBuffer | string,    
 }
 
 export interface Convenzione extends BaseEntity{
