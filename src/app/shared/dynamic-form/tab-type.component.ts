@@ -12,11 +12,11 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
   <div *ngFor="let f of field.fieldGroup; let index = index;">
     <ngb-tab id="tab-{{index}}" [disabled]="index>0 && !isValid(index-1)">
         <ng-template ngbTabTitle>
-         <button class="btn btn-circle mr-2">
-            <span *ngIf="!isActive(index)" class="oi oi-pencil iconic" title="reload" aria-hidden="true"></span>
-            <span *ngIf="isActive(index)"><b>{{ index }}</b></span>
-            </button>
-            <span class="h6">{{ f.templateOptions.label }} </span>
+          <button class="btn btn-circle mr-2" [disabled]="index>0 && !isValid(index-1)">
+            <span *ngIf="isActive(index)" class="oi oi-pencil iconic" aria-hidden="true"></span>
+            <span *ngIf="!isActive(index)"><b>{{ index }}</b></span>
+          </button>
+          <button class="btn btn-outline-primary border-0 rounded-0"  [disabled]="index>0 && !isValid(index-1)">{{ f.templateOptions.label }} </button>
         </ng-template>
         <ng-template ngbTabContent>            
             <formly-field 
@@ -44,10 +44,10 @@ export class TabTypeComponent extends FieldType implements OnInit {
     @ViewChild('tabs') tabs: NgbTabset;
   
     last = false;
-  
     _selectedTab = 'tab-0';  
   
     ngOnInit() {
+
     }
   
     isActive(index): boolean {
@@ -56,16 +56,26 @@ export class TabTypeComponent extends FieldType implements OnInit {
   
     
     isValid(index): boolean {
-      let tab = this.field.fieldGroup[index];
-      for (let subfield of tab.fieldGroup) {                
-        const fullName = this.field.key ? this.field.key+"."+subfield.key : subfield.key;
+      let tab = this.field.fieldGroup[index];    
+      return this.isValidFieldGroup(tab);
+    }
+  
+    isValidFieldGroup(group: FormlyFieldConfig){
+      for (let subfield of group.fieldGroup) {                
+        
+        const fullName = this.field.key ? this.field.key+"."+subfield.key : subfield.key;        
         const contrl = this.form.get(fullName);
         if (contrl && !contrl.valid)
           return false;
+
+        //allora il subfield è un fieldgroup                 
+        if (subfield.fieldGroup)
+           if (!this.isValidFieldGroup(subfield))      
+              return false;
       }    
+      
       return true;
     }
-  
   
     prevStep(step) {
       if (step === 0)

@@ -12,7 +12,7 @@ import { FormGroup } from '@angular/forms';
   selector: 'app-multistep-schematipo',
   template: `
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
-
+  <h4 class="mb-2">Inserimento convenzione schema tipo</h4>
   <div class="sticky-top btn-toolbar mb-4" role="toolbar">
     <div class="btn-group btn-group">    
       <button class="btn btn-outline-primary border-0 rounded-0" (click)="onNew()" >              
@@ -26,13 +26,10 @@ import { FormGroup } from '@angular/forms';
     </div>
   </div>
   
-  <h4 class="mb-1">Convenzione</h4>
   <form *ngIf='model' [formGroup]="form" >
     <formly-form  [model]="model" [fields]="fieldtabs" [form]="form" [options]="options">      
     </formly-form> 
   </form>
-
- 
 
    `,
   styles: []
@@ -67,7 +64,7 @@ export class MultistepSchematipoComponent implements OnInit {
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
-      convenzione_pdf: { filename:'', filetype:'', filevalue: null},
+      convenzione_pdf: { filename: '', filetype: '', filevalue: null },
       nome_originale_file_convenzione: '',
     }
 
@@ -75,19 +72,13 @@ export class MultistepSchematipoComponent implements OnInit {
       type: 'tab',
       fieldGroup: [
         {
-          fieldGroup: [
-          {
-            fieldGroup: service.getInformazioniDescrittiveFields(this.model),            
-          }],
+          fieldGroup: service.getInformazioniDescrittiveFields(this.model),            
           templateOptions: {
             label: 'Informazioni descrittive'
           }
         },
         {
-          fieldGroup: [
-          {
-            fieldGroup: service.getConvenzioneFields(this.model),           
-          }],
+          fieldGroup: service.getConvenzioneFields(this.model),            
           templateOptions: {
             label: 'Convenzione'
           }
@@ -102,7 +93,7 @@ export class MultistepSchematipoComponent implements OnInit {
   }
 
   onSubmit() {
-    
+
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };

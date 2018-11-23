@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
 import { NotFoundComponent } from './not-found-component/not-found.component';
-import { CoreModule, HttpInterceptorProviders, AuthGuard } from './core';
+import { CoreModule, HttpInterceptorProviders, AuthGuard, MessageCacheService, RequestCache, RequestCacheWithMap } from './core';
 import { Router } from '@angular/router';
 import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
 import { NgbStringAdapter } from './NgbStringAdapter';
@@ -24,6 +24,7 @@ import { UserService } from './application/user.service';
 import { AziendaService } from './application/azienda.service';
 import { TestTabComponent } from './application/pages/test-tab.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { MessageService } from './shared';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -55,11 +56,16 @@ export function tokenGetter() {
     ApplicationService,
     UserService,
     AziendaService,
+    MessageService,
+    MessageCacheService,  
+    { provide: RequestCache, useClass: RequestCacheWithMap },
+    HttpInterceptorProviders,
     {provide: 'userService', useClass: UserService},
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
+    
   ],
   bootstrap: [AppComponent]
 })

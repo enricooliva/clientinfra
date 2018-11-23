@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './auth.service';
-
-
+import { RequestCacheWithMap } from './request-cache.service';
 
 
 @NgModule({
@@ -11,7 +10,9 @@ import { AuthService } from './auth.service';
   ],
   declarations: [],
   providers:[
-    AuthService
+    AuthService,    
+    RequestCacheWithMap,
   ]
 })
+
 export class CoreModule { }

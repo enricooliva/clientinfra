@@ -3,11 +3,15 @@ export * from './auth.service';
 export * from './auth.guard';
 export * from './base-entity';
 export * from './form-state';
+export * from './request-cache.service'
+export * from './message.service'
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
+import { CachingInterceptor } from './caching-interceptor';
 
 /** Http interceptor providers in outside-in order */
-export const HttpInterceptorProviders = [
+export const HttpInterceptorProviders = [    
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
   ];
