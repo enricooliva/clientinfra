@@ -6,6 +6,7 @@ import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageServi
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
+import { Cacheable } from 'ngx-cacheable';
 
 
 const httpOptions = {
@@ -105,6 +106,7 @@ export class AziendaService implements ServiceQuery {
     
   }
 
+  @Cacheable()
   getById(id: any) {       
     return this.getAzienda(id);
   }

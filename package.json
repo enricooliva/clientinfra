@@ -30,6 +30,7 @@
     "core-js": "^2.5.4",
     "file-saver": "^2.0.0-rc.4",
     "ng2-pdf-viewer": "^5.2.1",
+    "ngx-cacheable": "^1.0.7",
     "ngx-loading": "^1.0.14",
     "ngx-permissions": "^5.0.0",
     "rxjs": "^6.3.2",
