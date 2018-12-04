@@ -40,6 +40,7 @@ import { InputFileComponent } from './dynamic-form/input-file/input-file.compone
 import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component';
 import { PdfTypeComponent } from './dynamic-form/pdf-type/pdf-type.component';
 import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-input.component';
+import { FormlyFieldButton } from './dynamic-form/button-type.component';
 
 @NgModule({
   imports: [
@@ -54,6 +55,17 @@ import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-in
     LoadingModule,
     FormlyModule.forRoot({
       types: [
+        {
+          name: 'button',
+          component: FormlyFieldButton,
+          wrappers: ['form-field'],
+          defaultOptions: {
+            templateOptions: {
+              btnType: 'default',
+              type: 'button',
+            },
+          },
+        },
       { name: 'pdfviewerinput', component: PdfTypeInputComponent, wrappers: ['form-field']},
       { name: 'pdfviewer', component: PdfTypeComponent, wrappers: ['form-field']},
       { name: 'fileinput', component: InputFileComponent },
@@ -156,7 +168,8 @@ import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-in
     FormInfraComponent,
     InputFileComponent,
     PdfInfraComponent,
-    PdfTypeComponent
+    PdfTypeComponent,
+    FormlyFieldButton
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -168,7 +181,8 @@ import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-in
     InputFileComponent,
     PdfInfraComponent,
     PdfTypeComponent,
-    PdfTypeInputComponent
+    PdfTypeInputComponent,
+    FormlyFieldButton
   ],
   entryComponents: [LookupComponent]
 })

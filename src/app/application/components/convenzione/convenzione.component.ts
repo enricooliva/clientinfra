@@ -7,13 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
 import { Subject, of } from 'rxjs';
 import { encode, decode } from 'base64-arraybuffer';
-
-import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/operators';
-import { FormState } from 'src/app/core';
-import { StepType } from 'src/app/shared';
-import { read } from 'fs';
-import { SafeHtml } from '@angular/platform-browser';
-import { $ } from 'protractor';
+import { takeUntil, startWith, tap, distinctUntilChanged, filter, map, finalize } from 'rxjs/operators';
+import { UploadfileComponent } from './uploadfile.component';
+import { NgbModal, NgbActiveModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -30,18 +26,104 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'durata',
   // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
 
+  @ViewChild('tabs')
+  private tabs:NgbTabset;
+
   onDestroy$ = new Subject<void>();
   form = new FormGroup({});
+  formattachment = new FormGroup({});
+
   model: Convenzione;
   
   fields: FormlyFieldConfig[]; 
+  fieldsattachment: FormlyFieldConfig[] = [
+    {
+      className: 'section-label',
+      template: '<h5>Lista allegati</h5>',
+    },
+    {
+      type: 'button',
+      className: "col-md-4",
+      templateOptions: {
+        text: 'Inserisci allegato',
+        btnType: 'primary',                
+        onClick: ($event) => this.open()
+      },     
+    },
+    {
+      key: 'attachments',
+      type: 'repeat',        
+      templateOptions: {
+        btnHidden: true,
+        label: 'Gestione allegati',
+        onRemove:  (id) => {
+          this.isLoading= true;
+          return this.service.deleteFile(id).pipe(                        
+            finalize(() => {             
+              this.tabs.select('tab-selectbyconvenzione');
+              this.isLoading = false;     
+              //this.tabs.select('tab-selectbyallegati');
+            }
+            ))
+          },                       
+        //(index, callback, context) => this.onRemoveFile(index, callback, context),
+        //onAddInitialModel: (event) => this.onAddInitialModel(event),
+      },   
+      hideExpression: (model: any, formState: any) => {
+         return this.model.attachments == null || this.model.attachments.length == 0
+      },   
+      fieldArray: {        
+        template: '<hr />', 
+        fieldGroupClassName: 'row',
+        fieldGroup: [          
+          {
+            className: 'col-md-1',
+            type: 'input',
+            key: 'id',
+            hide: true,
+            templateOptions: {
+              label: "Id",
+              hidden: true,  
+              disabled: true,                        
+            },
+          },
+          {
+            className: 'col-md-3',
+            type: 'input',
+            key: 'filename',
+            templateOptions: {
+              label: "Nome dell'allegato",
+              disabled: true,              
+            },
+          },
+          {
+            type: 'input',
+            key: 'attachmenttype.descrizione',
+            className: 'col-md-3',
+            templateOptions: {
+              label: 'Tipologia',
+              disabled: true,
+            },
+          },
+          {
+            type: 'input',
+            key: 'created_at',
+            className: 'col-md-3',
+            templateOptions: {
+              label: 'Data e ora di creazione',
+              disabled: true,
+            },
+          },
+        ],      
+      }
+    }
+  ]
 
   options: FormlyFormOptions = {
     formState: {
       isLoading: false,
     },
   };
-
 
   private id: number;
 
@@ -58,8 +140,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     this.options.formState.isLoading = value;
   }
 
-  constructor(private service: ApplicationService, private route: ActivatedRoute) {
-
+  constructor(private service: ApplicationService, private route: ActivatedRoute, private modalService: NgbModal, public activeModal: NgbActiveModal) {
 
     //modello vuoto
     this.model = {
@@ -161,6 +242,34 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   
   }
 
+  open() {
+    const modalRef = this.modalService.open(UploadfileComponent, {
+      size: 'lg'
+    })
+    modalRef.result.then((result) => {
+      if (result){
+        this.model = {
+          ...this.model,
+          attachments: this.model.attachments.concat(result),
+        }
+      }
+    }, (reason) => {
+    });
+    modalRef.componentInstance.model_id = this.model.id;
+  }
+
+  onRemoveFile(index: number, callback, context){
+    this.isLoading = true;
+    let id =context.formControl.at(index).get('id');    
+    this.service.deleteFile(id.value).subscribe(
+      result => { 
+        callback(index, context); this.isLoading = false; 
+      },
+      error => { 
+        this.isLoading=false; 
+      }            
+    );
+  }
 
   // public innerHtml: SafeHtml;
   // public setInnerHtml(pdfurl: string) {

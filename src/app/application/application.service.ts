@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map, catchError, tap, startWith, takeUntil } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError, tap, startWith, takeUntil, publishReplay, refCount } from 'rxjs/operators';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { InfraMessageType } from '../shared/message/message';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
-import { Convenzione } from './convenzione';
+import { Convenzione, FileAttachment } from './convenzione';
 import { saveAs } from 'file-saver';
 import { Subject } from 'rxjs';
 import { error } from '@angular/compiler/src/util';
 import { ConvenzioneComponent } from './components/convenzione/convenzione.component';
+import { CachingInterceptor } from '../core/caching-interceptor';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -23,6 +24,11 @@ const httpOptions = {
 export class ApplicationService implements ServiceQuery {
 
   _baseURL: string;
+
+  constructor(private http: HttpClient, public messageService: MessageService) {
+    this._baseURL = AppConstants.baseApiURL;
+  }
+
 
   getInformazioniDescrittiveFields(comp: Convenzione): FormlyFieldConfig[] {
     return [
@@ -205,8 +211,7 @@ export class ApplicationService implements ServiceQuery {
             type: 'pdfviewerinput',
             className: "col-md-12",
             templateOptions: {
-              label: 'Seleziona convenzione',
-              required: true,
+              label: 'Seleziona convenzione',              
               filevalue: 'filevalue',
               filename: 'filename'
             },
@@ -215,7 +220,6 @@ export class ApplicationService implements ServiceQuery {
       },
     ];
   }
-
 
   getById(id: any): Observable<any> {
     return this.getConvenzioneById(id);
@@ -367,9 +371,6 @@ export class ApplicationService implements ServiceQuery {
       );
   }
 
-  constructor(private http: HttpClient, public messageService: MessageService) {
-    this._baseURL = AppConstants.baseApiURL;
-  }
 
   getConvenzioneById(id: number): Observable<any> {
     return this.http
@@ -432,7 +433,35 @@ export class ApplicationService implements ServiceQuery {
     }
   }
 
-  getDipartimenti(): Observable<any> {
+  uploadFile(file: FileAttachment): Observable<FileAttachment> {
+    const url = `${this._baseURL + '/convenzioni/uploadFile'}`;
+      let res = this.http.post<FileAttachment>(url, file, httpOptions)
+        .pipe(
+          tap(sub =>
+            this.messageService.info('Creazione effettuata con successo')
+          ),          
+          catchError(this.handleError('caricamento documento', null))
+        );
+      return res;
+  }
+
+  deleteFile(id: number): Observable<any> {
+      const url = `${this._baseURL + '/convenzioni/uploadFile/'}${id}`;    
+      let res = this.http.delete<any>(url, httpOptions)
+        .pipe(
+          tap(sub =>
+            this.messageService.info('Eliminazione documento effettuata con successo')
+          ),
+          catchError(this.handleError('cancellazione documento', null))
+        );
+      return res;
+  }
+
+    // .map(res => res.json())
+    // .publishReplay(1)
+    // .refCount();
+
+  getDipartimenti(): Observable<any> {    
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
   }
 
@@ -442,6 +471,10 @@ export class ApplicationService implements ServiceQuery {
 
   getPagamenti(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/pagamenti', httpOptions);
+  }
+
+  getAttachemntTypes(): Observable<any> {
+    return this.http.get(this._baseURL + '/convenzioni/attachmenttypes/', httpOptions);
   }
 
   generatePDF(id: number) {
@@ -460,17 +493,19 @@ export class ApplicationService implements ServiceQuery {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T, retrow?: false) {
     return (error: any): Observable<T> => {
-
+      
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
       this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`);
-
       // Let the app keep running by returning an empty result.
-      return of(result as T);
+      if (retrow)
+        return of(result as T);
+      else 
+        return throwError(error);
     };
   }
 

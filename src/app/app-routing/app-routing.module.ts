@@ -9,6 +9,7 @@ import { UserComponent } from '../application/components/user/user.component';
 import { ConvenzioniComponent } from '../application/components/convenzione/convenzioni.component';
 import { TestTabComponent } from '../application/pages/test-tab.component';
 import { MultistepSchematipoComponent } from '../application/pages/multistep-schematipo.component';
+import { AllegatiComponent } from '../application/components/convenzione/allegati.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url
@@ -17,6 +18,7 @@ const routes: Routes = [
       { path: 'convenzione',  component: ConvenzioneComponent,  canActivate:[AuthGuard] }, 
       { path: 'convenzioni/:id',  component: ConvenzioneComponent,  canActivate:[AuthGuard] },     
       { path: 'convenzioni',  component: ConvenzioniComponent,  canActivate:[AuthGuard] }, 
+      { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard] },     
       { path: 'users',  component: UsersComponent, canActivate:[AuthGuard] },     //canActivate:[AuthGuard]
       { path: 'user/:id',  component: UserComponent,  canActivate:[AuthGuard] }, 

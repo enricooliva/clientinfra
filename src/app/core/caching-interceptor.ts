@@ -11,6 +11,7 @@ import { startWith, tap } from 'rxjs/operators';
 
 import { RequestCache } from './request-cache.service';
 
+//const CACHABLE_URL = "/api/booksSearch";
 
 /**
  * If request is cachable (e.g., package search) and
@@ -32,12 +33,6 @@ export class CachingInterceptor implements HttpInterceptor {
     if (!isCachable(req)) { return next.handle(req); }
 
     const cachedResponse = this.cache.get(req);
-    // if (req.headers.get('x-refresh')) {
-    //   const results$ = sendRequest(req, next, this.cache);
-    //   return cachedResponse ?
-    //     results$.pipe( startWith(cachedResponse) ) :
-    //     results$;
-    // }
    
     return cachedResponse ?
       of(cachedResponse) : sendRequest(req, next, this.cache);
@@ -48,9 +43,7 @@ export class CachingInterceptor implements HttpInterceptor {
 /** Is this request cachable? */
 function isCachable(req: HttpRequest<any>) {
   // Only GET requests are cachable
-  return req.method === 'GET' //&&
-    // Only npm package search is cachable in this app
-    //-1 < req.url.indexOf(searchUrl);
+  return req.method === 'GET' //&& (req.url.indexOf(CACHABLE_URL) > -1);  
 }
 
 /**

@@ -25,6 +25,7 @@ import { AziendaService } from './application/azienda.service';
 import { TestTabComponent } from './application/pages/test-tab.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { MessageService } from './shared';
+import { UploadfileComponent } from './application/components/convenzione/uploadfile.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -36,7 +37,7 @@ export function tokenGetter() {
     AppComponent,
     NotFoundComponent,
     TableTypeComponent,
-    TestTabComponent, 
+    TestTabComponent,
 ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
@@ -67,7 +68,8 @@ export function tokenGetter() {
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
     
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [UploadfileComponent],
 })
 
 

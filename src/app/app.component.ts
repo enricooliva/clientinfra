@@ -14,7 +14,7 @@ import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
   styleUrls: ['./app.component.scss'],  
 })
 export class AppComponent {
-  title = 'Uniconv client';
+  title = 'UniConv client';
   errorMessage = '';
   
   constructor(public router: Router, private authService: AuthService, private rolesService: NgxRolesService) {    

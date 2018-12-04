@@ -1,4 +1,4 @@
-<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
+<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
 
 <h4>Convenzione</h4>
 <div class="sticky-top btn-toolbar mb-4" role="toolbar">
@@ -22,12 +22,37 @@
   </div>
 </div>
 
-<form *ngIf='model' [formGroup]="form" >
-  <formly-form  [model]="model" [fields]="fields" [form]="form" [options]="options">
-    <!-- <button type="submit" class="btn btn-primary submit-button">Submit</button>
-    <button type="button" class="btn btn-default">Reset</button> -->
-  </formly-form> 
-</form>
+
+<ngb-tabset [justify]="currentJustify" #tabs >
+  <ngb-tab title="Convenzione" id="tab-selectbyconvenzione">
+    <ng-template ngbTabContent>
+      <form *ngIf='model' [formGroup]="form" class="mt-1" >
+        <formly-form  [model]="model" [fields]="fields" [form]="form" [options]="options">
+        </formly-form> 
+      </form>
+      <p>Form value: {{ form.value | json }}</p>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Allegati"  id="tab-selectbyallegati">    
+    <ng-template ngbTabContent>      
+      <form *ngIf='model' [formGroup]="formattachment">
+        <formly-form  [model]="model" [fields]="fieldsattachment" [form]="formattachment" [options]="options">  
+        </formly-form> 
+      </form>      
+      <p>Form value: {{ formattachment.value | json }}</p>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Stato">
+    <ng-template ngbTabContent>
+      
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
+
+
+
+
+
 <!-- [pdfFile]="model.convenzione_pdf" -->
 <!-- <section id="viewer">
   Simple PDF Viewer: open the test.pdf at the second page 
@@ -44,8 +69,8 @@
   </button>  
 </div> -->
 
-<p>Form value: {{ form.value | json }}</p>
-<p>Form status: {{ form.status | json }}</p>
+
+<p>Form status: {{ model | json }}</p>
 
 
 

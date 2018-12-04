@@ -17,6 +17,7 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
             <span *ngIf="!isActive(index)"><b>{{ index }}</b></span>
           </button>
           <button class="btn btn-outline-primary border-0 rounded-0"  [disabled]="index>0 && !isValid(index-1)">{{ f.templateOptions.label }} </button>
+          <hr/>
         </ng-template>
         <ng-template ngbTabContent>            
             <formly-field 

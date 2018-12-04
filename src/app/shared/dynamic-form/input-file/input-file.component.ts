@@ -4,7 +4,7 @@ import { FieldType, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 @Component({
   selector: 'app-input-file',
   template: `  
-    <formly-field *ngIf="inputField"
+    <formly-field *ngIf="inputField"  
       [model]="model"
       [field]="inputField"
       [options]="options"
@@ -12,6 +12,7 @@ import { FieldType, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
     </formly-field>           
     <input #fileInput type="file" accept="{{to.accept}}" (change)="onFileChanged($event)" style="display: none">        
   `,
+  //*ngIf="inputField"
   styles: []
 })
 export class InputFileComponent extends FieldType implements OnInit{
