@@ -2,17 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap, startWith, takeUntil, publishReplay, refCount } from 'rxjs/operators';
-import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
-import { ArrayControl } from '../shared/dynamic-form/control-array';
-import { InfraMessageType } from '../shared/message/message';
+import { MessageService, ServiceQuery } from '../shared';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Convenzione, FileAttachment } from './convenzione';
 import { saveAs } from 'file-saver';
-import { Subject } from 'rxjs';
-import { error } from '@angular/compiler/src/util';
-import { ConvenzioneComponent } from './components/convenzione/convenzione.component';
-import { CachingInterceptor } from '../core/caching-interceptor';
+import { Cacheable } from 'ngx-cacheable';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -125,6 +120,7 @@ export class ApplicationService implements ServiceQuery {
               entityName: 'azienda',
               entityLabel: 'Aziende',
               codeProp: 'id_esterno',
+              required: true,
               descriptionProp: 'denominazione',
             },
           },
@@ -456,23 +452,24 @@ export class ApplicationService implements ServiceQuery {
         );
       return res;
   }
+    
 
-    // .map(res => res.json())
-    // .publishReplay(1)
-    // .refCount();
-
+  @Cacheable()
   getDipartimenti(): Observable<any> {    
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
   }
 
+  @Cacheable()
   getDirettoreDipartimento(codiceDip): Observable<any> {
     return this.http.get(this._baseURL + '/dipartimenti/direttore/' + codiceDip.toString(), httpOptions);
   }
 
+  @Cacheable()
   getPagamenti(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/pagamenti', httpOptions);
   }
 
+  @Cacheable()
   getAttachemntTypes(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/attachmenttypes/', httpOptions);
   }
@@ -493,7 +490,7 @@ export class ApplicationService implements ServiceQuery {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = 'operation', result?: T, retrow?: false) {
+  private handleError<T>(operation = 'operation', result?: T, retrow: boolean = false) {
     return (error: any): Observable<T> => {
       
       // TODO: send the error to remote logging infrastructure
@@ -502,7 +499,7 @@ export class ApplicationService implements ServiceQuery {
       // TODO: better job of transforming error for user consumption
       this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`);
       // Let the app keep running by returning an empty result.
-      if (retrow)
+      if (!retrow)
         return of(result as T);
       else 
         return throwError(error);

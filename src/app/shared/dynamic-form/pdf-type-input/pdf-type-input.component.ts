@@ -60,15 +60,15 @@ export class PdfTypeInputComponent  extends FieldType implements OnInit {
           type: 'input',
           placeholder: 'Scegli file tipo pdf',
           accept: 'application/pdf',         
-          required: true,
+          required: field.templateOptions.required == undefined ? false : field.templateOptions.required,
         },
       },
       {
         key: field.templateOptions.filevalue || 'filevalue',
-        type: 'pdfviewer',        
+        type: 'pdfviewer',        //PdfTypeComponent
         className: "col-md-12",
         templateOptions: {
-          required: true
+          required: field.templateOptions.required == undefined ? false : field.templateOptions.required,
         },
       }
     ];

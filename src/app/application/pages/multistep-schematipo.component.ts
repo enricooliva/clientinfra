@@ -3,8 +3,10 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { StepType } from 'src/app/shared';
 import { ApplicationService } from '../application.service';
 import { ActivatedRoute } from '@angular/router';
-import { Convenzione } from '../convenzione';
+import { Convenzione, FileAttachment } from '../convenzione';
 import { FormGroup } from '@angular/forms';
+import { encode, decode } from 'base64-arraybuffer';
+import { AuthService } from 'src/app/core';
 
 //ng g c application/pages/test-tab -s true  --spec false --flat true
 
@@ -31,6 +33,7 @@ import { FormGroup } from '@angular/forms';
     </formly-form> 
   </form>
 
+  <div class='mb-4'></div>
    `,
   styles: []
 })
@@ -50,16 +53,18 @@ export class MultistepSchematipoComponent implements OnInit {
     },
   };
 
-  constructor(private service: ApplicationService, private route: ActivatedRoute) {
+  mapAttachment: Map<string, FileAttachment> = new Map<string, FileAttachment>();
+
+  constructor(private service: ApplicationService, private route: ActivatedRoute, public authService: AuthService) {
 
     this.model = {
-      user_id: null,
+      user_id: authService.userid,
       id: null,
       descrizione_titolo: '',
       dipartimemto_cd_dip: '',
       nominativo_docente: '',
       emittente: '',
-      user: { id: null, name: null },
+      user: { id: authService.userid, name: authService.username },
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
@@ -72,7 +77,12 @@ export class MultistepSchematipoComponent implements OnInit {
       type: 'tab',
       fieldGroup: [
         {
-          fieldGroup: service.getInformazioniDescrittiveFields(this.model),            
+          fieldGroup: service.getInformazioniDescrittiveFields(this.model).map(x=> { 
+            if (x.key == 'user') {
+              x.templateOptions.disabled = true;
+            }
+            return x;
+          }),            
           templateOptions: {
             label: 'Informazioni descrittive'
           }
@@ -80,14 +90,86 @@ export class MultistepSchematipoComponent implements OnInit {
         {
           fieldGroup: service.getConvenzioneFields(this.model),            
           templateOptions: {
-            label: 'Convenzione'
+            label: 'Convenzione bozza'
+          }
+        },
+        {
+          fieldGroup: [
+            {
+              key: 'file_CD',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Consiglio di dipartimento',
+                type: 'input',
+                placeholder: 'Scegli documento',
+                accept: 'application/pdf',
+                required: true,
+                onSelected: (selFile) => { 
+                  this.onSelectCurrentFile(selFile, 'CD') 
+                }
+              },
+            },
+            {
+              key: 'file_DR',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Disposizione rettorale',
+                type: 'input',
+                placeholder: 'Scegli documento',
+                accept: 'application/pdf',                
+                onSelected: (selFile) => { 
+                  this.onSelectCurrentFile(selFile, 'DR') 
+                }
+              },
+            },
+            {
+              key: 'file_appoggio_word',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Documento appoggio',
+                type: 'input',
+                placeholder: 'Scegli documento',
+                accept: '.doc,.docx,application/msword',                
+                onSelected: (selFile) => { 
+                  this.onSelectCurrentFile(selFile,'CDWORD') 
+                }
+              },
+            },
+            
+          ],
+          templateOptions: {
+            label: 'Allegati'
           }
         }
+
       ]
     }];
-
   }
 
+  onSelectCurrentFile(currentSelFile: File, typeattachemnt: string){
+
+    if (currentSelFile== null){
+      //caso di cancellazione
+      this.mapAttachment.delete(typeattachemnt);
+      return;
+    }
+
+    let currentAttachment: FileAttachment = {      
+      model_type: 'convenzione',
+      filename: currentSelFile.name,
+      attachmenttype_codice: typeattachemnt,
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      currentAttachment.filevalue = encode(e.target.result);      
+      this.mapAttachment.set(currentAttachment.attachmenttype_codice,currentAttachment);
+    }
+    reader.readAsArrayBuffer(currentSelFile); 
+
+  }
 
   ngOnInit() {
   }

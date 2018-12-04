@@ -33,6 +33,7 @@ export class AuthService {
   
   _username = '';
   _roles  = [''];
+  _id: number;
 
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService, private router: Router, private permissionsService: NgxPermissionsService ) {
     this.loggedIn.next(this.isAuthenticated());
@@ -68,6 +69,7 @@ export class AuthService {
       const decodedToken = helper.decodeToken(localStorage.getItem('token'));
       this._username = decodedToken['name'];
       this._roles = decodedToken['roles'];      
+      this._id = decodedToken['id'];    
       this.permissionsService.loadPermissions(this._roles);
     }
   }
@@ -88,6 +90,10 @@ export class AuthService {
      */
   get isLoggedIn() {    
     return this.loggedIn.asObservable();
+  }
+
+  public get userid(): number{
+    return this._id; 
   }
 
   public get username(): string {

@@ -4,6 +4,8 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
+
+
 // ng g c shared/dynamic-form/tab-type -s true  --spec false --flat true
 @Component({
   selector: 'app-tab-type',
@@ -66,9 +68,11 @@ export class TabTypeComponent extends FieldType implements OnInit {
         
         const fullName = this.field.key ? this.field.key+"."+subfield.key : subfield.key;        
         const contrl = this.form.get(fullName);
-        if (contrl && !contrl.valid)
-          return false;
-
+        
+        if (contrl && contrl.status !== 'DISABLED'){
+          if (contrl && !contrl.valid)
+            return false;
+        }
         //allora il subfield è un fieldgroup                 
         if (subfield.fieldGroup)
            if (!this.isValidFieldGroup(subfield))      

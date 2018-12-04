@@ -92,7 +92,7 @@ export class AllegatiComponent implements OnInit {
         },
         {
           type: 'button',
-          className: "col-md-2 d-flex align-items-end",
+          className: "col-md-2 d-flex align-items-start mt-4 pt-2",          
           templateOptions: {
             text: 'Carica',
             btnType: 'primary',            
@@ -198,12 +198,13 @@ export class AllegatiComponent implements OnInit {
 
       //data['attachmenttype'] = this.model.attachmenttype
       //ritorna il singolo file salvato da aggiungere agli attachment
-      let model = {
-        convenzione: this.model.convenzione,
-        attachments: this.model.attachments.concat(data)
+      if (data){
+        let model = {
+          convenzione: this.model.convenzione,
+          attachments: this.model.attachments.concat(data)
+        }
+        this.options.resetModel(model);
       }
-
-      this.options.resetModel(model);
       this.isLoading = false;
     });
   }

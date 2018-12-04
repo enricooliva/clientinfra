@@ -59,7 +59,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
         },
         addonRight: {
           class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
-          onClick: (to, fieldType, $event) => this.open(),
+          onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
         }
       },
       lifecycle: {                    
@@ -116,9 +116,11 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           label: field.templateOptions.label,
           type: 'input',
           placeholder: 'Inserisci codice',     
+          required: field.templateOptions.required == undefined ? false : field.templateOptions.required,
+          disabled: field.templateOptions.disabled == undefined ? false : field.templateOptions.disabled,
           addonRight: {
             class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center'
-          }
+          }          
         },
         modelOptions: { updateOn: 'blur' },
       },

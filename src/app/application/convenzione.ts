@@ -13,7 +13,7 @@ export interface Convenzione extends BaseEntity {
     dipartimemto_cd_dip: string,
     nominativo_docente: string,
     emittente: string,
-    user: { id: string, name: string },
+    user: { id: number, name: string },
     dipartimento: { cd_dip: string, nome_breve: string },
     stato_avanzamento: string,
     tipopagamento: { codice: string, descrizione: string },
@@ -25,7 +25,7 @@ export interface Convenzione extends BaseEntity {
 
 export interface FileAttachment {
     id?: number,
-    model_id: number,
+    model_id?: number,
     model_type: string,
     attachmenttype_codice?: string,
     attachmenttype?: {id: number, codice: string, descrizione: string},
