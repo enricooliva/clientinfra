@@ -4,11 +4,19 @@ import { StepType } from 'src/app/shared';
 import { ApplicationService } from '../application.service';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione, FileAttachment } from '../convenzione';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, ValidationErrors } from '@angular/forms';
 import { encode, decode } from 'base64-arraybuffer';
 import { AuthService } from 'src/app/core';
+import { InfraMessageType } from 'src/app/shared/message/message';
 
 //ng g c application/pages/test-tab -s true  --spec false --flat true
+
+
+//[{"id":1,"codice":"DD","descrizione":"Disposizione direttoriale"},
+//{"id":2,"codice":"DCD","descrizione":"Delibera Consiglio di Dipartimento"},
+//{"id":3,"codice":"DR","descrizione":"Decreto Rettorale"},
+//{"id":4,"codice":"DSA","descrizione":"Delibera Senato Accademico"},
+//{"id":5,"codice":"DCA","descrizione":"Delibera Consiglio di Amministrazione"}]
 
 @Component({
   selector: 'app-multistep-schematipo',
@@ -39,6 +47,15 @@ import { AuthService } from 'src/app/core';
 })
 
 export class MultistepSchematipoComponent implements OnInit {
+
+  public static DECRETO_DIRETTORIALE = 'DD';
+  public static DELIBERA_CONSIGLIO_DIPARTIMENTO = 'DCD';
+  public static DECRETO_RETTORALE = 'DR';
+  public static DOC_APP = 'DA';
+  public static PROSPETTO = 'PR';
+  public static CONV_BOZZA = 'CB';
+  
+
 
   fieldtabs: FormlyFieldConfig[];
 
@@ -71,6 +88,7 @@ export class MultistepSchematipoComponent implements OnInit {
       azienda: { id_esterno: null, denominazione: '' },
       convenzione_pdf: { filename: '', filetype: '', filevalue: null },
       nome_originale_file_convenzione: '',
+      attachments: []
     }
 
     this.fieldtabs = [{
@@ -88,7 +106,35 @@ export class MultistepSchematipoComponent implements OnInit {
           }
         },
         {
-          fieldGroup: service.getConvenzioneFields(this.model),            
+          fieldGroup: [       
+            {
+              key: 'file_PR',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Prospetto ripartizione costi e proventi',
+                type: 'input',
+                placeholder: 'Scegli documento',
+                accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',                
+                onSelected: (selFile) => { 
+                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.PROSPETTO) 
+                }
+              },
+            },
+            {
+              key: 'file_CB',
+              type: 'pdfviewerinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Seleziona convenzione',              
+                filevalue: 'filevalue',
+                filename: 'filename',
+                onSelected: (selFile) => { 
+                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.CONV_BOZZA) 
+                }
+              },
+            }           
+          ],
           templateOptions: {
             label: 'Convenzione bozza'
           }
@@ -106,7 +152,7 @@ export class MultistepSchematipoComponent implements OnInit {
                 accept: 'application/pdf',
                 required: true,
                 onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile, 'CD') 
+                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO) 
                 }
               },
             },
@@ -120,12 +166,12 @@ export class MultistepSchematipoComponent implements OnInit {
                 placeholder: 'Scegli documento',
                 accept: 'application/pdf',                
                 onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile, 'DR') 
+                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DECRETO_RETTORALE) 
                 }
               },
             },
             {
-              key: 'file_appoggio_word',
+              key: 'file_DA',
               type: 'fileinput',
               className: "col-md-5",
               templateOptions: {
@@ -134,8 +180,8 @@ export class MultistepSchematipoComponent implements OnInit {
                 placeholder: 'Scegli documento',
                 accept: '.doc,.docx,application/msword',                
                 onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile,'CDWORD') 
-                }
+                  this.onSelectCurrentFile(selFile,MultistepSchematipoComponent.DOC_APP) 
+                }                
               },
             },
             
@@ -153,10 +199,11 @@ export class MultistepSchematipoComponent implements OnInit {
 
     if (currentSelFile== null){
       //caso di cancellazione
-      this.mapAttachment.delete(typeattachemnt);
+      this.mapAttachment.delete(typeattachemnt);      
       return;
     }
 
+    this.isLoading=true;
     let currentAttachment: FileAttachment = {      
       model_type: 'convenzione',
       filename: currentSelFile.name,
@@ -165,7 +212,14 @@ export class MultistepSchematipoComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       currentAttachment.filevalue = encode(e.target.result);      
+      
+      if (!currentAttachment.filevalue){
+        this.form.get('file_'+typeattachemnt).setErrors({'filevalidation': true});
+        //this.service.messageService.add(InfraMessageType.Error,'Documento '+ currentAttachment.filename +' vuoto');
+      }
+
       this.mapAttachment.set(currentAttachment.attachmenttype_codice,currentAttachment);
+      this.isLoading=false;
     }
     reader.readAsArrayBuffer(currentSelFile); 
 
@@ -178,9 +232,14 @@ export class MultistepSchematipoComponent implements OnInit {
 
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
-      this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
-        result => {
+      var tosubmit: Convenzione = { ...this.model, ...this.form.value };
+      
+      //aggiungo tutti gli allegati      
+      tosubmit.attachments = [];
+      tosubmit.attachments.push(...Array.from<FileAttachment>(this.mapAttachment.values()));
+      
+      this.service.createSchemaTipo(tosubmit).subscribe(
+        result => {          
           this.options.resetModel(result);
           this.isLoading = false;
         },

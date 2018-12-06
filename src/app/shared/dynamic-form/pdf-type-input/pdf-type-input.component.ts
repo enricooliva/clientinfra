@@ -31,6 +31,10 @@ export class PdfTypeInputComponent  extends FieldType implements OnInit {
   onFileChanged(event) {        
     this.field.formControl.markAsDirty();
     let selFile = event; //event.target.files[0] as File;
+    
+    if (this.to.onSelected)
+      this.to.onSelected(selFile);
+
     if (selFile){      
       //load pdf 
       const reader = new FileReader();
@@ -50,12 +54,15 @@ export class PdfTypeInputComponent  extends FieldType implements OnInit {
       return;
     }
 
-    field.fieldGroupClassName = 'row'
+    if (!field.model[field.key]){
+      field.model[field.key] = {};
+    }
+    //field.fieldGroupClassName = 'row'
     field.fieldGroup = [
       {
         key: field.templateOptions.filename || 'filename',
         type: 'fileinput',
-        className: "col-md-6",
+        className: field.templateOptions.class ? field.templateOptions.class : "col-md-6",
         templateOptions: {          
           type: 'input',
           placeholder: 'Scegli file tipo pdf',
@@ -66,7 +73,7 @@ export class PdfTypeInputComponent  extends FieldType implements OnInit {
       {
         key: field.templateOptions.filevalue || 'filevalue',
         type: 'pdfviewer',        //PdfTypeComponent
-        className: "col-md-12",
+        className: field.templateOptions.class ? field.templateOptions.class : "col-md-12",
         templateOptions: {
           required: field.templateOptions.required == undefined ? false : field.templateOptions.required,
         },

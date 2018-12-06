@@ -352,6 +352,16 @@ export class ApplicationService implements ServiceQuery {
           required: true,
         },
       },
+      {
+        key: 'current_place',
+        type: 'select',
+        className: "col-md-6",
+        templateOptions: {
+          options: [{value:'proposta', label:'Proposta'},{value:'approvato', label:'Approvato'}, {value:'inapprovazione', label:'In approvazione'}],
+          label: 'Stato',
+          required: true,
+        },
+      }
     ];
   }
 
@@ -400,6 +410,20 @@ export class ApplicationService implements ServiceQuery {
       return res;
     }
   }
+
+  createSchemaTipo(convenzione:Convenzione):any{
+      //crea una nuova Convenzione POST      
+      const url = `${this._baseURL + '/convenzioni/createschematipo'}`;
+      let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
+        .pipe(
+          tap(sub =>
+            this.messageService.info('Creazione effettuata con successo')
+          ),
+          catchError(this.handleError('createSchemaTipo', convenzione))
+        );
+      return res;
+  }
+
 
   updateConvenzione(convenzione: Convenzione, id: number): any {
     if (id) {

@@ -135,7 +135,8 @@ import { FormlyFieldButton } from './dynamic-form/button-type.component';
       ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
-        { name: 'notfound', message: 'Non trovato' },        
+        { name: 'notfound', message: 'Non trovato' },     
+        { name: 'filevalidation', message: 'Documento non valido' },   
       ]
     }),
     FormlyBootstrapModule,
