@@ -144,6 +144,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     //modello vuoto
     this.model = {
+      schematipotipo: 'shematipo',
       user_id: null,
       id: null,
       descrizione_titolo: '',
@@ -157,6 +158,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       azienda: { id_esterno: null, denominazione: '' },
       convenzione_pdf: { filename:'', filetype:'', filevalue: null},
       nome_originale_file_convenzione: '',
+      unitaorganizzativa_uo: '',
     }
 
     this.fields = service.getInformazioniDescrittiveFields(this.model).concat(service.getConvenzioneFields(this.model));
@@ -193,7 +195,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   onNew() {
     this.form.reset();
     //this.model = null;
-
   }
 
   onReload() {
@@ -212,15 +213,15 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
       this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
-        result => {
-          this.options.resetModel(result);
-          this.isLoading = false;
-        },
-        error => {
-          this.isLoading = false;
-          this.service.messageService.error(error);
-          console.log(error)
-        });
+          result => {
+            this.options.resetModel(result);
+            this.isLoading = false;
+          },
+          error => {
+            this.isLoading = false;
+            this.service.messageService.error(error);
+            console.log(error)
+          });
     }
   }
 

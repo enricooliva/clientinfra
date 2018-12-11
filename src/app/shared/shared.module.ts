@@ -41,6 +41,7 @@ import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component'
 import { PdfTypeComponent } from './dynamic-form/pdf-type/pdf-type.component';
 import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-input.component';
 import { FormlyFieldButton } from './dynamic-form/button-type.component';
+import { FormlyHorizontalWrapper } from './dynamic-form/horizontal-wrapper';
 
 @NgModule({
   imports: [
@@ -132,6 +133,7 @@ import { FormlyFieldButton } from './dynamic-form/button-type.component';
       wrappers: [
         { name: 'panel', component: PanelWrapperComponent },
         { name: 'accordion', component: AccordionWrapperComponent },
+        { name: 'form-field-horizontal', component: FormlyHorizontalWrapper },
       ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
@@ -170,7 +172,8 @@ import { FormlyFieldButton } from './dynamic-form/button-type.component';
     InputFileComponent,
     PdfInfraComponent,
     PdfTypeComponent,
-    FormlyFieldButton
+    FormlyFieldButton,
+    FormlyHorizontalWrapper,
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -183,7 +186,8 @@ import { FormlyFieldButton } from './dynamic-form/button-type.component';
     PdfInfraComponent,
     PdfTypeComponent,
     PdfTypeInputComponent,
-    FormlyFieldButton
+    FormlyFieldButton,
+    FormlyHorizontalWrapper,
   ],
   entryComponents: [LookupComponent]
 })

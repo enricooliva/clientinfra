@@ -8,6 +8,7 @@ export interface FileInfra {
 }
 
 export interface Convenzione extends BaseEntity {
+    schematipotipo: string, 
     user_id: number,
     descrizione_titolo: string,
     dipartimemto_cd_dip: string,
@@ -20,7 +21,8 @@ export interface Convenzione extends BaseEntity {
     azienda: { id_esterno: string, denominazione: string },
     convenzione_pdf: FileInfra,
     nome_originale_file_convenzione: string,
-    attachments?: FileAttachment[]
+    attachments?: FileAttachment[],
+    unitaorganizzativa_uo: string,
 }
 
 export interface FileAttachment {

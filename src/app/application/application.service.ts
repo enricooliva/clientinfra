@@ -497,6 +497,20 @@ export class ApplicationService implements ServiceQuery {
   getAttachemntTypes(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/attachmenttypes/', httpOptions);
   }
+  
+  @Cacheable()
+  getValidationOffices(): Observable<any> {
+    return this.http.get(this._baseURL + '/convenzioni/validationoffices/', httpOptions);
+  }
+
+  @Cacheable()
+  getValidationOfficesPersonale(id): Observable<any> {
+    if (id){
+      return this.http.get(this._baseURL + '/convenzioni/validationoffices/' + id.toString(), httpOptions);
+    } 
+    return of([]);
+  }
+
 
   generatePDF(id: number) {
     this.http.get(this._baseURL + '/convenzioni/generapdf/' + id.toString(), { responseType: 'blob' }).subscribe(

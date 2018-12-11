@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { StepType } from 'src/app/shared';
 import { ApplicationService } from '../application.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Convenzione, FileAttachment } from '../convenzione';
 import { FormGroup, FormControl, ValidationErrors } from '@angular/forms';
 import { encode, decode } from 'base64-arraybuffer';
 import { AuthService } from 'src/app/core';
 import { InfraMessageType } from 'src/app/shared/message/message';
+import { takeUntil, startWith, tap, filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 //ng g c application/pages/test-tab -s true  --spec false --flat true
 
@@ -46,7 +48,8 @@ import { InfraMessageType } from 'src/app/shared/message/message';
   styles: []
 })
 
-export class MultistepSchematipoComponent implements OnInit {
+export class MultistepSchematipoComponent implements OnInit, OnDestroy {
+
 
   public static DECRETO_DIRETTORIALE = 'DD';
   public static DELIBERA_CONSIGLIO_DIPARTIMENTO = 'DCD';
@@ -56,7 +59,7 @@ export class MultistepSchematipoComponent implements OnInit {
   public static CONV_BOZZA = 'CB';
   
 
-
+  onDestroy$ = new Subject<void>();
   fieldtabs: FormlyFieldConfig[];
 
   form = new FormGroup({});
@@ -64,17 +67,14 @@ export class MultistepSchematipoComponent implements OnInit {
 
   isLoading: boolean;
 
-  options: FormlyFormOptions = {
-    formState: {
-      isLoading: false,
-    },
-  };
-
+  options: FormlyFormOptions;
+  
   mapAttachment: Map<string, FileAttachment> = new Map<string, FileAttachment>();
 
-  constructor(private service: ApplicationService, private route: ActivatedRoute, public authService: AuthService) {
+  constructor(private service: ApplicationService, public authService: AuthService, private router: Router) {
 
-    this.model = {
+    this.model = { 
+      schematipotipo:  'schematipo',   
       user_id: authService.userid,
       id: null,
       descrizione_titolo: '',
@@ -86,12 +86,53 @@ export class MultistepSchematipoComponent implements OnInit {
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
-      convenzione_pdf: { filename: '', filetype: '', filevalue: null },
-      nome_originale_file_convenzione: '',
-      attachments: []
-    }
+      unitaorganizzativa_uo: '',
+      convenzione_pdf: { filename: '', filetype: '', filevalue: null },      
+      nome_originale_file_convenzione: '',      
+      attachments: [],
 
-    this.fieldtabs = [{
+    };    
+
+    this.options = {
+      formState: {
+        isLoading: false,
+        model: this.model,
+      },
+    };
+  
+    this.fieldtabs = [                  
+      {
+        fieldGroupClassName:'row',
+        fieldGroup: [{
+        key: 'schematipotipo',      
+        wrappers: ['form-field-horizontal'],  
+        className: 'col-md-6',      
+        type: 'select',
+        templateOptions:{
+          label: 'Schema tipo',          
+          options: [
+            { label: 'Si', value: 'schematipo' },
+            { label: 'No', value: 'daapprovare' },
+          ],
+        },
+        lifecycle: {
+          onInit: (form, field)=> {            
+            const tabs = this.fieldtabs.find(f => f.type === 'tab');
+            const tabappr = tabs.fieldGroup[3];        
+            //const selectfield = tabappr.fieldGroup.find(x=> x.key == 'ufficioaffidatario')
+            field.formControl.valueChanges.subscribe(x=> {
+              if (x == 'schematipo'){
+                tabappr.templateOptions.hidden = true;                
+              }
+              else {
+                tabappr.templateOptions.hidden = false;                
+              }
+            });
+          }
+        }
+        }],            
+      },
+      {
       type: 'tab',
       fieldGroup: [
         {
@@ -189,8 +230,61 @@ export class MultistepSchematipoComponent implements OnInit {
           templateOptions: {
             label: 'Allegati'
           }
+        },
+        {          
+          fieldGroup: [
+            {
+              key: 'unitaorganizzativa_uo',                   
+              type: 'select',
+              hideExpression: 'formState.model.schematipotipo == "schematipo"',
+              templateOptions:{
+                label: 'Ufficio affidatario procedura',          
+                required: true,
+                options: this.service.getValidationOffices(),
+                valueProp: 'uo',
+                labelProp: 'descr',                           
+              },
+            },
+            {
+              key: 'useremail',                   
+              type: 'select',
+              templateOptions:{
+                label: 'Assegnamento attività',   
+                valueProp: 'id',
+                labelProp: 'descr',                                        
+              },
+              lifecycle: {
+                onInit: (form, field) => {                
+                  form.get('unitaorganizzativa_uo').valueChanges.pipe(                    
+                    takeUntil(this.onDestroy$),
+                    startWith(form.get('unitaorganizzativa_uo').value),
+                    filter(ev => ev !== null),
+                    tap(uo => {
+                      field.formControl.setValue('');
+                      field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe();
+                    }),
+                  ).subscribe();
+                },
+              },
+            },
+            {
+              key: 'descrizioneattivita',                   
+              type: 'textarea',
+              templateOptions:{
+                label: 'Area messaggi',   
+                maxLength: 200,
+                rows: 5,                       
+              },
+              expressionProperties: {
+                'templateOptions.disabled': '!model.useremail',
+              },
+            }
+          ],
+          templateOptions: {
+            label: 'Approvazione',   
+            hidden: true,         
+          },     
         }
-
       ]
     }];
   }
@@ -225,7 +319,13 @@ export class MultistepSchematipoComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+    //const selectSchemaTipo = this.fieldtabs.find(f => f.key === 'schematipotipo'); 
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   onSubmit() {
@@ -240,8 +340,10 @@ export class MultistepSchematipoComponent implements OnInit {
       
       this.service.createSchemaTipo(tosubmit).subscribe(
         result => {          
-          this.options.resetModel(result);
+          //this.options.resetModel(result);
           this.isLoading = false;
+          this.router.navigate(['home/convenzioni/' + result.id]);
+
         },
         error => {
           this.isLoading = false;

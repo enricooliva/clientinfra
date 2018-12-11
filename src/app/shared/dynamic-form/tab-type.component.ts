@@ -12,14 +12,13 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
   template: `
   <ngb-tabset #tabs="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'" (tabChange)="onTabChange($event)">
   <div *ngFor="let f of field.fieldGroup; let index = index;">
-    <ngb-tab id="tab-{{index}}" [disabled]="index>0 && !isValid(index-1)">
+    <ngb-tab id="tab-{{index}}" [disabled]="index>0 && !isValidChain(index-1)" *ngIf="!f.templateOptions.hidden">
         <ng-template ngbTabTitle>
-          <button class="btn btn-circle mr-2" [disabled]="index>0 && !isValid(index-1)">
+          <button class="btn btn-circle mr-2" [disabled]="index>0 && !isValidChain(index-1)">
             <span *ngIf="isActive(index)" class="oi oi-pencil iconic" aria-hidden="true"></span>
             <span *ngIf="!isActive(index)"><b>{{ index }}</b></span>
           </button>
-          <button class="btn btn-outline-primary border-0 rounded-0"  [disabled]="index>0 && !isValid(index-1)">{{ f.templateOptions.label }} </button>
-          <hr/>
+          <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="index>0 && !isValidChain(index-1)">{{ f.templateOptions.label }} </button>          
         </ng-template>
         <ng-template ngbTabContent>            
             <formly-field 
@@ -57,6 +56,17 @@ export class TabTypeComponent extends FieldType implements OnInit {
       return ('tab-' + index) === this.tabs.activeId;
     }
   
+    isValidChain(index): boolean{
+      if (!this.tabs.tabs)
+        return true;
+      //se uno dei tab precedenti è disabilitato allora mi disabilito
+      for (let i = 0; i <= index; i++) {
+        let t = this.tabs.tabs.find(x=> x.id == 'tab-'+i)  
+        if (t.disabled)
+          return false;        
+      }
+      return this.isValid(index);
+    }
     
     isValid(index): boolean {
       let tab = this.field.fieldGroup[index];    
@@ -103,7 +113,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
   
   
     public get lastIndex(): string {
-      return 'tab-' + ( this.field.fieldGroup.length - 1);
+      return this.tabs.tabs.last.id; // 'tab-' + ( this.field.fieldGroup.length - 1);
     }
   
     public get selectedTab(): string {
@@ -127,7 +137,7 @@ export class TabTypeComponent extends FieldType implements OnInit {
   
     onTabChange($event) {
       this.selectedTab = $event.nextId;
-      if (this.lastIndex === $event.nextId as string) {
+      if (this.lastIndex === this.selectedTab) {
         this.last = true;
       } else {
         this.last = false;
