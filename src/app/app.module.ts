@@ -26,6 +26,8 @@ import { TestTabComponent } from './application/pages/test-tab.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { MessageService } from './shared';
 import { UploadfileComponent } from './application/components/convenzione/uploadfile.component';
+import { environment } from 'src/environments/environment.prod';
+import { APP_BASE_HREF } from '@angular/common';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -65,7 +67,8 @@ export function tokenGetter() {
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
-    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
+    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
+    {provide: APP_BASE_HREF, useValue: environment.baseHref},
     
   ],
   bootstrap: [AppComponent],
