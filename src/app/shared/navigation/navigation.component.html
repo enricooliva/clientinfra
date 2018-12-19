@@ -24,7 +24,7 @@
   <a  class="btn btn-primary my-2 my-sm-0" href="{{baseurl + '/redirect'}" 
   *ngIf="!(isLoggedIn$ | async) as isLoggedIn" >Login google</a>
   <!-- <button class="btn btn-primary my-2 my-sm-0" (click)="goLogin()">Login</button> -->
-  <a  class="btn btn-primary my-2 my-sm-0" href="{{baseurl + '/api/loginSaml'}}" 
+  <a  class="btn btn-primary my-2 my-sm-0" href="{{baseurl + 'api/loginSaml'}}" 
   *ngIf="!(isLoggedIn$ | async) as isLoggedIn else logout" >Login</a>
   <ng-template #logout>
     <button class="btn btn-primary my-2 my-sm-0" (click)="onLogout()" >Logout ({{ getName() }}) </button>
