@@ -26,7 +26,7 @@ import { TestTabComponent } from './application/pages/test-tab.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { MessageService } from './shared';
 import { UploadfileComponent } from './application/components/convenzione/uploadfile.component';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { APP_BASE_HREF } from '@angular/common';
 
 export function tokenGetter() {
