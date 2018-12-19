@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import { AuthService } from '../../core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-navigation',
@@ -12,6 +13,8 @@ export class NavigationComponent implements OnInit {
 
   isLoggedIn$: Observable<boolean>;  
   
+  baseurl = environment.API_URL;
+
   constructor(public authService: AuthService, private router: Router) {} 
 
   goHome() {
