@@ -106,7 +106,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     rules: new Array<any>(),    
   };
 
-  private fields: FormlyFieldConfig[] = this.rules;    
+  fields: FormlyFieldConfig[] = this.rules;    
  
   //elenco dei metadati dell'entità di ingresso
   @Input() metadata: FormlyFieldConfig[] = []

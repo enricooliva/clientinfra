@@ -114,6 +114,7 @@ export class ApplicationService implements ServiceQuery {
             key: 'azienda',
             type: 'externalobject',
             className: "col-md-12",
+            defaultValue: { id_esterno:null, denominazione:''},
             templateOptions: {
               label: 'Azienda',
               type: 'string',
@@ -121,7 +122,7 @@ export class ApplicationService implements ServiceQuery {
               entityLabel: 'Aziende',
               codeProp: 'id_esterno',
               required: true,
-              descriptionProp: 'denominazione',
+              descriptionProp: 'denominazione',              
             },
           },
         ]
@@ -411,7 +412,7 @@ export class ApplicationService implements ServiceQuery {
     }
   }
 
-  createSchemaTipo(convenzione:Convenzione):any{
+  createSchemaTipo(convenzione:Convenzione, retrow: boolean = false):any{
       //crea una nuova Convenzione POST      
       const url = `${this._baseURL + '/convenzioni/createschematipo'}`;
       let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
@@ -419,7 +420,7 @@ export class ApplicationService implements ServiceQuery {
           tap(sub =>
             this.messageService.info('Creazione effettuata con successo')
           ),
-          catchError(this.handleError('createSchemaTipo', convenzione))
+          catchError(this.handleError('createSchemaTipo', convenzione, retrow))
         );
       return res;
   }
@@ -434,7 +435,7 @@ export class ApplicationService implements ServiceQuery {
           tap(sub => {
             this.messageService.info('Aggiornamento effettuato con successo');
             return sub;
-          }),
+          }),          
           catchError(this.handleError('updateConvenzione', convenzione))
         );
       return res;

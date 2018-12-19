@@ -29,6 +29,11 @@ import { DatePipe } from '@angular/common';
 //<img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
 export class DatepickerTypeComponent extends FieldType {
 
+  displayMonths = 1;
+  navigation = 'select';
+  showWeekNumbers = false;
+  outsideDays = 'visible';
+
   constructor(private datePipe: DatePipe) {
     super();
   }

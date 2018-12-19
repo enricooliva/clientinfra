@@ -157,6 +157,10 @@ export class UserComponent implements OnInit {
     );
   }
 
+  onSubmit(){
+    console.log("TODO");
+  }
+
   get isReloadable(){
     if (this.model == null)
       return false;

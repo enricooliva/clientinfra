@@ -21,6 +21,8 @@ import { ConvenzioniComponent } from './components/convenzione/convenzioni.compo
 import { MultistepSchematipoComponent } from './pages/multistep-schematipo.component';
 import { AllegatiComponent } from './components/convenzione/allegati.component';
 import { UploadfileComponent } from './components/convenzione/uploadfile.component';
+import { UserTaskDetailComponent } from './components/convenzione/user-task-detail.component';
+import { UserTaskService } from './usertask.service';
 
 
 @NgModule({
@@ -37,16 +39,17 @@ import { UploadfileComponent } from './components/convenzione/uploadfile.compone
   ], 
   exports: [
     ConvenzioneComponent,
-    HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent   
+    HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent   
   ],
   declarations: [        
     ConvenzioneComponent,
     ConvenzioniComponent,    
     AssignmentDetailPageComponent,    
-    HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent
+    HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent
   ],
   providers: [ 
-    ApplicationService 
+    ApplicationService,
+    UserTaskService,
   ], 
 })
 export class ApplicationModule { }

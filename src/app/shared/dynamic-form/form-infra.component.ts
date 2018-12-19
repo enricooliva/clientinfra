@@ -5,7 +5,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 @Component({
   selector: 'app-form-infra',
   template: `
-  <form [formGroup]="form" (ngSubmit)="submit()">
+  <form [formGroup]="form">
   <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
     <button type="submit" class="btn btn-primary submit-button">Submit</button>
     <button type="button" class="btn btn-default" (click)="options.resetModel()">Reset</button>

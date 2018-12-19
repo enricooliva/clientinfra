@@ -14,7 +14,7 @@ import ControlUtils from './control-utils';
   template: `
     <div  style="position: relative">    
     <ngx-loading [show]="isLoading" [config]="{  fullScreenBackdrop: false, backdropBorderRadius: '4px' }"></ngx-loading>
-    <formly-group [model]="model"
+    <formly-group 
     [field]="field"
     [options]="options"
     [form]="formControl">  
@@ -102,16 +102,15 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
   //ATTENZIONE lo scope di esecuzione della onPopulate è esterno a questa classe.
   onPopulate(field: FormlyFieldConfig) {
     if (field.fieldGroup) {
-      // already initialized
       return;
     }
 
-    field.fieldGroupClassName = 'row'
-    field.fieldGroup = [
+    field.fieldGroupClassName = 'row'        
+    field.fieldGroup = [    
       {
         key: field.templateOptions.codeProp || 'id',
         type: 'input',
-        className: "col-md-4",
+        className: "col-md-4",                
         templateOptions: {
           label: field.templateOptions.label,
           type: 'input',
@@ -127,7 +126,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
       {
         key: field.templateOptions.descriptionProp || 'description',
         type: 'input',
-        className: "col-md-8",
+        className: "col-md-8",        
         templateOptions: {
           disabled: true,
           label: 'Descrizione'

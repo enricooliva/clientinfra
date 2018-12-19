@@ -27,15 +27,18 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
 
   @ViewChild('tabs')
-  private tabs:NgbTabset;
+  private tabs: NgbTabset;
 
   onDestroy$ = new Subject<void>();
   form = new FormGroup({});
   formattachment = new FormGroup({});
+  formusertask = new FormGroup({});
+  formtask = new FormGroup({});
 
   model: Convenzione;
-  
-  fields: FormlyFieldConfig[]; 
+  modelUserTaskDetail: any;
+
+  fields: FormlyFieldConfig[];
   fieldsattachment: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -46,36 +49,36 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       className: "col-md-4",
       templateOptions: {
         text: 'Inserisci allegato',
-        btnType: 'primary',                
+        btnType: 'primary',
         onClick: ($event) => this.open()
-      },     
+      },
     },
     {
       key: 'attachments',
-      type: 'repeat',        
+      type: 'repeat',
       templateOptions: {
         btnHidden: true,
         label: 'Gestione allegati',
-        onRemove:  (id) => {
-          this.isLoading= true;
-          return this.service.deleteFile(id).pipe(                        
-            finalize(() => {             
+        onRemove: (id) => {
+          this.isLoading = true;
+          return this.service.deleteFile(id).pipe(
+            finalize(() => {
               this.tabs.select('tab-selectbyconvenzione');
-              this.isLoading = false;     
+              this.isLoading = false;
               //this.tabs.select('tab-selectbyallegati');
             }
             ))
-          },                       
+        },
         //(index, callback, context) => this.onRemoveFile(index, callback, context),
         //onAddInitialModel: (event) => this.onAddInitialModel(event),
-      },   
+      },
       hideExpression: (model: any, formState: any) => {
-         return this.model.attachments == null || this.model.attachments.length == 0
-      },   
-      fieldArray: {        
-        template: '<hr />', 
+        return this.model.attachments == null || this.model.attachments.length == 0
+      },
+      fieldArray: {
+        template: '<hr />',
         fieldGroupClassName: 'row',
-        fieldGroup: [          
+        fieldGroup: [
           {
             className: 'col-md-1',
             type: 'input',
@@ -83,8 +86,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
             hide: true,
             templateOptions: {
               label: "Id",
-              hidden: true,  
-              disabled: true,                        
+              hidden: true,
+              disabled: true,
             },
           },
           {
@@ -93,7 +96,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
             key: 'filename',
             templateOptions: {
               label: "Nome dell'allegato",
-              disabled: true,              
+              disabled: true,
             },
           },
           {
@@ -114,10 +117,121 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               disabled: true,
             },
           },
-        ],      
+        ],
       }
     }
   ]
+
+  fieldsusertask: FormlyFieldConfig[] = [
+    {
+      className: 'section-label',
+      template: '<h5>Attività associate</h5>',
+    },
+    {
+      key: 'usertasks',
+      type: 'datatable', //'repeat',      
+      templateOptions: {
+        btnHidden: true,
+        label: 'Attività associate',
+        hidetoolbar: true,
+        onSelected: (obj) => {
+            //leggi dettagli 
+            //crea la form
+            if(obj.selected){
+              this.modelUserTaskDetail = obj.selected[0];
+            }
+        },
+        columns: [
+          { name: 'Oggetto', prop: 'subject', wrapper: 'value' },
+          { name: 'Stato', prop: 'state', wrapper: 'value' },
+          { name: 'Assegnata', prop: 'email', wrapper: 'value' },
+        ],
+      },
+      fieldArray: {
+        template: '<hr />',
+        fieldGroupClassName: 'row',
+        fieldGroup: [{
+          className: 'col-md-3',
+          type: 'input',
+          key: 'subject',
+          templateOptions: {
+            disabled: true,
+          },
+        },                
+        {
+          className: 'col-md-3',
+          type: 'input',
+          key: 'state',
+          templateOptions: {            
+            disabled: true,
+          },
+        },
+        {
+          className: 'col-md-3',
+          type: 'input',
+          key: 'email',
+          templateOptions: {
+            label: "Assegnata",
+            disabled: true,
+          },
+        },
+        ]
+      }
+    }
+
+  ];
+
+  fieldstask:FormlyFieldConfig[] = [
+    {
+      className: 'section-label',
+      template: '<h5>Storia eventi</h5>',
+    },
+    {
+      key: 'tasks',
+      type: 'datatable', //'repeat',      
+      templateOptions: {
+        btnHidden: true,
+        label: 'Storia eventi',
+        hidetoolbar: true,
+        columns: [
+          { name: 'Utente', prop: 'user_id', wrapper: 'value' },
+          { name: 'Transizione', prop: 'transition_leave', wrapper: 'value' },
+          { name: 'Creata', prop: 'created_at', wrapper: 'value' },
+        ],
+      },
+      fieldArray: {
+        template: '<hr />',
+        fieldGroupClassName: 'row',
+        fieldGroup: [{
+          className: 'col-md-3',
+          type: 'input',
+          key: 'user_id',
+          templateOptions: {            
+            disabled: true,
+          },
+        },      
+        {
+          className: 'col-md-3',
+          type: 'input',
+          key: 'transition_leave',
+          templateOptions: {            
+            disabled: true,
+          },
+        },
+        {
+          className: 'col-md-3',
+          type: 'input',
+          key: 'created_at',
+          templateOptions: {
+            label: "Assegnata",
+            disabled: true,
+          },
+        },
+        ]
+      }
+    }
+
+  ];
 
   options: FormlyFormOptions = {
     formState: {
@@ -130,7 +244,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   defaultColDef = { editable: true };
 
   private _isLoading: boolean = false;
-  
+
   get isLoading(): boolean {
     return this._isLoading;
   }
@@ -144,7 +258,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     //modello vuoto
     this.model = {
-      schematipotipo: 'shematipo',
+      schematipotipo: 'schematipo',
       user_id: null,
       id: null,
       descrizione_titolo: '',
@@ -156,12 +270,12 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       stato_avanzamento: null,
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
-      convenzione_pdf: { filename:'', filetype:'', filevalue: null},
+      convenzione_pdf: { filename: '', filetype: '', filevalue: null },
       nome_originale_file_convenzione: '',
       unitaorganizzativa_uo: '',
     }
 
-    this.fields = service.getInformazioniDescrittiveFields(this.model).concat(service.getConvenzioneFields(this.model));
+    this.fields = service.getInformazioniDescrittiveFields(this.model).concat(service.getConvenzioneFields(this.model));    
   }
 
   get isNew(): boolean {
@@ -175,8 +289,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.service.clearMessage();
         this.service.getConvenzioneById(params['id']).subscribe((data) => {
-          try {
-            this.options.resetModel(data);          
+          try {            
+            if (!data.azienda)
+              data.azienda = { id_esterno: null, denominazione: '' };
+
+            this.options.resetModel(data);
             this.isLoading = false;
           } catch (e) {
             console.log(e);
@@ -213,15 +330,15 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
       this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
-          result => {
-            this.options.resetModel(result);
-            this.isLoading = false;
-          },
-          error => {
-            this.isLoading = false;
-            this.service.messageService.error(error);
-            console.log(error)
-          });
+        result => {       
+          this.options.resetModel(result);
+          this.isLoading = false;
+        },
+        error => {
+          this.isLoading = false;
+          this.service.messageService.error(error);
+          console.log(error)
+        });
     }
   }
 
@@ -240,7 +357,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     const temp = this.temp.filter(function (d) {
       return d.role.toLowerCase().indexOf(val) !== -1 || !val;
     });
-  
+
   }
 
   open() {
@@ -248,7 +365,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       size: 'lg'
     })
     modalRef.result.then((result) => {
-      if (result){
+      if (result) {
         this.model = {
           ...this.model,
           attachments: this.model.attachments.concat(result),
@@ -259,16 +376,16 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.model_id = this.model.id;
   }
 
-  onRemoveFile(index: number, callback, context){
+  onRemoveFile(index: number, callback, context) {
     this.isLoading = true;
-    let id =context.formControl.at(index).get('id');    
+    let id = context.formControl.at(index).get('id');
     this.service.deleteFile(id.value).subscribe(
-      result => { 
-        callback(index, context); this.isLoading = false; 
+      result => {
+        callback(index, context); this.isLoading = false;
       },
-      error => { 
-        this.isLoading=false; 
-      }            
+      error => {
+        this.isLoading = false;
+      }
     );
   }
 

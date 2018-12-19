@@ -24,16 +24,17 @@ import { Subject } from 'rxjs';
   selector: 'app-multistep-schematipo',
   template: `
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
-  <h4 class="mb-2">Inserimento convenzione schema tipo</h4>
+  <h4 class="mb-2">Inserimento convenzione</h4>
   <div class="sticky-top btn-toolbar mb-4" role="toolbar">
     <div class="btn-group btn-group">    
-      <button class="btn btn-outline-primary border-0 rounded-0" (click)="onNew()" >              
+      <button class="btn btn-outline-primary border-0 rounded-0" >              
           <span class="oi oi-document"></span>
           <span class="ml-2">Nuovo</span>
       </button>    
       <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
       <span class="oi oi-arrow-top"></span>  
       <span class="ml-2">Aggiorna</span>        
+      
     </button> 
     </div>
   </div>
@@ -338,16 +339,14 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       tosubmit.attachments = [];
       tosubmit.attachments.push(...Array.from<FileAttachment>(this.mapAttachment.values()));
       
-      this.service.createSchemaTipo(tosubmit).subscribe(
+      this.service.createSchemaTipo(tosubmit,true).subscribe(
         result => {          
           //this.options.resetModel(result);
           this.isLoading = false;
           this.router.navigate(['home/convenzioni/' + result.id]);
-
         },
         error => {
-          this.isLoading = false;
-          this.service.messageService.error(error);
+          this.isLoading = false;          
           console.log(error)
         }
 

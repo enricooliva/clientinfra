@@ -98,8 +98,10 @@ export class TableTypeComponent extends FieldArrayType {
       this.to.columns.forEach(column =>  { 
         if (column.cellTemplate == undefined){
           column.cellTemplate = this.defaultColumn; 
-          if (('cellTemplate' in column)) 
-            column.cellTemplate = this[column.cellTemplate];       
+          if (column.wrapper){
+            if (column.wrapper=='value')
+              column.cellTemplate = this.valuecolumn; 
+          }                       
         }
         });
 
@@ -158,7 +160,10 @@ export class TableTypeComponent extends FieldArrayType {
     this.formControl.patchValue(this.model);   
   }
 
-  onSelect({ selected }) {
+  onSelect(selected) {
+      if (this.to.onSelected){
+        this.to.onSelected(selected);
+      } 
       //console.log('Select Event', selected, this.selected);
   }
 

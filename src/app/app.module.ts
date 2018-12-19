@@ -37,7 +37,7 @@ export function tokenGetter() {
     AppComponent,
     NotFoundComponent,
     TableTypeComponent,
-    TestTabComponent,
+    TestTabComponent,    
 ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
