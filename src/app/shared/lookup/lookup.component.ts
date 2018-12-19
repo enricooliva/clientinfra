@@ -31,7 +31,7 @@ export class LookupComponent implements OnInit {
   resultMetadata: FormlyFieldConfig[];
 
   closeResult: string;
-  selected: null;
+  selected: any;
 
   ngOnInit(): void {    
     const servicename = ControlUtils.getServiceName(this.entityName)
