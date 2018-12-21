@@ -12,8 +12,8 @@ import { MultistepSchematipoComponent } from '../application/pages/multistep-sch
 import { AllegatiComponent } from '../application/components/convenzione/allegati.component';
 
 const routes: Routes = [
-  //nota: se si usa il redirect vengono persi i parametri nell'url
-  { path: '', redirectTo: '/home', pathMatch:'full' },
+  //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
+  { path: '', component: HomeComponent, pathMatch:'full' },
   { path: 'home',  component: HomeComponent, children:[
       { path: 'convenzione',  component: ConvenzioneComponent,  canActivate:[AuthGuard] }, 
       { path: 'convenzioni/:id',  component: ConvenzioneComponent,  canActivate:[AuthGuard] },     

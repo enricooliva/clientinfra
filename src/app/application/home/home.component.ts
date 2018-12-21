@@ -33,7 +33,11 @@ export class HomeComponent implements OnInit {
 
     router.events.subscribe(s => {
       if (s instanceof NavigationEnd) {
-        let params = new URLSearchParams(s.url.split('/home')[1]);
+        let params: URLSearchParams;
+        if (s.url.includes('/home'))
+          params = new URLSearchParams(s.url.split('/home')[1]);
+        else
+          params = new URLSearchParams(s.url.split('/')[1]);
         token = params.get('token');        
         if (token){
             authService.loginWithToken(token);
