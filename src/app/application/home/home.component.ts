@@ -36,10 +36,12 @@ export class HomeComponent implements OnInit {
         let params: URLSearchParams;
         if (s.url.includes('/home'))
           params = new URLSearchParams(s.url.split('/home')[1]);
-        else
-          params = new URLSearchParams(s.url.split('/')[1]);
+        else{
+          params = new URLSearchParams(s.url.split('/uniconvclient')[1]);
+        }
         token = params.get('token');        
         if (token){
+            console.log("keep token");
             authService.loginWithToken(token);
             this.router.navigate(['home/convenzioni']);
           }else{
