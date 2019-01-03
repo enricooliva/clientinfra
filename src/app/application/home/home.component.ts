@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
         if (s.url.includes('/home'))
           params = new URLSearchParams(s.url.split('/home')[1]);
         else{
-          params = new URLSearchParams(s.url.split('/uniconvclient')[1]);
+          params = new URLSearchParams(s.url.split('/')[1]);
         }
         token = params.get('token');        
         if (token){
