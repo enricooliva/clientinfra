@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationCancel, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../core';
 import { AppConstants } from 'src/app/app-constants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',    
   styleUrls: ['./home.component.scss'],  
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+ 
   sidebarCollapsed = true;  
   _baseURL : string;
 
@@ -25,13 +28,15 @@ export class HomeComponent implements OnInit {
       { href: 'test', text: 'Multi step form', permissions: ['ADMIN'] },
     ]}    
   ];
-
+  
+  onDestroy$ = new Subject<void>();
 
   constructor(private authService: AuthService, private router: Router) {
+    
     this._baseURL = AppConstants.baseApiURL;
     let token = null;
 
-    router.events.subscribe(s => {
+    router.events.pipe(takeUntil(this.onDestroy$)).subscribe(s => {
       if (s instanceof NavigationEnd) {
         let params: URLSearchParams;
         if (s.url.includes('/home'))
@@ -53,8 +58,14 @@ export class HomeComponent implements OnInit {
    }
 
   ngOnInit() {
+
   }
-  
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
 
   btnClick= function () {
         //this.router.navigateByUrl('/user');

@@ -135,11 +135,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         label: 'Attività associate',
         hidetoolbar: true,
         onSelected: (obj) => {
-            //leggi dettagli 
-            //crea la form
-            if(obj.selected){
-              this.modelUserTaskDetail = obj.selected[0];
-            }
+          //leggi dettagli 
+          //crea la form
+          if (obj.selected) {
+            this.modelUserTaskDetail = obj.selected[0];
+          }
         },
         columns: [
           { name: 'Oggetto', prop: 'subject', wrapper: 'value' },
@@ -157,12 +157,12 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           templateOptions: {
             disabled: true,
           },
-        },                
+        },
         {
           className: 'col-md-3',
           type: 'input',
           key: 'state',
-          templateOptions: {            
+          templateOptions: {
             disabled: true,
           },
         },
@@ -181,7 +181,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
   ];
 
-  fieldstask:FormlyFieldConfig[] = [
+  fieldstask: FormlyFieldConfig[] = [
     {
       className: 'section-label',
       template: '<h5>Storia eventi</h5>',
@@ -206,15 +206,15 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           className: 'col-md-3',
           type: 'input',
           key: 'user_id',
-          templateOptions: {            
+          templateOptions: {
             disabled: true,
           },
-        },      
+        },
         {
           className: 'col-md-3',
           type: 'input',
           key: 'transition_leave',
-          templateOptions: {            
+          templateOptions: {
             disabled: true,
           },
         },
@@ -275,7 +275,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       unitaorganizzativa_uo: '',
     }
 
-    this.fields = service.getInformazioniDescrittiveFields(this.model).concat(service.getConvenzioneFields(this.model));    
+    this.fields = service.getInformazioniDescrittiveFields(this.model).concat(service.getConvenzioneFields(this.model));
   }
 
   get isNew(): boolean {
@@ -284,20 +284,20 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    var that = this;
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.isLoading = true;
-        this.service.clearMessage();
-        this.service.getConvenzioneById(params['id']).subscribe((data) => {
-          try {            
+        that.isLoading = true;
+        that.service.clearMessage();
+        that.service.getConvenzioneById(params['id']).subscribe((data) => {
+          try {
             if (!data.azienda)
               data.azienda = { id_esterno: null, denominazione: '' };
-
-            this.options.resetModel(data);
-            this.isLoading = false;
+            that.options.resetModel(data);
+            that.isLoading = false;
           } catch (e) {
             console.log(e);
-            this.isLoading = false;
+            that.isLoading = false;
           }
         });
       }
@@ -330,7 +330,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
       this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
-        result => {       
+        result => {
           this.options.resetModel(result);
           this.isLoading = false;
         },
