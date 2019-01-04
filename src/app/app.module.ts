@@ -47,9 +47,11 @@ export function tokenGetter() {
     
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ['localhost:4200', 'pcoliva.uniurb.it',],
-        blacklistedRoutes: ['localhost:4200/auth/']
+        tokenGetter: ()=>{
+          return localStorage.getItem('token');
+        },
+        whitelistedDomains: environment.whitelistedDomains, // ['localhost:4200', 'pcoliva.uniurb.it','unidemdev.uniurb.it'],
+        blacklistedRoutes: environment.blacklistedRoutes, //['localhost:4200/auth/']
       }
     })   
   ],  
