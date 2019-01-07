@@ -23,34 +23,35 @@
 </div>
 
 <!-- [justify]="currentJustify" -->
+
 <ngb-tabset  #tabs >
   <ngb-tab title="Convenzione" id="tab-selectbyconvenzione">
     <ng-template ngbTabContent>
-        <div class="mt-2"></div>
-      <form *ngIf='model' [formGroup]="form" class="mt-1" >
-        <formly-form  [model]="model" [fields]="fields" [form]="form" [options]="options">
-        </formly-form> 
-      </form>
+        <div class="mt-2"></div>    
+        <form *ngIf="model" [formGroup]="form.at(0)" class="mt-1" >
+          <formly-form  [model]="model" [fields]="fields" [form]="form.at(0)" [options]="options[0]">
+          </formly-form>       
+        </form>
       <p>Form value: {{ form.value | json }}</p>
     </ng-template>
   </ngb-tab>
   <ngb-tab title="Allegati"  id="tab-selectbyallegati">    
     <ng-template ngbTabContent>      
-      <div class="mt-2"></div>
-      <form *ngIf='model' [formGroup]="formattachment">
-        <formly-form  [model]="model" [fields]="fieldsattachment" [form]="formattachment" [options]="options">  
-        </formly-form> 
-      </form>      
-      <p>Form value: {{ formattachment.value | json }}</p>
+      <div class="mt-2"></div>      
+        <form *ngIf="model" [formGroup]="form.at(1)" class="mt-1" >
+        <formly-form  [model]="model" [fields]="fieldsattachment" [form]="form.at(1)" [options]="options[1]">  
+        </formly-form>       
+        <p>Form value: {{ form.at(1).value | json }}</p>
+        </form> 
     </ng-template>
   </ngb-tab>
   <ngb-tab title="Attività">
     <ng-template ngbTabContent>
-      <div class="mt-2"></div>
-      <form *ngIf='model' [formGroup]="formusertask">
-        <formly-form  [model]="model" [fields]="fieldsusertask" [form]="formusertask" [options]="options">  
-        </formly-form> 
-      </form>      
+      <div class="mt-2"></div>      
+        <form *ngIf="model" [formGroup]="form.at(2)" class="mt-1" >
+        <formly-form  [model]="model" [fields]="fieldsusertask" [form]="form.at(2)" [options]="options[2]">  
+        </formly-form>       
+        </form>
       <div class="mt-2"></div>
       <ngb-accordion *ngIf="modelUserTaskDetail" #acc="ngbAccordion" activeIds="ngb-panel-0">
         <ngb-panel title="Dettaglio Attvità">
@@ -62,15 +63,14 @@
     </ng-template>
   </ngb-tab>
   <ngb-tab title="Stato">
-    <ng-template ngbTabContent>
-      <form *ngIf='model' [formGroup]="formtask">
-        <formly-form  [model]="model" [fields]="fieldstask" [form]="formtask" [options]="options">  
-        </formly-form> 
-      </form>          
+    <ng-template ngbTabContent>      
+        <form *ngIf="model" [formGroup]="form.at(3)" class="mt-1" >
+        <formly-form  [model]="model" [fields]="fieldstask" [form]="form.at(3)" [options]="options[3]">  
+        </formly-form>       
+        </form>
     </ng-template>
   </ngb-tab>
 </ngb-tabset>
-
 
 
 

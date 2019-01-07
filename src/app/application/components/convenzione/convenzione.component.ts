@@ -30,14 +30,12 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   private tabs: NgbTabset;
 
   onDestroy$ = new Subject<void>();
-  form = new FormGroup({});
-  formattachment = new FormGroup({});
-  formusertask = new FormGroup({});
-  formtask = new FormGroup({});
+  form =new FormArray([0,1,2,3].map(() => new FormGroup({})));
 
   model: Convenzione;
   modelUserTaskDetail: any;
 
+  //caricati dal service
   fields: FormlyFieldConfig[];
   fieldsattachment: FormlyFieldConfig[] = [
     {
@@ -121,7 +119,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       }
     }
   ]
-
   fieldsusertask: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -180,7 +177,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     }
 
   ];
-
   fieldstask: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -233,12 +229,18 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
   ];
 
-  options: FormlyFormOptions = {
+  options: Array<FormlyFormOptions> = [0,1,2,3].map(() => ({
     formState: {
       isLoading: false,
     },
-  };
+  })); 
 
+  // options: FormlyFormOptions = {
+  //   formState: {
+  //     isLoading: false,
+  //   },
+  // }
+    
   private id: number;
 
   defaultColDef = { editable: true };
@@ -251,7 +253,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
   set isLoading(value: boolean) {
     this._isLoading = value;
-    this.options.formState.isLoading = value;
+    //this.options.formState.isLoading = value;
+    this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);    
   }
 
   constructor(private service: ApplicationService, private route: ActivatedRoute, private modalService: NgbModal, public activeModal: NgbActiveModal) {
@@ -282,22 +285,33 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     return this.model == null || this.model.id == null
   }
 
-  ngOnInit() {
-
-    var that = this;
-    this.route.params.subscribe(params => {
+  ngOnInit(){    
+    this.route.params.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       if (params['id']) {
-        that.isLoading = true;
-        that.service.clearMessage();
-        that.service.getConvenzioneById(params['id']).subscribe((data) => {
+        this.isLoading = true;
+        this.service.clearMessage();
+        this.service.getConvenzioneById(params['id']).subscribe((data) => {
           try {
-            if (!data.azienda)
-              data.azienda = { id_esterno: null, denominazione: '' };
-            that.options.resetModel(data);
-            that.isLoading = false;
+            if (!data.azienda){
+              data.azienda = { id_esterno: null, denominazione: '' };            
+            }
+            
+            //al primo false esce 
+            //this.options.every(tabOptions => { if (tabOptions.resetModel) return false; else return true; } )
+
+            //Nota viene creata solo l'option del ng-tab attivo. Evito di fare il ciclo sulle tab.
+            if (this.options[0].resetModel){
+              //la resetmodel imposta tutti i valori del modello.
+              this.options[0].resetModel(data)              
+            }else{
+              this.model = data;
+            }
+            
+      
+            this.isLoading = false;
           } catch (e) {
             console.log(e);
-            that.isLoading = false;
+            this.isLoading = false;
           }
         });
       }
@@ -319,7 +333,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     if (this.model != null && this.model.id !== null) {
       this.isLoading = true;
       this.service.getConvenzioneById(this.model.id).subscribe((data) => {
-        this.options.resetModel(data);
+        //this.options.resetModel(data);
+        this.options.forEach(tabOptions => tabOptions.resetModel(data));         
         this.isLoading = false;
       });
     }
@@ -331,7 +346,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       var tosubmit = { ...this.model, ...this.form.value };
       this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
         result => {
-          this.options.resetModel(result);
+          //this.options.resetModel(result);
+          this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result)});               
           this.isLoading = false;
         },
         error => {

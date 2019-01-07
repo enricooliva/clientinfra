@@ -426,7 +426,7 @@ export class ApplicationService implements ServiceQuery {
   }
 
 
-  updateConvenzione(convenzione: Convenzione, id: number): any {
+  updateConvenzione(convenzione: Convenzione, id: number, retrow: boolean = false): any {
     if (id) {
       //aggiorna la Convenzione esiste PUT
       const url = `${this._baseURL + '/convenzioni'}/${id}`;
@@ -435,8 +435,8 @@ export class ApplicationService implements ServiceQuery {
           tap(sub => {
             this.messageService.info('Aggiornamento effettuato con successo');
             return sub;
-          }),          
-          catchError(this.handleError('updateConvenzione', convenzione))
+          }),                    
+          catchError(this.handleError('updateConvenzione', convenzione, retrow))
         );
       return res;
     } else {
@@ -448,7 +448,7 @@ export class ApplicationService implements ServiceQuery {
           tap(sub =>
             this.messageService.info('Creazione effettuata con successo')
           ),
-          catchError(this.handleError('updateConvenzione', convenzione))
+          catchError(this.handleError('updateConvenzione', convenzione, retrow))
         );
       return res;
     }
