@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { UserService } from '../../user.service';
+import { RoleService } from '../../role.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-role',
   template: `
   <div class="container-fluid">
   
@@ -24,30 +24,28 @@ import { ActivatedRoute, Router } from '@angular/router';
     <button class="btn btn-outline-primary border-0 rounded-0">
         <span class="oi oi-magnifying-glass"></span>
         <span class="ml-2">Ricerca</span>
-      </button>
+    </button>
   </div>
   </div>
-  <h4>Utente</h4>
+  <h4>Ruolo</h4>
   <form [formGroup]="form" >
-  <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">
+  <formly-form [model]="model" [fields]="fields" [form]="form"  [options]="options">
     
   </formly-form> 
   </form>
 
   </div>
+  <div class='mt-2'></div>
   `
 })
 // <p>Form value: {{ form.value | json }}</p>
 //   <p>Form status: {{ form.status | json }}</p>
 //   <p>Model: {{ model | json }}</p>
 
+//ng g c submission/components/user -s true --spec false -t true
 
-
-//ng g c application/components/user -s true --spec false -t true
-
-export class UserComponent implements OnInit {
+export class RoleComponent implements OnInit {
   
-  options: FormlyFormOptions = {};
   isLoading = true;
   userRow: FormlyFieldConfig[] = [
     {
@@ -67,72 +65,21 @@ export class UserComponent implements OnInit {
           type: 'input',
           className: "col-md-5",
           templateOptions: {
-            label: 'Nome utente',
+            label: 'Permesso',
             required: true
           }
         },
         {
-          key: 'email',
+          key: 'guard_name',
           type: 'input',
           className: "col-md-5",
           templateOptions: {
-            label: 'Email',
+            label: 'Guardia',
             required: true
           },
         }
       ]
-    },
-    {
-      key: 'roles',
-      type: 'datatable',
-      wrappers: ['accordion'],
-      templateOptions: {
-        label: 'Ruoli',
-        columnMode: 'force',
-        scrollbarH: false,
-        limit: "50",
-        onDblclickRow: (event) => this.onDblclickRow(event),
-      },
-      fieldArray: {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'id',
-            type: 'input',
-            templateOptions: {
-              label: 'Id',
-              disabled: true,
-              column: { width: 3 }
-            }
-          },
-          {
-            key: 'name',
-            type: 'select',
-            templateOptions: {
-              options: this.service.getRoles(),
-              valueProp: 'name',
-              labelProp: 'name',
-              label: 'Ruolo',
-              required: true,
-              column: { width: 10 },              
-            }
-          },
-          {
-            key: 'guard_name',
-            type: 'input',
-            templateOptions: {
-              label: 'Guardia',
-              required: false,
-              disabled: true,
-              column: { width: 8 },              
-            }
-          }
-        ]
-      },
-    },
-    {      
-      template: '<div class="mt-2"></div>',
-    },
+    },    
     {
         key: 'permissions',
         type: 'datatable',
@@ -141,7 +88,8 @@ export class UserComponent implements OnInit {
           label: 'Permessi',
           columnMode: 'force',
           scrollbarH: false,
-          limit: "50",
+          limit: "10",
+          onDblclickRow: (event) => this.onDblclickRow(event),
         },
 
         fieldArray: {
@@ -153,35 +101,37 @@ export class UserComponent implements OnInit {
               templateOptions: {
                 label: 'Id',
                 disabled: true,
-                column: { width: 10 }
+                column: { width: 3 }
               }
             },
             {
               key: 'name',
               type: 'select',
               templateOptions: {
-                options: this.service.getPermissions(),
+                options: this.service.getPermissions(),                
                 valueProp: 'name',
                 labelProp: 'name',
                 label: 'Permesso',
                 required: true
               }
             },
-            {
+       /*      {
               key: 'guard_name',
               type: 'input',
               templateOptions: {
-                label: 'Guardia',
                 disabled: true,
+                label: 'Guardia',
                 required: false
               }
-            }
+            } */
           ]
         }
       
     }
   ];
 
+  options: FormlyFormOptions = {};
+  
   form = new FormGroup({});
 
   model = {
@@ -190,13 +140,13 @@ export class UserComponent implements OnInit {
 
   fields: FormlyFieldConfig[] = this.userRow;
 
-  constructor(private service: UserService, private route: ActivatedRoute, private router: Router) {
+  constructor(private service: RoleService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.service.clearMessage();
-      this.service.getUser(params['id']).subscribe((data) => {
+      this.service.getRole(params['id']).subscribe((data) => {
         this.isLoading = false;
         this.model = data;
       });
@@ -243,7 +193,7 @@ export class UserComponent implements OnInit {
   onDblclickRow(event) {
     //, {relativeTo: this.route}
     if (event.type === 'dblclick') {          
-      this.router.navigate(['home/roles', event.row.id]);
+      this.router.navigate(['home/permissions', event.row.id]);
     }
   }
 

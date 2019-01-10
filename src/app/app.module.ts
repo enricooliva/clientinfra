@@ -28,6 +28,8 @@ import { MessageService } from './shared';
 import { UploadfileComponent } from './application/components/convenzione/uploadfile.component';
 import { environment } from 'src/environments/environment';
 import { APP_BASE_HREF } from '@angular/common';
+import { RoleService } from './application/role.service';
+import { PermissionService } from './application/permission.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -61,8 +63,10 @@ export function tokenGetter() {
     AziendaService,
     MessageService,
     MessageCacheService,  
+    RoleService,
+    PermissionService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
-    HttpInterceptorProviders,
+    HttpInterceptorProviders,    
     {provide: 'userService', useClass: UserService},
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},

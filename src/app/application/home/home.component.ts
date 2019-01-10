@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   navs = [
     {title: 'Gestione', links: [
       { href: 'users', text: 'Utenti', permissions: ['ADMIN'] },
+      { href: 'roles', text: 'Ruoli', permissions: ['ADMIN'] },
+      { href: 'permissions', text: 'Permessi', permissions: ['ADMIN'] },
     ]},    
     {title: 'Funzionali', links: [
       { href: 'convenzione', text: 'Convenzione', permissions: ['ADMIN', 'USER'] },

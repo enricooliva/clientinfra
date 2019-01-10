@@ -10,6 +10,10 @@ import { ConvenzioniComponent } from '../application/components/convenzione/conv
 import { TestTabComponent } from '../application/pages/test-tab.component';
 import { MultistepSchematipoComponent } from '../application/pages/multistep-schematipo.component';
 import { AllegatiComponent } from '../application/components/convenzione/allegati.component';
+import { RoleComponent } from '../application/components/user/role.component';
+import { PermissionComponent } from '../application/components/user/permission.component';
+import { RolesComponent } from '../application/components/user/roles.component';
+import { PermissionsComponent } from '../application/components/user/permissions.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -21,7 +25,11 @@ const routes: Routes = [
       { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard] },     
       { path: 'users',  component: UsersComponent, canActivate:[AuthGuard] },     //canActivate:[AuthGuard]
-      { path: 'user/:id',  component: UserComponent,  canActivate:[AuthGuard] }, 
+      { path: 'users/:id',  component: UserComponent,  canActivate:[AuthGuard] },
+      { path: 'roles',  component: RolesComponent, canActivate:[AuthGuard] },         
+      { path: 'roles/:id',  component: RoleComponent,  canActivate:[AuthGuard] }, 
+      { path: 'permissions/:id',  component: PermissionComponent,  canActivate:[AuthGuard] }, 
+      { path: 'permissions',  component: PermissionsComponent,  canActivate:[AuthGuard] }, 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }

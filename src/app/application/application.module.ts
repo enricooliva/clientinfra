@@ -23,6 +23,10 @@ import { AllegatiComponent } from './components/convenzione/allegati.component';
 import { UploadfileComponent } from './components/convenzione/uploadfile.component';
 import { UserTaskDetailComponent } from './components/convenzione/user-task-detail.component';
 import { UserTaskService } from './usertask.service';
+import { RoleComponent } from './components/user/role.component';
+import { PermissionComponent } from './components/user/permission.component';
+import { RolesComponent } from './components/user/roles.component';
+import { PermissionsComponent } from './components/user/permissions.component';
 
 
 @NgModule({
@@ -39,13 +43,15 @@ import { UserTaskService } from './usertask.service';
   ], 
   exports: [
     ConvenzioneComponent,
-    HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent   
+    HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent,
   ],
   declarations: [        
     ConvenzioneComponent,
     ConvenzioniComponent,    
     AssignmentDetailPageComponent,    
-    HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent
+    HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent,
   ],
   providers: [ 
     ApplicationService,

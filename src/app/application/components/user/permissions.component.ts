@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { UserService } from '../../user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserComponent } from './user.component';
 import { Page } from 'src/app/shared/lookup/page';
+import { PermissionService } from '../../permission.service';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-permissions',
   template: `
     
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
-  <h4>Ricerca Utenti</h4>
-  <app-query-builder [metadata]="this.userRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
+  <h4>Ricerca Permessi</h4>
+  <app-query-builder [metadata]="this.permissionsRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
 
   <h4>Risultati</h4>
   <form [formGroup]="form" >
@@ -27,38 +26,33 @@ import { Page } from 'src/app/shared/lookup/page';
   `  
 })
 
-//ng g c submission/components/user -s true --spec false -t true
+//ng g c submission/components/permissions -s true --spec false -t true
 
 
-export class UsersComponent implements OnInit {
+export class PermissionsComponent implements OnInit {
   
   isLoading = false;
-  userRow: FormlyFieldConfig[] = [
+  permissionsRow: FormlyFieldConfig[] = [
     {
       key: 'data',
       type: 'datatablelookup',
       wrappers: ['accordion'],      
       templateOptions: {
-        label: 'Utenti',   
+        label: 'Permessi',   
         columnMode: 'force',
         scrollbarH: false,        
         page: new Page(25),
         hidetoolbar: true,      
-        // modalità implicità di costruzione delle colonne 
-        // columns: [
-        //   { name: 'Id', prop: 'id', width: 10},
-        //   { name: 'Nome utente', prop: 'name' },
-        //   { name: 'Email', prop: 'email' },
-        // ],
         onDblclickRow: (event) => this.onDblclickRow(event),
-        onSetPage: (pageInfo) => this.onSetPage(pageInfo),       
+        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
       },
       fieldArray: {
         fieldGroupClassName: 'row',   
         fieldGroup: [
           {
             key: 'id',
-            type: 'number',            
+            type: 'number',
+            hideExpression: false,
             templateOptions: {
               label: 'Id',
               disabled: true,
@@ -69,16 +63,16 @@ export class UsersComponent implements OnInit {
             key: 'name',
             type: 'string',
             templateOptions: {
-              label: 'Nome utente',
+              label: 'Permesso',
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
           },
           {
-            key: 'email',
+            key: 'guard_name',
             type: 'string',
             templateOptions: {
-              label: 'Email',
+              label: 'Guardia',
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
@@ -93,15 +87,14 @@ export class UsersComponent implements OnInit {
   model = {
     data: new Array<any>(),
   };
-    
+
   querymodel = {
     rules: new Array<any>(),    
   };
 
+  resultMetadata: FormlyFieldConfig[] = this.permissionsRow;
 
-  resultMetadata: FormlyFieldConfig[] = this.userRow;
-
-  constructor(private service: UserService, private router: Router, private route: ActivatedRoute,)  {     
+  constructor(private service: PermissionService, private router: Router, private route: ActivatedRoute,)  {     
   }
 
   ngOnInit() {
@@ -111,10 +104,9 @@ export class UsersComponent implements OnInit {
   onDblclickRow(event) {
     //, {relativeTo: this.route}
     if (event.type === 'dblclick') {          
-      this.router.navigate(['home/users', event.row.id]);
+      this.router.navigate(['home/permissions', event.row.id]);
     }
   }
-
 
   onFind(model){
     this.querymodel.rules = model.rules;  
@@ -142,19 +134,7 @@ export class UsersComponent implements OnInit {
       console.error(e);
     }
   }
-  //senza paginazione
-/*   onFind(model){
-    this.isLoading = true;    
-    this.userService.clearMessage();
-    this.userService.query(model).subscribe((data) => {
-      this.isLoading = false;   
 
-      this.model=  {
-        data: data.data
-      }
-    });
-  } */
-  
   onSetPage(pageInfo){      
     if (pageInfo.limit)
       this.querymodel['limit']= pageInfo.limit;     
@@ -163,4 +143,5 @@ export class UsersComponent implements OnInit {
       this.onFind(this.querymodel);
     }
   }
+
 }
