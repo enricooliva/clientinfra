@@ -146,6 +146,10 @@ export class PermissionComponent implements OnInit {
     }
   }
 
+  onReload() {
+    //TODO
+  }
+
   get isReloadable() {
     if (this.model == null)
       return false;
