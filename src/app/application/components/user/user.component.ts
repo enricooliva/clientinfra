@@ -98,7 +98,7 @@ export class UserComponent implements OnInit {
         fieldGroup: [
           {
             key: 'id',
-            type: 'input',
+            type: 'number',
             templateOptions: {
               label: 'Id',
               disabled: true,
@@ -117,16 +117,16 @@ export class UserComponent implements OnInit {
               column: { width: 10 },              
             }
           },
-          {
-            key: 'guard_name',
-            type: 'input',
-            templateOptions: {
-              label: 'Guardia',
-              required: false,
-              disabled: true,
-              column: { width: 8 },              
-            }
-          }
+          // {
+          //   key: 'guard_name',
+          //   type: 'input',
+          //   templateOptions: {
+          //     label: 'Guardia',
+          //     required: false,
+          //     disabled: true,
+          //     column: { width: 8 },              
+          //   }
+          // }
         ]
       },
     },
@@ -167,15 +167,15 @@ export class UserComponent implements OnInit {
                 required: true
               }
             },
-            {
-              key: 'guard_name',
-              type: 'input',
-              templateOptions: {
-                label: 'Guardia',
-                disabled: true,
-                required: false
-              }
-            }
+            // {
+            //   key: 'guard_name',
+            //   type: 'input',
+            //   templateOptions: {
+            //     label: 'Guardia',
+            //     disabled: true,
+            //     required: false
+            //   }
+            // }
           ]
         }
       
@@ -236,7 +236,7 @@ export class UserComponent implements OnInit {
   onReload() {
     //TODO
   }
-  
+
   get isReloadable() {
     if (this.model == null)
       return false;

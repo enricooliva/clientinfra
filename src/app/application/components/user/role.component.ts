@@ -65,7 +65,7 @@ export class RoleComponent implements OnInit {
           type: 'input',
           className: "col-md-5",
           templateOptions: {
-            label: 'Permesso',
+            label: 'Ruolo',
             required: true
           }
         },

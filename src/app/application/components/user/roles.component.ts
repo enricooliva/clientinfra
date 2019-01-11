@@ -23,31 +23,31 @@ import { Page } from 'src/app/shared/lookup/page';
   <p>Form value: {{ form.value | json }}</p>
   <p>Form status: {{ form.status | json }}</p>
   
-  `  
+  `
 })
 
 //ng g c submission/components/roles -s true --spec false -t true
 
 
 export class RolesComponent implements OnInit {
-  
+
   isLoading = false;
   rolesRow: FormlyFieldConfig[] = [
     {
       key: 'data',
       type: 'datatablelookup',
-      wrappers: ['accordion'],      
+      wrappers: ['accordion'],
       templateOptions: {
-        label: 'Ruoli',   
+        label: 'Ruoli',
         columnMode: 'force',
-        scrollbarH: false,        
+        scrollbarH: false,
         page: new Page(25),
-        hidetoolbar: true,      
+        hidetoolbar: true,
         onDblclickRow: (event) => this.onDblclickRow(event),
-        onSetPage: (pageInfo) => this.onSetPage(pageInfo),          
+        onSetPage: (pageInfo) => this.onSetPage(pageInfo),
       },
       fieldArray: {
-        fieldGroupClassName: 'row',   
+        fieldGroupClassName: 'row',
         fieldGroup: [
           {
             key: 'id',
@@ -56,7 +56,7 @@ export class RolesComponent implements OnInit {
             templateOptions: {
               label: 'Id',
               disabled: true,
-              column: { width: 10, cellTemplate: 'valuecolumn'}
+              column: { width: 10, cellTemplate: 'valuecolumn' }
             }
           },
           {
@@ -65,18 +65,18 @@ export class RolesComponent implements OnInit {
             templateOptions: {
               label: 'Ruolo',
               required: true,
-              column: { cellTemplate: 'valuecolumn'}
+              column: { cellTemplate: 'valuecolumn' }
             }
           },
-          {
-            key: 'guard_name',
-            type: 'string',
-            templateOptions: {
-              label: 'Guardia',
-              required: true,
-              column: { cellTemplate: 'valuecolumn'}
-            }
-          }
+          // {
+          //   key: 'guard_name',
+          //   type: 'string',
+          //   templateOptions: {
+          //     label: 'Guardia',
+          //     required: true,
+          //     column: { cellTemplate: 'valuecolumn' }
+          //   }
+          // }
         ]
       }
     }
@@ -89,62 +89,62 @@ export class RolesComponent implements OnInit {
   };
 
   querymodel = {
-    rules: new Array<any>(),    
+    rules: new Array<any>(),
   };
 
   resultMetadata: FormlyFieldConfig[] = this.rolesRow;
 
-  constructor(private service: RoleService, private router: Router, private route: ActivatedRoute,)  {     
+  constructor(private service: RoleService, private router: Router, private route: ActivatedRoute, ) {
   }
 
   ngOnInit() {
-    
+
   }
 
   onDblclickRow(event) {
     //, {relativeTo: this.route}
-    if (event.type === 'dblclick') {          
+    if (event.type === 'dblclick') {
       this.router.navigate(['home/roles', event.row.id]);
     }
   }
 
 
-  onFind(model){
-    this.querymodel.rules = model.rules;  
+  onFind(model) {
+    this.querymodel.rules = model.rules;
 
-    this.isLoading = true;    
+    this.isLoading = true;
     //this.service.clearMessage();
-    try{      
+    try {
       this.service.query(this.querymodel).subscribe((data) => {
         const to = this.resultMetadata[0].templateOptions;
-        this.isLoading = false;   
-        this.model=  {
+        this.isLoading = false;
+        this.model = {
           data: data.data
         }
 
         to.page.totalElements = data.total; // data.to;
-        to.page.pageNumber = data.current_page-1;
-        to.page.size = data.per_page;        
-        
+        to.page.pageNumber = data.current_page - 1;
+        to.page.size = data.per_page;
+
       }, err => {
-        this.isLoading=false;
+        this.isLoading = false;
         console.error('Oops:', err.message);
       });
-    }catch(e){
+    } catch (e) {
       this.isLoading = false;
       console.error(e);
     }
   }
 
-  onSetPage(pageInfo){      
+  onSetPage(pageInfo) {
     if (pageInfo.limit)
-      this.querymodel['limit']= pageInfo.limit;     
-    if (this.model.data.length>0){
-      this.querymodel['page']=pageInfo.offset + 1;     
+      this.querymodel['limit'] = pageInfo.limit;
+    if (this.model.data.length > 0) {
+      this.querymodel['page'] = pageInfo.offset + 1;
       this.onFind(this.querymodel);
     }
   }
-  
+
 
 
 }
