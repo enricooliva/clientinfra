@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       { href: 'users', text: 'Utenti', permissions: ['ADMIN'] },
       { href: 'roles', text: 'Ruoli', permissions: ['ADMIN'] },
       { href: 'permissions', text: 'Permessi', permissions: ['ADMIN'] },
+      { href: 'tipopagamenti', text: 'Tipo pagamenti', permissions: ['ADMIN'] },
     ]},    
     {title: 'Funzionali', links: [
       { href: 'convenzione', text: 'Convenzione', permissions: ['ADMIN', 'USER'] },

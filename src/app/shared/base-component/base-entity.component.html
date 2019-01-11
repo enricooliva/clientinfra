@@ -1,0 +1,27 @@
+<div class="container-fluid">
+
+    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+    <div class="sticky-top btn-toolbar mb-4" role="toolbar">
+        <div class="btn-group">
+            <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()">
+                <span class="oi oi-arrow-top"></span>
+                <span class="ml-2">Aggiorna</span>
+            </button>
+            <button class="btn btn-outline-primary border-0 rounded-0" (click)="onReload()" [disabled]="!form.dirty">
+                <span class="oi oi-reload iconic" title="reload" aria-hidden="true"></span>
+                <span class="ml-2">Ricarica</span>
+            </button>
+            <button class="btn btn-outline-primary border-0 rounded-0">
+                <span class="oi oi-magnifying-glass"></span>
+                <span class="ml-2">Ricerca</span>
+            </button>
+        </div>
+    </div>
+    <h4>{{title}}</h4>
+    <form [formGroup]="form">
+        <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">
+
+        </formly-form>
+    </form>
+</div>

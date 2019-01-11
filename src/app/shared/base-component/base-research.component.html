@@ -1,0 +1,13 @@
+<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
+<h4>Ricerca {{title}}</h4>
+<app-query-builder [metadata]="this.fieldsRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
+
+<h4>Risultati</h4>
+<form *ngIf="resultMetadata" [formGroup]="form" >
+<formly-form [model]="model" [fields]="resultMetadata" [form]="form">
+  
+</formly-form> 
+</form>
+
+<p>Form value: {{ form.value | json }}</p>
+<p>Form status: {{ form.status | json }}</p>

@@ -27,6 +27,8 @@ import { RoleComponent } from './components/user/role.component';
 import { PermissionComponent } from './components/user/permission.component';
 import { RolesComponent } from './components/user/roles.component';
 import { PermissionsComponent } from './components/user/permissions.component';
+import { TipoPagamentiComponent } from './components/convenzione/tipopagamenti.component';
+import { TipoPagamentoComponent } from './components/convenzione/tipopagamento.component';
 
 
 @NgModule({
@@ -44,14 +46,14 @@ import { PermissionsComponent } from './components/user/permissions.component';
   exports: [
     ConvenzioneComponent,
     HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
-    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent,
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent,
   ],
   declarations: [        
     ConvenzioneComponent,
     ConvenzioniComponent,    
     AssignmentDetailPageComponent,    
     HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
-    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent,
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent,
   ],
   providers: [ 
     ApplicationService,

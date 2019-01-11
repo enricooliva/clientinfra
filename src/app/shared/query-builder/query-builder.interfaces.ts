@@ -1,11 +1,23 @@
 import { Observable } from "rxjs";
 import { FormlyFieldConfig } from "@ngx-formly/core";
+import { MessageService } from "../message.service";
 
-export interface ServiceQuery {
-    getById(id: any):  Observable<any>;
-    getMetadata(): FormlyFieldConfig[];
+export interface ServiceBase {
+  getById(id: any):  Observable<any>;
+  getMetadata(): FormlyFieldConfig[];
+}
+export interface ServiceQuery extends ServiceBase {    
     query(filters: any): Observable<any>;
 }
+
+export interface ServiceEntity extends ServiceBase {      
+  store(model: any, retrow: boolean): Observable<any>;
+  update(model: any, id: any, retrow: boolean): Observable<any>;
+  remove(id: any): Observable<any>;
+  clearMessage();
+  messageService: MessageService;
+}
+
 
 export interface RuleSet {
     condition: string;

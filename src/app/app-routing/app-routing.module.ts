@@ -14,6 +14,8 @@ import { RoleComponent } from '../application/components/user/role.component';
 import { PermissionComponent } from '../application/components/user/permission.component';
 import { RolesComponent } from '../application/components/user/roles.component';
 import { PermissionsComponent } from '../application/components/user/permissions.component';
+import { TipoPagamentiComponent } from '../application/components/convenzione/tipopagamenti.component';
+import { TipoPagamentoComponent } from '../application/components/convenzione/tipopagamento.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -30,6 +32,8 @@ const routes: Routes = [
       { path: 'roles/:id',  component: RoleComponent,  canActivate:[AuthGuard] }, 
       { path: 'permissions/:id',  component: PermissionComponent,  canActivate:[AuthGuard] }, 
       { path: 'permissions',  component: PermissionsComponent,  canActivate:[AuthGuard] }, 
+      { path: 'tipopagamenti',  component: TipoPagamentiComponent, canActivate:[AuthGuard] },         
+      { path: 'tipopagamenti/:id',  component: TipoPagamentoComponent,  canActivate:[AuthGuard] }, 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }

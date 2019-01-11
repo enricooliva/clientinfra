@@ -42,6 +42,8 @@ import { PdfTypeComponent } from './dynamic-form/pdf-type/pdf-type.component';
 import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-input.component';
 import { FormlyFieldButton } from './dynamic-form/button-type.component';
 import { FormlyHorizontalWrapper } from './dynamic-form/horizontal-wrapper';
+import { BaseEntityComponent } from './base-component/base-entity.component';
+import { BaseResearchComponent } from './base-component/base-research.component';
 
 @NgModule({
   imports: [
@@ -174,6 +176,8 @@ import { FormlyHorizontalWrapper } from './dynamic-form/horizontal-wrapper';
     PdfTypeComponent,
     FormlyFieldButton,
     FormlyHorizontalWrapper,
+    BaseEntityComponent,
+    BaseResearchComponent,
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -188,6 +192,8 @@ import { FormlyHorizontalWrapper } from './dynamic-form/horizontal-wrapper';
     PdfTypeInputComponent,
     FormlyFieldButton,
     FormlyHorizontalWrapper,
+    BaseEntityComponent,
+    BaseResearchComponent,
   ],
   entryComponents: [LookupComponent]
 })

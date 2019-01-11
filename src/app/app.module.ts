@@ -30,6 +30,7 @@ import { environment } from 'src/environments/environment';
 import { APP_BASE_HREF } from '@angular/common';
 import { RoleService } from './application/role.service';
 import { PermissionService } from './application/permission.service';
+import { TipoPagamentoService } from './application/tipopagamento.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -65,6 +66,7 @@ export function tokenGetter() {
     MessageCacheService,  
     RoleService,
     PermissionService,
+    TipoPagamentoService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
     HttpInterceptorProviders,    
     {provide: 'userService', useClass: UserService},

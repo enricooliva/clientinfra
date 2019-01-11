@@ -3,12 +3,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery, ServiceEntity } from '../shared';
-import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { AppConstants } from '../app-constants';
 import { Cacheable } from 'ngx-cacheable';
-
+import { ServiceQuery, ServiceEntity } from '../query-builder/query-builder.interfaces';
+import { MessageService } from '../message.service';
+import { AppConstants } from 'src/app/app-constants';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,50 +16,31 @@ const httpOptions = {
 };
 
 @Injectable()
-export class PermissionService implements ServiceQuery, ServiceEntity {
+export class BaseService implements ServiceQuery, ServiceEntity {
 
   _baseURL: string;
 
+  protected basePath: string;
+  
   getMetadata(): FormlyFieldConfig[] {
-    return [
-      {
-        key: 'id',
-        type: 'number',
-        hideExpression: false,
-        templateOptions: {
-          label: 'Id',
-          disabled: true,
-          column: { width: 10, cellTemplate: 'valuecolumn' }
-        }
-      },
-      {
-        key: 'name',
-        type: 'select',
-        templateOptions: {
-          label: 'Ruolo',
-          required: true,
-          column: { cellTemplate: 'valuecolumn' }
-        }
-      },
-      {
-        key: 'guard_name',
-        type: 'string',
-        templateOptions: {
-          label: 'Nome',
-          required: true,
-          column: { cellTemplate: 'valuecolumn' }
-        }
-      },
-    ];
-
+    return [];
   }
 
   @Cacheable()
   getById(id: any) {
-    return this.getPermission(id);
+    return this.http
+    .get(this._baseURL +  `/${this.basePath}/` + id.toString(), httpOptions).pipe(
+      tap(sub => {
+        if (sub)
+          this.messageService.info('Lettura permesso effettuata con successo')
+        else
+          this.messageService.info('Permesso non trovato')
+      }),
+      catchError(this.handleError('getById'))
+    );
   }
 
-  constructor(private http: HttpClient, public messageService: MessageService) {
+  constructor(protected http: HttpClient, public messageService: MessageService) {
     this._baseURL = AppConstants.baseApiURL;
   }
 
@@ -70,24 +50,11 @@ export class PermissionService implements ServiceQuery, ServiceEntity {
 
   query(model): Observable<any> {
     return this.http
-      .post<any>(this._baseURL + '/permissions/query', model, httpOptions).pipe(
+      .post<any>(this._baseURL + `/${this.basePath}/query`, model, httpOptions).pipe(
         tap(sub => this.messageService.info('Ricerca effettuata con successo')),
         catchError(this.handleError('query'))
       );
-  }
-
-  getPermission(id: number): Observable<any> {
-    return this.http
-      .get(this._baseURL + '/permissions/' + id.toString(), httpOptions).pipe(
-        tap(sub => {
-          if (sub)
-            this.messageService.info('Lettura permesso effettuata con successo')
-          else
-            this.messageService.info('Permesso non trovato')
-        }),
-        catchError(this.handleError('getPermission'))
-      );
-  }
+  } 
 
   store(model: any, retrow: boolean = false): Observable<any>{
     //TODO
@@ -97,7 +64,7 @@ export class PermissionService implements ServiceQuery, ServiceEntity {
   update(model: any, id: number, retrow: boolean = false): Observable<any> {
     if (id) {
       //aggiorna la Convenzione esiste PUT
-      const url = `${this._baseURL + '/permissions'}/${id}`;
+      const url = `${this._baseURL}/${this.basePath}/${id}`;
       let res = this.http.put<any>(url, model, httpOptions)
         .pipe(
           tap(sub => {
@@ -111,10 +78,10 @@ export class PermissionService implements ServiceQuery, ServiceEntity {
   }
 
   remove(id: number) {
-    return this.http.delete(this._baseURL + '/permissions/' + id.toString()).pipe(
+    return this.http.delete(this._baseURL + `/${this.basePath}/` + id.toString()).pipe(
       tap(ok => {
         this.messageService.clear();
-        this.messageService.info('Eliminazione permesso effettuata con successo')
+        this.messageService.info('Eliminazione effettuata con successo')
       }),
       catchError(
         this.handleError("remove", null)
