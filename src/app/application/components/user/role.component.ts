@@ -3,40 +3,12 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { RoleService } from '../../role.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BaseEntityComponent } from 'src/app/shared';
+import { SourceMapGenerator } from '@angular/compiler/src/output/source_map';
 
 @Component({
   selector: 'app-role',
-  template: `
-  <div class="container-fluid">
-  
-  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
-  <div class="sticky-top btn-toolbar mb-4" role="toolbar">
-  <div class="btn-group">       
-    <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
-        <span class="oi oi-arrow-top"></span>  
-        <span class="ml-2">Aggiorna</span>        
-    </button>
-    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onReload()"  [disabled]="!form.dirty">
-        <span class="oi oi-reload iconic" title="reload" aria-hidden="true" ></span>
-        <span class="ml-2">Ricarica</span>
-    </button>   
-    <button class="btn btn-outline-primary border-0 rounded-0">
-        <span class="oi oi-magnifying-glass"></span>
-        <span class="ml-2">Ricerca</span>
-    </button>
-  </div>
-  </div>
-  <h4>Ruolo</h4>
-  <form [formGroup]="form" >
-  <formly-form [model]="model" [fields]="fields" [form]="form"  [options]="options">
-    
-  </formly-form> 
-  </form>
-
-  </div>
-  <div class='mt-2'></div>
-  `
+  templateUrl: '../../../shared/base-component/base-entity.component.html',
 })
 // <p>Form value: {{ form.value | json }}</p>
 //   <p>Form status: {{ form.status | json }}</p>
@@ -44,10 +16,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 //ng g c submission/components/user -s true --spec false -t true
 
-export class RoleComponent implements OnInit {
+export class RoleComponent extends BaseEntityComponent {
   
   isLoading = true;
-  userRow: FormlyFieldConfig[] = [
+  fields: FormlyFieldConfig[] = [
     {
       fieldGroupClassName: 'row',
       fieldGroup: [
@@ -130,68 +102,9 @@ export class RoleComponent implements OnInit {
     }
   ];
 
-  options: FormlyFormOptions = {};
-  
-  form = new FormGroup({});
-
-  model = {
-    roles: new Array<any>(),
-  };
-
-  fields: FormlyFieldConfig[] = this.userRow;
-
-  constructor(private service: RoleService, private route: ActivatedRoute, private router: Router) {
-  }
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.service.clearMessage();
-      this.service.getRole(params['id']).subscribe((data) => {
-        this.isLoading = false;
-        this.model = data;
-      });
-
-    });
-  }
-
-  onRemove() {
-    this.service.remove(this.model['id']).subscribe(
-      prop => {
-        this.model = null;
-      },
-      error => { // error path
-
-      }
-    );
-  }
-
-  onSubmit() {
-    if (this.form.valid) {
-      this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
-      this.service.update(tosubmit, tosubmit.id).subscribe(
-        result => {
-          //this.options.resetModel(result);
-          this.options.resetModel(result);               
-          this.isLoading = false;
-        },
-        error => {
-          this.isLoading = false;
-          this.service.messageService.error(error);
-          console.log(error)
-        });
-    }
-  }
-
-  onReload() {
-    //TODO
-  }
-
-  get isReloadable() {
-    if (this.model == null)
-      return false;
-
-    return this.model['id'] != null;
+  constructor(protected service: RoleService, protected route: ActivatedRoute, protected router: Router) {
+    super(route, router);
+    this.title = "Ruolo";
   }
 
   onDblclickRow(event) {

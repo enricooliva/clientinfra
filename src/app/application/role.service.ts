@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery } from '../shared';
-import { ArrayControl } from '../shared/dynamic-form/control-array';
+import { MessageService, ServiceQuery, ServiceEntity } from '../shared';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Cacheable } from 'ngx-cacheable';
@@ -17,7 +16,7 @@ const httpOptions = {
 };
 
 @Injectable()
-export class RoleService implements ServiceQuery {
+export class RoleService implements ServiceQuery, ServiceEntity  {
 
   _baseURL: string;
 
@@ -114,6 +113,9 @@ export class RoleService implements ServiceQuery {
     }
   }
 
+  store(model: any, retrow: boolean = false): any {
+    return true;
+  }
 
   remove(id: number) {
     return this.http.delete(this._baseURL + '/roles/' + id.toString()).pipe(

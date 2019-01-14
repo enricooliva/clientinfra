@@ -95,7 +95,7 @@ export class BaseService implements ServiceQuery, ServiceEntity {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = 'operation', result?: T, retrow: boolean = false) {
+  protected handleError<T>(operation = 'operation', result?: T, retrow: boolean = false) {
     return (error: any): Observable<T> => {
       
       // TODO: send the error to remote logging infrastructure
