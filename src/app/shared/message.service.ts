@@ -29,9 +29,9 @@ export class MessageService {
     this.messages.push({message: message, type:InfraMessageType.Success});
   }
 
-  error(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
+  error(message: string, deletePreviusMessage = true, keepAfterRouteChange = false, error: any = null) {
     this.post(deletePreviusMessage);
-    this.messages.push({message: message, type:InfraMessageType.Error});
+    this.messages.push({message: message, type:InfraMessageType.Error, error: error});
   }
 
   info(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {

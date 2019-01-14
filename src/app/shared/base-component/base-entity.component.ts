@@ -4,7 +4,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceEntity } from '../query-builder/query-builder.interfaces';
 
-@Component({  
+@Component({
   template: `NOT UI`
 })
 // <p>Form value: {{ form.value | json }}</p>
@@ -14,14 +14,14 @@ import { ServiceEntity } from '../query-builder/query-builder.interfaces';
 //ng g c submission/components/user -s true --spec false -t true
 
 export class BaseEntityComponent implements OnInit {
-  
+
   protected isLoading = true;
 
   options: FormlyFormOptions = {};
-  
+
   form = new FormGroup({});
 
-  model = { };
+  model = {};
 
   protected fields: FormlyFieldConfig[];
 
@@ -38,6 +38,7 @@ export class BaseEntityComponent implements OnInit {
       this.service.getById(params['id']).subscribe((data) => {
         this.isLoading = false;
         this.model = data;
+        this.options.updateInitialValue();
       });
 
     });
@@ -47,8 +48,9 @@ export class BaseEntityComponent implements OnInit {
     this.service.remove(this.model['id']).subscribe(
       prop => {
         this.model = null;
+        //impostare come se fosse in nuovo
       },
-      error => { // error path
+      error => { // error path        
 
       }
     );
@@ -58,22 +60,23 @@ export class BaseEntityComponent implements OnInit {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      this.service.update(tosubmit, tosubmit.id, false).subscribe(
+      this.service.update(tosubmit, tosubmit.id, true).subscribe(
         result => {
-          //this.options.resetModel(result);
-          this.options.resetModel(result);               
+          this.options.resetModel(result);
+          this.options.updateInitialValue();
           this.isLoading = false;
         },
         error => {
           this.isLoading = false;
-          this.service.messageService.error(error);
-          console.log(error)
+          //this.service.messageService.error(error);          
         });
     }
   }
 
   onReload() {
-    //TODO
+    if (this.model['id']) {
+      this.options.resetModel();
+    }
   }
 
   get isReloadable() {
@@ -83,5 +86,5 @@ export class BaseEntityComponent implements OnInit {
     return this.model['id'] != null;
   }
 
-  
+
 }
