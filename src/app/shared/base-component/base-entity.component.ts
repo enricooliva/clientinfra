@@ -25,7 +25,7 @@ export class BaseEntityComponent implements OnInit {
 
   protected fields: FormlyFieldConfig[];
 
-  title = 'completare campto title';
+  title = 'completare campo title';
 
   protected service: ServiceEntity;
 
