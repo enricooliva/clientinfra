@@ -54,7 +54,7 @@ export class RoleService extends BaseService {
 
   constructor(protected http: HttpClient, public messageService: MessageService) {
     super(http,messageService);
-    this.basePath = 'permissions';     
+    this.basePath = 'roles';     
   }
 
   @Cacheable()

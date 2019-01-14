@@ -53,15 +53,15 @@ export class RolesComponent extends BaseResearchComponent {
               column: { cellTemplate: 'valuecolumn' }
             }
           },
-          // {
-          //   key: 'guard_name',
-          //   type: 'string',
-          //   templateOptions: {
-          //     label: 'Guardia',
-          //     required: true,
-          //     column: { cellTemplate: 'valuecolumn' }
-          //   }
-          // }
+          {
+            key: 'guard_name',
+            type: 'string',
+            templateOptions: {
+              label: 'Guardia',
+              required: true,
+              column: { cellTemplate: 'valuecolumn' }
+            }
+          }
         ]
       }
     }
@@ -72,7 +72,7 @@ export class RolesComponent extends BaseResearchComponent {
   constructor(protected service: RoleService, protected router: Router, protected route: ActivatedRoute, ) {
     super(router,route);
     this.routeAbsolutePath = 'home/roles'
-    this.title = "Ricerca ruoli"
+    this.title = "ruoli"
   }
 
 }

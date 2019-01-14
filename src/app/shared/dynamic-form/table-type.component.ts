@@ -157,6 +157,7 @@ export class TableTypeComponent extends FieldArrayType {
         }
     });          
 
+    //this.formControl.reset();
     this.formControl.patchValue(this.model);   
   }
 
@@ -174,14 +175,16 @@ export class TableTypeComponent extends FieldArrayType {
   }
 
 
-  addFirst(){
-    this.add();    
+  addFirst(){    
+    this.add();        
+    this.formControl.markAsDirty();
   }
 
-  removeSelected(){
-      let index = this.model.indexOf(this.to.selected[0])
-      this.remove(index);
-      this.to.selected = [];       
+  removeSelected(){    
+    let index = this.model.indexOf(this.to.selected[0])
+    this.remove(index);
+    this.formControl.markAsDirty();
+    this.to.selected = [];       
   }
 
   ngDoCheck() {    

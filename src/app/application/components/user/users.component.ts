@@ -77,7 +77,7 @@ export class UsersComponent extends BaseResearchComponent {
   constructor(protected service: UserService, protected router: Router, protected route: ActivatedRoute, ) {
     super(router,route);
     this.routeAbsolutePath = 'home/users'
-    this.title = "Ricerca utenti"
+    this.title = "utenti"
   }
 
 }

@@ -114,4 +114,19 @@ export class RoleComponent extends BaseEntityComponent {
     }
   }
 
+  onReload() {    
+    if (this.model['id']) {
+      this.isLoading = true;      
+      this.service.getById(this.model['id']).subscribe((data) => {                
+        this.model = JSON.parse(JSON.stringify(data));
+        this.options.updateInitialValue();
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+        //this.service.messageService.error(error);          
+      });    
+    }
+  }
+
 }
