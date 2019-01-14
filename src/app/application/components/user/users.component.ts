@@ -5,35 +5,20 @@ import { UserService } from '../../user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserComponent } from './user.component';
 import { Page } from 'src/app/shared/lookup/page';
+import { BaseResearchComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-users',
-  template: `
-    
-  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
-  <h4>Ricerca Utenti</h4>
-  <app-query-builder [metadata]="this.userRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
-
-  <h4>Risultati</h4>
-  <form [formGroup]="form" >
-  <formly-form [model]="model" [fields]="resultMetadata" [form]="form">
-    
-  </formly-form> 
-  </form>
-
-  <p>Form value: {{ form.value | json }}</p>
-  <p>Form status: {{ form.status | json }}</p>
-  
-  `  
+  templateUrl: '../../../shared/base-component/base-research.component.html',
 })
 
 //ng g c submission/components/user -s true --spec false -t true
 
 
-export class UsersComponent implements OnInit {
+export class UsersComponent extends BaseResearchComponent {
   
   isLoading = false;
-  userRow: FormlyFieldConfig[] = [
+  fieldsRow: FormlyFieldConfig[] = [
     {
       key: 'data',
       type: 'datatablelookup',
@@ -87,80 +72,12 @@ export class UsersComponent implements OnInit {
       }
     }
   ];
+  resultMetadata: FormlyFieldConfig[] = this.fieldsRow;
 
-  form = new FormGroup({});
-
-  model = {
-    data: new Array<any>(),
-  };
-    
-  querymodel = {
-    rules: new Array<any>(),    
-  };
-
-
-  resultMetadata: FormlyFieldConfig[] = this.userRow;
-
-  constructor(private service: UserService, private router: Router, private route: ActivatedRoute,)  {     
+  constructor(protected service: UserService, protected router: Router, protected route: ActivatedRoute, ) {
+    super(router,route);
+    this.routeAbsolutePath = 'home/users'
+    this.title = "Ricerca utenti"
   }
 
-  ngOnInit() {
-    
-  }
-
-  onDblclickRow(event) {
-    //, {relativeTo: this.route}
-    if (event.type === 'dblclick') {          
-      this.router.navigate(['home/users', event.row.id]);
-    }
-  }
-
-
-  onFind(model){
-    this.querymodel.rules = model.rules;  
-
-    this.isLoading = true;    
-    //this.service.clearMessage();
-    try{      
-      this.service.query(this.querymodel).subscribe((data) => {
-        const to = this.resultMetadata[0].templateOptions;
-        this.isLoading = false;   
-        this.model=  {
-          data: data.data
-        }
-
-        to.page.totalElements = data.total; // data.to;
-        to.page.pageNumber = data.current_page-1;
-        to.page.size = data.per_page;        
-        
-      }, err => {
-        this.isLoading=false;
-        console.error('Oops:', err.message);
-      });
-    }catch(e){
-      this.isLoading = false;
-      console.error(e);
-    }
-  }
-  //senza paginazione
-/*   onFind(model){
-    this.isLoading = true;    
-    this.userService.clearMessage();
-    this.userService.query(model).subscribe((data) => {
-      this.isLoading = false;   
-
-      this.model=  {
-        data: data.data
-      }
-    });
-  } */
-  
-  onSetPage(pageInfo){      
-    if (pageInfo.limit)
-      this.querymodel['limit']= pageInfo.limit;     
-    if (this.model.data.length>0){
-      this.querymodel['page']=pageInfo.offset + 1;     
-      this.onFind(this.querymodel);
-    }
-  }
 }

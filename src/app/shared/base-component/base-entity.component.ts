@@ -3,6 +3,7 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceEntity } from '../query-builder/query-builder.interfaces';
+import { Subject } from 'rxjs';
 
 @Component({
   template: `NOT UI`
@@ -37,7 +38,9 @@ export class BaseEntityComponent implements OnInit {
       this.service.clearMessage();
       this.service.getById(params['id']).subscribe((data) => {
         this.isLoading = false;
-        this.model = data;
+        //this.options.resetModel(data); 
+        this.model = JSON.parse(JSON.stringify(data));
+        //this.model = Object.assign({}, data);         
         this.options.updateInitialValue();
       });
 
