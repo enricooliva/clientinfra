@@ -30,6 +30,10 @@ export class BaseEntityComponent implements OnInit {
 
   protected service: ServiceEntity;
 
+  activeNew = false;
+
+  researchPath: string = null;
+
   constructor(protected route: ActivatedRoute, protected router: Router) {
   }
 
@@ -38,13 +42,16 @@ export class BaseEntityComponent implements OnInit {
       this.service.clearMessage();
       this.service.getById(params['id']).subscribe((data) => {
         this.isLoading = false;
-        //this.options.resetModel(data); 
         this.model = JSON.parse(JSON.stringify(data));
-        //this.model = Object.assign({}, data);         
-        this.options.updateInitialValue();
       });
 
     });
+  }
+
+  onNew(){    
+    this.model = {};
+    this.form.reset();
+    this.service.clearMessage();
   }
 
   onRemove() {
@@ -63,7 +70,7 @@ export class BaseEntityComponent implements OnInit {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      this.service.update(tosubmit, tosubmit.id, true).subscribe(
+      this.service.update(tosubmit, tosubmit.id ? tosubmit.id : null , true).subscribe(
         result => {
           this.options.resetModel(result);
           this.options.updateInitialValue();
@@ -78,7 +85,8 @@ export class BaseEntityComponent implements OnInit {
 
   onReload() {
     if (this.model['id']) {
-      this.options.resetModel();
+      this.options.resetModel(); 
+      this.form.markAsPristine();     
     }
   }
 
@@ -89,5 +97,10 @@ export class BaseEntityComponent implements OnInit {
     return this.model['id'] != null;
   }
 
+  onResearch(){  
+    if (this.researchPath){
+      this.router.navigate([this.researchPath]);    
+    }
+  }
 
 }

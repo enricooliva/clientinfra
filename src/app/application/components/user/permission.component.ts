@@ -71,6 +71,8 @@ export class PermissionComponent extends BaseEntityComponent {
   constructor(protected service: PermissionService, protected route: ActivatedRoute, protected router: Router) {
     super(route,router)
     this.title = 'Permesso'
+    this.activeNew =true;
+    this.researchPath = 'home/permissions'
   }
 
 }

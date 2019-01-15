@@ -59,7 +59,7 @@ export class UserComponent extends BaseEntityComponent {
       wrappers: ['accordion'],
       templateOptions: {
         label: 'Ruoli',
-        columnMode: 'force',
+        columnMode: 'flex',
         scrollbarH: false,
         limit: "50",
         onDblclickRow: (event) => this.onDblclickRow(event),
@@ -67,15 +67,16 @@ export class UserComponent extends BaseEntityComponent {
       fieldArray: {
         fieldGroupClassName: 'row',
         fieldGroup: [
-          {
-            key: 'id',
-            type: 'number',
-            templateOptions: {
-              label: 'Id',
-              disabled: true,
-              column: { width: 3 }
-            }
-          },
+          // {
+          //   key: 'id',
+          //   type: 'number',
+          //   templateOptions: {
+          //     label: 'Id',
+          //     disabled: true,
+          //     hidden: true,
+          //     column: { width: 3 }
+          //   }
+          // },
           {
             key: 'name',
             type: 'select',
@@ -85,19 +86,19 @@ export class UserComponent extends BaseEntityComponent {
               labelProp: 'name',
               label: 'Ruolo',
               required: true,
-              column: { width: 10 },              
+              column: { flexGrow: 3 },              
             }
           },
           // {
-          //   key: 'guard_name',
-          //   type: 'input',
+          //   type: 'button',
+          //   //className: "col-md-4",
           //   templateOptions: {
-          //     label: 'Guardia',
-          //     required: false,
-          //     disabled: true,
-          //     column: { width: 8 },              
-          //   }
-          // }
+          //     icon: 'oi oi-external-link',
+          //     btnType: 'btn-outline-primary',
+          //     onClick: ($event) => {},
+          //     column: { flexGrow: 1 },   
+          //   },
+          // },
         ]
       },
     },
@@ -118,15 +119,15 @@ export class UserComponent extends BaseEntityComponent {
         fieldArray: {
           fieldGroupClassName: 'row',
           fieldGroup: [
-            {
-              key: 'id',
-              type: 'input',
-              templateOptions: {
-                label: 'Id',
-                disabled: true,
-                column: { width: 10 }
-              }
-            },
+            // {
+            //   key: 'id',
+            //   type: 'input',
+            //   templateOptions: {
+            //     label: 'Id',
+            //     disabled: true,                
+            //     column: { width: 5 }
+            //   }
+            // },
             {
               key: 'name',
               type: 'select',
@@ -156,12 +157,15 @@ export class UserComponent extends BaseEntityComponent {
   constructor(protected service: UserService, protected route: ActivatedRoute, protected router: Router) {
     super(route,router);
     this.title = "Utente";
+    this.researchPath = "home/roles";
   }
 
   onDblclickRow(event) {
     //, {relativeTo: this.route}
     if (event.type === 'dblclick') {          
-      this.router.navigate(['home/roles', event.row.id]);
+      if (event.row.id){
+        this.router.navigate(['home/roles', event.row.id]);
+      }
     }
   }
   

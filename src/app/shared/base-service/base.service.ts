@@ -59,12 +59,19 @@ export class BaseService implements ServiceQuery, ServiceEntity {
       );
   } 
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBusterNotifier
-  })
+
   store(model: any, retrow: boolean = false): Observable<any>{
-    //TODO
-    return of(true);
+    //crea il modello
+    const url = `${this._baseURL}/${this.basePath}`;
+    let res = this.http.post<any>(url, model, httpOptions)
+      .pipe(
+        tap(sub => {
+          this.messageService.info('Creazione effettuata con successo');
+          return sub;
+        }),                    
+        catchError(this.handleError('store', model, retrow))
+      );
+    return res;
   }
 
   @CacheBuster({
@@ -72,7 +79,7 @@ export class BaseService implements ServiceQuery, ServiceEntity {
   })
   update(model: any, id: number, retrow: boolean = false): Observable<any> {
     if (id) {
-      //aggiorna la Convenzione esiste PUT
+      //aggiorna il modello esiste PUT
       const url = `${this._baseURL}/${this.basePath}/${id}`;
       let res = this.http.put<any>(url, model, httpOptions)
         .pipe(
@@ -83,7 +90,10 @@ export class BaseService implements ServiceQuery, ServiceEntity {
           catchError(this.handleError('update', model, retrow))
         );
       return res;
+    } else{
+      return this.store(model,retrow);
     }
+
   }
 
   remove(id: number) {
