@@ -33,25 +33,34 @@ export class BaseEntityComponent implements OnInit {
   activeNew = false;
 
   researchPath: string = null;
+  newPath: string = null;
 
   constructor(protected route: ActivatedRoute, protected router: Router) {
   }
 
-  ngOnInit() {
-    this.route.params.subscribe(params => {
+  ngOnInit() {    
+    this.route.params.subscribe(params => {      
       this.service.clearMessage();
-      this.service.getById(params['id']).subscribe((data) => {
+      if (params['id']){
+        this.service.getById(params['id']).subscribe((data) => {
+          this.isLoading = false;
+          this.model = JSON.parse(JSON.stringify(data));
+        });
+      }else{
         this.isLoading = false;
-        this.model = JSON.parse(JSON.stringify(data));
-      });
-
+      }
     });
   }
 
   onNew(){    
-    this.model = {};
-    this.form.reset();
-    this.service.clearMessage();
+    if (this.newPath){
+      this.router.navigate([this.newPath]);        
+    }else{
+      this.model = {};
+      this.form.reset();
+      this.service.clearMessage();
+    }
+    
   }
 
   onRemove() {

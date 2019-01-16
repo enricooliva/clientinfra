@@ -73,6 +73,7 @@ export class PermissionComponent extends BaseEntityComponent {
     this.title = 'Permesso'
     this.activeNew =true;
     this.researchPath = 'home/permissions'
+    this.newPath = 'home/permissions/new'
   }
 
 }

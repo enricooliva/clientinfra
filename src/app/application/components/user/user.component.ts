@@ -157,7 +157,7 @@ export class UserComponent extends BaseEntityComponent {
   constructor(protected service: UserService, protected route: ActivatedRoute, protected router: Router) {
     super(route,router);
     this.title = "Utente";
-    this.researchPath = "home/roles";
+    this.researchPath = "home/users";
   }
 
   onDblclickRow(event) {

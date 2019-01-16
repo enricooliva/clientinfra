@@ -28,8 +28,10 @@ const routes: Routes = [
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard] },     
       { path: 'users',  component: UsersComponent, canActivate:[AuthGuard] },     //canActivate:[AuthGuard]
       { path: 'users/:id',  component: UserComponent,  canActivate:[AuthGuard] },
-      { path: 'roles',  component: RolesComponent, canActivate:[AuthGuard] },         
+      { path: 'roles/new',  component: RoleComponent,  canActivate:[AuthGuard] }, 
       { path: 'roles/:id',  component: RoleComponent,  canActivate:[AuthGuard] }, 
+      { path: 'roles',  component: RolesComponent, canActivate:[AuthGuard] },               
+      { path: 'permissions/new',  component: PermissionComponent,  canActivate:[AuthGuard] }, 
       { path: 'permissions/:id',  component: PermissionComponent,  canActivate:[AuthGuard] }, 
       { path: 'permissions',  component: PermissionsComponent,  canActivate:[AuthGuard] }, 
       { path: 'tipopagamenti',  component: TipoPagamentiComponent, canActivate:[AuthGuard] },         

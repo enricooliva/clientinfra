@@ -29,8 +29,9 @@ export class RoleComponent extends BaseEntityComponent {
           className: "col-md-2",
           templateOptions: {
             label: 'Id',
-            disabled: true
-          }
+            disabled: true,         
+          },
+          hideExpression: (model: any) => !model.id
         },
         {
           key: 'name',
@@ -80,7 +81,7 @@ export class RoleComponent extends BaseEntityComponent {
               key: 'name',
               type: 'select',
               templateOptions: {
-                options: this.service.getPermissions(),                
+                options: this.service.getPermissions(),                                
                 valueProp: 'name',
                 labelProp: 'name',
                 label: 'Permesso',
@@ -107,6 +108,8 @@ export class RoleComponent extends BaseEntityComponent {
     super(route, router);
     this.title = "Ruolo";
     this.activeNew =true;
+    this.newPath = 'home/roles/new'
+    this.researchPath = 'home/roles'
   }
 
   onDblclickRow(event) {
