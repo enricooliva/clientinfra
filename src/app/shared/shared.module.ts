@@ -9,7 +9,6 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { UserLoginComponent } from './user-login/user-login.component';
-//import { NavigationComponent } from './navigation/navigation.component';
 import { ShowErrorsComponent } from './show-errors/show-errors.component';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { MessageComponent } from './message/message.component';
@@ -167,8 +166,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   providers: [
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
   ],
-  exports: [ 
-    NavigationComponent, 
+  exports: [     
     UserLoginComponent,     
     ShowErrorsComponent, 
     DynamicFormComponent, 
@@ -206,7 +204,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent
   ],
   declarations: [
-    UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
+    UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
     SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
