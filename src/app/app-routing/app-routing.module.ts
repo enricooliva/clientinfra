@@ -16,26 +16,138 @@ import { RolesComponent } from '../application/components/user/roles.component';
 import { PermissionsComponent } from '../application/components/user/permissions.component';
 import { TipoPagamentiComponent } from '../application/components/convenzione/tipopagamenti.component';
 import { TipoPagamentoComponent } from '../application/components/convenzione/tipopagamento.component';
+import { FullComponent } from '../shared/layouts/full/full.component';
+import { BlankComponent } from '../shared/layouts/blank/blank.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
-  { path: '', component: HomeComponent, pathMatch:'full' },
-  { path: 'home',  component: HomeComponent, children:[
-      { path: 'convenzione',  component: ConvenzioneComponent,  canActivate:[AuthGuard] }, 
-      { path: 'convenzioni/:id',  component: ConvenzioneComponent,  canActivate:[AuthGuard] },     
-      { path: 'convenzioni',  component: ConvenzioniComponent,  canActivate:[AuthGuard] }, 
+  { path: '', component: BlankComponent },
+  { path: 'home',  component: FullComponent, children:[
+      { 
+        path: 'convenzione',  component: ConvenzioneComponent,  canActivate:[AuthGuard],        
+      }, 
+      { 
+        path: 'convenzioni/:id',  component: ConvenzioneComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Convenzione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Convenzione' }
+          ]
+        } 
+      },     
+      { 
+        path: 'convenzioni',  component: ConvenzioniComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Ricerca convenzioni',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca convenzioni' }
+          ]
+        }
+      }, 
       { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard] },     
-      { path: 'users',  component: UsersComponent, canActivate:[AuthGuard] },     //canActivate:[AuthGuard]
-      { path: 'users/:id',  component: UserComponent,  canActivate:[AuthGuard] },
-      { path: 'roles/new',  component: RoleComponent,  canActivate:[AuthGuard] }, 
-      { path: 'roles/:id',  component: RoleComponent,  canActivate:[AuthGuard] }, 
-      { path: 'roles',  component: RolesComponent, canActivate:[AuthGuard] },               
-      { path: 'permissions/new',  component: PermissionComponent,  canActivate:[AuthGuard] }, 
-      { path: 'permissions/:id',  component: PermissionComponent,  canActivate:[AuthGuard] }, 
-      { path: 'permissions',  component: PermissionsComponent,  canActivate:[AuthGuard] }, 
-      { path: 'tipopagamenti',  component: TipoPagamentiComponent, canActivate:[AuthGuard] },         
-      { path: 'tipopagamenti/:id',  component: TipoPagamentoComponent,  canActivate:[AuthGuard] }, 
+      { 
+        path: 'users',  component: UsersComponent, canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca utenti',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Utenti' }
+          ]
+        }
+      },     //canActivate:[AuthGuard]
+      { 
+        path: 'users/:id',  component: UserComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Utente',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Utente' }
+          ]
+        } 
+      },
+      { 
+        path: 'roles/new',  component: RoleComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Nuovo ruolo',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuovo ruolo' }
+          ]
+        }
+      }, 
+      { 
+        path: 'roles/:id',  component: RoleComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Ruolo',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ruolo' }
+          ]
+        }
+      }, 
+      {
+         path: 'roles',  component: RolesComponent, canActivate:[AuthGuard],
+         data: {
+          title: 'Ricerca ruoli',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca ruoli' }
+          ]
+        }
+      },               
+      { 
+        path: 'permissions/new',  component: PermissionComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Nuovo permesso',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuovo permesso' }
+          ]
+        } 
+      }, 
+      { 
+        path: 'permissions/:id',  component: PermissionComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Permesso',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Permesso' }
+          ]
+        } 
+      }, 
+      { 
+        path: 'permissions',  component: PermissionsComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca permessi',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca permessi' }
+          ]
+        }
+      }, 
+      { 
+        path: 'tipopagamenti',  component: TipoPagamentiComponent, canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca tipo pagamento',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca tipo pagamento' }
+          ]
+        }
+      },         
+      { 
+        path: 'tipopagamenti/:id',  component: TipoPagamentoComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Tipo pagamento',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Tipo pagamento' }
+          ]
+        }
+      }, 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }

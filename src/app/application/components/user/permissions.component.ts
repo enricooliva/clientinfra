@@ -72,7 +72,7 @@ export class PermissionsComponent extends BaseResearchComponent {
   constructor(protected service: PermissionService, protected router: Router, protected route: ActivatedRoute,)  {    
     super(router,route)
     this.routeAbsolutePath = 'home/permissions'    
-    this.title = "permessi"
+    //this.title = "permessi"
   }
 
 }

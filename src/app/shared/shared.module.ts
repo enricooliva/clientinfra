@@ -9,7 +9,7 @@ import {FormlyBootstrapModule} from '@ngx-formly/bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { UserLoginComponent } from './user-login/user-login.component';
-import { NavigationComponent } from './navigation/navigation.component';
+//import { NavigationComponent } from './navigation/navigation.component';
 import { ShowErrorsComponent } from './show-errors/show-errors.component';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { MessageComponent } from './message/message.component';
@@ -45,6 +45,23 @@ import { FormlyHorizontalWrapper } from './dynamic-form/horizontal-wrapper';
 import { BaseEntityComponent } from './base-component/base-entity.component';
 import { BaseResearchComponent } from './base-component/base-research.component';
 
+import { FullComponent } from './layouts/full/full.component';
+import { BlankComponent } from './layouts/blank/blank.component';
+
+import { NavigationComponent } from './header-navigation/navigation.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true,
+  wheelSpeed: 1,
+  wheelPropagation: true,
+  minScrollbarLength: 20
+};
 @NgModule({
   imports: [
     CommonModule, 
@@ -56,6 +73,7 @@ import { BaseResearchComponent } from './base-component/base-research.component'
     RouterModule,
     NgxPermissionsModule,
     LoadingModule,
+    PerfectScrollbarModule,
     FormlyModule.forRoot({
       types: [
         {
@@ -146,6 +164,9 @@ import { BaseResearchComponent } from './base-component/base-research.component'
     FormlyBootstrapModule,
     PdfViewerModule,
   ],
+  providers: [
+    { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
+  ],
   exports: [ 
     NavigationComponent, 
     UserLoginComponent,     
@@ -178,6 +199,11 @@ import { BaseResearchComponent } from './base-component/base-research.component'
     FormlyHorizontalWrapper,
     BaseEntityComponent,
     BaseResearchComponent,
+    FullComponent,
+    BlankComponent,
+    NavigationComponent,
+    BreadcrumbComponent,
+    SidebarComponent
   ],
   declarations: [
     UserLoginComponent, NavigationComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -194,6 +220,11 @@ import { BaseResearchComponent } from './base-component/base-research.component'
     FormlyHorizontalWrapper,
     BaseEntityComponent,
     BaseResearchComponent,
+    FullComponent,
+    BlankComponent,
+    NavigationComponent,
+    BreadcrumbComponent,
+    SidebarComponent,
   ],
   entryComponents: [LookupComponent]
 })

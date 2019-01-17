@@ -72,10 +72,10 @@ export class TipoPagamentoComponent extends BaseEntityComponent {
 
   constructor(protected service: TipoPagamentoService, protected route: ActivatedRoute, protected router: Router) {
     super(route,router);
-    this.title = 'Tipo pagamento'
+    //this.title = 'Tipo pagamento'
     this.activeNew =true;
-    this.newPath = 'home/tipopagamenti/new'
     this.researchPath = 'home/tipopagamenti'
+    this.newPath = this.researchPath+'/new';
   }
 
  

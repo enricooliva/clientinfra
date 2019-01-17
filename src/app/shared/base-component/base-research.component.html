@@ -1,5 +1,5 @@
 <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
-<h4>Ricerca {{title}}</h4>
+<h4 *ngIf="title">Ricerca {{title}}</h4>
 <app-query-builder [metadata]="this.fieldsRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
 
 <h4>Risultati</h4>

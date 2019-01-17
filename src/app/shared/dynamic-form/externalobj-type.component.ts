@@ -118,7 +118,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           required: field.templateOptions.required == undefined ? false : field.templateOptions.required,
           disabled: field.templateOptions.disabled == undefined ? false : field.templateOptions.disabled,
           addonRight: {
-            class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center'
+            class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center' 
           }          
         },
         modelOptions: { updateOn: 'blur' },

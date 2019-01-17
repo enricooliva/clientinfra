@@ -156,7 +156,7 @@ export class UserComponent extends BaseEntityComponent {
 
   constructor(protected service: UserService, protected route: ActivatedRoute, protected router: Router) {
     super(route,router);
-    this.title = "Utente";
+    //this.title = "Utente";
     this.researchPath = "home/users";
   }
 

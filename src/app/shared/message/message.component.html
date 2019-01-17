@@ -1,4 +1,4 @@
-<footer class="card fixed-bottom">
+<div class="card" style="margin-bottom: 0px; padding: 0px">
         <!-- *ngIf="messageService.messages.length" -->
         <h5 class="card-header">
                 Area messaggi <span *ngIf="messageService.messages.length" class="badge badge-primary badge-pill">{{messageService.messages.length}}</span>
@@ -21,4 +21,4 @@
                 <div *ngFor='let inframessage of messageService.messages' class="{{ cssClass(inframessage) }}" > {{inframessage.message}} 
                 </div>
         </div>           -->
-</footer>
+</div>

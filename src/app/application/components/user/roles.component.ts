@@ -72,7 +72,7 @@ export class RolesComponent extends BaseResearchComponent {
   constructor(protected service: RoleService, protected router: Router, protected route: ActivatedRoute, ) {
     super(router,route);
     this.routeAbsolutePath = 'home/roles'
-    this.title = "ruoli"
+    //this.title = "ruoli"
   }
 
 }

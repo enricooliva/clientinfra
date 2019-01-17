@@ -72,7 +72,7 @@ export class TipoPagamentiComponent extends BaseResearchComponent {
   constructor(protected service: TipoPagamentoService, router: Router, route: ActivatedRoute,)  {    
     super(router,route);    
     this.routeAbsolutePath = 'home/tipopagamenti'     
-    this.title = 'Tipo pagamenti'
+    //this.title = 'Tipo pagamenti'
   }
  
 

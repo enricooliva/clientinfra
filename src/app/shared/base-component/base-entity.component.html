@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <h4>{{title}}</h4>
+    <h4 *ngIf="title">{{title}}</h4>
 
     <div class="sticky-top btn-toolbar mb-4" role="toolbar">
         <div class="btn-group">

@@ -26,13 +26,14 @@ export class BaseEntityComponent implements OnInit {
 
   protected fields: FormlyFieldConfig[];
 
-  title = 'completare campo title';
+  title = null;
 
   protected service: ServiceEntity;
 
   activeNew = false;
 
   researchPath: string = null;
+  
   newPath: string = null;
 
   constructor(protected route: ActivatedRoute, protected router: Router) {
@@ -81,9 +82,10 @@ export class BaseEntityComponent implements OnInit {
       var tosubmit = { ...this.model, ...this.form.value };
       this.service.update(tosubmit, tosubmit.id ? tosubmit.id : null , true).subscribe(
         result => {
-          this.options.resetModel(result);
-          this.options.updateInitialValue();
+          //this.options.resetModel(result);
+          //this.options.updateInitialValue();
           this.isLoading = false;
+          this.router.navigate([this.researchPath, result.id]);
         },
         error => {
           this.isLoading = false;

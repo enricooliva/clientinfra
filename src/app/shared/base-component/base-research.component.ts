@@ -30,7 +30,7 @@ export class BaseResearchComponent implements OnInit {
 
   protected routeAbsolutePath = 'home/';
 
-  title = 'completare campto title';
+  title = null;
 
   protected service: ServiceQuery;
 

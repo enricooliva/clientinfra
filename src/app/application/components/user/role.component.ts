@@ -106,7 +106,7 @@ export class RoleComponent extends BaseEntityComponent {
 
   constructor(protected service: RoleService, protected route: ActivatedRoute, protected router: Router) {
     super(route, router);
-    this.title = "Ruolo";
+    //this.title = "Ruolo";
     this.activeNew =true;
     this.newPath = 'home/roles/new'
     this.researchPath = 'home/roles'
