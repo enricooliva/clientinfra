@@ -7,7 +7,7 @@ import { UserTaskService } from '../../usertask.service';
   selector: 'app-user-task-detail',
   template: `
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
-  <div class="sticky-top btn-toolbar mb-4" role="toolbar">
+  <div class="btn-toolbar mb-4" role="toolbar">
   <div class="btn-group">    
     <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
         <span class="oi oi-arrow-top"></span>  

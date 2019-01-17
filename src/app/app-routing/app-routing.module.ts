@@ -21,8 +21,13 @@ import { BlankComponent } from '../shared/layouts/blank/blank.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
-  { path: '', component: BlankComponent },
+  { path: '', component: BlankComponent }, 
   { path: 'home',  component: FullComponent, children:[
+      //{ path:'', redirectTo:'dashboard/dashboard1',  pathMatch: 'full'},      
+      {
+        path: 'dashboard',
+        loadChildren: '../dashboards/dashboard.module#DashboardModule'
+      },
       { 
         path: 'convenzione',  component: ConvenzioneComponent,  canActivate:[AuthGuard],        
       }, 
@@ -47,7 +52,15 @@ const routes: Routes = [
         }
       }, 
       { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
-      { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard] },     
+      { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Nuova convenzione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuova convenzione' }
+          ]
+        }
+      },     
       { 
         path: 'users',  component: UsersComponent, canActivate:[AuthGuard], 
         data: {

@@ -18,6 +18,25 @@ import { RouteInfo } from "../shared/sidebar/sidebar.metadata";
 export const ROUTES: RouteInfo[] = [
   {
     path: '',
+    title: 'Dashboard',
+    icon: 'icon-Car-Wheel',
+    class: 'has-arrow',
+    permissions: ['ADMIN'],
+    extralink: false,
+    submenu: [
+      {
+        path: 'dashboard/dashboard1',
+        title: 'Dashboard',
+        icon: '',
+        class: '',
+        permissions: ['ADMIN'],
+        extralink: false,
+        submenu: []
+      },
+    ],
+  },
+  {
+    path: '',
     title: 'Gestione',
     icon: 'icon-Paint-Brush',
     class: 'has-arrow',

@@ -24,8 +24,7 @@ import { Subject } from 'rxjs';
   selector: 'app-multistep-schematipo',
   template: `
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
-  <h4 class="mb-2">Inserimento convenzione</h4>
-  <div class="sticky-top btn-toolbar mb-4" role="toolbar">
+  <div class="btn-toolbar mb-4" role="toolbar">
     <div class="btn-group btn-group">    
       <button class="btn btn-outline-primary border-0 rounded-0" >              
           <span class="oi oi-document"></span>

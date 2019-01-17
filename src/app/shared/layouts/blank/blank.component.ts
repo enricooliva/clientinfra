@@ -29,7 +29,7 @@ export class BlankComponent implements OnDestroy {
         if (token){
             console.log("keep token");
             authService.loginWithToken(token);
-            this.router.navigate(['home/']);
+            this.router.navigate(['home/dashboard/dashboard1']);
           }else{
             console.log("no token");
           }    

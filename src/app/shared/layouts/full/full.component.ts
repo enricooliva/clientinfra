@@ -32,7 +32,7 @@ export class FullComponent implements OnInit, OnDestroy {
         if (token){
             console.log("keep token");
             authService.loginWithToken(token);
-            this.router.navigate(['home/']);
+            this.router.navigate(['home/dashboard/dashboard1']);
           }else{
             console.log("no token");
           }    
@@ -73,7 +73,7 @@ export class FullComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.router.url === '/') {
-      this.router.navigate(['/dashboard/dashboard1']);
+      this.router.navigate(['home/']);
     }
     this.defaultSidebar = this.options.sidebartype;
     this.handleSidebar();

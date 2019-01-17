@@ -22,7 +22,6 @@ import { PanelWrapperComponent } from './dynamic-form/panel-wrapper.component';
 import { AccordionWrapperComponent } from './dynamic-form/accordion-wrapper.component';
 import { RouterModule } from '@angular/router';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { SideNavComponent } from './side-nav/side-nav.component';
 import { QueryBuilderComponent } from './query-builder/query-builder.component';
 import { GenericTypeComponent } from './dynamic-form/generic-type.component';
 import { ExternalTypeComponent } from './dynamic-form/external-type.component';
@@ -176,8 +175,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DatepickerTypeComponent, 
     RepeatTypeComponent,
     FormlyModule,    
-    NgxPermissionsModule,
-    SideNavComponent,
+    NgxPermissionsModule,    
     QueryBuilderComponent,
     NgbModule,
     GenericTypeComponent,
@@ -207,7 +205,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
-    SideNavComponent, QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
+    QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
     TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, TabTypeComponent,
     FormInfraComponent,
     InputFileComponent,
