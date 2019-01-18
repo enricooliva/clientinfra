@@ -38,14 +38,15 @@ export class SidebarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public authService: AuthService,
-  ) {}
+  ) {
+  }
 
   // End open close
   ngOnInit() {
     this.sidebarnavItems = this.routes.filter(sidebarnavItem => sidebarnavItem);
   }
 
-  getName(){
+  getName() {
     if (this.authService.isLoggedIn){
       return this.authService.username;
     }

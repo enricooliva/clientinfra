@@ -79,6 +79,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'], 
       },     
+      {
+        path: 'tasks',
+        title: 'Attività',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
     ]
   },
   {

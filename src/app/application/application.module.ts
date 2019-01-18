@@ -29,6 +29,8 @@ import { RolesComponent } from './components/user/roles.component';
 import { PermissionsComponent } from './components/user/permissions.component';
 import { TipoPagamentiComponent } from './components/convenzione/tipopagamenti.component';
 import { TipoPagamentoComponent } from './components/convenzione/tipopagamento.component';
+import { TaskComponent } from './components/task/task.component';
+import { TasksComponent } from './components/task/tasks.component';
 
 
 @NgModule({
@@ -46,14 +48,14 @@ import { TipoPagamentoComponent } from './components/convenzione/tipopagamento.c
   exports: [
     ConvenzioneComponent,
     HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
-    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent,
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent
   ],
   declarations: [        
     ConvenzioneComponent,
     ConvenzioniComponent,    
     AssignmentDetailPageComponent,    
     HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
-    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent,
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent
   ],
   providers: [ 
     ApplicationService,

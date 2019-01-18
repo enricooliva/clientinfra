@@ -114,7 +114,7 @@ export class UserTaskDetailComponent implements OnInit {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      this.service.update(tosubmit).subscribe(
+      this.service.update(tosubmit, tosubmit.id).subscribe(
         result => {       
           this.options.resetModel(result);
           this.isLoading = false;

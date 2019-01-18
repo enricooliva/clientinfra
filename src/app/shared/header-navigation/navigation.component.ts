@@ -119,7 +119,11 @@ export class NavigationComponent implements AfterViewInit {
     this.router.navigate(['home']);                     // {3}
   }
 
-  getName(){
+  get username(){
     return this.authService.username;
+  }
+
+  get email(){
+    return this.authService.email;
   }
 }

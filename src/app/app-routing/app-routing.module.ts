@@ -18,6 +18,8 @@ import { TipoPagamentiComponent } from '../application/components/convenzione/ti
 import { TipoPagamentoComponent } from '../application/components/convenzione/tipopagamento.component';
 import { FullComponent } from '../shared/layouts/full/full.component';
 import { BlankComponent } from '../shared/layouts/blank/blank.component';
+import { TasksComponent } from '../application/components/task/tasks.component';
+import { TaskComponent } from '../application/components/task/task.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -161,6 +163,27 @@ const routes: Routes = [
           ]
         }
       }, 
+      { 
+        path: 'tasks',  component: TasksComponent, canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca attività',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca attività' }
+          ]
+        }
+      },         
+      { 
+        path: 'tasks/:id',  component: TaskComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Attività',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Attività' }
+          ]
+        }
+      },
+
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }
