@@ -87,7 +87,13 @@ export class RoleComponent extends BaseEntityComponent {
                 label: 'Permesso',
                 required: true,
                 column: { flexGrow: 3 },      
-              }
+              },
+              expressionProperties: {
+                'templateOptions.disabled': (model: any, formState: any) => {
+                  // access to the main model can be through `this.model` or `formState` or `model
+                  return model.id;
+                },
+              },
             },
        /*      {
               key: 'guard_name',

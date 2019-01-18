@@ -87,7 +87,13 @@ export class UserComponent extends BaseEntityComponent {
               label: 'Ruolo',
               required: true,
               column: { flexGrow: 3 },              
-            }
+            },
+            expressionProperties: {
+              'templateOptions.disabled': (model: any, formState: any) => {
+                // access to the main model can be through `this.model` or `formState` or `model
+                return model.id;
+              },
+            },
           },
           // {
           //   type: 'button',
@@ -137,7 +143,13 @@ export class UserComponent extends BaseEntityComponent {
                 labelProp: 'name',
                 label: 'Permesso',
                 required: true
-              }
+              },
+              expressionProperties: {
+                'templateOptions.disabled': (model: any, formState: any) => {
+                  // access to the main model can be through `this.model` or `formState` or `model
+                  return model.id;
+                },
+              },
             },
             // {
             //   key: 'guard_name',
