@@ -31,9 +31,10 @@ export class AuthService {
   private authUrl: string; //= 'http://pcoliva.uniurb.it/api';
   private loggedIn = new BehaviorSubject<boolean>(false);
   
-  _username = '';
-  _roles  = [''];
+  _username: string = '';
+  _roles: string[]  = [''];
   _id: number;
+  _email: string = '';
 
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService, private router: Router, private permissionsService: NgxPermissionsService ) {
     this.loggedIn.next(this.isAuthenticated());
@@ -67,6 +68,7 @@ export class AuthService {
     if (this.isAuthenticated()){
       const helper = new JwtHelperService();
       const decodedToken = helper.decodeToken(localStorage.getItem('token'));
+      this._email = decodedToken['email'];
       this._username = decodedToken['name'];
       this._roles = decodedToken['roles'];      
       this._id = decodedToken['id'];    
@@ -74,10 +76,16 @@ export class AuthService {
     }
   }
 
+  resetFields(){
+    this._username = '';
+    this._id = null;
+    this._roles = [];
+    this._email = '';
+  }
+
   getToken(){
     localStorage.getItem('token')
   }
-
 
   /**
    * Log the user out
@@ -85,7 +93,8 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this.permissionsService.flushPermissions();
-    this.loggedIn.next(false);    
+    this.resetFields();
+    this.loggedIn.next(false);        
   }
 
   /**
@@ -97,6 +106,10 @@ export class AuthService {
 
   public get userid(): number{
     return this._id; 
+  }
+
+  public get email(): string {
+    return this._email;
   }
 
   public get username(): string {
