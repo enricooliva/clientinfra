@@ -5,6 +5,8 @@ import { PermissionService } from '../../permission.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared';
 import { UserTaskService } from '../../usertask.service';
+import { of } from 'rxjs/internal/observable/of';
+import { takeUntil, startWith, filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task',
@@ -37,21 +39,31 @@ export class TaskComponent extends BaseEntityComponent {
               disabled: true,
             },
           },
+          // {
+          //   className: 'col-md-5',
+          //   type: 'input',
+          //   key: 'state',
+          //   templateOptions: {
+          //     label: 'Stato',
+          //     disabled: true,
+          //   },    
+          // },
           {
-            className: 'col-md-6',
+            className: 'col-md-5',
             type: 'select',
-            key: 'transition',
+            key: 'transition',        
             defaultValue: 'self_transition',
             templateOptions: {
-              label: 'Stato',
-              placeholder: '',
-              options: []
-            },
-            lifecycle: {
-              onInit: (form, fieldInit) => {
-                //fieldInit.templateOptions.options = this.service.getNextPossibleActionsFromTask(form.get('id').value);
-              },
-            },
+              label: 'Prossima azione', 
+              options:[],                         
+            },        
+            expressionProperties: {
+              'templateOptions.options':(model: any, formState: any) => {
+                  if (model['transitions']){
+                    return model['transitions'];
+                  }
+              }
+            }           
           },
         ],
     },
@@ -71,7 +83,7 @@ export class TaskComponent extends BaseEntityComponent {
           {
             className: 'col-md-6',
             type: 'input',
-            key: 'model',
+            key: 'model_type',
             templateOptions: {
               label: 'Entità associata',
               disabled: true,
@@ -82,20 +94,49 @@ export class TaskComponent extends BaseEntityComponent {
     {
       fieldGroup:
         [
-          {            
-            type: 'input',
-            key: 'email',
-            templateOptions: {
-              label: "Assegnata",
-              disabled: true,
+          {
+            key: 'unitaorganizzativa_uo',                   
+            type: 'select',           
+            templateOptions:{
+              label: 'Ufficio affidatario procedura',          
+              required: true,
+              options: this.service.getValidationOffices(),
+              valueProp: 'uo',
+              labelProp: 'descr',                           
             },
+            expressionProperties: {
+              'templateOptions.disabled': (model: any, formState: any) => { return model.id; },
+            },
+          },
+          {
+            key: 'email',                   
+            type: 'select',
+            templateOptions:{
+              label: 'Assegnamento attività',   
+              valueProp: 'id',
+              labelProp: 'descr',                                        
+            },         
+            lifecycle: {
+              onInit: (form, field) => {                
+                form.get('unitaorganizzativa_uo').valueChanges.pipe(                    
+                  takeUntil(this.onDestroy$),
+                  startWith(form.get('unitaorganizzativa_uo').value),
+                  filter(ev => ev !== null),
+                  tap(uo => {
+                    //field.formControl.setValue('');
+                    field.templateOptions.options = this.service.getValidationOfficesPersonale(uo);
+
+                  }),
+                ).subscribe();
+              },
+            },
+            
           },
           {           
             type: 'input',
             key: 'subject',
             templateOptions: {
-              label: 'Oggetto',
-              disabled: true,
+              label: 'Oggetto',             
             },
           },
           {           
@@ -112,10 +153,18 @@ export class TaskComponent extends BaseEntityComponent {
 
   constructor(protected service: UserTaskService, protected route: ActivatedRoute, protected router: Router) {
     super(route,router)
-    this.title = 'Permesso IN LAVORAZIONE'
+    //this.title = 'Permesso IN LAVORAZIONE'
     this.activeNew =true;
     this.researchPath = 'home/tasks'
     this.newPath = 'home/tasks/new'
+  }
+
+
+  protected additionalFormInitialize() {
+    this.service.create().subscribe((data) => {
+      this.isLoading = false;
+      this.model = JSON.parse(JSON.stringify(data));
+    });
   }
 
 }

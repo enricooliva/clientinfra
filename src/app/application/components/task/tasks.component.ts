@@ -82,8 +82,8 @@ export class TasksComponent extends BaseResearchComponent {
 
   constructor(protected service: UserTaskService, protected router: Router, protected route: ActivatedRoute,)  {    
     super(router,route)
-    this.routeAbsolutePath = 'home/tasks'    
-    this.title = "IN LAVORAZIONE"
+    this.routeAbsolutePath = 'home/tasks';    
+    //this.title = "IN LAVORAZIONE"
   }
 
 }

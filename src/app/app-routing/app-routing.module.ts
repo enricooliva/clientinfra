@@ -164,6 +164,16 @@ const routes: Routes = [
         }
       }, 
       { 
+        path: 'tasks/new',  component: TaskComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Nuova attività',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuova attività' }
+          ]
+        },
+      }, 
+      { 
         path: 'tasks',  component: TasksComponent, canActivate:[AuthGuard], 
         data: {
           title: 'Ricerca attività',
@@ -182,7 +192,7 @@ const routes: Routes = [
             { title: 'Attività' }
           ]
         }
-      },
+      },      
 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 

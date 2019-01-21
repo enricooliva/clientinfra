@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,19 +14,24 @@ import { Subject } from 'rxjs';
 
 //ng g c submission/components/user -s true --spec false -t true
 
-export class BaseEntityComponent implements OnInit {
+export class BaseEntityComponent implements OnInit, OnDestroy {
 
+  protected onDestroy$ = new Subject<void>();
   protected isLoading = true;
-
-  options: FormlyFormOptions = {};
-
+  
   form = new FormGroup({});
 
-  model = {};
+  protected model = {};
+
+  protected options: FormlyFormOptions = {
+    formState: {
+      mainModel: this.model,
+    },
+  };
 
   protected fields: FormlyFieldConfig[];
 
-  title = null;
+  protected title = null;
 
   protected service: ServiceEntity;
 
@@ -47,10 +52,21 @@ export class BaseEntityComponent implements OnInit {
           this.isLoading = false;
           this.model = JSON.parse(JSON.stringify(data));
         });
-      }else{
+      }else{          
+        this.additionalFormInitialize();             
         this.isLoading = false;
       }
+      
     });
+  }  
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
+  protected additionalFormInitialize() { // hook for child
+    
   }
 
   onNew(){    
@@ -82,10 +98,12 @@ export class BaseEntityComponent implements OnInit {
       var tosubmit = { ...this.model, ...this.form.value };
       this.service.update(tosubmit, tosubmit.id ? tosubmit.id : null , true).subscribe(
         result => {
-          //this.options.resetModel(result);
-          //this.options.updateInitialValue();
-          this.isLoading = false;
+          
+          this.isLoading = false;          
           this.router.navigate([this.researchPath, result.id]);
+
+          this.options.resetModel(result);
+          this.options.updateInitialValue();
         },
         error => {
           this.isLoading = false;

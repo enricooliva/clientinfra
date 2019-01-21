@@ -13,5 +13,5 @@ import { CachingInterceptor } from './caching-interceptor';
 /** Http interceptor providers in outside-in order */
 export const HttpInterceptorProviders = [    
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
   ];

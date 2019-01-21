@@ -20,41 +20,70 @@ export class UserTaskService extends BaseService {
 
   _baseURL: string;
 
-  getMetadata():FormlyFieldConfig[] {
-    return  [
+  getMetadata(): FormlyFieldConfig[] {
+    return [
     ];
-    
+
   }
 
 
   constructor(protected http: HttpClient, public messageService: MessageService) {
-    super(http,messageService);
-    this.basePath = 'usertask';     
- }
-
-  
+    super(http, messageService);
+    this.basePath = 'usertask';
+  }
 
   @Cacheable()
-  getUserTaskFiltredByUserId(userId: any) {       
+  create(): Observable<any> {
     return this.http
-    .get(this._baseURL+'/usertask/'+userId.toString()+'/tasks',httpOptions).pipe(
-      tap(sub => {
-        if (sub)
-          this.messageService.info('Lettura attività effettuata con successo')
-        else 
-          this.messageService.info('Attività non trovata')
-      }),
-      catchError(this.handleError('getUserTask'))
+      .get(this._baseURL + `/${this.basePath}/create`, httpOptions).pipe(
+        tap(sub => {
+          if (sub)
+            this.messageService.info('Inizializzazione effettuata con successo')
+          else
+            this.messageService.info('Permesso non trovato')
+        }),
+        catchError(this.handleError('create'))
+      );
+  }
+
+  @Cacheable()
+  getValidationOffices(): Observable<any> {
+    return this.http.get(this._baseURL + '/convenzioni/validationoffices/', httpOptions).pipe(
+      catchError(this.handleError('getValidationOfficesPersonale', []))
     );
   }
 
-    @Cacheable()
-    getNextPossibleActionsFromTask(taskId: any): Observable<any> {       
-      return this.http
-      .get(this._baseURL+'/usertask/'+taskId.toString()+'/actions',httpOptions).pipe(        
+  @Cacheable()
+  getValidationOfficesPersonale(id): Observable<any> {
+    if (id){
+      return this.http.get(this._baseURL + '/convenzioni/validationoffices/' + id.toString(), httpOptions).pipe(
+        catchError(this.handleError('getValidationOfficesPersonale', []))
+      );
+    } 
+    return of([]);
+  }
+
+  @Cacheable()
+  getUserTaskFiltredByUserId(userId: any) {
+    return this.http
+      .get(this._baseURL + '/usertask/' + userId.toString() + '/tasks', httpOptions).pipe(
+        tap(sub => {
+          if (sub)
+            this.messageService.info('Lettura attività effettuata con successo')
+          else
+            this.messageService.info('Attività non trovata')
+        }),
         catchError(this.handleError('getUserTask'))
       );
-    }
+  }
 
-   
+  @Cacheable()
+  getNextPossibleActionsFromTask(taskId: any): Observable<any> {
+    return this.http
+      .get(this._baseURL + '/usertask/' + taskId.toString() + '/actions', httpOptions).pipe(
+        catchError(this.handleError('getUserTask'))
+      );
+  }
+
+
 }
