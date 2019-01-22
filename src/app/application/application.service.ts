@@ -121,9 +121,15 @@ export class ApplicationService implements ServiceQuery {
               entityName: 'azienda',
               entityLabel: 'Aziende',
               codeProp: 'id_esterno',
-              required: true,
+              //required: true,
               descriptionProp: 'denominazione',              
             },
+            // validation: {
+            //   show: true,
+            // },
+            // expressionProperties: {
+            //   'templateOptions.required': (model: any, formState: any) => model.convenzione_type == 'TO',
+            // },                   
           },
         ]
       },
@@ -133,7 +139,8 @@ export class ApplicationService implements ServiceQuery {
           {
             key: 'ambito',
             type: 'select',
-            className: "col-md-4",
+            className: "col-md-6",
+            defaultValue: 'istituzionale',
             templateOptions: {
               options: [
                 { label: 'Istituzionale', value: 'istituzionale' },
@@ -146,9 +153,28 @@ export class ApplicationService implements ServiceQuery {
           {
             key: 'durata',
             type: 'number',
-            className: "col-md-4",
+            className: "col-md-6",
             templateOptions: {
               label: 'Durata in mesi',
+              required: true,
+            },
+          },       
+        ]
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'convenzione_type',
+            type: 'select',
+            className: "col-md-4",
+            defaultValue: 'TO',
+            templateOptions: {
+              options: [
+                { label: 'Titolo oneroso', value: 'TO' },
+                { label: 'Titolo gratuito', value: 'TG' },
+              ],
+              label: 'Tipo convenzione',
               required: true,
             },
           },
@@ -168,31 +194,19 @@ export class ApplicationService implements ServiceQuery {
               populateAsync: () => {
                 return this.getPagamenti()
               }
-            }
-          }
-        ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
+            },
+            hideExpression: (model: any) => model.convenzione_type == 'TG',
+          },
           {
             key: 'corrispettivo',
             type: 'number',
-            className: "col-md-6",
+            className: "col-md-4",
             templateOptions: {
               label: 'Corrispettivo iva esclusa se applicabile',
               required: true,
             },
-          },
-          {
-            key: 'importo',
-            type: 'number',
-            className: "col-md-6",
-            templateOptions: {
-              label: 'Importo iva esclusa ove applicabile',
-              required: true,
-            },
-          },
+            hideExpression: (model: any) => model.convenzione_type == 'TG',
+          },        
         ]
       },
     ];
