@@ -30,7 +30,9 @@ export class MessageService {
   }
 
   error(message: string, deletePreviusMessage = true, keepAfterRouteChange = false, error: any = null) {
-    this.post(deletePreviusMessage);
+    this.post(deletePreviusMessage);    
+    if (error)
+      error = JSON.parse(JSON.stringify(error))
     this.messages.push({message: message, type:InfraMessageType.Error, error: error});
   }
 

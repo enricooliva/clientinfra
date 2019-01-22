@@ -123,7 +123,7 @@ export class BaseService implements ServiceQuery, ServiceEntity {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`);
+      this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`, true, false, error);
       // Let the app keep running by returning an empty result.
       if (!retrow)
         return of(result as T);
