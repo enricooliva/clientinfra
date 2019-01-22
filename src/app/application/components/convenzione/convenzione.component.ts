@@ -5,7 +5,7 @@ import { ApplicationService } from '../../application.service';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { Convenzione } from '../../convenzione';
-import { Subject, of } from 'rxjs';
+import { Subject, of, onErrorResumeNext } from 'rxjs';
 import { encode, decode } from 'base64-arraybuffer';
 import { takeUntil, startWith, tap, distinctUntilChanged, filter, map, finalize } from 'rxjs/operators';
 import { UploadfileComponent } from './uploadfile.component';
@@ -334,6 +334,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.service.getConvenzioneById(this.model.id).subscribe((data) => {
         //this.options.resetModel(data);
+        if (!data.azienda){
+          data.azienda = { id_esterno: null, descrizione: null };
+        }
         this.options.forEach(tabOptions => tabOptions.resetModel(data));         
         this.isLoading = false;
       });
@@ -347,15 +350,25 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
         result => {
           //this.options.resetModel(result);
-          this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result)});               
-          this.isLoading = false;
+          try {
+            if (!result.azienda){
+              result.azienda = { id_esterno: null, descrizione: null };
+            }
+            this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result)});               
+            this.isLoading = false;                            
+          } catch (error) {
+            this.onError(error);
+          }
         },
-        error => {
-          this.isLoading = false;
-          this.service.messageService.error(error);
-          console.log(error)
-        });
+        error => this.onError(error),
+        );
     }
+  }
+
+  private onError(error){
+    this.isLoading = false;
+    this.service.messageService.error(error);
+    console.log(error)
   }
 
   onGenerate() {
