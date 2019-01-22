@@ -17,10 +17,9 @@ export interface Convenzione extends BaseEntity {
     user: { id: number, name: string },
     dipartimento: { cd_dip: string, nome_breve: string },
     stato_avanzamento: string,
+    convezione_type: string,
     tipopagamento: { codice: string, descrizione: string },
     azienda: { id_esterno: string, denominazione: string },
-    convenzione_pdf: FileInfra,
-    nome_originale_file_convenzione: string,
     attachments?: FileAttachment[],
     unitaorganizzativa_uo: string,
 }

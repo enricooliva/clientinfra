@@ -84,11 +84,10 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       user: { id: authService.userid, name: authService.username },
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
+      convezione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
-      unitaorganizzativa_uo: '',
-      convenzione_pdf: { filename: '', filetype: '', filevalue: null },      
-      nome_originale_file_convenzione: '',      
+      unitaorganizzativa_uo: '',               
       attachments: [],
 
     };    
@@ -147,7 +146,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
           }
         },
         {
-          fieldGroup: [       
+          fieldGroup: [
             {
               key: 'file_PR',
               type: 'fileinput',
@@ -162,55 +161,53 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 }
               },
             },
+            // {
+            //   key: 'file_CB',
+            //   type: 'pdfviewerinput',
+            //   className: "col-md-5",
+            //   templateOptions: {
+            //     label: 'Seleziona convenzione',              
+            //     filevalue: 'filevalue',
+            //     filename: 'filename',
+            //     onSelected: (selFile) => { 
+            //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.CONV_BOZZA) 
+            //     }
+            //   },
+            // }, 
             {
-              key: 'file_CB',
-              type: 'pdfviewerinput',
-              className: "col-md-5",
-              templateOptions: {
-                label: 'Seleziona convenzione',              
-                filevalue: 'filevalue',
-                filename: 'filename',
-                onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.CONV_BOZZA) 
-                }
-              },
-            }           
-          ],
-          templateOptions: {
-            label: 'Convenzione bozza'
-          }
-        },
-        {
-          fieldGroup: [
-            {
-              key: 'file_CD',
-              type: 'fileinput',
-              className: "col-md-5",
-              templateOptions: {
-                label: 'Consiglio di dipartimento',
-                type: 'input',
-                placeholder: 'Scegli documento',
-                accept: 'application/pdf',
-                required: true,
-                onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO) 
-                }
-              },
+              fieldGroupClassName: 'row',
+              fieldGroup: [                                            
+                {
+                  key: 'file_CD',
+                  type: 'fileinput',
+                  className: "col-md-5",
+                  templateOptions: {
+                    label: 'Delibera del consiglio di dipartimento',
+                    type: 'input',
+                    placeholder: 'Scegli documento',
+                    accept: 'application/pdf',
+                    required: true,
+                    onSelected: (selFile) => { 
+                      this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO) 
+                    }
+                  },
+                },
+              ]              
             },
-            {
-              key: 'file_DR',
-              type: 'fileinput',
-              className: "col-md-5",
-              templateOptions: {
-                label: 'Disposizione rettorale',
-                type: 'input',
-                placeholder: 'Scegli documento',
-                accept: 'application/pdf',                
-                onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DECRETO_RETTORALE) 
-                }
-              },
-            },
+            // {
+            //   key: 'file_DR',
+            //   type: 'fileinput',
+            //   className: "col-md-5",
+            //   templateOptions: {
+            //     label: 'Disposizione rettorale',
+            //     type: 'input',
+            //     placeholder: 'Scegli documento',
+            //     accept: 'application/pdf',                
+            //     onSelected: (selFile) => { 
+            //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DECRETO_RETTORALE) 
+            //     }
+            //   },
+            // },
             {
               key: 'file_DA',
               type: 'fileinput',

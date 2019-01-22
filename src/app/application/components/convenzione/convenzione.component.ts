@@ -271,14 +271,13 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       user: { id: null, name: null },
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
+      convezione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
-      convenzione_pdf: { filename: '', filetype: '', filevalue: null },
-      nome_originale_file_convenzione: '',
       unitaorganizzativa_uo: '',
     }
 
-    this.fields = service.getInformazioniDescrittiveFields(this.model).concat(service.getConvenzioneFields(this.model));
+    this.fields = service.getInformazioniDescrittiveFields(this.model)//.concat(service.getConvenzioneFields(this.model));
   }
 
   get isNew(): boolean {

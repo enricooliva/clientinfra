@@ -212,25 +212,26 @@ export class ApplicationService implements ServiceQuery {
     ];
   }
 
-  getConvenzioneFields(comp: Convenzione): FormlyFieldConfig[] {
-    return [
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'convenzione_pdf',
-            type: 'pdfviewerinput',
-            className: "col-md-12",
-            templateOptions: {
-              label: 'Seleziona convenzione',              
-              filevalue: 'filevalue',
-              filename: 'filename'
-            },
-          }
-        ]
-      },
-    ];
-  }
+  //obsoleta
+  // getConvenzioneFields(comp: Convenzione): FormlyFieldConfig[] {
+  //   return [
+  //     {
+  //       fieldGroupClassName: 'row',
+  //       fieldGroup: [
+  //         {
+  //           key: 'convenzione_pdf',
+  //           type: 'pdfviewerinput',
+  //           className: "col-md-12",
+  //           templateOptions: {
+  //             label: 'Seleziona convenzione',              
+  //             filevalue: 'filevalue',
+  //             filename: 'filename'
+  //           },
+  //         }
+  //       ]
+  //     },
+  //   ];
+  // }
 
   getById(id: any): Observable<any> {
     return this.getConvenzioneById(id);
