@@ -36,7 +36,7 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 <button *ngIf="!last" class="btn btn-primary" type="button" [disabled]="nextState" [disabled]="!isValid(activedStep)" (click)="nextStep(activedStep)">Avanti</button>
 </div>
   `,
-  styleUrls: ['./navstepper-wrapper.component.css']
+  styleUrls: ['./wrapper/navstepper-wrapper.component.css']
 })
 
 export class TabTypeComponent extends FieldType implements OnInit {

@@ -1,4 +1,4 @@
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,8 +18,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DatepickerTypeComponent } from './dynamic-form/datapicker-type.component';
 import { RepeatTypeComponent } from './dynamic-form/repeat-type.component';
 import { TableTypeComponent } from './dynamic-form/table-type.component';
-import { PanelWrapperComponent } from './dynamic-form/panel-wrapper.component';
-import { AccordionWrapperComponent } from './dynamic-form/accordion-wrapper.component';
+import { PanelWrapperComponent } from './dynamic-form/wrapper/panel-wrapper.component';
+import { AccordionWrapperComponent } from './dynamic-form/wrapper/accordion-wrapper.component';
 import { RouterModule } from '@angular/router';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { QueryBuilderComponent } from './query-builder/query-builder.component';
@@ -31,7 +31,7 @@ import { ExternalqueryComponent } from './query-builder/externalquery.component'
 import { TableLookupTypeComponent } from './dynamic-form/tablelookup-type.component';
 import { ExternalobjTypeComponent } from './dynamic-form/externalobj-type.component';
 import { SelectTypeComponent } from './dynamic-form/select-type.component';
-import { NavstepperWrapperComponent } from './dynamic-form/navstepper-wrapper.component';
+import { NavstepperWrapperComponent } from './dynamic-form/wrapper/navstepper-wrapper.component';
 import { TabTypeComponent } from './dynamic-form/tab-type.component';
 import { FormInfraComponent } from './dynamic-form/form-infra.component';
 import { InputFileComponent } from './dynamic-form/input-file/input-file.component';
@@ -39,7 +39,7 @@ import { PdfInfraComponent } from './dynamic-form/pdf-infra/pdf-infra.component'
 import { PdfTypeComponent } from './dynamic-form/pdf-type/pdf-type.component';
 import { PdfTypeInputComponent } from './dynamic-form/pdf-type-input/pdf-type-input.component';
 import { FormlyFieldButton } from './dynamic-form/button-type.component';
-import { FormlyHorizontalWrapper } from './dynamic-form/horizontal-wrapper';
+import { FormlyHorizontalWrapper } from './dynamic-form/wrapper/horizontal-wrapper';
 import { BaseEntityComponent } from './base-component/base-entity.component';
 import { BaseResearchComponent } from './base-component/base-research.component';
 
@@ -53,6 +53,7 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { TooltipWrapperComponent } from './dynamic-form/wrapper/tooltip-wrapper.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -64,6 +65,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   imports: [
     CommonModule, 
     NgbModule.forRoot(), 
+    NgbTooltipModule,
     HttpModule, 
     FormsModule, 
     ReactiveFormsModule, 
@@ -152,6 +154,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         { name: 'panel', component: PanelWrapperComponent },
         { name: 'accordion', component: AccordionWrapperComponent },
         { name: 'form-field-horizontal', component: FormlyHorizontalWrapper },
+        { name: 'tooltip', component: TooltipWrapperComponent },
       ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
@@ -199,7 +202,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BlankComponent,
     NavigationComponent,
     BreadcrumbComponent,
-    SidebarComponent
+    SidebarComponent,
+    TooltipWrapperComponent
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -221,6 +225,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NavigationComponent,
     BreadcrumbComponent,
     SidebarComponent,
+    TooltipWrapperComponent
   ],
   entryComponents: [LookupComponent]
 })
