@@ -117,7 +117,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         lifecycle: {
           onInit: (form, field)=> {            
             const tabs = this.fieldtabs.find(f => f.type === 'tab');
-            const tabappr = tabs.fieldGroup[3];        
+            const tabappr = tabs.fieldGroup[2];        
             //const selectfield = tabappr.fieldGroup.find(x=> x.key == 'ufficioaffidatario')
             field.formControl.valueChanges.subscribe(x=> {
               if (x == 'schematipo'){
@@ -173,16 +173,31 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
             //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.CONV_BOZZA) 
             //     }
             //   },
-            // }, 
+            // },      
             {
               fieldGroupClassName: 'row',
-              fieldGroup: [                                            
+              fieldGroup: [   
+                {            
+                  key: 'file_CD_type',      
+                  type: 'select',                
+                  defaultValue: 'DCD',
+                  className: "col-md-6",
+                  templateOptions:{
+                    label: 'Tipo documento di approvazione',          
+                    required: true,                    
+                    options: [
+                      { value:'DCD', label:'Delibera Consiglio di Dipartimento' },
+                      { value:'DDD', label:'Disposizione del direttore di dipartimento' },
+                    ]                    
+                  },
+                },                                         
                 {
                   key: 'file_CD',
                   type: 'fileinput',
-                  className: "col-md-5",
+                  className: "col-md-6",
                   templateOptions: {
-                    label: 'Delibera del consiglio di dipartimento',
+                    label: 'Documento di approvazione',
+                    description: 'Allegare in formato pdf la versione della delibera o della disposizione',
                     type: 'input',
                     placeholder: 'Scegli documento',
                     accept: 'application/pdf',
@@ -192,6 +207,29 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     }
                   },
                 },
+              ]
+              },
+              {
+                fieldGroupClassName: 'row',
+                fieldGroup: [   
+                {            
+                  key: 'number',      
+                  type: 'input',        
+                  className: "col-md-6",          
+                  templateOptions:{
+                    label: 'Numero',          
+                    //required: true,                               
+                  },
+                },
+                {            
+                  key: 'data_emissione',      
+                  type: 'datepicker',         
+                  className: "col-md-6",         
+                  templateOptions:{
+                    label: 'Data',          
+                    //required: true,                               
+                  },
+                },  
               ]              
             },
             // {
@@ -207,16 +245,19 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
             //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DECRETO_RETTORALE) 
             //     }
             //   },
-            // },
+            // },            
             {
               key: 'file_DA',
-              type: 'fileinput',
-              className: "col-md-5",
+              type: 'fileinput',                                                                        
               templateOptions: {
                 label: 'Documento appoggio',
                 type: 'input',
+                description: 'Versione editabile (file word) della delibera o della disposizione',               
                 placeholder: 'Scegli documento',
-                accept: '.doc,.docx,application/msword',                
+                tooltip:{
+                   content: 'Versione editabile (file word) della delibera o della disposizione'
+                },
+                accept: '.doc,.docx ,application/msword',                
                 onSelected: (selFile) => { 
                   this.onSelectCurrentFile(selFile,MultistepSchematipoComponent.DOC_APP) 
                 }                

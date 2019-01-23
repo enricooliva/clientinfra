@@ -3,14 +3,16 @@ import { FieldType, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-input-file',
-  template: `  
+  template: `      
+    <div *ngIf="inputField"  placement="top" ngbTooltip="{{ to.tooltip ? to.tooltip.content : null}}">
     <formly-field *ngIf="inputField"  
       [model]="model"
       [field]="inputField"
-      [options]="options"
-      [form]="form">
-    </formly-field>           
-    <input #fileInput type="file" accept="{{to.accept}}" (change)="onFileChanged($event)" style="display: none">        
+      [options]="options"           
+      [form]="form">          
+    </formly-field> 
+    <input #fileInput type="file" accept="{{to.accept}}" (change)="onFileChanged($event)" style="display: none">                    
+    </div>
   `,
   //*ngIf="inputField"
   styles: []
@@ -31,7 +33,7 @@ export class InputFileComponent extends FieldType implements OnInit{
       }
       this.field = {
         ...this.field,
-        wrappers: ['form-field','addons'],
+        wrappers: ['form-field','addons'], //.concat(this.field.wrappers),
         type: 'input',
         templateOptions: {
           ...this.field.templateOptions,
