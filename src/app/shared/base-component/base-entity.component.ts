@@ -21,9 +21,9 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   
   form = new FormGroup({});
 
-  protected model = {};
+  model = {};
 
-  protected options: FormlyFormOptions = {
+  options: FormlyFormOptions = {
     formState: {
       mainModel: this.model,
     },
@@ -31,7 +31,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
 
   protected fields: FormlyFieldConfig[];
 
-  protected title = null;
+  title = null;
 
   protected service: ServiceEntity;
 
