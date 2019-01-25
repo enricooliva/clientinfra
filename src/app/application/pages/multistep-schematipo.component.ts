@@ -10,6 +10,10 @@ import { AuthService } from 'src/app/core';
 import { InfraMessageType } from 'src/app/shared/message/message';
 import { takeUntil, startWith, tap, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { PDFJSStatic } from 'pdfjs-dist';
+import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+const PDFJS: PDFJSStatic = require('pdfjs-dist');
+
 
 //ng g c application/pages/test-tab -s true  --spec false --flat true
 
@@ -57,7 +61,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
   public static DOC_APP = 'DA';
   public static PROSPETTO = 'PR';
   public static CONV_BOZZA = 'CB';
-  
+
 
   onDestroy$ = new Subject<void>();
   fieldtabs: FormlyFieldConfig[];
@@ -68,13 +72,15 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
   isLoading: boolean;
 
   options: FormlyFormOptions;
-  
+
   mapAttachment: Map<string, FileAttachment> = new Map<string, FileAttachment>();
 
   constructor(private service: ApplicationService, public authService: AuthService, private router: Router) {
 
-    this.model = { 
-      schematipotipo:  'schematipo',   
+    PDFJS.disableWorker = true;
+
+    this.model = {
+      schematipotipo: 'schematipo',
       user_id: authService.userid,
       id: null,
       descrizione_titolo: '',
@@ -87,10 +93,10 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       convezione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
-      unitaorganizzativa_uo: '',               
+      unitaorganizzativa_uo: '',
       attachments: [],
 
-    };    
+    };
 
     this.options = {
       formState: {
@@ -98,266 +104,344 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         model: this.model,
       },
     };
-  
-    this.fieldtabs = [                  
+
+    this.fieldtabs = [
       {
-        fieldGroupClassName:'row',
+        fieldGroupClassName: 'row',
         fieldGroup: [{
-        key: 'schematipotipo',      
-        wrappers: ['form-field-horizontal'],  
-        className: 'col-md-6',      
-        type: 'select',
-        templateOptions:{
-          label: 'Schema tipo',          
-          options: [
-            { label: 'Si', value: 'schematipo' },
-            { label: 'No', value: 'daapprovare' },
-          ],
-        },
-        lifecycle: {
-          onInit: (form, field)=> {            
-            const tabs = this.fieldtabs.find(f => f.type === 'tab');
-            const tabappr = tabs.fieldGroup[2];        
-            //const selectfield = tabappr.fieldGroup.find(x=> x.key == 'ufficioaffidatario')
-            field.formControl.valueChanges.subscribe(x=> {
-              if (x == 'schematipo'){
-                tabappr.templateOptions.hidden = true;                
-              }
-              else {
-                tabappr.templateOptions.hidden = false;                
-              }
-            });
+          key: 'schematipotipo',
+          wrappers: ['form-field-horizontal'],
+          className: 'col-md-6',
+          type: 'select',
+          templateOptions: {
+            label: 'Schema tipo',
+            options: [
+              { label: 'Si', value: 'schematipo' },
+              { label: 'No', value: 'daapprovare' },
+            ],
+          },
+          lifecycle: {
+            onInit: (form, field) => {
+              const tabs = this.fieldtabs.find(f => f.type === 'tab');
+              const tabappr = tabs.fieldGroup[2];
+              //const selectfield = tabappr.fieldGroup.find(x=> x.key == 'ufficioaffidatario')
+              field.formControl.valueChanges.subscribe(x => {
+                if (x == 'schematipo') {
+                  tabappr.templateOptions.hidden = true;
+                }
+                else {
+                  tabappr.templateOptions.hidden = false;
+                }
+              });
+            }
           }
-        }
-        }],            
+        }],
       },
       {
-      type: 'tab',
-      fieldGroup: [
-        {
-          fieldGroup: service.getInformazioniDescrittiveFields(this.model).map(x=> { 
-            if (x.key == 'user') {
-              x.templateOptions.disabled = true;
+        type: 'tab',
+        fieldGroup: [
+          {
+            fieldGroup: service.getInformazioniDescrittiveFields(this.model).map(x => {
+              if (x.key == 'user') {
+                x.templateOptions.disabled = true;
+              }
+              return x;
+            }),
+            templateOptions: {
+              label: 'Informazioni descrittive'
             }
-            return x;
-          }),            
-          templateOptions: {
-            label: 'Informazioni descrittive'
-          }
-        },
-        {
-          fieldGroup: [
-            {
-              key: 'file_PR',
-              type: 'fileinput',
-              className: "col-md-5",
-              templateOptions: {
-                label: 'Prospetto ripartizione costi e proventi',
-                type: 'input',
-                placeholder: 'Scegli documento',
-                accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',                
-                onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.PROSPETTO) 
-                }
-              },
-            },
-            // {
-            //   key: 'file_CB',
-            //   type: 'pdfviewerinput',
-            //   className: "col-md-5",
-            //   templateOptions: {
-            //     label: 'Seleziona convenzione',              
-            //     filevalue: 'filevalue',
-            //     filename: 'filename',
-            //     onSelected: (selFile) => { 
-            //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.CONV_BOZZA) 
-            //     }
-            //   },
-            // },      
-            {
-              fieldGroupClassName: 'row',
-              fieldGroup: [   
-                {            
-                  key: 'file_CD_type',      
-                  type: 'select',                
-                  defaultValue: 'DCD',
-                  className: "col-md-6",
-                  templateOptions:{
-                    label: 'Tipo documento di approvazione',          
-                    required: true,                    
-                    options: [
-                      { value:'DCD', label:'Delibera Consiglio di Dipartimento' },
-                      { value:'DDD', label:'Disposizione del direttore di dipartimento' },
-                    ]                    
-                  },
-                },                                         
-                {
-                  key: 'file_CD',
-                  type: 'fileinput',
-                  className: "col-md-6",
-                  templateOptions: {
-                    label: 'Documento di approvazione',
-                    description: 'Allegare in formato pdf la versione della delibera o della disposizione',
-                    type: 'input',
-                    placeholder: 'Scegli documento',
-                    accept: 'application/pdf',
-                    required: true,
-                    onSelected: (selFile) => { 
-                      this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO) 
-                    }
-                  },
-                },
-              ]
-              },
+          },
+          {
+            fieldGroup: [
+      
+              // {
+              //   key: 'file_CB',
+              //   type: 'pdfviewerinput',
+              //   className: "col-md-5",
+              //   templateOptions: {
+              //     label: 'Seleziona convenzione',              
+              //     filevalue: 'filevalue',
+              //     filename: 'filename',
+              //     onSelected: (selFile) => { 
+              //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.CONV_BOZZA) 
+              //     }
+              //   },
+              // },      
               {
                 fieldGroupClassName: 'row',
-                fieldGroup: [   
-                {            
-                  key: 'number',      
-                  type: 'input',        
-                  className: "col-md-6",          
-                  templateOptions:{
-                    label: 'Numero',          
-                    //required: true,                               
+                fieldGroup: [
+                  {
+                    key: 'file_CD_type',
+                    type: 'select',
+                    defaultValue: 'DCD',
+                    className: "col-md-6",
+                    templateOptions: {
+                      label: 'Tipo documento di approvazione',
+                      required: true,
+                      options: [
+                        { value: 'DCD', label: 'Delibera Consiglio di Dipartimento' },
+                        { value: 'DDD', label: 'Disposizione del direttore di dipartimento' },
+                      ]
+                    },
                   },
-                },
-                {            
-                  key: 'data_emissione',      
-                  type: 'datepicker',         
-                  className: "col-md-6",         
-                  templateOptions:{
-                    label: 'Data',          
-                    //required: true,                               
+                  {
+                    key: 'file_CD',
+                    type: 'fileinput',
+                    className: "col-md-6",
+                    templateOptions: {
+                      label: 'Documento di approvazione (formato pdf)',
+                      description: 'Allegare in formato pdf la versione della delibera o della disposizione',
+                      type: 'input',
+                      placeholder: 'Scegli documento',
+                      accept: 'application/pdf',
+                      required: true,
+                      onSelected: (selFile) => {
+                        this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO)
+                      },
+                      validators: {                        
+                        formatpdf: {
+                          expression: (c) => {
+                           return /.+\.([pP][dD][fF])/.test(c.value);
+                          },
+                          message: (error, field: FormlyFieldConfig) =>  "Formato non consentito",
+                        }
+                      }
+                    },
                   },
-                },  
-              ]              
-            },
-            // {
-            //   key: 'file_DR',
-            //   type: 'fileinput',
-            //   className: "col-md-5",
-            //   templateOptions: {
-            //     label: 'Disposizione rettorale',
-            //     type: 'input',
-            //     placeholder: 'Scegli documento',
-            //     accept: 'application/pdf',                
-            //     onSelected: (selFile) => { 
-            //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DECRETO_RETTORALE) 
-            //     }
-            //   },
-            // },            
-            {
-              key: 'file_DA',
-              type: 'fileinput',                                                                        
-              templateOptions: {
-                label: 'Documento appoggio',
-                type: 'input',
-                description: 'Versione editabile (file word) della delibera o della disposizione',               
-                placeholder: 'Scegli documento',
-                tooltip:{
-                   content: 'Versione editabile (file word) della delibera o della disposizione'
-                },
-                accept: '.doc,.docx ,application/msword',                
-                onSelected: (selFile) => { 
-                  this.onSelectCurrentFile(selFile,MultistepSchematipoComponent.DOC_APP) 
-                }                
+                ],
               },
-            },
-            
-          ],
-          templateOptions: {
-            label: 'Allegati'
-          }
-        },
-        {          
-          fieldGroup: [
-            {
-              key: 'unitaorganizzativa_uo',                   
-              type: 'select',
-              hideExpression: 'formState.model.schematipotipo == "schematipo"',
-              templateOptions:{
-                label: 'Ufficio affidatario procedura',          
-                required: true,
-                options: this.service.getValidationOffices(),
-                valueProp: 'uo',
-                labelProp: 'descr',                           
+              {
+                fieldGroupClassName: 'row', 
+                //hideExpression: (model: any) => !model.file_CD,               
+                fieldGroup: [
+                  {
+                    key: 'number',
+                    type: 'input',
+                    className: "col-md-4",
+                    templateOptions: {
+                      label: 'Numero',
+                      //required: true,                               
+                    },
+                  },
+                  {
+                    key: 'data_emissione',
+                    type: 'datepicker',
+                    className: "col-md-8",
+                    templateOptions: {
+                      label: 'Data',
+                      //required: true,                               
+                    },
+                  },
+                ]
               },
-            },
-            {
-              key: 'useremail',                   
-              type: 'select',
-              templateOptions:{
-                label: 'Assegnamento attività',   
-                valueProp: 'id',
-                labelProp: 'descr',                                        
-              },
-              lifecycle: {
-                onInit: (form, field) => {                
-                  form.get('unitaorganizzativa_uo').valueChanges.pipe(                    
-                    takeUntil(this.onDestroy$),
-                    startWith(form.get('unitaorganizzativa_uo').value),
-                    filter(ev => ev !== null),
-                    tap(uo => {
-                      field.formControl.setValue('');
-                      field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe();
-                    }),
-                  ).subscribe();
+              // {
+              //   key: 'file_DR',
+              //   type: 'fileinput',
+              //   className: "col-md-5",
+              //   templateOptions: {
+              //     label: 'Disposizione rettorale',
+              //     type: 'input',
+              //     placeholder: 'Scegli documento',
+              //     accept: 'application/pdf',                
+              //     onSelected: (selFile) => { 
+              //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DECRETO_RETTORALE) 
+              //     }
+              //   },
+              // },            
+              {
+                key: 'file_DA',
+                type: 'fileinput',
+                templateOptions: {
+                  label: 'Documento appoggio (formato word)',
+                  type: 'input',
+                  description: 'Versione editabile (file word) della delibera o della disposizione',
+                  placeholder: 'Scegli documento',
+                  tooltip: {
+                    content: 'Versione editabile (file word) della delibera o della disposizione'
+                  },
+                  accept: '.doc,.docx ,application/msword',
+                  onSelected: (selFile) => {
+                    this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DOC_APP)
+                  }
                 },
               },
-            },
-            {
-              key: 'descrizioneattivita',                   
-              type: 'textarea',
-              templateOptions:{
-                label: 'Area messaggi',   
-                maxLength: 200,
-                rows: 5,                       
+              {
+                key: 'file_PR',
+                type: 'fileinput',
+                className: "col-md-5",
+                templateOptions: {
+                  label: 'Prospetto ripartizione costi e proventi',
+                  type: 'input',
+                  placeholder: 'Scegli documento',
+                  accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                  onSelected: (selFile) => {
+                    this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.PROSPETTO)
+                  }
+                },
               },
-              expressionProperties: {
-                'templateOptions.disabled': '!model.useremail',
-              },
+            ],
+            templateOptions: {
+              label: 'Allegati'
             }
-          ],
-          templateOptions: {
-            label: 'Approvazione',   
-            hidden: true,         
-          },     
-        }
-      ]
-    }];
+          },
+          {
+            fieldGroup: [
+              {
+                key: 'unitaorganizzativa_uo',
+                type: 'select',
+                hideExpression: 'formState.model.schematipotipo == "schematipo"',
+                templateOptions: {
+                  label: 'Ufficio affidatario procedura',
+                  required: true,
+                  options: this.service.getValidationOffices(),
+                  valueProp: 'uo',
+                  labelProp: 'descr',
+                },
+              },
+              {
+                key: 'useremail',
+                type: 'select',
+                templateOptions: {
+                  label: 'Assegnamento attività',
+                  valueProp: 'id',
+                  labelProp: 'descr',
+                },
+                lifecycle: {
+                  onInit: (form, field) => {
+                    form.get('unitaorganizzativa_uo').valueChanges.pipe(
+                      takeUntil(this.onDestroy$),
+                      startWith(form.get('unitaorganizzativa_uo').value),
+                      filter(ev => ev !== null),
+                      tap(uo => {
+                        field.formControl.setValue('');
+                        field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe();
+                      }),
+                    ).subscribe();
+                  },
+                },
+              },
+              {
+                key: 'descrizioneattivita',
+                type: 'textarea',
+                templateOptions: {
+                  label: 'Area messaggi',
+                  maxLength: 200,
+                  rows: 5,
+                },
+                expressionProperties: {
+                  'templateOptions.disabled': '!model.useremail',
+                },
+              }
+            ],
+            templateOptions: {
+              label: 'Approvazione',
+              hidden: true,
+            },
+          }
+        ]
+      }];
   }
 
-  onSelectCurrentFile(currentSelFile: File, typeattachemnt: string){
+  render_page(pageData) {
+    //check documents https://mozilla.github.io/pdf.js/
+    //ret.text = ret.text ? ret.text : "";
 
-    if (currentSelFile== null){
-      //caso di cancellazione
-      this.mapAttachment.delete(typeattachemnt);      
-      return;
+    let render_options = {
+      //replaces all occurrences of whitespace with standard spaces (0x20). The default value is `false`.
+      normalizeWhitespace: false,
+      //do not attempt to combine same line TextItem's. The default value is `false`.
+      disableCombineTextItems: false
     }
 
-    this.isLoading=true;
-    let currentAttachment: FileAttachment = {      
+    return pageData.getTextContent(render_options)
+      .then(function (textContent) {
+        let lastY, text = '';
+        //https://github.com/mozilla/pdf.js/issues/8963
+        //https://github.com/mozilla/pdf.js/issues/2140
+        //https://gist.github.com/hubgit/600ec0c224481e910d2a0f883a7b98e3
+        //https://gist.github.com/hubgit/600ec0c224481e910d2a0f883a7b98e3
+        for (let item of textContent.items) {
+          if (lastY == item.transform[5] || !lastY) {
+            text += item.str;
+          }
+          else {
+            text += '\n' + item.str;
+          }
+          lastY = item.transform[5];
+        }
+        //let strings = textContent.items.map(item => item.str);
+        //let text = strings.join("\n");
+        //text = text.replace(/[ ]+/ig," ");
+        //ret.text = `${ret.text} ${text} \n\n`;
+        return text;
+      });
+  }
+
+  async parsePdf(data){
+    let text = '';
+    PDFJS.getDocument({ data: data }).then(async (doc) => {
+      let counter: number = 1;
+      counter = counter > doc.numPages ? doc.numPages : counter;
+
+      for (var i = 1; i <= counter; i++) {
+        let pageText = await doc.getPage(i).then(pageData => this.render_page(pageData));
+        text = `${text}\n\n${pageText}`;      
+        //ret.text = `${ret.text}\n\n${pageText}`;
+      }    
+            
+      let number = text.match(/[d|D]elibera n.?\s?([A-Za-z0-9\/]*)\s*\n/);
+      if (number && number[1]){
+        this.form.get('number').setValue(number[1]);
+      
+      }
+      let data_emissione = text.match(/[r|R]iunione del giorno\s([0-9]{2}\/[0-9]{2}\/[0-9]{4})\s?/);
+      if (data_emissione && data_emissione[1]){
+        let converted = data_emissione[1].replace(/\//g,'-');
+        this.form.get('data_emissione').setValue(converted);
+      }      
+    });
+  }
+
+
+  onSelectCurrentFile(currentSelFile: File, typeattachemnt: string) {
+
+    if (currentSelFile == null) {
+      //caso di cancellazione
+      this.mapAttachment.delete(typeattachemnt);
+      return;
+    }
+    
+    this.isLoading = true;
+    let currentAttachment: FileAttachment = {
       model_type: 'convenzione',
       filename: currentSelFile.name,
       attachmenttype_codice: typeattachemnt,
     }
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      currentAttachment.filevalue = encode(e.target.result);      
+    
+    const reader = new FileReader();   
+
+    reader.onload = async (e: any) => {
+      currentAttachment.filevalue = encode(e.target.result);
       
-      if (!currentAttachment.filevalue){
-        this.form.get('file_'+typeattachemnt).setErrors({'filevalidation': true});
+      if (currentSelFile.name.search('pdf')>0){
+        await this.parsePdf(e.target.result);      
+      }
+
+      if (!currentAttachment.filevalue) {
+        this.isLoading = false;
+        return;
+        //this.form.get('file_' + typeattachemnt).setErrors({ 'filevalidation': true });
         //this.service.messageService.add(InfraMessageType.Error,'Documento '+ currentAttachment.filename +' vuoto');
       }
 
-      this.mapAttachment.set(currentAttachment.attachmenttype_codice,currentAttachment);
-      this.isLoading=false;
+      this.mapAttachment.set(currentAttachment.attachmenttype_codice, currentAttachment);
+      this.isLoading = false;
     }
-    reader.readAsArrayBuffer(currentSelFile); 
+    reader.readAsArrayBuffer(currentSelFile);
 
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     //const selectSchemaTipo = this.fieldtabs.find(f => f.key === 'schematipotipo'); 
   }
 
@@ -371,19 +455,19 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit: Convenzione = { ...this.model, ...this.form.value };
-      
+
       //aggiungo tutti gli allegati      
       tosubmit.attachments = [];
       tosubmit.attachments.push(...Array.from<FileAttachment>(this.mapAttachment.values()));
-      
-      this.service.createSchemaTipo(tosubmit,true).subscribe(
-        result => {          
+
+      this.service.createSchemaTipo(tosubmit, true).subscribe(
+        result => {
           //this.options.resetModel(result);
           this.isLoading = false;
           this.router.navigate(['home/convenzioni/' + result.id]);
         },
         error => {
-          this.isLoading = false;          
+          this.isLoading = false;
           console.log(error)
         }
 

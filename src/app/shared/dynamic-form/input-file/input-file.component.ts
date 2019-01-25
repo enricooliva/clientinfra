@@ -34,7 +34,7 @@ export class InputFileComponent extends FieldType implements OnInit{
       this.field = {
         ...this.field,
         wrappers: ['form-field','addons'], //.concat(this.field.wrappers),
-        type: 'input',
+        type: 'input',        
         templateOptions: {
           ...this.field.templateOptions,
           keyup: (field, event: KeyboardEvent) => {
@@ -50,10 +50,10 @@ export class InputFileComponent extends FieldType implements OnInit{
             class: 'btn btn-outline-secondary oi oi-delete d-flex align-items-center',
             onClick: (to, fieldType, $event) => this.reset(),            
           }
-        }
+        },       
       }
       
-      this.formlyConfig.getMergedField(this.field);      
+      //this.formlyConfig.getMergedField(this.field);      
       this.inputField = this.field;
     }
   }
