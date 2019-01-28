@@ -33,7 +33,8 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 </ngb-tabset>
 <div>
 <button *ngIf="selectedTab !== 'tab-0'" class="btn btn-primary mr-2" type="button" (click)="prevStep(activedStep)">Indietro</button>
-<button *ngIf="!last" class="btn btn-primary" type="button" [disabled]="nextState" [disabled]="!isValid(activedStep)" (click)="nextStep(activedStep)">Avanti</button>
+<button *ngIf="!last" class="btn btn-primary" type="button" [disabled]="!isValid(activedStep)" (click)="nextStep(activedStep)">Avanti</button>
+<button *ngIf="last && to.onSubmit" class="btn btn-primary" type="button" [disabled]="!form.valid || !form.dirty" (click)="to.onSubmit()">Salva</button>
 </div>
   `,
   styleUrls: ['./wrapper/navstepper-wrapper.component.css']

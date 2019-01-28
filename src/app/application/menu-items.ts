@@ -1,20 +1,5 @@
 import { RouteInfo } from "../shared/sidebar/sidebar.metadata";
 
-// {title: 'Gestione', links: [
-//   { href: 'users', text: 'Utenti', permissions: ['ADMIN'] },
-//   { href: 'roles', text: 'Ruoli', permissions: ['ADMIN'] },
-//   { href: 'permissions', text: 'Permessi', permissions: ['ADMIN'] },
-//   { href: 'tipopagamenti', text: 'Tipo pagamenti', permissions: ['ADMIN'] },
-// ]},    
-// {title: 'Funzionali', links: [
-//   { href: 'convenzione', text: 'Convenzione', permissions: ['ADMIN', 'USER'] },
-//   { href: 'convenzioni', text: 'Lista convenzioni', permissions: ['ADMIN'] },
-//   { href: 'allegati', text: 'Lista allegati', permissions: ['ADMIN'] },
-//   { href: 'multistep-schematipo', text: 'Inserimento convenzione', permissions: ['ADMIN'] },
-//   { href: 'test', text: 'Multi step form', permissions: ['ADMIN'] },
-// ]}    
-
-
 export const ROUTES: RouteInfo[] = [
   {
     path: '',
@@ -97,19 +82,10 @@ export const ROUTES: RouteInfo[] = [
     class: 'has-arrow',
     extralink: false,
     permissions: [], 
-    submenu: [
-      {
-        path: 'convenzione',
-        title: 'Convenzione',
-        icon: '',
-        class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'],
-      },
+    submenu: [    
       {
         path: 'convenzioni',
-        title: 'Convenzioni',
+        title: 'Riceca convenzioni',
         icon: '',
         class: '',
         extralink: false,

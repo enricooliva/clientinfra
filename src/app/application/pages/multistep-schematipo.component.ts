@@ -35,10 +35,9 @@ const PDFJS: PDFJSStatic = require('pdfjs-dist');
           <span class="ml-2">Nuovo</span>
       </button>    
       <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
-      <span class="oi oi-arrow-top"></span>  
-      <span class="ml-2">Aggiorna</span>        
-      
-    </button> 
+        <span class="oi oi-arrow-top"></span>  
+        <span class="ml-2">Aggiorna</span>              
+      </button> 
     </div>
   </div>
   
@@ -47,8 +46,7 @@ const PDFJS: PDFJSStatic = require('pdfjs-dist');
     </formly-form> 
   </form>
 
-  <div class='mb-4'></div>
-   `,
+  `,
   styles: []
 })
 
@@ -138,7 +136,10 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         }],
       },
       {
-        type: 'tab',
+        type: 'tabinfra',
+        templateOptions:{
+          onSubmit: () => this.onSubmit(),
+        },
         fieldGroup: [
           {
             fieldGroup: service.getInformazioniDescrittiveFields(this.model).map(x => {
@@ -187,14 +188,14 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                   {
                     key: 'file_CD',
                     type: 'fileinput',
-                    className: "col-md-6",
+                    className: "col-md-6",                    
                     templateOptions: {
                       label: 'Documento di approvazione (formato pdf)',
-                      description: 'Allegare in formato pdf la versione della delibera o della disposizione',
+                      description: 'Allegare in formato pdf la versione della delibera o della disposizione',                      
                       type: 'input',
                       placeholder: 'Scegli documento',
                       accept: 'application/pdf',
-                      required: true,
+                      required: true,                                            
                       onSelected: (selFile) => {
                         this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO)
                       },

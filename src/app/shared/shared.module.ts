@@ -95,7 +95,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       { name: 'externalquery', component: ExternalqueryComponent },
       { name: 'externalobject', component: ExternalobjTypeComponent },
       { name: 'selectinfra', component: SelectTypeComponent },
-      { name: 'tab', component: TabTypeComponent },
+      { name: 'tabinfra', component: TabTypeComponent },
       { name: 'string', extends: 'input' },
       {
         name: 'number',
