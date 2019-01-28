@@ -31,8 +31,10 @@
     <!-- ============================================================== -->
     <!-- User profile and search -->
     <!-- ============================================================== -->
-    <li  *ngIf="!(isLoggedIn$ | async) as isLoggedIn else logout"  class="nav-item d-none d-md-block" >
-        <a class="nav-link sidebartoggler waves-effect waves-light" href="{{baseurl + 'api/loginSaml'}}" data-sidebartype="mini-sidebar">
+    <li  *ngIf="!(isLoggedIn$ | async) as isLoggedIn else logout"  class="nav-item" ngbDropdown placement="bottom-right" >
+        <a ngbDropdownToggle class="nav-link text-muted waves-effect waves-dark pro-pic" href="{{baseurl + 'api/loginSaml'}}" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false" data-sidebartype="mini-sidebar">
+        <!--<a class="nav-link sidebartoggler waves-effect waves-light" href="{{baseurl + 'api/loginSaml'}}" data-sidebartype="mini-sidebar">-->
             <span>Login</span>
         </a>
     </li>   

@@ -120,7 +120,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
           },
           lifecycle: {
             onInit: (form, field) => {
-              const tabs = this.fieldtabs.find(f => f.type === 'tab');
+              const tabs = this.fieldtabs.find(f => f.type === 'tabinfra');
               const tabappr = tabs.fieldGroup[2];
               //const selectfield = tabappr.fieldGroup.find(x=> x.key == 'ufficioaffidatario')
               field.formControl.valueChanges.subscribe(x => {
@@ -400,6 +400,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         let converted = data_emissione[1].replace(/\//g,'-');
         this.form.get('data_emissione').setValue(converted);
       }      
+      this.isLoading = false;
     });
   }
 
@@ -422,10 +423,15 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
     const reader = new FileReader();   
 
     reader.onload = async (e: any) => {
+      this.isLoading = true;
       currentAttachment.filevalue = encode(e.target.result);
       
       if (currentSelFile.name.search('pdf')>0){
-        await this.parsePdf(e.target.result);      
+        try {
+          await this.parsePdf(e.target.result);     
+        } catch (error) {
+          this.isLoading = false;
+        }
       }
 
       if (!currentAttachment.filevalue) {
