@@ -77,7 +77,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '',
-    title: 'Funzionali',
+    title: 'Funzionalità',
     icon: 'mdi mdi-notification-clear-all',
     class: 'has-arrow',
     extralink: false,
@@ -85,7 +85,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [    
       {
         path: 'convenzioni',
-        title: 'Riceca convenzioni',
+        title: 'Ricerca convenzioni',
         icon: '',
         class: '',
         extralink: false,

@@ -3,13 +3,13 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { StepType } from 'src/app/shared';
 import { ApplicationService } from '../application.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Convenzione, FileAttachment } from '../convenzione';
-import { FormGroup, FormControl, ValidationErrors } from '@angular/forms';
+import { Convenzione, FileAttachment, Owner } from '../convenzione';
+import { FormGroup, FormControl, ValidationErrors, FormArray } from '@angular/forms';
 import { encode, decode } from 'base64-arraybuffer';
 import { AuthService } from 'src/app/core';
 import { InfraMessageType } from 'src/app/shared/message/message';
-import { takeUntil, startWith, tap, filter } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { takeUntil, startWith, tap, filter, map, distinct } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 import { PDFJSStatic } from 'pdfjs-dist';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 const PDFJS: PDFJSStatic = require('pdfjs-dist');
@@ -73,6 +73,8 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
 
   mapAttachment: Map<string, FileAttachment> = new Map<string, FileAttachment>();
 
+  responsabile: Observable<any>;
+
   constructor(private service: ApplicationService, public authService: AuthService, private router: Router) {
 
     PDFJS.disableWorker = true;
@@ -92,7 +94,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id_esterno: null, denominazione: '' },
       unitaorganizzativa_uo: '',
-      attachments: [],
+      attachments: [],      
 
     };
 
@@ -194,20 +196,20 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                       description: 'Allegare in formato pdf la versione della delibera o della disposizione',                      
                       type: 'input',
                       placeholder: 'Scegli documento',
-                      accept: 'application/pdf',
-                      required: true,                                            
+                      accept: 'application/pdf',                      
+                      required: true,                                                                  
                       onSelected: (selFile) => {
                         this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO)
-                      },
-                      validators: {                        
-                        formatpdf: {
-                          expression: (c) => {
-                           return /.+\.([pP][dD][fF])/.test(c.value);
-                          },
-                          message: (error, field: FormlyFieldConfig) =>  "Formato non consentito",
-                        }
-                      }
+                      },                                            
                     },
+                    validators: {                        
+                      formatpdf: {
+                        expression: (c) => {
+                         return /.+\.([pP][dD][fF])/.test(c.value);
+                        },
+                        message: (error, field: FormlyFieldConfig) =>  `Formato non consentito`,
+                      }
+                    }
                   },
                 ],
               },
@@ -293,32 +295,101 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 hideExpression: 'formState.model.schematipotipo == "schematipo"',
                 templateOptions: {
                   label: 'Ufficio affidatario procedura',
-                  required: true,
+                  required: true,                 
                   options: this.service.getValidationOffices(),
                   valueProp: 'uo',
                   labelProp: 'descr',
                 },
-              },
+              },              
               {
-                key: 'useremail',
+                key: 'respons',
                 type: 'select',
+                hideExpression: 'formState.model.schematipotipo == "schematipo"',                
                 templateOptions: {
-                  label: 'Assegnamento attività',
+                  label: 'Responsabile ufficio',
                   valueProp: 'id',
-                  labelProp: 'descr',
+                  labelProp: 'descr',   
+                  required: true,                    
                 },
                 lifecycle: {
-                  onInit: (form, field) => {
+                  onInit: (form, field, model, options) => {
                     form.get('unitaorganizzativa_uo').valueChanges.pipe(
-                      takeUntil(this.onDestroy$),
-                      startWith(form.get('unitaorganizzativa_uo').value),
+                      takeUntil(this.onDestroy$),    
+                      distinct(),                  
+                      //startWith(form.get('unitaorganizzativa_uo').value),
                       filter(ev => ev !== null),
-                      tap(uo => {
+                      tap(uo => {                                                                   
                         field.formControl.setValue('');
-                        field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe();
+                        field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
+                          map(items => {
+                            return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF');
+                          }),  
+                          tap(items => {
+                            if (items[0]){
+                              field.formControl.setValue(items[0].id); 
+                            }
+                          }),                                                  
+                        );
                       }),
                     ).subscribe();
                   },
+                },
+              },
+              {
+                key: 'owners',
+                type: 'repeat',                              
+                templateOptions: {                  
+                  label: 'Ulteriori assegnatari',                                                                       
+                  //(index, callback, context) => this.onRemoveFile(index, callback, context),
+                  //onAddInitialModel: (event) => this.onAddInitialModel(event),
+                },   
+                validators: {
+                  unique: {
+                    expression: (c) => {           
+                      if (c.value)  {                              
+                        var valueArr = c.value.map(function(item){ return item.v_ie_ru_personale_id_ab });
+                        var isDuplicate = valueArr.some(function(item, idx){ 
+                            return valueArr.indexOf(item) != idx 
+                        });              
+                        return !isDuplicate;
+                      }
+                      return true;
+                    },
+                    message: (error, field: FormlyFieldConfig) => `Nome ripetuto`,
+                  },
+                },
+                expressionProperties: {
+                  'templateOptions.disabled': (model: any, formState: any) => {
+                    // access to the main model can be through `this.model` or `formState` or `model
+                    return formState.model.respons == null || formState.model.respons == '';
+                  },
+                },            
+                fieldArray: {                  
+                  fieldGroupClassName: 'row',
+                  fieldGroup: [
+                  {
+                    key: 'v_ie_ru_personale_id_ab',
+                    type: 'select',
+                    className: "col-md-8",
+                    templateOptions: {
+                      label: 'Assegnamento attività',
+                      valueProp: 'id',
+                      labelProp: 'descr',
+                      required: true,     
+                    },
+                    lifecycle: {
+                      onInit: (form, field, model) => {                                              
+                        //field.formControl.setValue('');
+                        field.templateOptions.options = this.service.getValidationOfficesPersonale(this.model.unitaorganizzativa_uo).pipe(
+                          map(items => {
+                            return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF');
+                          }),                         
+                        );                      
+                      },
+                    },
+                  },                  
+                  ],
+   
                 },
               },
               {
@@ -330,7 +401,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                   rows: 5,
                 },
                 expressionProperties: {
-                  'templateOptions.disabled': '!model.useremail',
+                  'templateOptions.disabled': '!model.respons',
                 },
               }
             ],
@@ -418,7 +489,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       model_type: 'convenzione',
       filename: currentSelFile.name,
       attachmenttype_codice: typeattachemnt,
-    }
+    } 
     
     const reader = new FileReader();   
 
@@ -463,9 +534,13 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       var tosubmit: Convenzione = { ...this.model, ...this.form.value };
 
+      var file = this.mapAttachment.get(MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO);
+      file.number = this.model['number'];
+      file.emission_date = this.model['emission_date'];
+
       //aggiungo tutti gli allegati      
       tosubmit.attachments = [];
-      tosubmit.attachments.push(...Array.from<FileAttachment>(this.mapAttachment.values()));
+      tosubmit.attachments.push(...Array.from<FileAttachment>(this.mapAttachment.values()));     
 
       this.service.createSchemaTipo(tosubmit, true).subscribe(
         result => {
@@ -475,7 +550,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         },
         error => {
           this.isLoading = false;
-          console.log(error)
+          console.log(error);
         }
 
       );

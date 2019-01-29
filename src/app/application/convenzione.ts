@@ -21,7 +21,12 @@ export interface Convenzione extends BaseEntity {
     tipopagamento: { codice: string, descrizione: string },
     azienda: { id_esterno: string, denominazione: string },
     attachments?: FileAttachment[],
+    owners?: any[],
     unitaorganizzativa_uo: string,
+}
+
+export interface Owner{
+    v_ie_ru_personale_id_ab: string;
 }
 
 export interface FileAttachment {
@@ -35,6 +40,8 @@ export interface FileAttachment {
     // per visualizzare il pdf | string è in base64 
     filevalue?: ArrayBuffer | string,
     filepath?: string,
+    number?: string,
+    emission_date?: Date,
 }
 
 // { "model_id": 2, "model_type": "App\\Convenzione", "attachmenttype_id": 1, 

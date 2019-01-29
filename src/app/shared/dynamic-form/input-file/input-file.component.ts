@@ -13,6 +13,9 @@ import { FieldType, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
     </formly-field> 
     <input #fileInput type="file" accept="{{to.accept}}" (change)="onFileChanged($event)" style="display: none">                    
     </div>
+    <div *ngIf="showError" class="invalid-feedback" [style.display]="'block'">
+    <formly-validation-message [field]="field"></formly-validation-message>
+    </div>
   `,
   //*ngIf="inputField"
   styles: []

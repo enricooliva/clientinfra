@@ -180,10 +180,10 @@ export class ApplicationService implements ServiceQuery {
           },
           {
             key: 'tipopagamenti_codice',
-            type: 'selectinfra',
+            type: 'select',
             className: "col-md-4",
             templateOptions: {
-              options: [],
+              options: this.getPagamenti(),
               valueProp: 'codice',
               labelProp: 'descrizione',
               label: 'Modalità di pagamento',

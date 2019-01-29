@@ -7,8 +7,9 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'formly-repeat-section',
   template: `  
-  <div>  
-    <button *ngIf="!to.btnHidden" type="button" class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onAddNew()"  >              
+  <div class="mb-2">  
+    <div *ngIf="to.label">{{to.label}} </div> 
+    <button *ngIf="!to.btnHidden" type="button" [disabled]="to.disabled" class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onAddNew()"  >              
       <span class="oi oi-plus"></span>
       <span class="ml-2">Aggiungi</span>
     </button>  
@@ -24,11 +25,13 @@ import { map } from 'rxjs/operators';
           <span class="ml-2">Rimuovi</span>
         </div>
         </div>            
-      </formly-group>  
+      </formly-group>    
       <div *ngIf="subfield.template" [innerHTML]="subfield.template">                           
       </div>    
   </div>
-
+  <div *ngIf="showError" class="invalid-feedback" [style.display]="'block'">
+  <formly-validation-message [field]="field"></formly-validation-message>
+  </div>
   `,
 })
 
@@ -57,6 +60,13 @@ export class RepeatTypeComponent extends FieldArrayType {
       this.remove(index);
     }
   }
+
+  clearFormArray() {
+    while (this.formControl.length !== 0) {
+      this.remove(0);
+    }
+  }
+
 
   // callbackRemove(index, context){
   //   context.remove(index); 
