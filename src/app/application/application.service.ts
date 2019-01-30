@@ -114,7 +114,7 @@ export class ApplicationService implements ServiceQuery {
             key: 'azienda',
             type: 'externalobject',
             className: "col-md-12",
-            defaultValue: { id_esterno:null, denominazione:''},
+            defaultValue: { id_esterno: null, denominazione: '' },
             templateOptions: {
               label: 'Azienda',
               type: 'string',
@@ -122,7 +122,7 @@ export class ApplicationService implements ServiceQuery {
               entityLabel: 'Aziende',
               codeProp: 'id_esterno',
               //required: true,
-              descriptionProp: 'denominazione',              
+              descriptionProp: 'denominazione',
             },
             // validation: {
             //   show: true,
@@ -158,7 +158,7 @@ export class ApplicationService implements ServiceQuery {
               label: 'Durata in mesi',
               required: true,
             },
-          },       
+          },
         ]
       },
       {
@@ -195,7 +195,12 @@ export class ApplicationService implements ServiceQuery {
                 return this.getPagamenti()
               }
             },
-            hideExpression: (model: any) => model.convenzione_type == 'TG',
+            expressionProperties: {
+              'templateOptions.disabled': 'model.convenzione_type == "TG"',
+            },
+            // hideExpression: (model: any, formState: any) => {
+            //   return formState.model.convenzione_type == 'TG';
+            // }
           },
           {
             key: 'corrispettivo',
@@ -205,8 +210,13 @@ export class ApplicationService implements ServiceQuery {
               label: 'Corrispettivo iva esclusa se applicabile',
               required: true,
             },
-            hideExpression: (model: any) => model.convenzione_type == 'TG',
-          },        
+            expressionProperties: {
+              'templateOptions.disabled': 'model.convenzione_type == "TG"',
+            },
+            // hideExpression: (model: any, formState: any) => {
+            //   return formState.model.convenzione_type == 'TG';
+            // }
+          },
         ]
       },
     ];
@@ -373,7 +383,7 @@ export class ApplicationService implements ServiceQuery {
         type: 'select',
         className: "col-md-6",
         templateOptions: {
-          options: [{value:'proposta', label:'Proposta'},{value:'approvato', label:'Approvato'}, {value:'inapprovazione', label:'In approvazione'}],
+          options: [{ value: 'proposta', label: 'Proposta' }, { value: 'approvato', label: 'Approvato' }, { value: 'inapprovazione', label: 'In approvazione' }],
           label: 'Stato',
           required: true,
         },
@@ -427,17 +437,17 @@ export class ApplicationService implements ServiceQuery {
     }
   }
 
-  createSchemaTipo(convenzione:Convenzione, retrow: boolean = false):any{
-      //crea una nuova Convenzione POST      
-      const url = `${this._baseURL + '/convenzioni/createschematipo'}`;
-      let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
-        .pipe(
-          tap(sub =>
-            this.messageService.info('Creazione effettuata con successo')
-          ),
-          catchError(this.handleError('createSchemaTipo', convenzione, retrow))
-        );
-      return res;
+  createSchemaTipo(convenzione: Convenzione, retrow: boolean = false): any {
+    //crea una nuova Convenzione POST      
+    const url = `${this._baseURL + '/convenzioni/createschematipo'}`;
+    let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Creazione effettuata con successo')
+        ),
+        catchError(this.handleError('createSchemaTipo', convenzione, retrow))
+      );
+    return res;
   }
 
 
@@ -450,7 +460,7 @@ export class ApplicationService implements ServiceQuery {
           tap(sub => {
             this.messageService.info('Aggiornamento effettuato con successo');
             return sub;
-          }),                    
+          }),
           catchError(this.handleError('updateConvenzione', convenzione, retrow))
         );
       return res;
@@ -471,31 +481,31 @@ export class ApplicationService implements ServiceQuery {
 
   uploadFile(file: FileAttachment): Observable<FileAttachment> {
     const url = `${this._baseURL + '/convenzioni/uploadFile'}`;
-      let res = this.http.post<FileAttachment>(url, file, httpOptions)
-        .pipe(
-          tap(sub =>
-            this.messageService.info('Creazione effettuata con successo')
-          ),          
-          catchError(this.handleError('caricamento documento', null))
-        );
-      return res;
+    let res = this.http.post<FileAttachment>(url, file, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Creazione effettuata con successo')
+        ),
+        catchError(this.handleError('caricamento documento', null))
+      );
+    return res;
   }
 
   deleteFile(id: number): Observable<any> {
-      const url = `${this._baseURL + '/convenzioni/uploadFile/'}${id}`;    
-      let res = this.http.delete<any>(url, httpOptions)
-        .pipe(
-          tap(sub =>
-            this.messageService.info('Eliminazione documento effettuata con successo')
-          ),
-          catchError(this.handleError('cancellazione documento', null))
-        );
-      return res;
+    const url = `${this._baseURL + '/convenzioni/uploadFile/'}${id}`;
+    let res = this.http.delete<any>(url, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Eliminazione documento effettuata con successo')
+        ),
+        catchError(this.handleError('cancellazione documento', null))
+      );
+    return res;
   }
-    
+
 
   @Cacheable()
-  getDipartimenti(): Observable<any> {    
+  getDipartimenti(): Observable<any> {
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
   }
 
@@ -513,7 +523,7 @@ export class ApplicationService implements ServiceQuery {
   getAttachemntTypes(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/attachmenttypes/', httpOptions);
   }
-  
+
   @Cacheable()
   getValidationOffices(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/validationoffices/', httpOptions);
@@ -521,9 +531,9 @@ export class ApplicationService implements ServiceQuery {
 
   @Cacheable()
   getValidationOfficesPersonale(id): Observable<any> {
-    if (id){
+    if (id) {
       return this.http.get(this._baseURL + '/convenzioni/validationoffices/' + id.toString(), httpOptions);
-    } 
+    }
     return of([]);
   }
 
@@ -546,7 +556,7 @@ export class ApplicationService implements ServiceQuery {
    */
   private handleError<T>(operation = 'operation', result?: T, retrow: boolean = false) {
     return (error: any): Observable<T> => {
-      
+
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
@@ -555,7 +565,7 @@ export class ApplicationService implements ServiceQuery {
       // Let the app keep running by returning an empty result.
       if (!retrow)
         return of(result as T);
-      else 
+      else
         return throwError(error);
     };
   }

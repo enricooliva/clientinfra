@@ -38,6 +38,10 @@ const PDFJS: PDFJSStatic = require('pdfjs-dist');
         <span class="oi oi-arrow-top"></span>  
         <span class="ml-2">Aggiorna</span>              
       </button> 
+      <button class="btn btn-outline-primary border-0 rounded-0" (click)="onValidate()" >              
+      <span class="oi oi-arrow-top"></span>  
+      <span class="ml-2">Valida</span>              
+    </button> 
     </div>
   </div>
   
@@ -45,7 +49,6 @@ const PDFJS: PDFJSStatic = require('pdfjs-dist');
     <formly-form  [model]="model" [fields]="fieldtabs" [form]="form" [options]="options">      
     </formly-form> 
   </form>
-
   `,
   styles: []
 })
@@ -218,7 +221,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 //hideExpression: (model: any) => !model.file_CD,               
                 fieldGroup: [
                   {
-                    key: 'number',
+                    key: 'docnumber',
                     type: 'input',
                     className: "col-md-4",
                     templateOptions: {
@@ -337,17 +340,16 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
               },
               {
                 key: 'owners',
-                type: 'repeat',                              
+                type: 'repeat',          
+                hideExpression: 'formState.model.schematipotipo == "schematipo"',                         
                 templateOptions: {                  
-                  label: 'Ulteriori assegnatari',                                                                       
-                  //(index, callback, context) => this.onRemoveFile(index, callback, context),
-                  //onAddInitialModel: (event) => this.onAddInitialModel(event),
+                  label: 'Ulteriori assegnatari',                                                                                        
                 },   
                 validators: {
                   unique: {
                     expression: (c) => {           
                       if (c.value)  {                              
-                        var valueArr = c.value.map(function(item){ return item.v_ie_ru_personale_id_ab });
+                        var valueArr = c.value.map(function(item){ return item.v_ie_ru_personale_id_ab }).filter(x => x != null );
                         var isDuplicate = valueArr.some(function(item, idx){ 
                             return valueArr.indexOf(item) != idx 
                         });              
@@ -374,8 +376,8 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     templateOptions: {
                       label: 'Assegnamento attività',
                       valueProp: 'id',
-                      labelProp: 'descr',
-                      required: true,     
+                      labelProp: 'descr',  
+                      required: true,                     
                     },
                     lifecycle: {
                       onInit: (form, field, model) => {                                              
@@ -387,18 +389,19 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                         );                      
                       },
                     },
-                  },                  
-                  ],
-   
+                  },
+                  ],   
                 },
               },
               {
                 key: 'descrizioneattivita',
                 type: 'textarea',
+                hideExpression: 'formState.model.schematipotipo == "schematipo"',    
                 templateOptions: {
                   label: 'Area messaggi',
                   maxLength: 200,
                   rows: 5,
+                  required: true,
                 },
                 expressionProperties: {
                   'templateOptions.disabled': '!model.respons',
@@ -412,6 +415,22 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
           }
         ]
       }];
+  }
+
+
+  public onValidate() {
+    const invalid = [];
+    const controls = this.form.controls;
+    this.service.clearMessage();
+    for (const name in controls) {        
+        if (controls[name].invalid) {
+            for (const error in controls[name].errors){
+              this.service.messageService.add(InfraMessageType.Error, name + " " + error, false);
+              invalid.push(name +" " + controls[name].getError(error));
+            }          
+        }
+    }
+    console.log(invalid);    
   }
 
   render_page(pageData) {
@@ -463,7 +482,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
             
       let number = text.match(/[d|D]elibera n.?\s?([A-Za-z0-9\/]*)\s*\n/);
       if (number && number[1]){
-        this.form.get('number').setValue(number[1]);
+        this.form.get('docnumber').setValue(number[1]);
       
       }
       let data_emissione = text.match(/[r|R]iunione del giorno\s([0-9]{2}\/[0-9]{2}\/[0-9]{4})\s?/);
@@ -535,7 +554,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       var tosubmit: Convenzione = { ...this.model, ...this.form.value };
 
       var file = this.mapAttachment.get(MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO);
-      file.number = this.model['number'];
+      file.number = this.model['docnumber'];
       file.emission_date = this.model['emission_date'];
 
       //aggiungo tutti gli allegati      

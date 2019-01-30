@@ -24,9 +24,6 @@ import { Page } from '../../../shared/lookup/page';
     
   </formly-form> 
   </form>
-
-  <p>Form value: {{ form.value | json }}</p>
-  <p>Form status: {{ form.status | json }}</p>
   `,
   styles: []
 })

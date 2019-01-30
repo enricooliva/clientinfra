@@ -15,7 +15,8 @@ import { map } from 'rxjs/operators';
     </button>  
   </div>   
   <div *ngFor="let subfield of field.fieldGroup; let i = index;">
-      <formly-group               
+      <formly-group     
+        [model]="model[i]"          
         [field]="subfield"
         [options]="options"
         [form]="formControl">

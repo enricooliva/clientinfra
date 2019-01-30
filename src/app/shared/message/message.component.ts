@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-message',
@@ -68,9 +69,16 @@ export class MessageComponent implements OnInit {
 
     constructor(public messageService: MessageService, private modalService: NgbModal, public activeModal: NgbActiveModal) { }
 
-    ngOnInit() {
-    }
+    messages: Observable<InfraMessage[]>
+    length: number;
 
+    ngOnInit() {
+        this.messages = this.messageService.messages;
+        this.messages.subscribe(x => {
+            this.length = x.length
+        });
+    }
+    
     cssClass(msg: InfraMessage) {
         if (!msg) {
             return;

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { InfraMessage, InfraMessageType } from './message/message';
+import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,33 +22,42 @@ export class MessageService {
     });
   }
 
-  messages: InfraMessage[] = [];
+  subject: Subject<InfraMessage[]> = new Subject();
+  _messages: InfraMessage[] = [];
  
+  get messages() {
+    return this.subject.asObservable();
+  }
    
   success(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
     this.post(deletePreviusMessage);
-    this.messages.push({message: message, type:InfraMessageType.Success});
+    this._messages.push({message: message, type:InfraMessageType.Success});
+    this.update();
   }
 
   error(message: string, deletePreviusMessage = true, keepAfterRouteChange = false, error: any = null) {
     this.post(deletePreviusMessage);    
     if (error)
       error = JSON.parse(JSON.stringify(error))
-    this.messages.push({message: message, type:InfraMessageType.Error, error: error});
+    this._messages.push({message: message, type:InfraMessageType.Error, error: error});
+    this.update();
   }
 
   info(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
     this.post(deletePreviusMessage);
-    this.messages.push({message: message, type:InfraMessageType.Info});
+    this._messages.push({message: message, type:InfraMessageType.Info});
+    this.update();
   }
 
   warn(message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
     this.post(deletePreviusMessage);
-    this.messages.push({type: InfraMessageType.Warning, message});
+    this._messages.push({type: InfraMessageType.Warning, message});
+    this.update();
   }
   add(messageType: InfraMessageType, message: string, deletePreviusMessage = true, keepAfterRouteChange = false) {
     this.post(deletePreviusMessage);
-    this.messages.push( {message: message, type: messageType });
+    this._messages.push( {message: message, type: messageType });
+    this.update();
   }
  
   private post(deletePreviusMessage){
@@ -56,8 +66,13 @@ export class MessageService {
   }
 
   clear() {
-    this.messages = [];
+    this._messages = [];
+    this.update();
   }
 
+  update(){
+    //Object.assign([], this._messages)
+    this.subject.next([...this._messages]);
+  }
 }
 

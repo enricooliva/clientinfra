@@ -3,6 +3,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { evalExpression } from './utils';
 
 
 
@@ -42,106 +43,115 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 export class TabTypeComponent extends FieldType implements OnInit {
 
-    activedStep = 0;
-  
-    @ViewChild('tabs') tabs: NgbTabset;
-  
-    last = false;
-    _selectedTab = 'tab-0';  
-  
-    ngOnInit() {
+  activedStep = 0;
 
+  @ViewChild('tabs') tabs: NgbTabset;
+
+  last = false;
+  _selectedTab = 'tab-0';
+
+  ngOnInit() {
+
+  }
+
+  isActive(index): boolean {
+    return ('tab-' + index) === this.tabs.activeId;
+  }
+
+  isValidChain(index): boolean {
+    if (!this.tabs.tabs)
+      return true;
+    //se uno dei tab precedenti è disabilitato allora mi disabilito
+    for (let i = 0; i <= index; i++) {
+      let t = this.tabs.tabs.find(x => x.id == 'tab-' + i)
+      if (t.disabled)
+        return false;
     }
-  
-    isActive(index): boolean {
-      return ('tab-' + index) === this.tabs.activeId;
-    }
-  
-    isValidChain(index): boolean{
-      if (!this.tabs.tabs)
-        return true;
-      //se uno dei tab precedenti è disabilitato allora mi disabilito
-      for (let i = 0; i <= index; i++) {
-        let t = this.tabs.tabs.find(x=> x.id == 'tab-'+i)  
-        if (t.disabled)
-          return false;        
-      }
-      return this.isValid(index);
-    }
-    
-    isValid(index): boolean {
-      let tab = this.field.fieldGroup[index];    
-      return this.isValidFieldGroup(tab);
-    }
-  
-    isValidFieldGroup(group: FormlyFieldConfig){
-      for (let subfield of group.fieldGroup) {                
-        
-        const fullName = this.field.key ? this.field.key+"."+subfield.key : subfield.key;        
-        const contrl = this.form.get(fullName);
-        
-        if (contrl && contrl.status !== 'DISABLED'){
+    return this.isValid(index);
+  }
+
+  isValid(index): boolean {
+    let tab = this.field.fieldGroup[index];
+    return this.isValidFieldGroup(tab);
+  }
+
+  isValidFieldGroup(group: FormlyFieldConfig) {
+    for (let subfield of group.fieldGroup) {
+
+      const fullName = this.field.key ? this.field.key + "." + subfield.key : subfield.key;
+      const contrl = this.form.get(fullName);
+
+      //chiamata alla funzione di hideExpression
+      // const hideResult = !!evalExpression(
+      //   subfield.hideExpression,
+      //   { subfield },
+      //   [subfield.model, this.formState],
+      // );
+
+      if (contrl) {
+        if (contrl.status !== 'DISABLED') {
           if (contrl && !contrl.valid)
             return false;
         }
-        //allora il subfield è un fieldgroup                 
-        if (subfield.fieldGroup)
-           if (!this.isValidFieldGroup(subfield))      
-              return false;
-      }    
-      
+      }
+      //allora il subfield è un fieldgroup                 
+      if (subfield.fieldGroup)
+        if (!this.isValidFieldGroup(subfield))
+          return false;
+    }
+
+    return true;
+  }
+
+  prevStep(step) {
+    if (step === 0)
+      return;
+    this.activedStep = step - 1;
+    this.selectActiveStep();
+  }
+
+  nextStep(step) {
+    if (step === this.field.fieldGroup.length - 1) {
       return true;
     }
-  
-    prevStep(step) {
-      if (step === 0)
-        return;
-      this.activedStep = step - 1;
-      this.selectActiveStep();
+    this.activedStep = step + 1;
+    this.selectActiveStep();
+  }
+
+  selectActiveStep() {
+    this.tabs.select('tab-' + this.activedStep);
+  }
+
+
+  public get lastIndex(): string {
+    return this.tabs.tabs.last.id; // 'tab-' + ( this.field.fieldGroup.length - 1);
+  }
+
+  public get selectedTab(): string {
+    return this._selectedTab;
+  }
+
+
+  public set selectedTab(value: string) {
+    this._selectedTab = value;
+    this.activedStep = +value.replace('tab-', '');
+  }
+
+
+  getStepTitle(index) {
+    let label = this.to.labels[index];
+    if (label) {
+      return label;
     }
-  
-    nextStep(step) {
-      if (step ===  this.field.fieldGroup.length - 1) {
-        return true;
-      }
-      this.activedStep = step + 1;
-      this.selectActiveStep();
-    }
-  
-    selectActiveStep() {
-      this.tabs.select('tab-' + this.activedStep);
-    }
-  
-  
-    public get lastIndex(): string {
-      return this.tabs.tabs.last.id; // 'tab-' + ( this.field.fieldGroup.length - 1);
-    }
-  
-    public get selectedTab(): string {
-      return this._selectedTab;
-    }
-  
-  
-    public set selectedTab(value: string) {
-      this._selectedTab = value;
-      this.activedStep = +value.replace('tab-', '');
-    }
-  
-  
-    getStepTitle(index) {
-      let label = this.to.labels[index];
-      if (label) {
-        return label;
-      }
-      return 'Passo ' + index;
-    }
-  
-    onTabChange($event) {
-      this.selectedTab = $event.nextId;
-      if (this.lastIndex === this.selectedTab) {
-        this.last = true;
-      } else {
-        this.last = false;
-      }
+    return 'Passo ' + index;
+  }
+
+  onTabChange($event) {
+    this.selectedTab = $event.nextId;
+    if (this.lastIndex === this.selectedTab) {
+      this.last = true;
+    } else {
+      this.last = false;
     }
   }
+}
