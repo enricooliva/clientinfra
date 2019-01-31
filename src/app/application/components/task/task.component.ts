@@ -247,21 +247,21 @@ export class TaskComponent extends BaseEntityComponent {
     });
   }
   
-  protected postGetById(){
-    if (this.model['transitions']) {       
-        this.model['transition']='self_transition';
-        this.subject.next([...this.model['transitions']]);        
-        //f.templateOptions.options = this.model['transitions'];
-    }      
-  }
-
-  protected postOnSubmit(){
+  protected updateTransitions(){
     if (this.model['transitions']) {       
       this.model['transition']='self_transition';
       this.subject.next([]);
       this.subject.next(this.model['transitions']);        
       //f.templateOptions.options = this.model['transitions'];
-  }   
+    }   
+  }
+
+  protected postGetById(){
+    this.updateTransitions();  
+  }
+
+  protected postOnSubmit(){
+    this.updateTransitions();
   }
   
 }
