@@ -64,8 +64,16 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "uniconvclient:build"
+          },
+          "configurations" : {
+            "it": {
+              "outputPath": "locale/",
+              "outFile": "messages.it.untranslated.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "it"
+            }
           }
-        },
+        },       
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {

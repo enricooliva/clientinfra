@@ -323,7 +323,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                         field.formControl.setValue('');
                         field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
                           map(items => {
-                            return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF');
+                            return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D');
                           }),  
                           tap(items => {
                             if (items[0]){

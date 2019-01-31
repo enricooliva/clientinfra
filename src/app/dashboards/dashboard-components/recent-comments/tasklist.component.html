@@ -3,14 +3,14 @@
         <h4 class="card-title">{{title}}</h4>
     </div>
     <div class="comment-widgets" [perfectScrollbar]="config">
-        <!-- Comment Row -->
-        <div class="d-flex flex-row comment-row m-t-0">
+        <!-- Comment Row -->        
+        <div class="d-flex flex-row comment-row m-t-0"  *ngFor="let task of model | async" >
             <div class="comment-text w-100">
-                <h6 class="font-medium">James Anderson</h6>
-                <span class="m-b-15 d-block">Lorem Ipsum is simply dummy text of the printing and type setting industry. </span>
+                <h6 class="font-medium">{{task.user.name}}</h6>
+                <span class="m-b-15 d-block">{{task.subject}}</span>
                 <div class="comment-footer">
-                    <span class="text-muted float-right">April 14, 2016</span>
-                    <span class="label label-rounded label-primary">Pending</span>
+                    <span class="text-muted float-right">{{task.created_at | date:'d MMMM, yyyy' }}</span>
+                    <span class="label label-rounded label-primary">{{task.state}}</span>
                     <span class="action-icons">
                         <a href="javascript:void(0)">
                             <i class="ti-pencil-alt"></i>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <!-- Comment Row -->
-        <div class="d-flex flex-row comment-row">  
+        <!-- <div class="d-flex flex-row comment-row">  
             <div class="comment-text active w-100">
                 <h6 class="font-medium">Michael Jorden</h6>
                 <span class="m-b-15 d-block">Lorem Ipsum is simply dummy text of the printing and type setting industry. </span>
@@ -46,9 +46,9 @@
                     </span>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Comment Row -->
-        <div class="d-flex flex-row comment-row">            
+        <!-- <div class="d-flex flex-row comment-row">            
             <div class="comment-text w-100">
                 <h6 class="font-medium">Johnathan Doeting</h6>
                 <span class="m-b-15 d-block">Lorem Ipsum is simply dummy text of the printing and type setting industry. </span>
@@ -68,7 +68,7 @@
                     </span>
                 </div>
             </div>
-        </div>
+        </div> -->
     
     </div>
 </div>

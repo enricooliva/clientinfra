@@ -42,6 +42,9 @@ export class TaskComponent extends BaseEntityComponent {
               label: 'Id',
               disabled: true,
             },
+            hideExpression: (model: any, formState: any) => {
+              return !model.id;
+           },   
           },
 
           // {
@@ -61,7 +64,10 @@ export class TaskComponent extends BaseEntityComponent {
             templateOptions: {
               label: 'Prossima azione',
               options: this.subject.asObservable(),
-            },            
+            }, 
+            hideExpression: (model: any, formState: any) => {
+              return !model.id;
+            },              
             // expressionProperties: {
             //   'templateOptions.options': (model: any, formState: any) => {
             //     if (model['transitions']) {
@@ -150,7 +156,7 @@ export class TaskComponent extends BaseEntityComponent {
               field.formControl.setValue('');
               field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
                 map(items => {
-                  return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF');
+                  return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D');
                 }),
                 tap(items => {
                   if (items[0]) {
@@ -216,6 +222,7 @@ export class TaskComponent extends BaseEntityComponent {
       key: 'subject',
       templateOptions: {
         label: 'Oggetto',
+        required: true,
       },
     },
     {

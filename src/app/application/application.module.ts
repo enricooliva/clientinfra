@@ -1,5 +1,5 @@
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
@@ -32,7 +32,9 @@ import { TipoPagamentoComponent } from './components/convenzione/tipopagamento.c
 import { TaskComponent } from './components/task/task.component';
 import { TasksComponent } from './components/task/tasks.component';
 
-
+import { registerLocaleData } from '@angular/common';
+import localeIt from '@angular/common/locales/it';
+registerLocaleData(localeIt);
 @NgModule({
   imports: [
     CommonModule,
@@ -58,6 +60,7 @@ import { TasksComponent } from './components/task/tasks.component';
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent
   ],
   providers: [ 
+    { provide: LOCALE_ID, useValue: 'it' },
     ApplicationService,
     UserTaskService,
   ], 

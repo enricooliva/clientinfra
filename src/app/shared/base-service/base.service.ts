@@ -16,12 +16,43 @@ const httpOptions = {
   })
 };
 
-const cacheBusterNotifier = new Subject();
 @Injectable()
-export class BaseService implements ServiceQuery, ServiceEntity {
-
+export class CoreSevice 
+{
   _baseURL: string;
 
+  constructor(protected http: HttpClient, public messageService: MessageService) {
+    this._baseURL = AppConstants.baseApiURL;
+  }
+
+
+   /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  protected handleError<T>(operation = 'operation', result?: T, retrow: boolean = false) {
+    return (error: any): Observable<T> => {
+      
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`, true, false, error);
+      // Let the app keep running by returning an empty result.
+      if (!retrow)
+        return of(result as T);
+      else 
+        return throwError(error);
+    };
+  }
+}
+
+const cacheBusterNotifier = new Subject();
+@Injectable()
+export class BaseService extends CoreSevice implements ServiceQuery, ServiceEntity {
+  
   protected basePath: string;
   
   getMetadata(): FormlyFieldConfig[] {
@@ -46,7 +77,7 @@ export class BaseService implements ServiceQuery, ServiceEntity {
   }
 
   constructor(protected http: HttpClient, public messageService: MessageService) {
-    this._baseURL = AppConstants.baseApiURL;
+     super(http,messageService)
   }
 
   clearMessage() {
@@ -109,26 +140,5 @@ export class BaseService implements ServiceQuery, ServiceEntity {
       )
     );
   }
-
- /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  protected handleError<T>(operation = 'operation', result?: T, retrow: boolean = false) {
-    return (error: any): Observable<T> => {
-      
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.messageService.error(`L'operazione di ${operation} è terminata con errori: ${error.message}`, true, false, error);
-      // Let the app keep running by returning an empty result.
-      if (!retrow)
-        return of(result as T);
-      else 
-        return throwError(error);
-    };
-  }
+   
 }

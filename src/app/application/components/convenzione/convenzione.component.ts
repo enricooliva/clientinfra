@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, Input, TemplateRef, ViewChild, Sanitizer 
 import { FormGroup, FormControl, FormArray, NgForm, Validators } from '@angular/forms';
 import { ApplicationService } from '../../application.service';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Convenzione } from '../../convenzione';
 import { Subject, of, onErrorResumeNext } from 'rxjs';
 import { encode, decode } from 'base64-arraybuffer';
@@ -131,11 +131,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         btnHidden: true,
         label: 'Attività associate',
         hidetoolbar: true,
-        onSelected: (obj) => {
+        onDblclickRow: (event) => {
           //leggi dettagli 
           //crea la form
-          if (obj.selected) {
-            this.modelUserTaskDetail = obj.selected[0];
+          if (event.row.id) {            
+            this.router.navigate(['home/tasks/', event.row.id]);            
           }
         },
         columns: [
@@ -257,7 +257,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);    
   }
 
-  constructor(private service: ApplicationService, private route: ActivatedRoute, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private service: ApplicationService, private route: ActivatedRoute, protected router: Router, private modalService: NgbModal, public activeModal: NgbActiveModal) {
 
     //modello vuoto
     this.model = {

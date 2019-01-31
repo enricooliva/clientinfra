@@ -14,6 +14,7 @@ import { Dashboard1Component } from './dashboard1/dashboard1.component';
 
 import { TaskListComponent } from './dashboard-components/recent-comments/tasklist.component';
 import { InfocardComponent } from './dashboard-components/info-card/info-card.component';
+import { DashboardService } from './dashboard.service';
 
 @NgModule({
   imports: [
@@ -28,6 +29,9 @@ import { InfocardComponent } from './dashboard-components/info-card/info-card.co
     Dashboard1Component,
     InfocardComponent,
     TaskListComponent
+  ],
+  providers: [ 
+    DashboardService,
   ]
 })
 export class DashboardModule {}

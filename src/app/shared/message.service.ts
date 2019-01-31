@@ -72,7 +72,8 @@ export class MessageService {
 
   update(){
     //Object.assign([], this._messages)
-    this.subject.next([...this._messages]);
+    this.subject.next([])
+    this.subject.next(this._messages);
   }
 }
 
