@@ -76,8 +76,6 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
 
   mapAttachment: Map<string, FileAttachment> = new Map<string, FileAttachment>();
 
-  responsabile: Observable<any>;
-
   constructor(private service: ApplicationService, public authService: AuthService, private router: Router) {
 
     PDFJS.disableWorker = true;
@@ -305,7 +303,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 },
               },              
               {
-                key: 'respons',
+                key: 'respons_v_ie_ru_personale_id_ab',
                 type: 'select',
                 hideExpression: 'formState.model.schematipotipo == "schematipo"',                
                 templateOptions: {
@@ -339,7 +337,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 },
               },
               {
-                key: 'owners',
+                key: 'assignments',
                 type: 'repeat',          
                 hideExpression: 'formState.model.schematipotipo == "schematipo"',                         
                 templateOptions: {                  
@@ -363,7 +361,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 expressionProperties: {
                   'templateOptions.disabled': (model: any, formState: any) => {
                     // access to the main model can be through `this.model` or `formState` or `model
-                    return formState.model.respons == null || formState.model.respons == '';
+                    return formState.model.respons_v_ie_ru_personale_id_ab == null || formState.model.respons_v_ie_ru_personale_id_ab == '';
                   },
                 },            
                 fieldArray: {                  
@@ -404,7 +402,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                   required: true,
                 },
                 expressionProperties: {
-                  'templateOptions.disabled': '!model.respons',
+                  'templateOptions.disabled': '!model.respons_v_ie_ru_personale_id_ab',
                 },
               }
             ],

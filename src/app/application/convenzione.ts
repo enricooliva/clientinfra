@@ -21,7 +21,7 @@ export interface Convenzione extends BaseEntity {
     tipopagamento: { codice: string, descrizione: string },
     azienda: { id_esterno: string, denominazione: string },
     attachments?: FileAttachment[],
-    owners?: any[],
+    assignments?: any[],
     unitaorganizzativa_uo: string,
 }
 

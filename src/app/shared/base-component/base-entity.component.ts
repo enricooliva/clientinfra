@@ -25,7 +25,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
 
   options: FormlyFormOptions = {
     formState: {
-      mainModel: this.model,
+      model: this.model,
     },
   };
 
@@ -51,6 +51,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
         this.service.getById(params['id']).subscribe((data) => {
           this.isLoading = false;
           this.model = JSON.parse(JSON.stringify(data));
+          this.postGetById();
         });
       }else{          
         this.additionalFormInitialize();             
@@ -65,9 +66,9 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
-  protected additionalFormInitialize() { // hook for child
-    
-  }
+  protected postGetById(){}// hook for child
+  protected additionalFormInitialize() {}
+  protected postOnSubmit() {}
 
   onNew(){    
     if (this.newPath){
@@ -101,9 +102,12 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
           
           this.isLoading = false;          
           this.router.navigate([this.researchPath, result.id]);
-
+          
+          this.model = JSON.parse(JSON.stringify(result));
           this.options.resetModel(result);
           this.options.updateInitialValue();
+          this.postOnSubmit();
+
         },
         error => {
           this.isLoading = false;
