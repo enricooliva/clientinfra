@@ -4,6 +4,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceEntity } from '../query-builder/query-builder.interfaces';
 import { Subject } from 'rxjs';
+import { InfraMessageType } from '../message/message';
 
 @Component({
   template: `NOT UI`
@@ -21,7 +22,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   
   form = new FormGroup({});
 
-  model = {};
+  model: any = {};
 
   options: FormlyFormOptions = {
     formState: {
@@ -135,6 +136,21 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
     if (this.researchPath){
       this.router.navigate([this.researchPath]);    
     }
+  }
+
+  public onValidate() {
+    const invalid = [];
+    const controls = this.form.controls;
+    this.service.clearMessage();
+    for (const name in controls) {        
+        if (controls[name].invalid) {
+            for (const error in controls[name].errors){
+              this.service.messageService.add(InfraMessageType.Error, name + " " + error, false);
+              invalid.push(name +" " + controls[name].getError(error));
+            }          
+        }
+    }
+    //console.log(invalid);    
   }
 
 }

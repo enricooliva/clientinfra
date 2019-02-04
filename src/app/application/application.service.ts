@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap, startWith, takeUntil, publishReplay, refCount } from 'rxjs/operators';
-import { MessageService, ServiceQuery } from '../shared';
+import { MessageService, ServiceQuery, ServiceEntity } from '../shared';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Convenzione, FileAttachment } from './convenzione';
@@ -16,7 +16,8 @@ const httpOptions = {
 };
 
 @Injectable()
-export class ApplicationService implements ServiceQuery {
+export class ApplicationService implements ServiceQuery, ServiceEntity {
+
 
   _baseURL: string;
 
@@ -450,8 +451,25 @@ export class ApplicationService implements ServiceQuery {
     return res;
   }
 
+  store(convenzione: any, retrow: boolean): Observable<any> {
+    //crea una nuova Convenzione POST
+    convenzione.stato_avanzamento = 'incomp';
+    const url = `${this._baseURL + '/convenzioni'}`;
+    let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Creazione effettuata con successo')
+        ),
+        catchError(this.handleError('updateConvenzione', convenzione, retrow))
+      );
+    return res;
+  }
+ 
+  remove(id: any): Observable<any> {
+    throw new Error("Method not implemented.");
+  }
 
-  updateConvenzione(convenzione: Convenzione, id: number, retrow: boolean = false): any {
+  update(convenzione: Convenzione, id: number, retrow: boolean = false): any {
     if (id) {
       //aggiorna la Convenzione esiste PUT
       const url = `${this._baseURL + '/convenzioni'}/${id}`;
@@ -465,17 +483,7 @@ export class ApplicationService implements ServiceQuery {
         );
       return res;
     } else {
-      //crea una nuova Convenzione POST
-      convenzione.stato_avanzamento = 'incomp';
-      const url = `${this._baseURL + '/convenzioni'}`;
-      let res = this.http.post<Convenzione>(url, convenzione, httpOptions)
-        .pipe(
-          tap(sub =>
-            this.messageService.info('Creazione effettuata con successo')
-          ),
-          catchError(this.handleError('updateConvenzione', convenzione, retrow))
-        );
-      return res;
+      return this.store(convenzione, retrow);
     }
   }
 

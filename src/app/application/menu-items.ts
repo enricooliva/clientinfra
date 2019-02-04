@@ -101,6 +101,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'],
       },
+      {
+        path: 'validazione',
+        title: 'Approvazione',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN','VALID'],
+      },
     ]
   }
 ];
