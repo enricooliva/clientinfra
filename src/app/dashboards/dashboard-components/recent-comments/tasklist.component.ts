@@ -34,6 +34,13 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     this.router.navigate(['home/tasks', task.id]);
   }
   
+  onCheck(task){
+    //TODO usare il tipo di task...
+    if (task.workflow_place == 'inapprovazione' || task.workflow_place ==null){
+      this.router.navigate(['home/validazione', task.model_id]);
+    }
+  }
+
   // assignments: (2) [{…}, {…}]
   // cd_tipo_posizorg: "RESP_UFF"
   // model_id: 3
