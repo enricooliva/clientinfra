@@ -9,6 +9,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { takeUntil, startWith, filter, tap, map, distinct } from 'rxjs/operators';
 import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 import { Observable, Subject } from 'rxjs';
+import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 
 @Component({
   selector: 'app-task',
@@ -101,6 +102,7 @@ export class TaskComponent extends BaseEntityComponent {
         entityLabel: 'Convenzione',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
+        isLoading: false,
       },
       expressionProperties: {
         'templateOptions.disabled': 'model.id',
@@ -121,14 +123,20 @@ export class TaskComponent extends BaseEntityComponent {
 
     {
       key: 'unitaorganizzativa_uo',
-      type: 'select',
+      type: 'selectinfra',
       templateOptions: {
         label: 'Ufficio affidatario procedura',
         required: true,
-        options: this.service.getValidationOffices(),
+        options: [], //this.service.getValidationOffices(),
         valueProp: 'uo',
         labelProp: 'descr',
-      },
+        inizialization: () => {
+          return this.model['unitaOrganizzativa'];
+        },
+        populateAsync: () => {          
+          return this.service.getValidationOffices();
+        }
+      },          
       expressionProperties: {
         'templateOptions.disabled': (model: any, formState: any) => { return model.id; },
       },
@@ -243,7 +251,7 @@ export class TaskComponent extends BaseEntityComponent {
     //this.title = 'Permesso IN LAVORAZIONE'
     this.activeNew = true;
     this.researchPath = 'home/tasks'
-    this.newPath = 'home/tasks/new'
+    this.newPath = 'home/tasks/new'    
   }
 
 

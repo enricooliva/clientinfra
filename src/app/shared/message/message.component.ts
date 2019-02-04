@@ -103,9 +103,11 @@ export class MessageComponent implements OnInit {
             this.model = msg.error;
             
             if (msg.error.error){
-                let errors = msg.error.error.errors;
-                let msgErrors: string = '';                
-                Object.keys(errors).forEach(key => msgErrors += errors[key].toString());                    
+                let msgErrors:string =  msg.error.error.message; 
+                if (msg.error.error.errors){
+                    let errors = msg.error.error.errors;                
+                    Object.keys(errors).forEach(key => msgErrors += errors[key].toString());                    
+                }
                 this.model['errors'] = msgErrors;
             }
             const modalRef = this.modalService.open(content, {

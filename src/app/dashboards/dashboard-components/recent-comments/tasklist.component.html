@@ -5,14 +5,23 @@
     <div class="comment-widgets" [perfectScrollbar]="config">
         <!-- Comment Row -->        
         <div class="d-flex flex-row comment-row m-t-0"  *ngFor="let task of model | async" >
-            <div class="comment-text w-100">
-                <h6 class="font-medium">{{task.user.name}}</h6>
-                <span class="m-b-15 d-block">{{task.subject}}</span>
+            <div class="comment-text w-100">                 
+                <span class="float-right">Convenzione n. {{task.model_id}}</span>
+                <h6 *ngIf="!task.namelist" class="font-medium">{{task.user.name}}</h6>   
+                <h6 *ngIf="task.namelist" class="font-medium">{{task.namelist | titlecase}}</h6>                
+                <span class="m-b-15 d-block">{{task.subject}}</span>              
                 <div class="comment-footer">
-                    <span class="text-muted float-right">{{task.created_at | date:'d MMMM, yyyy' }}</span>
-                    <span class="label label-rounded label-primary">{{task.state}}</span>
+                    <span class="text-muted float-right">{{task.created_at | date:'d MMMM, yyyy' }}</span>                  
+                    <span [ngSwitch]="task.state">                        
+                        <span *ngSwitchCase="'aperto'" class="label label-rounded label-primary">{{task.state}}</span>                        
+                        <span *ngSwitchCase="'inlavorazione'" class="label label-rounded label-warning">{{task.state}}</span> 
+                        <span *ngSwitchCase="'completato'" class="label label-rounded label-success">{{task.state}}</span>                                            
+                        <span *ngSwitchCase="'annullato'" class="label label-rounded label-danger">{{task.state}}</span>                                                
+                        <span *ngSwitchDefault class="label label-rounded label-info">{{task.state}}</span>                        
+                    </span>
+                    <!-- 'aperto', 'inlavorazione', 'completato', 'annullato' -->
                     <span class="action-icons">
-                        <a href="javascript:void(0)">
+                        <a (click)="onClick(task)">
                             <i class="ti-pencil-alt"></i>
                         </a>
                         <a href="javascript:void(0)">

@@ -26,6 +26,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   options: FormlyFormOptions = {
     formState: {
       model: this.model,
+      isLoading: false,
     },
   };
 
