@@ -46,10 +46,10 @@ export class TasksComponent extends BaseResearchComponent {
             }
           },
           {
-            key: 'email',
+            key: 'unitaorganizzativa_uo',
             type: 'string',
             templateOptions: {
-              label: 'Assegnata',
+              label: 'Ufficio',
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
@@ -64,14 +64,24 @@ export class TasksComponent extends BaseResearchComponent {
             }
           },
           {
-            key: 'tasktype.descrizione',
+            key: 'state',
             type: 'string',
             templateOptions: {
-              label: 'Tipo',
+              label: 'Stato',
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
           }
+
+          // {
+          //   key: 'tasktype.descrizione',
+          //   type: 'string',
+          //   templateOptions: {
+          //     label: 'Tipo',
+          //     required: true,
+          //     column: { cellTemplate: 'valuecolumn'}
+          //   }
+          // }
 
         ]
       }

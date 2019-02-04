@@ -84,7 +84,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
             field.formControl.valueChanges.pipe(
               distinctUntilChanged(),             
               takeUntil(this.onDestroy$),              
-              //startWith(field.formControl.value),
+              startWith(field.formControl.value),
               tap(selectedField => {                
                 if (field.formControl.value && !this.nodecode){
                   this.isLoading = true;

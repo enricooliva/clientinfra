@@ -20,6 +20,7 @@ import { FullComponent } from '../shared/layouts/full/full.component';
 import { BlankComponent } from '../shared/layouts/blank/blank.component';
 import { TasksComponent } from '../application/components/task/tasks.component';
 import { TaskComponent } from '../application/components/task/task.component';
+import { ConvvalidationComponent } from '../application/pages/convvalidation.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -53,6 +54,26 @@ const routes: Routes = [
           ]
         }
       }, 
+      {
+        path: 'validazione/:id', component: ConvvalidationComponent, canActivate:[AuthGuard], pathMatch:'full',
+        data: {
+        title: 'Approvazione convenzione',
+        urls: [
+          { title: 'Home', url: '/home' },
+          { title: 'Approvazione convenzione' }
+        ]
+        }
+      },
+      {
+        path: 'validazione', component: ConvvalidationComponent, canActivate:[AuthGuard],
+        data: {
+          title: 'Approvazione convenzione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Approvazione convenzione' }
+          ]
+        },
+      },        
       { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard],
         data: {

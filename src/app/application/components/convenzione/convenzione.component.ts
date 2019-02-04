@@ -346,7 +346,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      this.service.updateConvenzione(tosubmit, tosubmit.id).subscribe(
+      this.service.update(tosubmit, tosubmit.id).subscribe(
         result => {
           //this.options.resetModel(result);
           try {

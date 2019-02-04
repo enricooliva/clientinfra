@@ -268,6 +268,14 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DOC_APP)
                   }
                 },
+                validators: {                        
+                  formatpdf: {
+                    expression: (c) => {
+                     return c.value ? /.+\.([dD][oO][cC][xX]?)/.test(c.value) : true;
+                    },
+                    message: (error, field: FormlyFieldConfig) =>  `Formato non consentito`,
+                  }
+                }
               },
               {
                 key: 'file_PR',
@@ -282,6 +290,14 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.PROSPETTO)
                   }
                 },
+                validators: {                        
+                  formatpdf: {
+                    expression: (c) => {
+                     return c.value ? /.+\.([xX][lL][sS][xX])$/.test(c.value) : true;
+                    },
+                    message: (error, field: FormlyFieldConfig) =>  `Formato non consentito`,
+                  }
+                }
               },
             ],
             templateOptions: {
