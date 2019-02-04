@@ -18,7 +18,7 @@ import { InfraMessageType } from '../message/message';
 export class BaseEntityComponent implements OnInit, OnDestroy {
 
   protected onDestroy$ = new Subject<void>();
-  protected isLoading = true;
+  isLoading = true;
   
   form = new FormGroup({});
 
