@@ -96,7 +96,7 @@ export class AllegatiComponent implements OnInit {
           templateOptions: {
             text: 'Carica',
             btnType: 'primary',            
-            onClick: ($event) => this.add(),
+            onClick: ($event, model) => this.add(),
           },
           expressionProperties: {
             'templateOptions.disabled':(model: any, formState: any) => {

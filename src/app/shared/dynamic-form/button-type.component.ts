@@ -14,8 +14,9 @@ import { FieldType } from '@ngx-formly/core';
 })
 export class FormlyFieldButton extends FieldType {
   onClick($event) {
-    if (this.to.onClick) {
-      this.to.onClick($event);
+    if (this.to.onClick instanceof Function) {      
+      //(this.to.onClick as Function).apply(this.field, [$event, this.model]);
+      this.to.onClick($event, this.model);
     }
   }
 }

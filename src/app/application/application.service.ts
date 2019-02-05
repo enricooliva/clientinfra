@@ -545,6 +545,13 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return of([]);
   }
 
+  download(id): Observable<any>{
+    if (id) {
+      return this.http.get(this._baseURL + '/attachments/download/' + id.toString(), httpOptions);
+    }
+    return of([]);
+  }
+
 
   generatePDF(id: number) {
     this.http.get(this._baseURL + '/convenzioni/generapdf/' + id.toString(), { responseType: 'blob' }).subscribe(

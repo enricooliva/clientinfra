@@ -115,6 +115,15 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               disabled: true,
             },
           },
+          {
+            type: 'button',
+            className: "col-md-2 d-flex align-items-start mt-4 pt-2",          
+            templateOptions: {              
+              btnType: 'primary oi oi-data-transfer-download',            
+             //icon: 'oi oi-data-transfer-download'
+              onClick: ($event, model) => this.download($event, model),
+            },
+          }
         ],
       }
     }
@@ -141,7 +150,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         columns: [
           { name: 'Oggetto', prop: 'subject', wrapper: 'value' },
           { name: 'Stato', prop: 'state', wrapper: 'value' },
-          { name: 'Assegnata', prop: 'email', wrapper: 'value' },
+          { name: 'Ufficio', prop: 'unitaorganizzativa_uo', wrapper: 'value' },
         ],
       },
       fieldArray: {
@@ -166,9 +175,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         {
           className: 'col-md-3',
           type: 'input',
-          key: 'email',
+          key: 'unitaorganizzativa_uo',
           templateOptions: {
-            label: "Assegnata",
+            label: "Ufficio",
             disabled: true,
           },
         },
@@ -415,6 +424,18 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
+  }
+
+  download(event, model){
+    //console.log(model);
+    this.service.download(model.id).subscribe(file => {
+      if (file.filevalue)
+        var blob = new Blob([decode(file.filevalue)]);
+        saveAs(blob, file.filename);
+      },
+      e => {  console.log(e); }  
+    );
+
   }
 
   // public innerHtml: SafeHtml;
