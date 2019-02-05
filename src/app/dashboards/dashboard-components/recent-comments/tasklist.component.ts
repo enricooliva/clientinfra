@@ -36,7 +36,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   
   onCheck(task){
     //TODO usare il tipo di task...
-    if (task.workflow_place == 'inapprovazione' || task.workflow_place ==null){
+    if (task.workflow_place == 'store_to_inapprovazione' || task.workflow_place ==null){
       this.router.navigate(['home/validazione', task.model_id]);
     }
   }
