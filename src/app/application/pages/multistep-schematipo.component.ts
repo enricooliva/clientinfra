@@ -39,7 +39,7 @@ const PDFJS: PDFJSStatic = require('pdfjs-dist');
         <span class="ml-2">Aggiorna</span>              
       </button> 
       <button class="btn btn-outline-primary border-0 rounded-0" (click)="onValidate()" >              
-      <span class="oi oi-arrow-top"></span>  
+      <span class="oi oi-flash"></span>  
       <span class="ml-2">Valida</span>              
     </button> 
     </div>
