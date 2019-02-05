@@ -21,10 +21,10 @@
                     </span>
                     <!-- 'aperto', 'inlavorazione', 'completato', 'annullato' -->
                     <span class="action-icons">
-                        <a (click)="onClick(task)">
+                        <a (click)="onClick(task)" data-toggle="tooltip" title="Apre attività">
                             <i class="ti-pencil-alt"></i>
                         </a>
-                        <a (click)="onCheck(task)">
+                        <a (click)="onCheck(task)" data-toggle="tooltip" title="Esegui attività">
                             <i class="ti-check"></i>
                         </a>
                         <!-- <a href="javascript:void(0)">
