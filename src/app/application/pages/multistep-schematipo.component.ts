@@ -408,7 +408,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 },
               },
               {
-                key: 'descrizioneattivita',
+                key: 'description',
                 type: 'textarea',
                 hideExpression: 'formState.model.schematipotipo == "schematipo"',    
                 templateOptions: {
