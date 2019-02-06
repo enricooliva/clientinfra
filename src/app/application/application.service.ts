@@ -26,7 +26,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
   }
 
 
-  getInformazioniDescrittiveFields(comp: Convenzione): FormlyFieldConfig[] {
+  getInformazioniDescrittiveFields(comp: Convenzione): any[] {
     return [
       {
         className: 'section-label',

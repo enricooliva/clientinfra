@@ -57,7 +57,7 @@ export class ConvenzioniComponent implements OnInit {
           type: 'datatablelookup',
           wrappers: ['accordion'],      
           templateOptions: {
-            label: 'Domande',   
+            label: 'Convenzioni',   
             columnMode: 'force',
             headerHeight: 50,
             footerHeight: 50,

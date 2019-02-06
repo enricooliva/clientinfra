@@ -106,38 +106,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       },
     };
 
-    this.fieldtabs = [
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [{
-          key: 'schematipotipo',
-          wrappers: ['form-field-horizontal'],
-          className: 'col-md-6',
-          type: 'select',
-          templateOptions: {
-            label: 'Schema tipo',
-            options: [
-              { label: 'Si', value: 'schematipo' },
-              { label: 'No', value: 'daapprovare' },
-            ],
-          },
-          lifecycle: {
-            onInit: (form, field) => {
-              const tabs = this.fieldtabs.find(f => f.type === 'tabinfra');
-              const tabappr = tabs.fieldGroup[2];
-              //const selectfield = tabappr.fieldGroup.find(x=> x.key == 'ufficioaffidatario')
-              field.formControl.valueChanges.subscribe(x => {
-                if (x == 'schematipo') {
-                  tabappr.templateOptions.hidden = true;
-                }
-                else {
-                  tabappr.templateOptions.hidden = false;
-                }
-              });
-            }
-          }
-        }],
-      },
+    this.fieldtabs = [          
       {
         type: 'tabinfra',
         templateOptions:{
@@ -145,17 +114,52 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         },
         fieldGroup: [
           {
-            fieldGroup: service.getInformazioniDescrittiveFields(this.model).map(x => {
-              if (x.key == 'user') {
-                x.templateOptions.disabled = true;
-              }
-              return x;
-            }),
+            wrappers: ['accordioninfo'],
+            fieldGroup: [
+              {
+                fieldGroupClassName: 'row',
+                fieldGroup: [{
+                  key: 'schematipotipo',
+                  wrappers: ['form-field-horizontal'],
+                  className: 'col-md-6',
+                  type: 'select',
+                  templateOptions: {
+                    label: 'Schema tipo',
+                    options: [
+                      { label: 'Si', value: 'schematipo' },
+                      { label: 'No', value: 'daapprovare' },
+                    ],
+                  },
+                  lifecycle: {
+                    onInit: (form, field) => {
+                      const tabs = this.fieldtabs.find(f => f.type === 'tabinfra');
+                      const tabappr = tabs.fieldGroup[2];
+                      //const selectfield = tabappr.fieldGroup.find(x=> x.key == 'ufficioaffidatario')
+                      field.formControl.valueChanges.subscribe(x => {
+                        if (x == 'schematipo') {
+                          tabappr.templateOptions.hidden = true;
+                        }
+                        else {
+                          tabappr.templateOptions.hidden = false;
+                        }
+                      });
+                    }
+                  }
+                }],
+              },
+            ].concat(
+              this.service.getInformazioniDescrittiveFields(this.model).map(x => {
+                if (x.key == 'user') {
+                  x.templateOptions.disabled = true;
+                }
+                return x;
+              })),
             templateOptions: {
               label: 'Informazioni descrittive'
-            }
+            },
           },
           {
+            wrappers: ['accordioninfo'],
             fieldGroup: [
       
               // {
@@ -305,6 +309,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
             }
           },
           {
+            wrappers: ['accordioninfo'],
             fieldGroup: [
               {
                 key: 'unitaorganizzativa_uo',

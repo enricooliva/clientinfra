@@ -54,6 +54,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TooltipWrapperComponent } from './dynamic-form/wrapper/tooltip-wrapper.component';
+import { AccordionInfoWrapperComponent } from './dynamic-form/wrapper/accordioninfo-wrapper.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -153,6 +154,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       wrappers: [
         { name: 'panel', component: PanelWrapperComponent },
         { name: 'accordion', component: AccordionWrapperComponent },
+        { name: 'accordioninfo', component: AccordionInfoWrapperComponent },
         { name: 'form-field-horizontal', component: FormlyHorizontalWrapper },
         { name: 'tooltip', component: TooltipWrapperComponent },
       ],
@@ -203,7 +205,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NavigationComponent,
     BreadcrumbComponent,
     SidebarComponent,
-    TooltipWrapperComponent
+    TooltipWrapperComponent,    
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -225,7 +227,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NavigationComponent,
     BreadcrumbComponent,
     SidebarComponent,
-    TooltipWrapperComponent
+    TooltipWrapperComponent,
+    AccordionInfoWrapperComponent,
   ],
   entryComponents: [LookupComponent]
 })
