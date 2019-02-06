@@ -15,12 +15,14 @@ import { Dashboard1Component } from './dashboard1/dashboard1.component';
 import { TaskListComponent } from './dashboard-components/recent-comments/tasklist.component';
 import { InfocardComponent } from './dashboard-components/info-card/info-card.component';
 import { DashboardService } from './dashboard.service';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
     FormsModule,
     CommonModule,
-    NgbModule,    
+    NgbModule,   
+    LoadingModule, 
     RouterModule.forChild(DashboardRoutes),
     PerfectScrollbarModule,    
     NgxDatatableModule

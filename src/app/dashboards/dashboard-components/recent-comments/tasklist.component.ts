@@ -15,6 +15,9 @@ export class TaskListComponent implements OnInit, AfterViewInit {
   public config: PerfectScrollbarConfigInterface = {};
 
   @Input()
+  isLoading: false;
+
+  @Input()
   title: string;
 
   @Input()

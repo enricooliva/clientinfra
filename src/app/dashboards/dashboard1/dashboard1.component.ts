@@ -13,26 +13,39 @@ export class Dashboard1Component implements OnInit, AfterViewInit {
 
   mytasks: Observable<any>;
   myofficetasks: Observable<any>;
+  isLoadingTask: boolean = false;
+  isLoadingOfficeTask: boolean;
 
   ngAfterViewInit() {
    
   }
 
   ngOnInit(): void {
+    this.isLoadingTask = true;
     this.mytasks = this.service.getUserTaskByCurrentUser().pipe(
       tap(data =>{ 
         data.forEach(x => {
           x.namelist = x.assignments.map(el => el.personale.nome + ' ' + el.personale.cognome)
-          x.namelist = x.namelist.join(', ');     
-        })}
-    )
+          x.namelist = x.namelist.join(', ');               
+        })
+        setTimeout(()=> {
+          this.isLoadingTask = false;
+        }, 0);
+        
+      })
     );
+
+    this.isLoadingOfficeTask = true;
     this.myofficetasks = this.service.getUserTaskByCurrentUserOffice().pipe(
       tap(data =>{ 
         data.forEach(x => {
           x.namelist = x.assignments.map(el => el.personale.nome + ' ' + el.personale.cognome)
           x.namelist = x.namelist.join(', ');     
-        })}
+        });
+        setTimeout(()=> {
+          this.isLoadingOfficeTask = false;
+        }, 0);
+      }
     )
     );
   }
