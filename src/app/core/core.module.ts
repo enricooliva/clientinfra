@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './auth.service';
 import { RequestCacheWithMap } from './request-cache.service';
+
 
 
 @NgModule({
@@ -9,7 +10,7 @@ import { RequestCacheWithMap } from './request-cache.service';
     CommonModule
   ],
   declarations: [],
-  providers:[
+  providers:[  
     AuthService,    
     RequestCacheWithMap,
   ]

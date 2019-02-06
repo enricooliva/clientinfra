@@ -34,6 +34,7 @@
     "ngx-loading": "^1.0.14",
     "ngx-perfect-scrollbar": "^7.2.0",
     "ngx-permissions": "^5.0.0",
+    "ngx-toastr": "^9.1.1",
     "rxjs": "^6.3.2",
     "zone.js": "^0.8.26"
   },

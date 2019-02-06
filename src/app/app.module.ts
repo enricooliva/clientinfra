@@ -1,7 +1,7 @@
 import {NgbModule, NgbDateParserFormatter, NgbDateAdapter, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { ApplicationModule } from './application/application.module';
@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
 import { NotFoundComponent } from './not-found-component/not-found.component';
-import { CoreModule, HttpInterceptorProviders, AuthGuard, MessageCacheService, RequestCache, RequestCacheWithMap } from './core';
+import { CoreModule, HttpInterceptorProviders, AuthGuard, MessageCacheService, RequestCache, RequestCacheWithMap, GlobalErrorHandlerProviders } from './core';
 import { Router } from '@angular/router';
 import { NgbDateISOParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
 import { NgbStringAdapter } from './NgbStringAdapter';
@@ -31,6 +31,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { RoleService } from './application/role.service';
 import { PermissionService } from './application/permission.service';
 import { TipoPagamentoService } from './application/tipopagamento.service';
+import { ToastrModule } from 'ngx-toastr';
 
 
 export function tokenGetter() {
@@ -48,7 +49,7 @@ export function tokenGetter() {
 ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
-    AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(), PdfViewerModule, 
+    AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(), PdfViewerModule, ToastrModule.forRoot(), 
     
     JwtModule.forRoot({
       config: {
@@ -68,9 +69,10 @@ export function tokenGetter() {
     MessageCacheService,  
     RoleService,
     PermissionService,
-    TipoPagamentoService,    
+    TipoPagamentoService,      
     { provide: RequestCache, useClass: RequestCacheWithMap },
-    HttpInterceptorProviders,    
+    HttpInterceptorProviders,
+    GlobalErrorHandlerProviders,        
     {provide: 'userService', useClass: UserService},
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},
