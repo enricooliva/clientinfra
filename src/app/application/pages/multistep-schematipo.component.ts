@@ -191,6 +191,11 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                         { value: 'DDD', label: 'Disposizione del direttore di dipartimento' },
                       ]
                     },
+                    expressionProperties: {
+                      'templateOptions.disabled': (model: any, formState: any) => {                        
+                          return !(formState.model.file_CD == null || formState.model.file_CD == '');
+                      },
+                    },            
                   },
                   {
                     key: 'file_CD',
@@ -204,7 +209,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                       accept: 'application/pdf',                      
                       required: true,                                                                  
                       onSelected: (selFile) => {
-                        this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO)
+                        this.onSelectCurrentFile(selFile, this.model['file_CD_type']);
                       },                                            
                     },
                     validators: {                        

@@ -62,8 +62,9 @@ export class InputFileComponent extends FieldType implements OnInit{
     let selFile = event.target.files[0] as File;
     if (selFile){
       this.inputField.formControl.setValue(selFile.name);      
-      //let $img = this.fileInput.nativeElement.files[0];
-      this.to.onSelected(selFile)
+      //let $img = this.fileInput.nativeElement.files[0];      
+      this.to.onSelected(...[selFile, this.model])
+
     }
   }
 

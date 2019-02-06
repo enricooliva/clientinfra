@@ -7,7 +7,7 @@
         <div class="d-flex flex-row comment-row m-t-0"  *ngFor="let task of model | async" >
             <div class="comment-text w-100">                 
                 <span class="float-right">Convenzione n. {{task.model_id}}</span>
-                <h6 *ngIf="!task.namelist" class="font-medium">{{task.user.name}}</h6>   
+                <h6 *ngIf="!task.namelist" class="font-medium">...</h6>   
                 <h6 *ngIf="task.namelist" class="font-medium">{{task.namelist | titlecase}}</h6>                
                 <span class="m-b-15 d-block">{{task.subject}}</span>              
                 <div class="comment-footer">
