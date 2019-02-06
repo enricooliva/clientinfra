@@ -4,26 +4,29 @@ import { FormGroup, FormArray, FormControl, ValidationErrors } from '@angular/fo
 import { Subject } from 'rxjs';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
 import { MessageService } from '../message.service';
+import { Operator } from './query-builder.interfaces';
 
 @Component({
   selector: 'app-query-builder',
   templateUrl: './query-builder.component.html',
   styles: []
 })
+
+
 export class QueryBuilderComponent implements OnInit, OnChanges {
   onDestroy$ = new Subject<void>();
   
   @Output() find =  new  EventEmitter();
 
-  public defaultOperatorMap: {[key: string]: string[]} = {
-    string: ['=', '!=', 'contains', 'like'],
-    textarea: ['=', '!=', 'contains', 'like'],
-    number: ['=', '!=', '>', '>=', '<', '<='],
-    time: ['=', '!=', '>', '>=', '<', '<='],
-    date: ['=', '!=', '>', '>=', '<', '<='],
-    enum: ['=', '!=', 'in', 'not in'],
-    select: ['=', '!=', 'in', 'not in'],
-    boolean: ['=']
+  public defaultOperatorMap: {[key: string]: Operator[]} = {
+    string: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'contiene', value:'contains'}],
+    textarea: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'contiene', value:'contains'}],
+    number: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'maggiore', value:'>'}, {label:'maggiore uguale', value:'>='}, {label:'minore', value:'<'}, {label:'minore uguale', value:'<='}],
+    time: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'maggiore', value:'>'}, {label:'maggiore uguale', value:'>='}, {label:'minore', value:'<'}, {label:'minore uguale', value:'<='}],
+    date: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'maggiore', value:'>'}, {label:'maggiore uguale', value:'>='}, {label:'minore', value:'<'}, {label:'minore uguale', value:'<='}],
+    enum: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}], //['=', '!=', 'in', 'not in'],
+    select: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}], //['=', '!=', 'in', 'not in'],
+    boolean: [{label:'uguale', value:'='}]
   };
 
   private rules: FormlyFieldConfig[] = [
@@ -62,7 +65,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                   tap(selectedField => {                                     
                     field.formControl.setValue('');
                     if (this.keymetadata[selectedField] )                     
-                      field.templateOptions.options = this.getOptions(this.getOperators(selectedField));  
+                      field.templateOptions.options = this.getOperators(selectedField);  
                       if (field.templateOptions.options[0] !== undefined) 
                         field.formControl.setValue(field.templateOptions.options[0].value);                                                                           
                   }),
@@ -111,7 +114,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   //elenco dei metadati dell'entità di ingresso
   @Input() metadata: FormlyFieldConfig[] = []
   private keymetadata: { [index: string]: FormlyFieldConfig } = {}
-  private operatorsCache: {[key: string]: string[]};
+  private operatorsCache: {[key: string]: { label: string, value:string }[]};
   private defaultEmptyList: any[] = [];
   // private defaultTemplateTypes: string[] = [
   //  'string', 'number', 'time', 'date', 'category', 'boolean', 'multiselect'];
@@ -166,16 +169,16 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     this.onDestroy$.complete();
   }
 
-  getOptions(operators: string[]) : {label:string, value:string }[] {
-    return operators.map(el=> {                         
-      return  {                          
-        label: el,
-        value: el
-      };                  
-    });
-  }
+  // getOptions(operators: string[]) : Operator[] {
+  //   return operators.map(el=> {                         
+  //     return  {                          
+  //       label: el,
+  //       value: el
+  //     };                  
+  //   });
+  // }
 
-  getOperators(field: string): string[] {
+  getOperators(field: string): Operator[] {
     if (this.operatorsCache[field]) {
       return this.operatorsCache[field];
     }

@@ -2,6 +2,12 @@ import { Observable } from "rxjs";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { MessageService } from "../message.service";
 
+
+export interface Operator{
+  label: string;
+  value: string;
+}
+
 export interface ServiceBase {
   getById(id: any):  Observable<any>;
   getMetadata(): FormlyFieldConfig[];
