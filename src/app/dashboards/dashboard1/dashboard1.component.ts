@@ -19,7 +19,14 @@ export class Dashboard1Component implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.mytasks = this.service.getUserTaskByCurrentUser().pipe();
+    this.mytasks = this.service.getUserTaskByCurrentUser().pipe(
+      tap(data =>{ 
+        data.forEach(x => {
+          x.namelist = x.assignments.map(el => el.personale.nome + ' ' + el.personale.cognome)
+          x.namelist = x.namelist.join(', ');     
+        })}
+    )
+    );
     this.myofficetasks = this.service.getUserTaskByCurrentUserOffice().pipe(
       tap(data =>{ 
         data.forEach(x => {
