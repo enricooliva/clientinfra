@@ -511,6 +511,17 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
+  validationStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/validationstep'}`;
+    let res = this.http.post<FileAttachment>(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Validazione effettuata con successo')
+        ),
+        catchError(this.handleError('validationStep', null, retrow))
+      );
+    return res;
+  }
 
   @Cacheable()
   getDipartimenti(): Observable<any> {

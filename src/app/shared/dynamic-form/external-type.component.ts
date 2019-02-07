@@ -87,9 +87,9 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
               startWith(field.formControl.value),
               tap(selectedField => {                
                 if (field.formControl.value && !this.nodecode){
-                  this.isLoading = true;
+                  setTimeout(()=> { this.isLoading = true; }, 0);
                   this.service.getById(field.formControl.value).subscribe((data)=> {
-                    this.isLoading = false;
+                    setTimeout(()=> { this.isLoading = false; }, 0);
                     if (data == null )
                     {
                       this.extDescription = null;

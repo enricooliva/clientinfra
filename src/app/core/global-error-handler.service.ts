@@ -41,20 +41,9 @@ export class GlobalErrorHandlerService implements ErrorHandler {
         
       } else {
           //A client-side or network error occurred.	          
-          console.error('An error occurred:', error.message);     
+          //console.error('An error occurred:', error.message);     
           throw error;     
       }     
     }
 
-    // private showError(message:string){
-    //     this.toastr.error(message, GlobalErrorHandlerService.DEFAULT_ERROR_TITLE, { dismiss: 'controlled'}).then((toast:Toast)=>{
-    //             let currentToastId:number = toast.id;
-    //             this.toastr..onClickToast().subscribe(clickedToast => {
-    //                 if (clickedToast.id === currentToastId) {
-    //                     this.toastManager.dismissToast(toast);
-    //                     window.location.reload();
-    //                 }
-    //             });
-    //         });
-    //   }
 } 

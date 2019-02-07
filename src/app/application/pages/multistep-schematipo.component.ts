@@ -12,8 +12,9 @@ import { takeUntil, startWith, tap, filter, map, distinct } from 'rxjs/operators
 import { Subject, Observable } from 'rxjs';
 import { PDFJSStatic } from 'pdfjs-dist';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
-const PDFJS: PDFJSStatic = require('pdfjs-dist');
+import { ChangeDetectorRef } from '@angular/core';
 
+const PDFJS: PDFJSStatic = require('pdfjs-dist');
 
 //ng g c application/pages/test-tab -s true  --spec false --flat true
 
@@ -76,7 +77,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
 
   mapAttachment: Map<string, FileAttachment> = new Map<string, FileAttachment>();
 
-  constructor(private service: ApplicationService, public authService: AuthService, private router: Router) {
+  constructor(private service: ApplicationService, public authService: AuthService, private router: Router,  private cdRef : ChangeDetectorRef) {
 
     PDFJS.disableWorker = true;
 
@@ -149,8 +150,10 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
               },
             ].concat(
               this.service.getInformazioniDescrittiveFields(this.model).map(x => {
-                if (x.key == 'user') {
-                  x.templateOptions.disabled = true;
+                if (x.key == 'user') {                  
+                  setTimeout(()=> {
+                    x.templateOptions.disabled = true;
+                  }, 0);
                 }
                 return x;
               })),
@@ -435,7 +438,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
             templateOptions: {
               label: 'Approvazione',
               hidden: true,
-            },
+            },              
           }
         ]
       }];
@@ -494,7 +497,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
 
   async parsePdf(data){
     let text = '';
-    PDFJS.getDocument({ data: data }).then(async (doc) => {
+    await PDFJS.getDocument({ data: data }).then(async (doc) => {
       let counter: number = 1;
       counter = counter > doc.numPages ? doc.numPages : counter;
 
@@ -589,7 +592,8 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         result => {
           //this.options.resetModel(result);
           this.isLoading = false;
-          this.router.navigate(['home/convenzioni/' + result.id]);
+          this.router.navigate(['home/dashboard/dashboard1']);  
+          //this.router.navigate(['home/convenzioni/' + result.id]);
         },
         error => {
           this.isLoading = false;

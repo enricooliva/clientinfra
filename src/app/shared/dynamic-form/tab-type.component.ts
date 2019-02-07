@@ -8,18 +8,20 @@ import { evalExpression } from './utils';
 
 
 // ng g c shared/dynamic-form/tab-type -s true  --spec false --flat true
+
+//[disabled]="index>0 && !isValidChain(index-1)"
 @Component({
   selector: 'app-tab-type',
   template: `
   <ngb-tabset #tabs="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'" (tabChange)="onTabChange($event)">
   <div *ngFor="let f of field.fieldGroup; let index = index;">
-    <ngb-tab id="tab-{{index}}" [disabled]="index>0 && !isValidChain(index-1)" *ngIf="!f.templateOptions.hidden">
+    <ngb-tab id="tab-{{index}}"  *ngIf="!f.templateOptions.hidden">
         <ng-template ngbTabTitle>
-          <button class="btn btn-circle mr-2" [disabled]="index>0 && !isValidChain(index-1)">
+          <button class="btn btn-circle mr-2">
             <span *ngIf="isActive(index)" class="oi oi-pencil iconic" aria-hidden="true"></span>
             <span *ngIf="!isActive(index)"><b>{{ index }}</b></span>
           </button>
-          <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="index>0 && !isValidChain(index-1)">{{ f.templateOptions.label }} </button>          
+          <button class="btn btn-outline-primary border-0 rounded-0">{{ f.templateOptions.label }} </button>          
         </ng-template>
         <ng-template ngbTabContent>            
             <formly-field 

@@ -4,7 +4,7 @@ import { FieldType, FormlyFieldConfig, FormlyConfig } from '@ngx-formly/core';
 @Component({
   selector: 'app-input-file',
   template: `      
-    <div *ngIf="inputField"  placement="top" ngbTooltip="{{ to.tooltip ? to.tooltip.content : null}}">
+    <div *ngIf="inputField" placement="top" ngbTooltip="{{ to.tooltip ? to.tooltip.content : null}}">
     <formly-field *ngIf="inputField"  
       [model]="model"
       [field]="inputField"
@@ -63,7 +63,7 @@ export class InputFileComponent extends FieldType implements OnInit{
     if (selFile){
       this.inputField.formControl.setValue(selFile.name);      
       //let $img = this.fileInput.nativeElement.files[0];      
-      this.to.onSelected(...[selFile, this.model])
+      this.to.onSelected(...[selFile, this.field])
 
     }
   }

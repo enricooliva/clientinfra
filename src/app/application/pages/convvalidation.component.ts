@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+import { FormlyFieldConfig, Field } from '@ngx-formly/core';
 import { BaseEntityComponent } from 'src/app/shared';
 import { ApplicationService } from '../application.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RowHeightCache } from '@swimlane/ngx-datatable/release/utils';
+import { encode, decode } from 'base64-arraybuffer';
+import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
+import { FileDetector } from 'protractor';
 
 @Component({
   selector: 'app-convvalidation',
@@ -36,6 +37,9 @@ import { RowHeightCache } from '@swimlane/ngx-datatable/release/utils';
 })
 export class ConvvalidationComponent extends BaseEntityComponent {
 
+  public static WORKFLOW_ACTION: string = 'store_validazione'; //TRASITION
+  public static ABSULTE_PATH: string = 'home/validazione';
+
   fields: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -59,7 +63,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
       },    
     },
     {
-      key: 'attachment',
+      key: 'attachments',
       type: 'repeat',
       templateOptions: {
         label: 'Documenti di approvazione',
@@ -68,7 +72,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
         unique: {
           expression: (c) => {
             if (c.value) {
-              var valueArr = c.value.map(function (item) { return item.filename }).filter(x => x != null).map(x => x.toString());
+              var valueArr = c.value.map(function (item) { return item.attachmenttype_codice }).filter(x => x != null).map(x => x.toString());
               var isDuplicate = valueArr.some(function (item, idx) {
                 return valueArr.indexOf(item) != idx
               });
@@ -113,7 +117,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
               placeholder: 'Scegli file documento',
               accept: 'application/pdf,.p7m', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               required: true,
-              onSelected: (selFile) => { this.onSelectCurrentFile(selFile) }
+              onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
             },
           },   
         ],
@@ -139,6 +143,14 @@ export class ConvvalidationComponent extends BaseEntityComponent {
                 //required: true,                               
               },
             },
+            {
+              key: 'filevalue',
+              type: 'textarea',               
+              hide: true,             
+              templateOptions: {                
+                //required: true,                               
+              },
+            },
           ],
         },        
         ],              
@@ -146,7 +158,46 @@ export class ConvvalidationComponent extends BaseEntityComponent {
     },
   ]
 
-  onSelectCurrentFile(selFile){
+  onSelectCurrentFile(currentSelFile, field: FormlyFieldConfig){
+    
+  
+    let currentAttachment = field.formControl.parent.value;
+    if (currentSelFile == null) {
+      //caso di cancellazione
+      currentAttachment.filevalue = null;
+      return;
+    }
+  
+    this.isLoading = true;
+    currentAttachment.model_type = 'convenzione';
+    
+    const reader = new FileReader();   
+
+    reader.onload = async (e: any) => {
+      this.isLoading = true;
+      //currentAttachment.filevalue = encode(e.target.result);
+      field.formControl.parent.get('filevalue').setValue(encode(e.target.result));
+      if (currentSelFile.name.search('pdf')>0){
+        try {
+          let result = await ControlUtils.parsePdf(e.target.result);     
+          field.formControl.parent.get('docnumber').setValue(result.docnumber);
+          field.formControl.parent.get('data_emissione').setValue(result.converted);
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+      }
+
+      if (!currentAttachment.filevalue) {
+        this.isLoading = false;
+        return;
+        //this.form.get('file_' + typeattachemnt).setErrors({ 'filevalidation': true });
+        //this.service.messageService.add(InfraMessageType.Error,'Documento '+ currentAttachment.filename +' vuoto');
+      }    
+      this.isLoading = false;
+    }
+    reader.readAsArrayBuffer(currentSelFile);
+
 
   }
   
@@ -164,7 +215,19 @@ export class ConvvalidationComponent extends BaseEntityComponent {
     });
   }  
 
-  onSubmit(){
-
+  onSubmit() {
+    if (this.form.valid) {
+      this.isLoading = true;
+      var tosubmit = { ...this.model, ...this.form.value };
+      this.service.validationStep(tosubmit,true).subscribe(
+        result => {          
+          this.isLoading = false;          
+          this.router.navigate(['home/dashboard/dashboard1']);                
+        },
+        error => {
+          this.isLoading = false;
+          //this.service.messageService.error(error);          
+        });
+    }
   }
 }
