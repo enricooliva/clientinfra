@@ -242,8 +242,6 @@ export class TaskComponent extends BaseEntityComponent {
         rows: 5,
       },
     },
-
-
   ];
 
   constructor(protected service: UserTaskService, protected route: ActivatedRoute, protected router: Router) {
@@ -255,6 +253,7 @@ export class TaskComponent extends BaseEntityComponent {
   }
 
 
+  //richiamato nel caso di nuovo 
   protected additionalFormInitialize() {
     this.service.create().subscribe((data) => {
       this.isLoading = false;
@@ -271,10 +270,12 @@ export class TaskComponent extends BaseEntityComponent {
     }   
   }
 
+  //richiamato nella init dopo aver caricato il modello
   protected postGetById(){
     this.updateTransitions();  
   }
 
+  //richiamato nella submit dopo l'avvenuto salvataggio
   protected postOnSubmit(){
     this.updateTransitions();
   }

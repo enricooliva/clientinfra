@@ -83,6 +83,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
 
     this.model = {
       schematipotipo: 'schematipo',
+      transition: 'self_transition',
       user_id: authService.userid,
       id: null,
       descrizione_titolo: '',

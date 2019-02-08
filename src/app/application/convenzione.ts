@@ -9,6 +9,7 @@ export interface FileInfra {
 
 export interface Convenzione extends BaseEntity {
     schematipotipo: string, 
+    transition: string,
     user_id: number,
     descrizione_titolo: string,
     dipartimemto_cd_dip: string,

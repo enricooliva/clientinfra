@@ -35,8 +35,39 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   model: Convenzione;
   modelUserTaskDetail: any;
 
+  transitions = new Subject<any>();
+
   //caricati dal service
-  fields: FormlyFieldConfig[];
+  fields: FormlyFieldConfig[]= [
+    {
+      className: 'section-label',
+      template: '<h5>Stato</h5>',
+    },
+    {      
+      type: 'select',
+      key: 'transition',
+      defaultValue: 'self_transition',
+      templateOptions: {
+        label: 'Prossima azione',
+        options: this.transitions.asObservable(),
+      }, 
+      // expressionProperties: {
+      //   'templateOptions.disabled': (model: any, formState: any) => {                        
+      //       return !model.id
+      //   },
+      // },
+      lifecycle: {
+        onInit: (form, field) => {
+          this.transitions.subscribe(d => {
+            field.templateOptions.disabled = false;
+            field.formControl.setValue('self_transition');
+          }
+          );          
+        }
+      }
+
+    },
+  ];
   fieldsattachment: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -270,6 +301,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     //modello vuoto
     this.model = {
+      transition: 'self_transition',
       schematipotipo: 'schematipo',
       user_id: null,
       id: null,
@@ -286,7 +318,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       unitaorganizzativa_uo: '',
     }
 
-    this.fields = service.getInformazioniDescrittiveFields(this.model)//.concat(service.getConvenzioneFields(this.model));
+    this.fields = this.fields.concat(service.getInformazioniDescrittiveFields(this.model)); //.concat(service.getConvenzioneFields(this.model));
   }
 
   get isNew(): boolean {
@@ -302,9 +334,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           try {
             if (!data.azienda){
               data.azienda = { id_esterno: null, denominazione: '' };            
-            }
-            
-            //al primo false esce 
+            }                     
+
+            this.updateTransition(data.id);
+
             //this.options.every(tabOptions => { if (tabOptions.resetModel) return false; else return true; } )
 
             //Nota viene creata solo l'option del ng-tab attivo. Evito di fare il ciclo sulle tab.
@@ -362,7 +395,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
             if (!result.azienda){
               result.azienda = { id_esterno: null, descrizione: null };
             }
+            
             this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result)});               
+            this.updateTransition(result.id);
+
             this.isLoading = false;                            
           } catch (error) {
             this.onError(error);
@@ -371,6 +407,14 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         error => this.onError(error),
         );
     }
+  }
+
+  protected updateTransition(id){
+     //caricamento transisioni successive
+     this.service.getNextActions(id).subscribe((data)=>{                            
+      this.transitions.next([]);
+      this.transitions.next(data);                       
+    });
   }
 
   private onError(error){

@@ -523,6 +523,13 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
+  //@Cacheable()
+  getNextActions(id): Observable<any> {
+    const url = `${this._baseURL}/convenzioni/${id}/actions`;
+    return this.http.get(url, httpOptions);
+  }
+
+
   @Cacheable()
   getDipartimenti(): Observable<any> {
     return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
