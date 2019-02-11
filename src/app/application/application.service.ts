@@ -525,7 +525,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
 
   //@Cacheable()
   getNextActions(id): Observable<any> {
-    const url = `${this._baseURL}/convenzioni/${id}/actions`;
+    const url = `${this._baseURL}/convenzioni/${id}/actions`
     return this.http.get(url, httpOptions);
   }
 

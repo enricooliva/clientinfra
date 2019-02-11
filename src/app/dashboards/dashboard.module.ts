@@ -16,6 +16,7 @@ import { TaskListComponent } from './dashboard-components/recent-comments/taskli
 import { InfocardComponent } from './dashboard-components/info-card/info-card.component';
 import { DashboardService } from './dashboard.service';
 import { LoadingModule } from 'ngx-loading';
+import { NotificationsComponent } from './dashboard-components/notifications/notifications.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { LoadingModule } from 'ngx-loading';
   declarations: [
     Dashboard1Component,
     InfocardComponent,
-    TaskListComponent
+    TaskListComponent,
+    NotificationsComponent,
   ],
   providers: [ 
     DashboardService,

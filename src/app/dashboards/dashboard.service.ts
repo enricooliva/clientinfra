@@ -38,4 +38,11 @@ export class DashboardService extends CoreSevice {
       );
   }
 
+  getNotifications(): Observable<any>{
+      const url = `${this._baseURL}/notifications`;
+      return this.http        
+      .get(url, httpOptions).pipe(
+          catchError(this.handleError('getUserTaskByUserOffice')),
+      );
+  }
 }
