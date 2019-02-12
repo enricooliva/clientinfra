@@ -86,4 +86,10 @@ export class UserTaskService extends BaseService {
   }
 
 
+  getNextActions(id): Observable<any> {
+    const url = `${this._baseURL}/convenzioni/${id}/actions`
+    return this.http.get(url, httpOptions);
+  }
+
+
 }

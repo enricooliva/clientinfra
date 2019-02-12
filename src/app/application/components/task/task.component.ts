@@ -10,6 +10,7 @@ import { takeUntil, startWith, filter, tap, map, distinct } from 'rxjs/operators
 import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 import { Observable, Subject } from 'rxjs';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+import { toPublicName } from '@angular/compiler/src/i18n/serializers/xmb';
 
 @Component({
   selector: 'app-task',
@@ -108,7 +109,45 @@ export class TaskComponent extends BaseEntityComponent {
         'templateOptions.disabled': 'model.id',
       },
     },
+    {      
+      type: 'select',
+      key: 'workflow_transition',
+      //defaultValue: 'self_transition',
+      templateOptions: {
+        label: 'Azione da compiere sulla convenzione',      
+        options: [],
+        disabled: true,
+      },
+      hideExpression: (model: any, formState: any) => {
+        return model.id;
+      },               
+      // expressionProperties: {
+      //   'templateOptions.disabled': (model: any, formState: any) => {                        
+      //       return !model.select
+      //   },
+      // },
+      lifecycle: {
+        onInit: (form, field) => {
+          form.get('model_id').valueChanges.pipe(
+            takeUntil(this.onDestroy$),    
+            distinct(),                  
+            //startWith(form.get('unitaorganizzativa_uo').value),
+            filter(ev => ev !== null),
+            tap(id => {                 
+              if (id){
+                field.templateOptions.options = this.service.getNextActions(id).pipe(
+                  map(x => x.filter(y => y.value != 'self_transition')),
+                  tap(x => field.templateOptions.disabled = false )
+                );                
+                
+                //field.formControl.setValue('self_transition');
+              }
+            })
+          ).subscribe();
+        }
+      }
 
+    },
     // {
     //   className: 'col-md-6',
     //   type: 'input',
@@ -258,6 +297,7 @@ export class TaskComponent extends BaseEntityComponent {
     this.service.create().subscribe((data) => {
       this.isLoading = false;
       this.model = JSON.parse(JSON.stringify(data));
+      this.updateTransitions();
     });
   }
   
