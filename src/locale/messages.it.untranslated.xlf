@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="it" datatype="plaintext" original="ng2.template">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="ngb.alert.close" datatype="html">
         <source>Close</source>
@@ -205,7 +205,14 @@
           <context context-type="sourcefile">../node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-navigation.d.ts</context>
           <context context-type="linenumber">27</context>
         </context-group>
-      </trans-unit>    
+      </trans-unit>
+      <trans-unit id="80530c256f60d67f27778830236563f675d5ddf6" datatype="html">
+        <source>{VAR_SELECT, select, App\Notifications\ConvenzioneApprovata {ConvenzioneApprovata} }</source>        
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/dashboards/dashboard-components/notifications/notifications.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

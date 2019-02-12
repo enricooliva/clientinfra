@@ -70,7 +70,7 @@
           "configurations" : {
             "it": {
               "outputPath": "locale/",
-              "outFile": "messages.it.untranslated.xlf",
+              "outFile": "messages.it.xlf",
               "i18nFormat": "xlf",
               "i18nLocale": "it"
             }
