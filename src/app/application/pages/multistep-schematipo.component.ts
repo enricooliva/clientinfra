@@ -128,8 +128,8 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                   templateOptions: {
                     label: 'Approvazione organi',
                     options: [
-                      { label: 'Si', value: 'schematipo' },
-                      { label: 'No', value: 'daapprovare' },
+                      { label: 'No', value: 'schematipo' },
+                      { label: 'Si', value: 'daapprovare' },
                     ],
                   },
                   lifecycle: {
