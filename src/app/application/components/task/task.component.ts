@@ -203,7 +203,7 @@ export class TaskComponent extends BaseEntityComponent {
               field.formControl.setValue('');
               field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
                 map(items => {
-                  return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D');
+                  return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D' || x.cd_tipo_posizorg == 'RESP_DID');
                 }),
                 tap(items => {
                   if (items[0]) {
@@ -255,7 +255,7 @@ export class TaskComponent extends BaseEntityComponent {
                 //field.formControl.setValue('');
                 field.templateOptions.options = this.service.getValidationOfficesPersonale(this.model['unitaorganizzativa_uo']).pipe(
                   map(items => {
-                    return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF');
+                    return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D' && x.cd_tipo_posizorg !== 'RESP_DID');
                   }),
                 );
               },
