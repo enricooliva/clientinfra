@@ -126,7 +126,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                   className: 'col-md-6',
                   type: 'select',
                   templateOptions: {
-                    label: 'Schema tipo',
+                    label: 'Approvazione organi',
                     options: [
                       { label: 'Si', value: 'schematipo' },
                       { label: 'No', value: 'daapprovare' },
