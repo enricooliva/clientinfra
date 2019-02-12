@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { FormArray } from '@angular/forms';
@@ -37,7 +37,7 @@ import { map } from 'rxjs/operators';
 })
 
 export class RepeatTypeComponent extends FieldArrayType {
-  constructor(builder: FormlyFormBuilder) {
+  constructor(builder: FormlyFormBuilder, private cd: ChangeDetectorRef) {
     super(builder);            
   }
 
@@ -47,6 +47,7 @@ export class RepeatTypeComponent extends FieldArrayType {
       this.add(null,init);
     }else{
       this.add();
+      this.cd.detectChanges();     
     }    
   }
 
@@ -59,6 +60,7 @@ export class RepeatTypeComponent extends FieldArrayType {
       );
     }else{
       this.remove(index);
+      this.cd.detectChanges();      
     }
   }
 

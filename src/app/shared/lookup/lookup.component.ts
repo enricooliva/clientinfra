@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import ControlUtils from '../dynamic-form/control-utils';
 import { Page } from './page';
+import { getLocaleExtraDayPeriodRules } from '@angular/common';
 
 @Component({
   selector: 'app-lookup',
@@ -17,6 +18,7 @@ export class LookupComponent implements OnInit {
 
   @Input() entityName; 
   @Input() entityLabel;
+  @Input() rules;
 
   isLoading: boolean = false;
   service: ServiceQuery;
@@ -24,7 +26,7 @@ export class LookupComponent implements OnInit {
   researchMetadata: FormlyFieldConfig[];
   form = new FormGroup({});
 
-  model = {
+  model = {    
     data: new Array<any>(),
   };
 
@@ -62,6 +64,7 @@ export class LookupComponent implements OnInit {
       ];
 
     this.selected = this.resultMetadata[0].templateOptions.selected;
+    
   }
 
   

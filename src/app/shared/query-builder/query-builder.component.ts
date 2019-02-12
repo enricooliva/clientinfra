@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray, FormControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
 import { MessageService } from '../message.service';
 import { Operator } from './query-builder.interfaces';
+import { getLocaleExtraDayPeriodRules } from '@angular/common';
 
 @Component({
   selector: 'app-query-builder',
@@ -16,6 +17,8 @@ import { Operator } from './query-builder.interfaces';
 export class QueryBuilderComponent implements OnInit, OnChanges {
   onDestroy$ = new Subject<void>();
   
+  @Input() rules;
+
   @Output() find =  new  EventEmitter();
 
   public defaultOperatorMap: {[key: string]: Operator[]} = {
@@ -29,7 +32,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     boolean: [{label:'uguale', value:'='}]
   };
 
-  private rules: FormlyFieldConfig[] = [
+  fields: FormlyFieldConfig[] = [
     {
       key: 'rules',
       type: 'repeat',
@@ -58,10 +61,11 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
               required: true
             },
             lifecycle: {
-              onInit: (form, field) => {                
+              onInit: (form, field, model) => {                
               
                 form.get('field').valueChanges.pipe(
-                  takeUntil(this.onDestroy$),                 
+                  takeUntil(this.onDestroy$),   
+                  startWith(model.field),              
                   tap(selectedField => {                                     
                     field.formControl.setValue('');
                     if (this.keymetadata[selectedField] )                     
@@ -90,7 +94,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                     if (this.keymetadata[selectedField]){                                                     
                       field.formControl.reset(); 
                       this.setField(field,selectedField);
-                      field.templateOptions.disabled = false;
+                      field.templateOptions.disabled = false;                  
                     }
                   }),
                 ).subscribe();
@@ -108,8 +112,6 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   model = {
     rules: new Array<any>(),    
   };
-
-  fields: FormlyFieldConfig[] = this.rules;    
  
   //elenco dei metadati dell'entità di ingresso
   @Input() metadata: FormlyFieldConfig[] = []
@@ -119,7 +121,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   // private defaultTemplateTypes: string[] = [
   //  'string', 'number', 'time', 'date', 'category', 'boolean', 'multiselect'];
 
-  constructor(public messageService: MessageService) { }
+  constructor(public messageService: MessageService, private cd: ChangeDetectorRef) { }
 
   // ----------OnInit Implementation----------
 
@@ -144,7 +146,10 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   
 
   ngOnInit() {   
-    let field = this.rules[0].fieldArray.fieldGroup[0]; 
+    if (this.rules)
+      this.model.rules = this.rules;
+
+    let field = this.fields[0].fieldArray.fieldGroup[0]; 
     let options = new Array();
     this.metadata.forEach(element => {
       this.keymetadata[element.key] = element;

@@ -53,7 +53,7 @@ export class ExternalqueryComponent  extends FieldType implements OnInit {
     },(reason) => {      
     });
     modalRef.componentInstance.entityName = this.to.entityName;
-
+    modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
   }  
 
   setcode(data: any){

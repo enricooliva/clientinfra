@@ -161,6 +161,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     });
     modalRef.componentInstance.entityName = this.to.entityName;
     modalRef.componentInstance.entityLabel = this.to.entityLabel;
+    modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
   }
 
 }

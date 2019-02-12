@@ -56,7 +56,8 @@ export class ConvvalidationComponent extends BaseEntityComponent {
         entityLabel: 'Convenzione',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
-        isLoading: false,                
+        isLoading: false,    
+        rules: [{value: "inapprovazione", field: "current_place", operator: "="}],
       },  
       expressionProperties: {
         'templateOptions.disabled': 'formState.disabled_covenzione_id',
@@ -88,7 +89,6 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           {
             fieldGroupClassName: 'row',
             fieldGroup:[
-
           {
             key: 'attachmenttype_codice',
             type: 'select',

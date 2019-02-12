@@ -47,9 +47,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
   nodecode = false;
 
   constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal) {
-    super();       
-    
-
+    super();           
   }
 
   ngOnInit() {
@@ -159,6 +157,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     });
     modalRef.componentInstance.entityName = this.to.entityName;
     modalRef.componentInstance.entityLabel = this.to.entityLabel;
+    modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
 
   }
   
