@@ -41,6 +41,14 @@ export class RepeatTypeComponent extends FieldArrayType {
     super(builder);            
   }
 
+  ngOnInit(){
+    if (this.to.min && this.to.min>0){
+      for (let index = 0; index < this.to.min; index++) {
+        this.add();        
+      }
+    }
+  }  
+
   onAddNew(){
     if (this.to.onAddInitialModel){
       let init = this.to.onAddInitialModel();

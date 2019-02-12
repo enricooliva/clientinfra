@@ -66,8 +66,9 @@ export class ConvvalidationComponent extends BaseEntityComponent {
     {
       key: 'attachments',
       type: 'repeat',
-      templateOptions: {
+      templateOptions: {        
         label: 'Documenti di approvazione',
+        min: 1,
       },
       validators: {
         unique: {
@@ -83,6 +84,18 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           },
           message: (error, field: FormlyFieldConfig) => `Nome ripetuto`,
         },
+        atleastone: {
+          expression: (c) => {
+            if (c.value) {
+              if (c.value.length < 1)
+                return false;              
+            }else {
+              return false;
+            }
+            return true;
+          },
+          message: (error, field: FormlyFieldConfig) => `Inserire almeno un documento`,
+        }
       },
       fieldArray: {               
         fieldGroup: [
