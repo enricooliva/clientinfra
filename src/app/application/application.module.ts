@@ -35,6 +35,7 @@ import { TasksComponent } from './components/task/tasks.component';
 import { registerLocaleData } from '@angular/common';
 import localeIt from '@angular/common/locales/it';
 import { ConvvalidationComponent } from './pages/convvalidation.component';
+import { SottoscrizioneComponent } from './pages/sottoscrizione.component';
 registerLocaleData(localeIt);
 @NgModule({
   imports: [
@@ -51,14 +52,16 @@ registerLocaleData(localeIt);
   exports: [
     ConvenzioneComponent,
     HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
-    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent, ConvvalidationComponent
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
+    TasksComponent, ConvvalidationComponent, SottoscrizioneComponent
   ],
   declarations: [        
     ConvenzioneComponent,
     ConvenzioniComponent,    
     AssignmentDetailPageComponent,    
     HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
-    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent, ConvvalidationComponent
+    RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
+    ConvvalidationComponent, SottoscrizioneComponent
   ],
   providers: [ 
     { provide: LOCALE_ID, useValue: 'it' },

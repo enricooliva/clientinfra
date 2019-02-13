@@ -21,6 +21,7 @@ import { BlankComponent } from '../shared/layouts/blank/blank.component';
 import { TasksComponent } from '../application/components/task/tasks.component';
 import { TaskComponent } from '../application/components/task/task.component';
 import { ConvvalidationComponent } from '../application/pages/convvalidation.component';
+import { SottoscrizioneComponent } from '../application/pages/sottoscrizione.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -73,7 +74,18 @@ const routes: Routes = [
             { title: 'Approvazione convenzione' }
           ]
         },
-      },        
+      },
+      {
+        path: 'sottoscrizione', component: SottoscrizioneComponent, canActivate:[AuthGuard],
+        data: {
+          title: 'Sottoscrizione convenzione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Sottoscrizione convenzione' }
+          ]
+        },
+      },
+      
       { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard],
         data: {

@@ -108,7 +108,16 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: [],
-        permissions: ['ADMIN','VALID'],
+        permissions: ['ADMIN','VALIDATORE'],
+      },
+      {
+        path: 'sottoscrizione',
+        title: 'Sottoscrizione',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'],
       },
     ]
   }
