@@ -411,9 +411,9 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                       onInit: (form, field, model) => {                                              
                         //field.formControl.setValue('');
                         field.templateOptions.options = this.service.getValidationOfficesPersonale(this.model.unitaorganizzativa_uo).pipe(
-                          map(items => {
-                            return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
-                          }),                         
+                          // map(items => {
+                          //   return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
+                          // }),                         
                         );                      
                       },
                     },
