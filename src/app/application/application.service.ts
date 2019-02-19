@@ -384,7 +384,13 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         type: 'select',
         className: "col-md-6",
         templateOptions: {
-          options: [{ value: 'proposta', label: 'Proposta' }, { value: 'approvato', label: 'Approvato' }, { value: 'inapprovazione', label: 'In approvazione' }],
+          options: [
+            { value: 'proposta', label: 'Proposta' }, 
+            { value: 'approvato', label: 'Approvato' }, 
+            { value: 'inapprovazione', label: 'In approvazione' },            
+            { value: 'da_firmare_direttore2', label: 'Da controfirmare direttore' },
+            { value: 'da_firmare_cotroparte2', label: 'Da controfirmare controparte' },            
+          ],
           label: 'Stato',
           required: true,
         },
@@ -522,6 +528,33 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
       );
     return res;
   }
+
+  
+  sottoscrizioneStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/sottoscrizionestep'}`;
+    let res = this.http.post(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Sottoscrizione effettuata con successo')
+        ),
+        catchError(this.handleError('sottoscrizioneStep', null, retrow))
+      );
+    return res;
+  }
+
+  completamentoSottoscrizioneStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/complsottoscrizionestep'}`;
+    let res = this.http.post(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Completamento sottoscrizione effettuata con successo')
+        ),
+        catchError(this.handleError('completamentoSottoscrizioneStep', null, retrow))
+      );
+    return res;
+  }
+
+
 
   //@Cacheable()
   getNextActions(id): Observable<any> {

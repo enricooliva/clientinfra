@@ -109,16 +109,44 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
         permissions: ['ADMIN','VALIDATORE'],
-      },
+      },     
       {
-        path: 'sottoscrizione',
+        path: '',
         title: 'Sottoscrizione',
         icon: '',
         class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'],
-      },
+        extralink: false,        
+        permissions: ['ADMIN'],        
+        submenu: [  
+          {
+            path: 'sottoscrizione',
+            title: 'Inizio sottoscrizione',
+            icon: '',
+            class: '',
+            extralink: false,        
+            permissions: ['ADMIN'],        
+            submenu: [],        
+          },
+          {
+            path: 'firmacontroparte',
+            title: 'Completa controparte',
+            icon: '',
+            class: '',
+            extralink: false,
+            submenu: [],
+            permissions: ['ADMIN'],
+          },
+          {
+            path: 'firmadirettore',
+            title: 'Completa direttore',
+            icon: '',
+            class: '',
+            extralink: false,
+            submenu: [],
+            permissions: ['ADMIN'],
+          },         
+        ],        
+      }
     ]
   }
 ];

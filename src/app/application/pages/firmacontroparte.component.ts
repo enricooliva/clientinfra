@@ -8,9 +8,10 @@ import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
 import { FileDetector } from 'protractor';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
 import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.field.config';
+import { FirmaDirettoreComponent } from './firmadirettore.component';
 
 @Component({
-  selector: 'app-sottoscrizione',
+  selector: 'app-firmacontroparte',
   template: `
   <div class="container-fluid">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -37,18 +38,12 @@ import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.f
   `,
   styles: []
 })
-export class SottoscrizioneComponent extends BaseEntityComponent {
 
-
-  //azioni possibili 
-
-  //stato di partenza 'approvato'
-  //firma_da_controparte1 --> stipula ditta --> ricevuta lettera con convenzione firmata dalla ditta
-  //firma_da_direttore1 --> stipula uniurb --> ricevuta la convenzione firmata dal dipartimento
+export class FirmaControparteComponent extends BaseEntityComponent {
   
-  public static STATE = 'approvato';
-  public static WORKFLOW_ACTIONS: string[] = ['firma_da_controparte1','firma_da_direttore1']; //TRASITION
-  public static ABSULTE_PATH: string = 'home/sottoscrizione';
+  public static STATE = 'da_firmare_controparte2';
+  public WORKFLOW_ACTION: string = 'firma_da_controparte2'; //TRASITION
+  public static ABSULTE_PATH: string = 'home/firmacontroparte';
 
   fields: FormlyFieldConfig[] = [
     {
@@ -67,32 +62,17 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
         isLoading: false,    
-        rules: [{value: "approvato", field: "current_place", operator: "="}],
+        rules: [{value: FirmaControparteComponent.STATE, field: "current_place", operator: "="}],
       },  
       expressionProperties: {
         'templateOptions.disabled': 'formState.disabled_covenzione_id',
       },    
-    },
-    {
-      key: 'stipula_type',
-      type: 'select',   
-      defaultValue: 'uniurb',   
-      templateOptions: {        
-        options: [
-          { codice: 'uniurb', descrizione: 'Stipula UniUrb' },
-          { codice: 'controparte', descrizione: 'Stipula Ditta' },          
-        ],
-        valueProp: 'codice',
-        labelProp: 'descrizione',
-        label: 'Tipologia di stipula',
-        required: true,
-      }
-    },
+    },   
     {
       key: 'attachments',
       type: 'repeat',
       templateOptions: {        
-        label: 'Documenti di sottoscrizione',
+        label: 'Documenti di firma',
         min: 1,
       },
       validators: {
@@ -131,35 +111,18 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
               key: 'attachmenttype_codice',
               type: 'select',
               className: "col-md-5",
+              defaultValue: 'LTE_FIRM_ENTRAMBI',
               templateOptions: {
                 //todo chiedere lato server 
-                options: [],
+                options:  [
+                  { codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera ricevuta dalla ditta' },                                       
+                  { codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata da entrambe le parti' },                       
+                ],
                 valueProp: 'codice',
                 labelProp: 'descrizione',
                 label: 'Tipo allegato',
                 required: true,
-            },
-            lifecycle: {          
-              onInit: (form, field) => {
-
-                const attch_type = [
-                  { stipula_type: 'uniurb', codice: 'LTU_FIRM_UNIURB', descrizione: 'Lettera spedita alla ditta' },   
-                  { stipula_type: 'uniurb', codice: 'CONV_FIRM_UNIURB', descrizione: 'Convenzione firmata dal direttore o rettore' },      
-                  { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Lettera ricevuta dalla ditta' },  
-                  { stipula_type: 'controparte', codice: 'CONV_FIRM_CONTR', descrizione: 'Convenzione firmata dalla controparte' },                       
-                ];
-                
-                form.parent.parent.get('stipula_type').valueChanges.pipe(
-                  takeUntil(this.onDestroy$),
-                  startWith(form.parent.parent.get('stipula_type').value),
-                  tap(type => {
-                    field.formControl.setValue(null);
-                    field.templateOptions.options = attch_type.filter(x => x.stipula_type === type);
-                    field.formControl.setValue(field.templateOptions.options[0].codice);
-                  }),
-                ).subscribe();
-              }
-            }
+            },                  
           },
           {
             key: 'filename',
@@ -273,6 +236,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
+      tosubmit.transition = this.WORKFLOW_ACTION;
       this.service.sottoscrizioneStep(tosubmit,true).subscribe(
         result => {          
           this.isLoading = false;          

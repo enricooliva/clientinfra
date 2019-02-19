@@ -22,6 +22,8 @@ import { TasksComponent } from '../application/components/task/tasks.component';
 import { TaskComponent } from '../application/components/task/task.component';
 import { ConvvalidationComponent } from '../application/pages/convvalidation.component';
 import { SottoscrizioneComponent } from '../application/pages/sottoscrizione.component';
+import { FirmaControparteComponent } from '../application/pages/firmacontroparte.component';
+import { FirmaDirettoreComponent } from '../application/pages/firmadirettore.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -76,6 +78,16 @@ const routes: Routes = [
         },
       },
       {
+        path: 'sottoscrizione/:id', component: SottoscrizioneComponent, canActivate:[AuthGuard], pathMatch:'full',
+        data: {
+          title: 'Sottoscrizione convenzione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Sottoscrizione convenzione' }
+          ]
+        },
+      },
+      {
         path: 'sottoscrizione', component: SottoscrizioneComponent, canActivate:[AuthGuard],
         data: {
           title: 'Sottoscrizione convenzione',
@@ -85,6 +97,49 @@ const routes: Routes = [
           ]
         },
       },
+
+      {
+        path: 'firmadirettore/:id', component: FirmaDirettoreComponent, canActivate:[AuthGuard], pathMatch:'full',
+        data: {
+          title: 'Completamento sottoscrizione firma direttore',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Completamento sottoscrizione firma direttore' }
+          ]
+        },
+      },
+      {
+        path: 'firmadirettore', component: FirmaDirettoreComponent, canActivate:[AuthGuard],
+        data: {
+          title: 'Completamento sottoscrizione firma direttore',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Completamento sottoscrizione firma direttore' }
+          ]
+        },
+      },
+
+      {
+        path: 'firmacontroparte/:id', component: FirmaControparteComponent, canActivate:[AuthGuard], pathMatch:'full',
+        data: {
+          title: 'Completamento sottoscrizione firma controparte',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Completamento sottoscrizione firma controparte' }
+          ]
+        },
+      },
+      {
+        path: 'firmacontroparte', component: FirmaControparteComponent, canActivate:[AuthGuard],
+        data: {
+          title: 'Completamento sottoscrizione firma controparte',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Completamento sottoscrizione firma controparte' }
+          ]
+        },
+      },
+
       
       { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard],

@@ -42,6 +42,10 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     if (task.workflow_transition == 'store_validazione'){
       this.router.navigate(['home/validazione', task.model_id]);
     }
+
+    if (!task.workflow_transition  && task.workflow_place == 'approvato'){
+      this.router.navigate(['home/sottoscrizione', task.model_id]);
+    }
   }
 
   // assignments: (2) [{…}, {…}]
