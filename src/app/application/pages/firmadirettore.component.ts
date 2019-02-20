@@ -136,8 +136,7 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
               label: 'Scegli il documento',
               type: 'input',              
               placeholder: 'Scegli file documento',
-              accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-              required: true,
+              accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
               onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
             },
           },   
@@ -152,7 +151,7 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
               className: "col-md-5",
               templateOptions: {
                 label: 'Numero',
-                //required: true,                               
+                required: true,                               
               },
             },
             {

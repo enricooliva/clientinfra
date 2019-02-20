@@ -105,6 +105,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           {
             key: 'attachmenttype_codice',
             type: 'select',
+            defaultValue: 'DSA',
             className: "col-md-5",
             templateOptions: {
               //todo chiedere lato server 

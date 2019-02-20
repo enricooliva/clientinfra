@@ -280,7 +280,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                   onSelected: (selFile) => {
                     this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.DOC_APP)
                   }
-                },
+                },                
                 validators: {                        
                   formatpdf: {
                     expression: (c) => {
@@ -426,10 +426,10 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 type: 'textarea',
                 hideExpression: 'formState.model.schematipotipo == "schematipo"',    
                 templateOptions: {
-                  label: 'Area messaggi',
+                  label: 'Note',
                   maxLength: 200,
                   rows: 5,
-                  required: true,
+                  //required: true,
                 },
                 expressionProperties: {
                   'templateOptions.disabled': '!model.respons_v_ie_ru_personale_id_ab',
