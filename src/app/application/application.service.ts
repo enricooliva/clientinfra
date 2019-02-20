@@ -542,14 +542,14 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
-  completamentoSottoscrizioneStep(data: any, retrow: boolean = false): Observable<any>{
+  complSottoscrizioneStep(data: any, retrow: boolean = false): Observable<any>{
     const url = `${this._baseURL + '/convenzioni/complsottoscrizionestep'}`;
     let res = this.http.post(url, data, httpOptions)
       .pipe(
         tap(sub =>
           this.messageService.info('Completamento sottoscrizione effettuata con successo')
         ),
-        catchError(this.handleError('completamentoSottoscrizioneStep', null, retrow))
+        catchError(this.handleError('complSottoscrizioneStep', null, retrow))
       );
     return res;
   }

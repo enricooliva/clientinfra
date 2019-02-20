@@ -41,9 +41,14 @@ import { FirmaDirettoreComponent } from './firmadirettore.component';
 
 export class FirmaControparteComponent extends BaseEntityComponent {
   
-  public static STATE = 'da_firmare_controparte2';
-  public WORKFLOW_ACTION: string = 'firma_da_controparte2'; //TRASITION
+  public STATE = 'da_firmare_controparte2';
+  public static WORKFLOW_ACTION: string = 'firma_da_controparte2'; //TRASITION
   public static ABSULTE_PATH: string = 'home/firmacontroparte';
+
+
+  get workflowAction(): string{
+    return FirmaControparteComponent.WORKFLOW_ACTION;
+  }
 
   fields: FormlyFieldConfig[] = [
     {
@@ -62,7 +67,7 @@ export class FirmaControparteComponent extends BaseEntityComponent {
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
         isLoading: false,    
-        rules: [{value: FirmaControparteComponent.STATE, field: "current_place", operator: "="}],
+        rules: [{value: this.STATE, field: "current_place", operator: "="}],
       },  
       expressionProperties: {
         'templateOptions.disabled': 'formState.disabled_covenzione_id',
@@ -236,8 +241,8 @@ export class FirmaControparteComponent extends BaseEntityComponent {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      tosubmit.transition = this.WORKFLOW_ACTION;
-      this.service.sottoscrizioneStep(tosubmit,true).subscribe(
+      tosubmit.transition = this.workflowAction;
+      this.service.complSottoscrizioneStep(tosubmit,true).subscribe(
         result => {          
           this.isLoading = false;          
           this.router.navigate(['home/dashboard/dashboard1']);                

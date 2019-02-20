@@ -41,8 +41,13 @@ import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.f
 export class FirmaDirettoreComponent extends BaseEntityComponent {
   
   public STATE = 'da_firmare_direttore2';
-  public WORKFLOW_ACTION: string = 'firma_da_direttore2'; //TRASITION
+  public static WORKFLOW_ACTION: string = 'firma_da_direttore2'; //TRASITION
   public static ABSULTE_PATH: string = 'home/firmadirettore';
+
+  get workflowAction(): string{
+    return FirmaDirettoreComponent.WORKFLOW_ACTION;
+  }
+
 
   fields: FormlyFieldConfig[] = [
     {
@@ -235,8 +240,8 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      tosubmit.transition = this.WORKFLOW_ACTION;
-      this.service.sottoscrizioneStep(tosubmit,true).subscribe(
+      tosubmit.transition = this.workflowAction;
+      this.service.complSottoscrizioneStep(tosubmit,true).subscribe(
         result => {          
           this.isLoading = false;          
           this.router.navigate(['home/dashboard/dashboard1']);                

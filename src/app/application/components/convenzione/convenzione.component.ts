@@ -223,7 +223,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       template: '<h5>Storia eventi</h5>',
     },
     {
-      key: 'tasks',
+      key: 'logtransitions',
       type: 'datatable', //'repeat',      
       templateOptions: {
         btnHidden: true,
