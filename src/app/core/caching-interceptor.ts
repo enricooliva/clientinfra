@@ -13,6 +13,8 @@ import { RequestCache } from './request-cache.service';
 
 //const CACHABLE_URL = "/api/booksSearch";
 
+const NOT_CACHABLE_URL = "/api/booksSearch";
+
 /**
  * If request is cachable (e.g., package search) and
  * response is in cache return the cached response as observable.
@@ -34,6 +36,14 @@ export class CachingInterceptor implements HttpInterceptor {
 
     const cachedResponse = this.cache.get(req);
    
+    // cache-then-refresh
+    if (req.headers.get('x-refresh')) {      
+      const results$ = sendRequest(req, next, this.cache);
+      return cachedResponse ?
+        results$.pipe( startWith(cachedResponse) ) :
+        results$;
+    }
+
     return cachedResponse ?
       of(cachedResponse) : sendRequest(req, next, this.cache);
     

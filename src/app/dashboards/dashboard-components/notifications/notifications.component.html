@@ -1,10 +1,12 @@
 <!-- ng xi18n --output-path locale/ --out-file messages.it.untranslated.xlf -->
+
 <div class="card">
+    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
     <div class="card-body">
         <h4 class="card-title">Lista notifiche</h4>
         <div class="todo-widget scrollable"  style="height:300px;" [perfectScrollbar]="config">
               <!-- Comment Row -->                    
-            <ul class="list-task todo-list list-group m-b-0  m-r-15" data-role="notifications" >       
+            <ul class="list-task todo-list list-group m-b-0" data-role="notifications" >       
                 <div *ngFor="let notification of model | async">  
                     <li class="list-group-item list-group-item-action todo-item" data-role="notification">                               
                         <div class="todo-label" style="padding-left: 25px;">

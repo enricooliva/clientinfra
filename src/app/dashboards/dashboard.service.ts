@@ -23,8 +23,9 @@ export class DashboardService extends CoreSevice {
   
   getUserTaskByCurrentUser(): Observable<any> {
     const url = `${this._baseURL}/usertask/users/${this.auth._id}/tasks`;
+    let headers = httpOptions.headers.append('x-refresh','true');
     return this.http        
-      .get(url, httpOptions).pipe(
+      .get(url, { headers: headers }).pipe(
           catchError(this.handleError('getUserTaskByCurrentUser')),
       );
   }
@@ -32,16 +33,18 @@ export class DashboardService extends CoreSevice {
   
   getUserTaskByCurrentUserOffice(): Observable<any> {
     const url = `${this._baseURL}/usertask/users/${this.auth._id}/office/tasks`;
+    let headers = httpOptions.headers.append('x-refresh','true');
     return this.http        
-      .get(url, httpOptions).pipe(
+      .get(url, { headers: headers }).pipe(
           catchError(this.handleError('getUserTaskByUserOffice')),
       );
   }
 
   getNotifications(): Observable<any>{
       const url = `${this._baseURL}/notifications`;
+      let headers = httpOptions.headers.append('x-refresh','true');
       return this.http        
-      .get(url, httpOptions).pipe(
+      .get(url, { headers: headers }).pipe(
           catchError(this.handleError('getUserTaskByUserOffice')),
       );
   }
