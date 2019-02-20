@@ -45,6 +45,7 @@ export interface FileAttachment {
     emission_date?: Date,
 }
 
+
 // { "model_id": 2, "model_type": "App\\Convenzione", "attachmenttype_id": 1, 
 // "disk": "local", "filename": "filetest.txt", "uuid": "01f2e84d-b031-4cae-931b-46de449a9ea4", 
 // "filepath": "attachments\/Convenzione2\/DD_01f2e84d-b031-4cae-931b-46de449a9ea4.txt", 

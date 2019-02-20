@@ -41,15 +41,15 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   fields: FormlyFieldConfig[]= [
     {
       className: 'section-label',
-      template: '<h5>Stato</h5>',
+      template: '<h5>Fasi processo</h5>',
     },
     {      
       type: 'select',
       key: 'transition',
       defaultValue: 'self_transition',
       templateOptions: {
-        label: 'Prossima azione',
-        options: this.transitions.asObservable(),
+        label: 'Stato',
+        options: [],
       }, 
       // expressionProperties: {
       //   'templateOptions.disabled': (model: any, formState: any) => {                        
@@ -57,8 +57,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       //   },
       // },
       lifecycle: {
-        onInit: (form, field) => {
+        onInit: (form, field) => {          
           this.transitions.subscribe(d => {
+            field.templateOptions.options = d;
             field.templateOptions.disabled = false;
             field.formControl.setValue('self_transition');
           }
