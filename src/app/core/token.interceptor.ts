@@ -27,9 +27,10 @@ export class TokenInterceptor implements HttpInterceptor {
           if (error instanceof HttpErrorResponse) {
             switch (error.status) {
               case 401:
-                const router = this.injector.get(Router);
+                //const router = this.injector.get(Router);
                 this.auth.logout();
-                router.navigateByUrl(AppConstants.baseApiURL + '/loginSaml'); 
+                window.location.href = AppConstants.baseApiURL + '/loginSaml'; 
+                //router.navigateByUrl(); 
                 break;            
             }
           }
