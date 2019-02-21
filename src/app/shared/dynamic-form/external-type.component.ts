@@ -110,7 +110,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
       }; 
 
       
-      this.formlyConfig.getMergedField(tmpfield);
+     // this.formlyConfig.getMergedField(tmpfield);
       this.codeField = tmpfield;
     };//fine if
     

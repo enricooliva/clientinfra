@@ -15,9 +15,9 @@ import ControlUtils from './control-utils';
     <div  style="position: relative">    
     <ngx-loading [show]="isLoading" [config]="{  fullScreenBackdrop: false, backdropBorderRadius: '4px' }"></ngx-loading>
     <formly-group 
-    [field]="field"
-    [options]="options"
-    [form]="formControl">  
+      [field]="field"
+      [options]="options"
+      [form]="formControl">  
     </formly-group>     
     </div>
  `,
@@ -63,20 +63,20 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
         }
       },
       lifecycle: {                    
-        onInit: (formInit, fieldInit) => {          
-          fieldInit.formControl.valueChanges.pipe(
+        onInit: (form, field) => {          
+          this.codeField.formControl.valueChanges.pipe(
             distinctUntilChanged(),
             takeUntil(this.onDestroy$),
             filter(() => !this.options.formState.isLoading),
             //startWith(field.formControl.value),
             tap(selectedField => {
-              if (fieldInit.formControl.value && !this.nodecode) {
+              if (field.formControl.value && !this.nodecode) {
                 this.isLoading = true;
-                this.service.getById(fieldInit.formControl.value).subscribe((data) => {
+                this.service.getById(field.formControl.value).subscribe((data) => {
                   this.isLoading = false;
                   if (data == null) {
                     this.extDescription.formControl.setValue(null);
-                    fieldInit.formControl.setErrors({ notfound: true });                    
+                    field.formControl.setErrors({ notfound: true });                    
                     return;
                   }
                   //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione

@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-datapicker-type',
+  providers: [DatePipe],
   template: `
   <!--Datapicker-->
   <div class="input-group">    
