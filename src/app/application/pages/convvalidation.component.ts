@@ -44,8 +44,9 @@ export class ConvvalidationComponent extends BaseEntityComponent {
     {
       className: 'section-label',
       template: '<h5>Inserimento documenti di approvazione</h5>',
-    },
+    },  
     {
+
       key: 'convenzione_id',
       type: 'external',      
       templateOptions: {
@@ -61,7 +62,8 @@ export class ConvvalidationComponent extends BaseEntityComponent {
       },  
       expressionProperties: {
         'templateOptions.disabled': 'formState.disabled_covenzione_id',
-      },    
+      },
+
     },
     {
       key: 'attachments',

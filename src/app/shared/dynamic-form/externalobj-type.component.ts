@@ -48,22 +48,19 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     this.extDescription = this.field.fieldGroup.find(x=>x.key == this.to.descriptionProp || x.key =='description')
     this.codeField = this.field.fieldGroup.find(x=>x.key == this.to.codeProp || x.key =='id')
 
-    this.field.fieldGroup[0] = {
-      ...this.codeField,
-      templateOptions: { 
-        ...this.codeField.templateOptions,
-        keyup: (field, event: KeyboardEvent) => {
+    this.field.fieldGroup[0].templateOptions.keyup = (field, event: KeyboardEvent) => {
           if (event.key == "F4") {
             this.open();
           }
-        },
-        addonRight: {
+        };
+
+    this.field.fieldGroup[0].templateOptions.addonRight= {
           class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
           onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
-        }
-      },
-      lifecycle: {                    
-        onInit: (form, field) => {          
+        };
+      
+    this.field.fieldGroup[0].hooks = {                    
+        onInit: (field) => {          
           this.codeField.formControl.valueChanges.pipe(
             distinctUntilChanged(),
             takeUntil(this.onDestroy$),
@@ -94,8 +91,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
             }),
           ).subscribe();
         },
-      },      
-    } //fine field
+      };    
   
   }
 

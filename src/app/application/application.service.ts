@@ -79,7 +79,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             type: 'selectinfra',
             className: "col-md-6",
             templateOptions: {
-              options: [],
+              options:[],
               valueProp: 'cd_dip',
               labelProp: 'nome_breve',
               label: 'Dipartimento',
@@ -88,7 +88,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
                 return comp.dipartimento
               },
               populateAsync: () => {
-                return this.getDipartimenti()
+                return this.getDipartimenti();
               }
             }
           },
@@ -565,7 +565,13 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
 
   @Cacheable()
   getDipartimenti(): Observable<any> {
-    return this.http.get(this._baseURL + '/dipartimenti', httpOptions);
+    return this.http.get<any>(this._baseURL + '/dipartimenti', httpOptions).pipe(      
+        map(x => {
+         return x.map(el => {return { cd_dip: parseInt(el.cd_dip), nome_breve: el.nome_breve }})
+        }
+      )
+    );      
+    
   }
 
   @Cacheable()

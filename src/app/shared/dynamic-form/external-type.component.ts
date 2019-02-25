@@ -12,19 +12,44 @@ import ControlUtils from './control-utils';
 @Component({
   selector: 'app-external-type',
   template: `                
-    <div class="form-group form-row" style="position: relative">    
-    <ngx-loading [show]="isLoading" [config]="{  fullScreenBackdrop: false, backdropBorderRadius: '4px' }"></ngx-loading>
-    <formly-field *ngIf="codeField"
-      class="col-md-4" 
-      [form]="form"
-      [field]="codeField"
-      [options]="options">      
-    </formly-field> 
-    <div class="col-md-8">    
-      <Label *ngIf="descriptionField.templateOptions.label">{{ descriptionField.templateOptions.label }} </Label>
-      <input type="text" class="form-control" [value]="extDescription"  readonly>    
-    </div>    
-   </div>   
+
+  <div  style="position: relative">
+  <ngx-loading [show]="isLoading" [config]="{  fullScreenBackdrop: false, backdropBorderRadius: '4px' }"></ngx-loading>    
+    <div *ngIf="codeField" class="row" [class.has-error]="showError">               
+      <div class="col-md-4" > 
+      <div class="form-group"> 
+        <label [attr.for]="id" class="form-control-label control-label" *ngIf="to.label">
+          {{ to.label }}
+          <ng-container *ngIf="to.required && to.hideRequiredMarker !== true">*</ng-container>
+        </label>
+        <div class="input-group"> 
+          <input *ngIf="field.templateOptions.type !== 'number' else numberTmp" [type]="field.templateOptions.type" [formControl]="formControl" class="form-control" [formlyAttributes]="field" [class.is-invalid]="showError">
+          <ng-template #numberTmp>
+            <input type="number" [formControl]="formControl" class="form-control" [formlyAttributes]="field" [class.is-invalid]="showError">
+          </ng-template>          
+          <div class="input-group-addon input-group-append"
+            *ngIf="to.addonRight"
+            [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
+            (click)="addonRightClick($event)">
+            <i class="input-group-text" [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
+            <span *ngIf="to.addonRight.text" class="input-group-text">{{ to.addonRight.text }}</span>
+          </div>     
+        </div>
+        <div *ngIf="showError">
+        <small class="text-danger invalid-feedback" [style.display]="'block'" role="alert" [id]="validationId">
+          <formly-validation-message [field]="field"></formly-validation-message>
+        </small>
+        </div>
+        </div>
+      </div>    
+
+      <div class="col-md-8">    
+        <Label *ngIf="descriptionField.templateOptions.label">{{ descriptionField.templateOptions.label }} </Label>
+        <input type="text" class="form-control" [value]="extDescription"  readonly>    
+      </div>    
+   </div>  
+   </div> 
+   
   `,
   styles: []
 })
@@ -47,95 +72,77 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
   nodecode = false;
 
   constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal) {
-    super();           
+    super();
   }
 
   ngOnInit() {
     const servicename = ControlUtils.getServiceName(this.to.entityName)
     this.service = this.injector.get(servicename) as ServiceQuery;
 
-    this.field.wrappers = [];   
-    if (this.codeField == undefined) {
-      let tmpfield = {
-        ...this.field,
-        wrappers: ['form-field','addons'],//addons
-        templateOptions: { 
-          ...this.field.templateOptions,
-          keyup: (field, event: KeyboardEvent ) => { 
-            if (event.key == "F4" ){
-              this.open();
-            }          
-          },                
-          //e necessario inserire anche updateon blur nel principale 
-          modelOptions: {
-            updateOn: 'blur'
-          },          
-          addonRight:{
-             class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',      
-             onClick: (to, fieldType, $event) => this.open(),
-          }
-        },        
-        type: this.field.templateOptions.type,            
-        lifecycle: {          
-          onInit: (form, field) => {
-                                  
-            field.formControl.valueChanges.pipe(
-              distinctUntilChanged(),             
-              takeUntil(this.onDestroy$),              
-              startWith(field.formControl.value),
-              tap(selectedField => {                
-                if (field.formControl.value && !this.nodecode){
-                  setTimeout(()=> { this.isLoading = true; }, 0);
-                  this.service.getById(field.formControl.value).subscribe((data)=> {
-                    setTimeout(()=> { this.isLoading = false; }, 0);
-                    if (data == null )
-                    {
-                      this.extDescription = null;
-                      field.formControl.setErrors({ notfound: true});
-                      return;
-                    }
-                    //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-                    if (field.templateOptions.descriptionProp in data)
-                      this.extDescription = data[field.templateOptions.descriptionProp];
-                  });
-                  
-                } else{           
-                  //codizione di empty
-                  this.extDescription = null;                                                  
-                }
-              }),
-            ).subscribe();
-          },
-        },
-      }; 
-
-      
-     // this.formlyConfig.getMergedField(tmpfield);
-      this.codeField = tmpfield;
-    };//fine if
-    
-
-      //non è usato formly-field
-      this.descriptionField = {
-        type: 'string',
-        wrappers: ['form-field'],
-        templateOptions: {
-          disabled: true,
-          label: 'Descrizione'
+    this.field.wrappers = [];
+    this.field.templateOptions.
+      keyup = (field, event: KeyboardEvent) => {
+        if (event.key == "F4") {
+          this.open();
         }
+      };
+
+    this.field.templateOptions.addonRight = {
+      class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
+      onClick: (to, fieldType, $event) => this.open(),
+    }
+
+    this.formControl.valueChanges.pipe(
+      distinctUntilChanged(),
+      takeUntil(this.onDestroy$),
+      startWith(this.field.formControl.value),
+      tap(selectedField => {
+        if (this.formControl.value && !this.nodecode) {
+          setTimeout(() => { this.isLoading = true; }, 0);
+          this.service.getById(this.formControl.value).subscribe((data) => {
+            setTimeout(() => { this.isLoading = false; }, 0);
+            if (data == null) {
+              this.extDescription = null;
+              this.formControl.setErrors({ notfound: true });
+              return;
+            }
+            //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
+            if (this.field.templateOptions.descriptionProp in data)
+              this.extDescription = data[this.field.templateOptions.descriptionProp];
+          });
+
+        } else {
+          //codizione di empty
+          this.extDescription = null;
+        }
+      }),
+    ).subscribe();
+
+    // this.formlyConfig.getMergedField(tmpfield);
+    this.codeField = this.field;
+
+
+    //non è usato formly-field
+    this.descriptionField = {
+      type: 'string',
+      wrappers: ['form-field'],
+      templateOptions: {
+        disabled: true,
+        label: 'Descrizione'
       }
+    }
 
   }
 
-  setDescription(data: any){
-      //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-      if (this.field.templateOptions.descriptionProp in data)
-        this.extDescription = data[this.field.templateOptions.descriptionProp];
+  setDescription(data: any) {
+    //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
+    if (this.field.templateOptions.descriptionProp in data)
+      this.extDescription = data[this.field.templateOptions.descriptionProp];
   }
 
-  setcode(data: any){
-      if (this.field.templateOptions.codeProp in data)
-        this.codeField.formControl.setValue(data[this.field.templateOptions.codeProp]);
+  setcode(data: any) {
+    if (this.field.templateOptions.codeProp in data)
+      this.codeField.formControl.setValue(data[this.field.templateOptions.codeProp]);
   }
 
 
@@ -144,21 +151,32 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     this.onDestroy$.complete();
   }
 
-  open(){
+  open() {
     const modalRef = this.modalService.open(LookupComponent, {
       size: 'lg'
     })
-    modalRef.result.then((result)=>{
+    modalRef.result.then((result) => {
       this.nodecode = true
       this.setcode(result);
       this.setDescription(result);
       this.nodecode = false
-    },(reason) => {      
+    }, (reason) => {
     });
     modalRef.componentInstance.entityName = this.to.entityName;
     modalRef.componentInstance.entityLabel = this.to.entityLabel;
     modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
 
   }
-  
+
+
+  addonRightClick($event: any) {
+    if (this.to.addonRight.onClick) {
+      this.to.addonRight.onClick(this.to, this, $event);
+    }
+  }
+
+  onPopulate(field: FormlyFieldConfig) {
+    field.modelOptions.updateOn = 'blur';
+  }
+
 }

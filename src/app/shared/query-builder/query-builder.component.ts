@@ -77,29 +77,51 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
               },
             },
           },
-          {
-            key: 'value',
+          {            
             type: 'generic',
             className: "col-md-4",                                            
-            templateOptions: {            
-              label: 'Valore',
-              disabled: true,
-              required: true,                                                       
-            },       
-            lifecycle: {
-              onInit: (form, field) => {                                             
-                form.get('field').valueChanges.pipe(
-                  takeUntil(this.onDestroy$),                  
-                  tap(selectedField => {                   
-                    if (this.keymetadata[selectedField]){                                                     
-                      field.formControl.reset(); 
-                      this.setField(field,selectedField);
-                      field.templateOptions.disabled = false;                  
-                    }
-                  }),
-                ).subscribe();
+            fieldGroup: [{
+              key: 'value',
+              type: 'input',
+              templateOptions: {
+                label: 'Valore',
+                options: [],
+                required: true,
+                disabled: true,
               },
-            }
+
+              hooks: {
+                onInit: (field) => {
+                  field.parent.form.get('field').valueChanges.pipe(
+                    takeUntil(this.onDestroy$),
+                    tap(selectedField => {
+                      if (this.keymetadata[selectedField]) {
+                        field.formControl.reset();
+                        field.type = this.keymetadata[selectedField].type;
+
+                        if (this.keymetadata[selectedField].type=='external'){      
+                            field.type = 'externalquery';
+                        }                        
+
+                        field.templateOptions.options = this.keymetadata[selectedField].templateOptions.options;
+                        field.templateOptions.type = this.keymetadata[selectedField].templateOptions.type;
+                        field.templateOptions.valueProp = this.keymetadata[selectedField].templateOptions.valueProp;
+                        field.templateOptions.labelProp = this.keymetadata[selectedField].templateOptions.labelProp;                        
+
+                        //extern
+                        field.templateOptions.entityName = this.keymetadata[selectedField].templateOptions.entityName;
+                        field.templateOptions.entityLabel = this.keymetadata[selectedField].templateOptions.entityLabel;
+                        field.templateOptions.codeProp = this.keymetadata[selectedField].templateOptions.codeProp;
+                        field.templateOptions.descriptionProp = this.keymetadata[selectedField].templateOptions.descriptionProp;
+
+
+                        field.templateOptions.disabled = false;
+                      }
+                    }),
+                  ).subscribe();
+                },
+              }
+            }],
           }
         ]
       }
