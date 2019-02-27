@@ -29,7 +29,7 @@ export class TokenInterceptor implements HttpInterceptor {
               case 401:
                 //const router = this.injector.get(Router);
                 this.auth.logout();
-                window.location.href = AppConstants.baseApiURL + '/loginSaml'; 
+                window.location.href = AppConstants.baseURL + '/loginSaml'; 
                 //router.navigateByUrl(); 
                 break;            
             }

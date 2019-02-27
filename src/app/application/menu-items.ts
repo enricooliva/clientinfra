@@ -73,6 +73,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'], 
       }, 
+      {
+        path: 'aziendeloc',
+        title: 'Aziende',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
     ]
   },
   {

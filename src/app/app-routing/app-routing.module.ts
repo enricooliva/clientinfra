@@ -24,6 +24,8 @@ import { ConvvalidationComponent } from '../application/pages/convvalidation.com
 import { SottoscrizioneComponent } from '../application/pages/sottoscrizione.component';
 import { FirmaControparteComponent } from '../application/pages/firmacontroparte.component';
 import { FirmaDirettoreComponent } from '../application/pages/firmadirettore.component';
+import { AziendaLocComponent } from '../application/components/convenzione/aziendaloc.component';
+import { AziendeLocComponent } from '../application/components/convenzione/aziendeloc.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -281,6 +283,36 @@ const routes: Routes = [
           ]
         }
       },      
+      { 
+        path: 'aziendeloc/new',  component: AziendaLocComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Nuova azienda',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuova azienda' }
+          ]
+        },
+      }, 
+      { 
+        path: 'aziendeloc',  component: AziendeLocComponent, canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca aziende',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca aziende' }
+          ]
+        }
+      },
+      { 
+        path: 'aziendeloc/:id',  component: AziendaLocComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Azienda',
+          urls: [
+            { title: 'Azienda', url: '/home' },
+            { title: 'Attività' }
+          ]
+        }
+      },             
 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 

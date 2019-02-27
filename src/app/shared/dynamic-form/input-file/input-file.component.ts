@@ -57,8 +57,7 @@ export class InputFileComponent extends FieldType implements OnInit{
     this.inputField.formControl.updateValueAndValidity();    
 
     this.fileInput.nativeElement.value = "";
-    this.to.onSelected(null);
-           
+    this.to.onSelected(...[null, this.field])               
   }
 
     
