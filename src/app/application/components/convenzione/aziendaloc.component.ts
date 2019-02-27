@@ -21,7 +21,22 @@ import { AziendaLocService } from '../../aziendaloc.service';
 export class AziendaLocComponent extends BaseEntityComponent {
   
   isLoading = true;
-  fields: FormlyFieldConfig[] = [   
+  fields: FormlyFieldConfig[] = [  
+    {        
+      fieldGroupClassName: 'row',
+      fieldGroup: [ 
+      {
+        key: 'id',
+        type: 'input',
+        className: "col-md-2",           
+        templateOptions: {
+          label: 'Codice',
+          disabled: true                        
+        },
+        hideExpression: (model: any) => !model.id
+      },    
+    ],
+    },
     {
       template: '<div><strong>Riferimento azienda sistema gestionale di ateneo:</strong></div>',
     },
@@ -44,16 +59,7 @@ export class AziendaLocComponent extends BaseEntityComponent {
     {        
       fieldGroupClassName: 'row',
       fieldGroup: [         
-        {
-          key: 'id',
-          type: 'input',
-          className: "col-md-2",     
-          hide: true,
-          templateOptions: {
-            label: 'Id',
-            disabled: true                        
-          }
-        },   
+       
         {
           key: 'nome',
           type: 'input',

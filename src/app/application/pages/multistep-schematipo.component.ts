@@ -30,19 +30,21 @@ const PDFJS: PDFJSStatic = require('pdfjs-dist');
   template: `
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
   <div class="btn-toolbar mb-4" role="toolbar">
-    <div class="btn-group btn-group">    
-      <button class="btn btn-outline-primary border-0 rounded-0" >              
-          <span class="oi oi-document"></span>
-          <span class="ml-2">Nuovo</span>
-      </button>    
+    <div class="btn-group btn-group">             
       <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
         <span class="oi oi-arrow-top"></span>  
         <span class="ml-2">Aggiorna</span>              
       </button> 
       <button class="btn btn-outline-primary border-0 rounded-0" (click)="onValidate()" >              
-      <span class="oi oi-flash"></span>  
-      <span class="ml-2">Valida</span>              
-    </button> 
+        <span class="oi oi-flash"></span>  
+        <span class="ml-2">Valida</span>              
+      </button>   
+    </div>
+    <div class="btn-group btn-group">   
+    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onAziendaNew()" >              
+        <span class="oi oi-document"></span>  
+        <span class="ml-2">Nuova azienda</span>              
+      </button>   
     </div>
   </div>
   
@@ -603,6 +605,10 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
 
       );
     }
+  }
+
+  onAziendaNew(){
+    this.router.navigate(['home/aziendeloc/new']);     
   }
 
 }
