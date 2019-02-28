@@ -1,5 +1,15 @@
 <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
 <h4 *ngIf="title">Ricerca {{title}}</h4>
+
+<div *ngIf="enableNew" class="btn-toolbar mb-4" role="toolbar">
+    <div class="btn-group btn-group-sm">  
+      <button class="btn btn-outline-primary border-0 rounded-0" (click)="onNew($event)">
+        <span class="oi oi-document"></span>
+        <span class="ml-2">Nuovo</span>
+      </button>  
+    </div>
+</div>  
+
 <app-query-builder [metadata]="this.fieldsRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
 
 <h4>Risultati</h4>

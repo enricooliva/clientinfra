@@ -28,7 +28,9 @@ export class BaseResearchComponent implements OnInit {
 
   protected resultMetadata: FormlyFieldConfig[] = []; // = this.fieldsRow;
 
-  protected routeAbsolutePath = 'home/';
+  protected routeAbsolutePath = 'home/';  
+
+  enableNew = true;
 
   title = null;
 
@@ -38,7 +40,11 @@ export class BaseResearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+  }
 
+  onNew(event) {
+    this.router.navigate([this.routeAbsolutePath+'/new']);
   }
 
   onDblclickRow(event) {
