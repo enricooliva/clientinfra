@@ -119,9 +119,9 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             templateOptions: {
               label: 'Azienda',
               type: 'string',
-              entityName: 'azienda',
+              entityName: 'aziendaLoc',
               entityLabel: 'Aziende',
-              codeProp: 'id_esterno',
+              codeProp: 'id',
               //required: true,
               descriptionProp: 'denominazione',
             },

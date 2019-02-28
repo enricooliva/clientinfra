@@ -32,6 +32,7 @@ import { RoleService } from './application/role.service';
 import { PermissionService } from './application/permission.service';
 import { TipoPagamentoService } from './application/tipopagamento.service';
 import { ToastrModule } from 'ngx-toastr';
+import { AziendaLocService } from './application/aziendaloc.service';
 
 
 export function tokenGetter() {
@@ -76,6 +77,7 @@ export function tokenGetter() {
     {provide: 'userService', useClass: UserService},
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},
+    {provide: 'aziendaLocService', useClass: AziendaLocService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     {provide: APP_BASE_HREF, useValue: environment.baseHref},
