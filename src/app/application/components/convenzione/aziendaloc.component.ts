@@ -136,7 +136,8 @@ export class AziendaLocComponent extends BaseEntityComponent {
       type: 'input',      
       templateOptions: {
         label: 'Email di contatto (PEC)',                
-        required: true,
+        required: true,       
+        pattern: '^[a-z0-9_]+@[a-z0-9\-]+\.[a-z0-9\-\.]+$]',
       },
     },
   ];  
@@ -149,7 +150,7 @@ export class AziendaLocComponent extends BaseEntityComponent {
     this.newPath = this.researchPath+'/new';
   }
 
- 
+
 
   
 }

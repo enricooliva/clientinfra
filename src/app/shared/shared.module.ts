@@ -162,6 +162,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         { name: 'required', message: 'Campo richiesto' },
         { name: 'notfound', message: 'Non trovato' },     
         { name: 'filevalidation', message: 'Documento non valido' },   
+        { name: 'pattern', message: 'Formato non valido' },   
       ]
     }),
     FormlyBootstrapModule,
