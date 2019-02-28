@@ -192,11 +192,11 @@ export class TaskComponent extends BaseEntityComponent {
       expressionProperties: {
         'templateOptions.disabled': (model: any, formState: any) => { return model.id; },
       },
-      lifecycle: {
-        onInit: (form, field, model, options) => {
-          form.get('unitaorganizzativa_uo').valueChanges.pipe(
+      hooks: {
+        onInit: (field) => {
+          field.form.get('unitaorganizzativa_uo').valueChanges.pipe(
             takeUntil(this.onDestroy$),
-            startWith(form.get('unitaorganizzativa_uo').value),
+            startWith(field.form.get('unitaorganizzativa_uo').value),
             distinct(),
             filter(ev => ev !== null),
             tap(uo => {
@@ -206,7 +206,7 @@ export class TaskComponent extends BaseEntityComponent {
                   return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D' || x.cd_tipo_posizorg == 'VIC_RES_PL' || x.cd_tipo_posizorg =='RESP_PLESSO' );
                 }),
                 tap(items => {
-                  if (items[0]) {
+                  if (items[0] && !field.model.respons_v_ie_ru_personale_id_ab) {
                     field.formControl.setValue(items[0].id);
                   }
                 }),
@@ -244,20 +244,25 @@ export class TaskComponent extends BaseEntityComponent {
             key: 'v_ie_ru_personale_id_ab',
             type: 'select',
             className: "col-md-8",
-            templateOptions: {
+            templateOptions: {              
               label: 'Assegnamento attività',
               valueProp: 'id',
               labelProp: 'descr',
               required: true,
             },
-            lifecycle: {
-              onInit: (form, field, model) => {
-                //field.formControl.setValue('');
-                field.templateOptions.options = this.service.getValidationOfficesPersonale(this.model['unitaorganizzativa_uo']).pipe(
-                  // map(items => {
-                  //   return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
-                  // }),
-                );
+            hooks: {
+              onInit: (field) => {
+               
+                field.parent.parent.form.get('unitaorganizzativa_uo').valueChanges.pipe(
+                  takeUntil(this.onDestroy$),
+                  startWith(field.parent.parent.form.get('unitaorganizzativa_uo').value),
+                  distinct(),
+                  filter(ev => ev !== null),
+                  tap(uo => {                    
+                    field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe();
+                  }),                  
+                ).subscribe();
+              
               },
             },
           },
