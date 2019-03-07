@@ -25,7 +25,6 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     this._baseURL = AppConstants.baseApiURL;
   }
 
-
   getInformazioniDescrittiveFields(comp: Convenzione): any[] {
     return [
       {
@@ -217,6 +216,38 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             // hideExpression: (model: any, formState: any) => {
             //   return formState.model.convenzione_type == 'TG';
             // }
+          },
+        ]
+      },
+      {
+        className: 'section-label',
+        template: '<h5>Fascicolo</h5>',
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'titolario_classificazione',
+            type: 'select',
+            className: "col-md-4",            
+            templateOptions: {
+              options: [
+                { label: 'Progetti e finanziamenti', value: 'III.13' },
+                { label: 'Accordi per la didattica e per la ricerca', value: 'III.14' },
+                { label: 'Attività per conto terzi', value: 'III.19' },
+              ],
+              label: 'Classificazione',
+              required: true,
+            },
+          },
+          {
+            key: 'oggetto_fascicolo',
+            type: 'string',
+            className: "col-md-8",
+            templateOptions: {
+              label: 'Oggetto del fascicolo',
+              required: true,
+            },
           },
         ]
       },
