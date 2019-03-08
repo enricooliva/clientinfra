@@ -7,6 +7,8 @@ import { error } from 'util';
 import { AppConstants } from '../app-constants';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { throwError } from 'rxjs';
+
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -34,7 +36,7 @@ export class TokenInterceptor implements HttpInterceptor {
                 break;            
             }
           }
-          return Observable.throw(error);
+          return throwError(error);
         })
       );
   }
