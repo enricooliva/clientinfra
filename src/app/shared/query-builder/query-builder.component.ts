@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyTemplateOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray, FormControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
@@ -16,7 +16,9 @@ import { getLocaleExtraDayPeriodRules } from '@angular/common';
 
 export class QueryBuilderComponent implements OnInit, OnChanges {
   onDestroy$ = new Subject<void>();
-  
+
+  @Input() builderoptions: FormlyTemplateOptions;
+
   @Input() rules;
 
   @Output() find =  new  EventEmitter();
@@ -38,6 +40,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
       type: 'repeat',
       wrappers: ['accordion'],      
       templateOptions: {
+        min: this.builderoptions ? this.builderoptions.min : null,
         label: 'Condizioni',             
       },
       fieldArray: {
@@ -101,18 +104,18 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
 
                         if (this.keymetadata[selectedField].type=='external'){      
                             field.type = 'externalquery';
+                              //extern
+                            field.templateOptions.entityName = this.keymetadata[selectedField].templateOptions.entityName;
+                            field.templateOptions.entityLabel = this.keymetadata[selectedField].templateOptions.entityLabel;
+                            field.templateOptions.codeProp = this.keymetadata[selectedField].templateOptions.codeProp;
+                            field.templateOptions.descriptionProp = this.keymetadata[selectedField].templateOptions.descriptionProp;
                         }                        
 
                         field.templateOptions.options = this.keymetadata[selectedField].templateOptions.options;
                         field.templateOptions.type = this.keymetadata[selectedField].templateOptions.type;
                         field.templateOptions.valueProp = this.keymetadata[selectedField].templateOptions.valueProp;
                         field.templateOptions.labelProp = this.keymetadata[selectedField].templateOptions.labelProp;                        
-
-                        //extern
-                        field.templateOptions.entityName = this.keymetadata[selectedField].templateOptions.entityName;
-                        field.templateOptions.entityLabel = this.keymetadata[selectedField].templateOptions.entityLabel;
-                        field.templateOptions.codeProp = this.keymetadata[selectedField].templateOptions.codeProp;
-                        field.templateOptions.descriptionProp = this.keymetadata[selectedField].templateOptions.descriptionProp;
+                        field.templateOptions.label = 'Valore'
 
 
                         field.templateOptions.disabled = false;
@@ -171,7 +174,12 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
     if (this.rules)
       this.model.rules = this.rules;
 
+    if (this.builderoptions){
+      this.fields[0].templateOptions.min = this.builderoptions.min;
+    }
+
     let field = this.fields[0].fieldArray.fieldGroup[0]; 
+
     let options = new Array();
     this.metadata.forEach(element => {
       this.keymetadata[element.key] = element;

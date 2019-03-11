@@ -9,8 +9,8 @@
       </button>  
     </div>
 </div>  
-
-<app-query-builder [metadata]="this.fieldsRow[0].fieldArray.fieldGroup" (find)="onFind($event)" ></app-query-builder>
+<!--[0].fieldArray.fieldGroup-->
+<app-query-builder [metadata]="this.fieldsRow" [builderoptions]="this.builderoptions" (find)="onFind($event)" ></app-query-builder>
 
 <h4>Risultati</h4>
 <form *ngIf="resultMetadata" [formGroup]="form" >

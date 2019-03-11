@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceQuery } from '../query-builder/query-builder.interfaces';
@@ -16,6 +16,8 @@ export class BaseResearchComponent implements OnInit {
   protected isLoading = false;
   protected fieldsRow: FormlyFieldConfig[] = [];
 
+  builderoptions: FormlyTemplateOptions;
+  
   form = new FormGroup({});
 
   protected model = {
