@@ -41,6 +41,8 @@ import { FirmaDirettoreComponent } from './pages/firmadirettore.component';
 import { AziendaLocComponent } from './components/convenzione/aziendaloc.component';
 import { AziendeLocComponent } from './components/convenzione/aziendeloc.component';
 import { AziendaLocService } from './aziendaloc.service';
+import { PersoneinterneTitulus } from './pages/personeinterne-titulus.component';
+import { PersonaInternaService } from './personainterna.service';
 registerLocaleData(localeIt);
 @NgModule({
   imports: [
@@ -58,7 +60,8 @@ registerLocaleData(localeIt);
     ConvenzioneComponent,
     HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
-    TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent
+    TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
+    PersoneinterneTitulus,
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -66,13 +69,16 @@ registerLocaleData(localeIt);
     AssignmentDetailPageComponent,    
     HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
-    ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent
+    ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
+    PersoneinterneTitulus,
+
   ],
   providers: [ 
     { provide: LOCALE_ID, useValue: 'it' },
     ApplicationService,
     UserTaskService,
     AziendaLocService,
+    PersonaInternaService    
   ], 
 })
 export class ApplicationModule { }

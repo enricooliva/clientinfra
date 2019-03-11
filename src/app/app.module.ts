@@ -33,6 +33,7 @@ import { PermissionService } from './application/permission.service';
 import { TipoPagamentoService } from './application/tipopagamento.service';
 import { ToastrModule } from 'ngx-toastr';
 import { AziendaLocService } from './application/aziendaloc.service';
+import { PersonaInternaService } from './application/personainterna.service';
 
 
 export function tokenGetter() {
@@ -78,6 +79,7 @@ export function tokenGetter() {
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},
     {provide: 'aziendaLocService', useClass: AziendaLocService},
+    {provide: 'personainternaService', useClass: PersonaInternaService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     {provide: APP_BASE_HREF, useValue: environment.baseHref},

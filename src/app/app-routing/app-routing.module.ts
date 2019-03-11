@@ -26,6 +26,7 @@ import { FirmaControparteComponent } from '../application/pages/firmacontroparte
 import { FirmaDirettoreComponent } from '../application/pages/firmadirettore.component';
 import { AziendaLocComponent } from '../application/components/convenzione/aziendaloc.component';
 import { AziendeLocComponent } from '../application/components/convenzione/aziendeloc.component';
+import { PersoneinterneTitulus } from '../application/pages/personeinterne-titulus.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -312,7 +313,17 @@ const routes: Routes = [
             { title: 'Attività' }
           ]
         }
-      },             
+      },                   
+      { 
+        path: 'personeinterne',  component: PersoneinterneTitulus, canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca persone interne',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca persone interne' }
+          ]
+        }
+      },
 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
