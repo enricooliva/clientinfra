@@ -15,23 +15,7 @@ export class AziendeLocComponent extends BaseResearchComponent {
   
   isLoading = false;
   
-  fieldsRow: FormlyFieldConfig[] = [
-    {
-      key: 'data',
-      type: 'datatablelookup',
-      wrappers: ['accordion'],      
-      templateOptions: {
-        label: 'Aziende',   
-        columnMode: 'force',
-        scrollbarH: false,        
-        page: new Page(25),
-        hidetoolbar: true,      
-        onDblclickRow: (event) => this.onDblclickRow(event),
-        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
-      },
-      fieldArray: {
-        fieldGroupClassName: 'row',   
-        fieldGroup: [         
+  fieldsRow: FormlyFieldConfig[] = [         
           {
             key: 'nome',
             type: 'input',
@@ -68,12 +52,29 @@ export class AziendeLocComponent extends BaseResearchComponent {
               column: { cellTemplate: 'valuecolumn' }
             }
           },
-        ],
+        ];
+   
+ 
+  resultMetadata = [
+    {
+      key: 'data',
+      type: 'datatablelookup',
+      wrappers: ['accordion'],      
+      templateOptions: {
+        label: 'Aziende',   
+        columnMode: 'force',
+        scrollbarH: false,        
+        page: new Page(25),
+        hidetoolbar: true,      
+        onDblclickRow: (event) => this.onDblclickRow(event),
+        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
+      },
+      fieldArray: {
+        fieldGroupClassName: 'row',   
+        fieldGroup: this.fieldsRow,
       }
     }
   ];
- 
-  resultMetadata = this.fieldsRow;
 
   constructor(protected service: AziendaLocService, router: Router, route: ActivatedRoute,)  {    
     super(router,route);    
