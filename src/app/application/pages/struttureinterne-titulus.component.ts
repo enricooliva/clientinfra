@@ -4,22 +4,22 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'src/app/shared/lookup/page';
 import { BaseResearchComponent } from 'src/app/shared/base-component/base-research.component';
-import { PersonaInternaService } from '../personainterna.service';
+import { StrutturaInternaService } from '../strutturainterna.service';
 
 
 @Component({
-  selector: 'app-personeinterne', 
+  selector: 'app-struttureinterne', 
   templateUrl: '../../shared/base-component/base-research.component.html',
 })
 
 //ng g c submission/components/permissions -s true --spec false -t true
-export class PersoneinterneTitulus extends BaseResearchComponent {
+export class StruttureInterneTitulus extends BaseResearchComponent {
   
   isLoading = false;
   
   fieldsRow: FormlyFieldConfig[] = [    
           {
-            key: 'persint_coduff',
+            key: 'struint_coduff',
             type: 'string',
             hideExpression: false,
             templateOptions: {
@@ -29,10 +29,10 @@ export class PersoneinterneTitulus extends BaseResearchComponent {
             }
           },
           {
-            key: 'persint_nomcogn',
+            key: 'struint_nome',
             type: 'string',
             templateOptions: {
-              label: 'Nome e/o cognome',
+              label: 'Nome struttura',
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
@@ -63,12 +63,12 @@ export class PersoneinterneTitulus extends BaseResearchComponent {
     min: 1
   }
 
-  constructor(protected service: PersonaInternaService, router: Router, route: ActivatedRoute,)  {    
+  constructor(protected service: StrutturaInternaService, router: Router, route: ActivatedRoute,)  {    
     super(router,route);    
     
     this.resultMetadata[0].fieldArray.fieldGroup = service.getMetadata();        
 
-    this.routeAbsolutePath = 'home/personeinterne'     
+    this.routeAbsolutePath = 'home/struttureinterne'     
     //this.title = 'Tipo pagamenti'
   }
  

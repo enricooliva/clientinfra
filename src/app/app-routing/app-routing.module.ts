@@ -27,6 +27,7 @@ import { FirmaDirettoreComponent } from '../application/pages/firmadirettore.com
 import { AziendaLocComponent } from '../application/components/convenzione/aziendaloc.component';
 import { AziendeLocComponent } from '../application/components/convenzione/aziendeloc.component';
 import { PersoneinterneTitulus } from '../application/pages/personeinterne-titulus.component';
+import { StruttureInterneTitulus } from '../application/pages/struttureinterne-titulus.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -321,6 +322,16 @@ const routes: Routes = [
           urls: [
             { title: 'Home', url: '/home' },
             { title: 'Ricerca persone interne' }
+          ]
+        }
+      },
+      { 
+        path: 'struttureinterne',  component: StruttureInterneTitulus, canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca strutture interne',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca strutture interne' }
           ]
         }
       },

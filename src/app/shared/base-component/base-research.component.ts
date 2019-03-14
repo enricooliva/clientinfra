@@ -76,8 +76,7 @@ export class BaseResearchComponent implements OnInit {
           data: data.data
         }
 
-        this.sessionId = data.sessionId;
-        console.log(data);
+        this.sessionId = data.sessionId;        
 
         to.page.totalElements = data.total; // data.to;
         to.page.pageNumber = data.current_page - 1;

@@ -43,6 +43,8 @@ import { AziendeLocComponent } from './components/convenzione/aziendeloc.compone
 import { AziendaLocService } from './aziendaloc.service';
 import { PersoneinterneTitulus } from './pages/personeinterne-titulus.component';
 import { PersonaInternaService } from './personainterna.service';
+import { StruttureInterneTitulus } from './pages/struttureinterne-titulus.component';
+import { StrutturaInternaService } from './strutturainterna.service';
 registerLocaleData(localeIt);
 @NgModule({
   imports: [
@@ -61,7 +63,7 @@ registerLocaleData(localeIt);
     HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
     TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
-    PersoneinterneTitulus,
+    PersoneinterneTitulus, StruttureInterneTitulus,
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -70,7 +72,7 @@ registerLocaleData(localeIt);
     HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
     ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
-    PersoneinterneTitulus,
+    PersoneinterneTitulus, StruttureInterneTitulus,
 
   ],
   providers: [ 
@@ -78,7 +80,8 @@ registerLocaleData(localeIt);
     ApplicationService,
     UserTaskService,
     AziendaLocService,
-    PersonaInternaService    
+    PersonaInternaService,
+    StrutturaInternaService,    
   ], 
 })
 export class ApplicationModule { }

@@ -91,6 +91,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'], 
       }, 
+      {
+        path: 'struttureinterne',
+        title: 'Strutture interne',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
     ]
   },
   {
