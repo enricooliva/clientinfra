@@ -251,6 +251,27 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           },
         ]
       },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'rpa',
+            type: 'externalobject',
+            className: "col-md-12",
+            defaultValue: { },
+            templateOptions: {
+              label: 'RPA',
+              type: 'string',
+              entityName: 'personainterna',
+              entityLabel: 'Persona interna',
+              codeProp: 'matricola',              
+              descriptionFunc: (data) => {
+                return data['nome'] + ' ' + data['cognome'];
+              },
+            },                        
+          },
+        ]
+      }
     ];
   }
 

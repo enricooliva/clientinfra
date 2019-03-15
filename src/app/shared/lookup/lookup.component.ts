@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { ServiceQuery } from '..';
+import { ServiceQuery, IQueryMetadata } from '..';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import ControlUtils from '../dynamic-form/control-utils';
@@ -38,8 +38,12 @@ export class LookupComponent implements OnInit {
   ngOnInit(): void {    
     const servicename = ControlUtils.getServiceName(this.entityName)
     this.service = this.injector.get(servicename) as ServiceQuery;
-
-    this.researchMetadata = this.service.getMetadata();
+    
+    if ('getQueryMetadata' in this.service ){
+      this.researchMetadata = (this.service as IQueryMetadata).getQueryMetadata();
+    }else {
+      this.researchMetadata = this.service.getMetadata();
+    }
     this.resultMetadata =  [
       {
           key: 'data',
@@ -58,7 +62,7 @@ export class LookupComponent implements OnInit {
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
-            fieldGroup: this.researchMetadata
+            fieldGroup: this.service.getMetadata()
           }
         }
       ];

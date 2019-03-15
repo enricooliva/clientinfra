@@ -76,11 +76,8 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
                     field.formControl.setErrors({ notfound: true });                    
                     return;
                   }
-                  //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-                  if (this.field.templateOptions.descriptionProp in data){                      
-                    this.extDescription.formControl.setValue(data[this.field.templateOptions.descriptionProp]);
-                    this.codeField.formControl.markAsDirty();
-                  }
+
+                  this.setDescription(data);
                 });
 
               } else {
@@ -131,10 +128,15 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     ];
   }
 
-  setDescription(data: any) {
-    //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-    if (this.field.templateOptions.descriptionProp in data)
+  setDescription(data: any) {  
+    if (typeof this.field.templateOptions.descriptionFunc === 'function'){
+      this.extDescription.formControl.setValue(this.field.templateOptions.descriptionFunc(data))
+      this.codeField.formControl.markAsDirty();
+    } else if (this.field.templateOptions.descriptionProp in data){                      
+      //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
       this.extDescription.formControl.setValue(data[this.field.templateOptions.descriptionProp]);
+      this.codeField.formControl.markAsDirty();
+    }
   }
 
   setcode(data: any) {

@@ -1,9 +1,9 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, ɵsetCurrentInjector } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery, ServiceEntity } from '../shared';
+import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery, ServiceEntity, IQueryMetadata } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
@@ -18,7 +18,31 @@ const httpOptions = {
 };
 
 @Injectable()
-export class PersonaInternaService extends BaseService {
+export class PersonaInternaService extends BaseService implements IQueryMetadata {
+
+  getQueryMetadata(): FormlyFieldConfig[] {
+    return [    
+      {
+        key: 'persint_coduff',
+        type: 'string',
+        hideExpression: false,
+        templateOptions: {
+          label: 'Codice ufficio',
+          disabled: true,
+          column: { width: 10, cellTemplate: 'valuecolumn'}
+        }
+      },
+      {
+        key: 'persint_nomcogn',
+        type: 'string',
+        templateOptions: {
+          label: 'Nome e/o cognome',
+          required: true,
+          column: { cellTemplate: 'valuecolumn'}
+        }
+      },        
+    ];
+  }
 
   getMetadata(): FormlyFieldConfig[] {
     return [
