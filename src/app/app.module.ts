@@ -35,6 +35,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AziendaLocService } from './application/aziendaloc.service';
 import { PersonaInternaService } from './application/personainterna.service';
 import { StrutturaInternaService } from './application/strutturainterna.service';
+import { ClassificazioneService } from './application/classificazione.service';
 
 
 export function tokenGetter() {
@@ -72,7 +73,8 @@ export function tokenGetter() {
     MessageCacheService,  
     RoleService,
     PermissionService,
-    TipoPagamentoService,      
+    TipoPagamentoService,
+    ClassificazioneService,      
     { provide: RequestCache, useClass: RequestCacheWithMap },
     HttpInterceptorProviders,
     GlobalErrorHandlerProviders,        

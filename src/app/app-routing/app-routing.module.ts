@@ -28,6 +28,8 @@ import { AziendaLocComponent } from '../application/components/convenzione/azien
 import { AziendeLocComponent } from '../application/components/convenzione/aziendeloc.component';
 import { PersoneinterneTitulus } from '../application/pages/personeinterne-titulus.component';
 import { StruttureInterneTitulus } from '../application/pages/struttureinterne-titulus.component';
+import { ClassificazioneComponent } from '../application/components/classif/classificazione.component';
+import { ClassificazioniComponent } from '../application/components/classif/classificazioni.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -335,6 +337,38 @@ const routes: Routes = [
           ]
         }
       },
+      { 
+        path: 'classificazioni/new',  component: ClassificazioneComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Nuovo codice di classificazione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuovo codice di classificazione' }
+          ]
+        } 
+      }, 
+      { 
+        path: 'classificazioni/:id',  component: ClassificazioneComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Classificazione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Classificazione' }
+          ]
+        } 
+      }, 
+      { 
+        path: 'classificazioni',  component: ClassificazioniComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Classificazione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca classificazione' }
+          ]
+        }
+      }, 
+
+
 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 

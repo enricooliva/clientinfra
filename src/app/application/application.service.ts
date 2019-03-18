@@ -101,12 +101,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             },
           },
         ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-        ]
-      },
+      },      
       {
         fieldGroupClassName: 'row',
         fieldGroup: [
