@@ -232,9 +232,9 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             className: "col-md-4",            
             templateOptions: {
               options: [
-                { label: 'Progetti e finanziamenti', value: 'III.13' },
-                { label: 'Accordi per la didattica e per la ricerca', value: 'III.14' },
-                { label: 'Attività per conto terzi', value: 'III.19' },
+                { label: 'III/13 - Progetti e finanziamenti', value: '03/13' },
+                { label: 'III/14 - Accordi per la didattica e per la ricerca', value: '03/14' },
+                { label: 'III/19 - Attività per conto terzi', value: '03/19' },
               ],
               label: 'Classificazione',
               required: true,
