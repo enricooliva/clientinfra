@@ -226,11 +226,14 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             type: 'select',
             className: "col-md-4",            
             templateOptions: {
-              options: [
-                { label: 'III/13 - Progetti e finanziamenti', value: '03/13' },
-                { label: 'III/14 - Accordi per la didattica e per la ricerca', value: '03/14' },
-                { label: 'III/19 - Attività per conto terzi', value: '03/19' },
-              ],
+              options: this.getClassificazioni(),
+              // [
+              //   { label: 'III/13 - Progetti e finanziamenti', value: '03/13' },
+              //   { label: 'III/14 - Accordi per la didattica e per la ricerca', value: '03/14' },
+              //   { label: 'III/19 - Attività per conto terzi', value: '03/19' },
+              // ],
+              labelProp: 'descrizione',
+              valueProp: 'codice',
               label: 'Classificazione',
               required: true,
             },
@@ -634,6 +637,11 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
   @Cacheable()
   getAttachemntTypes(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/attachmenttypes/', httpOptions);
+  }
+  
+  @Cacheable()
+  getClassificazioni(): Observable<any> {
+    return this.http.get(this._baseURL + '/convenzioni/classificazioni', httpOptions);
   }
 
   @Cacheable()

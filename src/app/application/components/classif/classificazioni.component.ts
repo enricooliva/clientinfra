@@ -21,7 +21,7 @@ export class ClassificazioniComponent extends BaseResearchComponent {
           {
             key: 'id',
             type: 'number',
-            hideExpression: false,
+            hide: true,            
             templateOptions: {
               label: 'Id',
               disabled: true,

@@ -27,6 +27,7 @@ export class ClassificazioneComponent extends BaseEntityComponent {
         {
           key: 'id',
           type: 'input',
+          hide: true,
           className: "col-md-2",
           templateOptions: {
             label: 'Id',
@@ -77,7 +78,8 @@ export class ClassificazioneComponent extends BaseEntityComponent {
     super(route,router);
     //this.title = 'Tipo pagamento'
     this.activeNew =true;
-    this.researchPath = 'home/classificazioni'
+    this.isRemovable = true;
+    this.researchPath = 'home/classificazioni';
     this.newPath = this.researchPath+'/new';
   }
 

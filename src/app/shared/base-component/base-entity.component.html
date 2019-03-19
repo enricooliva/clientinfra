@@ -20,6 +20,10 @@
                 <span class="oi oi-magnifying-glass"></span>
                 <span class="ml-2">Ricerca</span>
             </button>
+            <button *ngIf="isRemovable" class="btn btn-outline-primary border-0 rounded-0" (click)="onRemove()">
+                <span class="oi oi-trash"></span>  
+                <span class="ml-2">Rimuovi</span>
+            </button>
         </div>
     </div>
 

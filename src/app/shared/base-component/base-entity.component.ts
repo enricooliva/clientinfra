@@ -43,6 +43,8 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   
   newPath: string = null;
 
+  isRemovable = false;
+
   constructor(protected route: ActivatedRoute, protected router: Router) {
   }
 
@@ -84,13 +86,15 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   }
 
   onRemove() {
+    this.isLoading = true;
     this.service.remove(this.model['id']).subscribe(
       prop => {
+        this.isLoading = false; 
         this.model = null;
-        //impostare come se fosse in nuovo
+        this.onResearch(); //impostare come se fosse in nuovo
       },
       error => { // error path        
-
+        this.isLoading = false; 
       }
     );
   }
