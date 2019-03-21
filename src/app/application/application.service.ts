@@ -248,28 +248,43 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             },
           },
         ]
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'rpa',
-            type: 'externalobject',
-            className: "col-md-12",
-            defaultValue: { },
-            templateOptions: {
-              label: 'RPA',
-              type: 'string',
-              entityName: 'personainterna',
-              entityLabel: 'Persona interna',
-              codeProp: 'matricola',              
-              descriptionFunc: (data) => {
-                return data['nome'] + ' ' + data['cognome'];
-              },
-            },                        
-          },
-        ]
-      }
+      },      
+      // {
+      // fieldGroupClassName: 'row',
+      //   fieldGroup: [          
+      //     {
+      //       key: 'rpa',
+      //       type: 'typeahead',           
+      //       className: "col-md-12",
+      //       templateOptions: {
+      //         label: 'RPA',
+      //         placeholder: 'Ricerca del personale interno per nome e/o cognome',
+      //         field: 'persint_nomcogn',
+      //         entityName: 'personainterna',
+      //       }
+      //     },
+      // ]},
+      // {
+      //   fieldGroupClassName: 'row',
+      //   fieldGroup: [
+      //     {
+      //       key: 'rpa',
+      //       type: 'externalobject',
+      //       className: "col-md-12",
+      //       defaultValue: { },
+      //       templateOptions: {
+      //         label: 'RPA',
+      //         type: 'string',
+      //         entityName: 'personainterna',
+      //         entityLabel: 'Persona interna',
+      //         codeProp: 'matricola',              
+      //         descriptionFunc: (data) => {
+      //           return data['nome'] + ' ' + data['cognome'];
+      //         },
+      //       },                        
+      //     },
+      //   ]
+      // }
     ];
   }
 

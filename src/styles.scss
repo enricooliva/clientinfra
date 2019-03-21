@@ -4,7 +4,18 @@
 @import '~@swimlane/ngx-datatable/release/index.css';
 @import '~@swimlane/ngx-datatable/release/themes/bootstrap.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 //@import "~bootstrap/dist/css/bootstrap.css"; 
+
+.ng-select.custom {
+  border:0px;
+  min-height: 0px;
+  border-radius: 0;
+}
+.ng-select.custom .ng-select-container  {            
+  min-height: 0px;
+  border-radius: 0;
+}
 
   // styles in src/style directory are applied to the whole page  
   .oi { top: 0px !important; }

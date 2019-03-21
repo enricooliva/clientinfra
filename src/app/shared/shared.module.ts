@@ -55,6 +55,8 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TooltipWrapperComponent } from './dynamic-form/wrapper/tooltip-wrapper.component';
 import { AccordionInfoWrapperComponent } from './dynamic-form/wrapper/accordioninfo-wrapper.component';
+import { FormlyFieldTypeahead } from './dynamic-form/typehead-type.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -75,6 +77,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPermissionsModule,
     LoadingModule,
     PerfectScrollbarModule,
+    NgSelectModule,
     FormlyModule.forRoot({
       types: [
         {
@@ -98,6 +101,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       { name: 'selectinfra', component: SelectTypeComponent },
       { name: 'tabinfra', component: TabTypeComponent },
       { name: 'string', extends: 'input' },
+      { name: 'typeahead', component: FormlyFieldTypeahead },
       {
         name: 'number',
         extends: 'input',
@@ -207,6 +211,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,
     SidebarComponent,
     TooltipWrapperComponent,    
+    FormlyFieldTypeahead
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -230,6 +235,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent,
     TooltipWrapperComponent,
     AccordionInfoWrapperComponent,
+    FormlyFieldTypeahead
   ],
   entryComponents: [LookupComponent]
 })

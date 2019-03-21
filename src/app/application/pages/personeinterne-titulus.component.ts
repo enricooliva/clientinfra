@@ -20,14 +20,27 @@ export class PersoneinterneTitulus extends BaseResearchComponent {
   fieldsRow: FormlyFieldConfig[] = [    
           {
             key: 'persint_coduff',
-            type: 'string',
-            hideExpression: false,
+            type: 'external',          
             templateOptions: {
               label: 'Codice ufficio',
-              disabled: true,
-              column: { width: 10, cellTemplate: 'valuecolumn'}
-            }
+              type: 'string',
+              entityName: 'strutturainterna',
+              entityLabel: 'Strutture interne',
+              codeProp: 'cod_uff',        
+              descriptionProp: 'nome',
+              description: 'Codice ufficio'
+            },      
           },
+          // {
+          //   key: 'persint_coduff',
+          //   type: 'string',
+          //   hideExpression: false,
+          //   templateOptions: {
+          //     label: 'Codice ufficio',
+          //     disabled: true,
+          //     column: { width: 10, cellTemplate: 'valuecolumn'}
+          //   }
+          // },
           {
             key: 'persint_nomcogn',
             type: 'string',
