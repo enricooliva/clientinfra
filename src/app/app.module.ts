@@ -36,6 +36,7 @@ import { AziendaLocService } from './application/aziendaloc.service';
 import { PersonaInternaService } from './application/personainterna.service';
 import { StrutturaInternaService } from './application/strutturainterna.service';
 import { ClassificazioneService } from './application/classificazione.service';
+import { MappingUfficioService } from './application/mappingufficio.service';
 
 
 export function tokenGetter() {
@@ -84,6 +85,7 @@ export function tokenGetter() {
     {provide: 'aziendaLocService', useClass: AziendaLocService},
     {provide: 'personainternaService', useClass: PersonaInternaService},
     {provide: 'strutturainternaService', useClass: StrutturaInternaService},
+    {provide: 'mapppingufficititulusService', useClass: MappingUfficioService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     {provide: APP_BASE_HREF, useValue: environment.baseHref},

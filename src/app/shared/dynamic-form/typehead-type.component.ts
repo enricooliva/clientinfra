@@ -34,7 +34,7 @@ import { ServiceQuery } from '..';
     </small>
     </div>
     </div>
-  `,
+  `, 
 })
 export class FormlyFieldTypeahead extends FieldType implements OnDestroy {
   onDestroy$ = new Subject<void>();

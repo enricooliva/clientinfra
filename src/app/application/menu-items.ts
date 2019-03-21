@@ -109,6 +109,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'], 
       }, 
+      {
+        path: 'mappinguffici',
+        title: 'Mapping uffici',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
     ]
   },
   {
