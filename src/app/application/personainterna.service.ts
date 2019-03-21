@@ -23,6 +23,16 @@ export class PersonaInternaService extends BaseService implements IQueryMetadata
   getQueryMetadata(): FormlyFieldConfig[] {
     return [    
       {
+        key: 'persint_matricola',
+        type: 'string',
+        hideExpression: false,
+        templateOptions: {
+          label: 'Codice persona (matricola)',
+          disabled: true,
+          column: { width: 10, cellTemplate: 'valuecolumn'}
+        }
+      },
+      {
         key: 'persint_coduff',
         type: 'string',
         hideExpression: false,
