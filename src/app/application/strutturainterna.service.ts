@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery, ServiceEntity } from '../shared';
+import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery, ServiceEntity, IQueryMetadata } from '../shared';
 import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
@@ -18,7 +18,39 @@ const httpOptions = {
 };
 
 @Injectable()
-export class StrutturaInternaService extends BaseService {
+export class StrutturaInternaService extends BaseService implements IQueryMetadata{
+  getQueryMetadata(): FormlyFieldConfig[] {
+    return [
+      {
+        key: 'struint_nome',
+        type: 'string',
+        hideExpression: false,
+        templateOptions: {
+          label: 'Nome',
+          disabled: true,
+          column: { width: 10, cellTemplate: 'valuecolumn' }
+        }
+      },
+      {
+        key: 'struint_coduff',
+        type: 'string',
+        templateOptions: {
+          label: 'Codice ufficio',
+          required: true,
+          column: { cellTemplate: 'valuecolumn' }
+        }
+      },
+      {
+        key: 'struint_codresponsabile',
+        type: 'string',
+        templateOptions: {
+          label: 'Codice responsabile',
+          required: true,
+          column: { cellTemplate: 'valuecolumn' }
+        }
+      },
+    ];
+  }
 
   getMetadata(): FormlyFieldConfig[] {
     return [
