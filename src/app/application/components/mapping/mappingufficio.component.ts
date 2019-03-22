@@ -36,6 +36,7 @@ export class MappingUfficioTitulus extends BaseEntityComponent {
             entityLabel: 'Unità organizzativa',
             codeProp: 'uo',        
             descriptionProp: 'descr',
+            initdescription: 'descrizione_uo',
             description: 'Descrizione'
           },      
         },    
@@ -55,6 +56,7 @@ export class MappingUfficioTitulus extends BaseEntityComponent {
             entityLabel: 'Struttura interna',
             codeProp: 'cod_uff',        
             descriptionProp: 'nome',
+            initdescription: 'descrizione_uff',
             description: 'Descrizione'
           },      
         },    

@@ -8,6 +8,7 @@ import { ServiceQuery } from '../query-builder/query-builder.interfaces';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LookupComponent } from '../lookup/lookup.component';
 import ControlUtils from './control-utils';
+import { initDomAdapter } from '@angular/platform-browser/src/browser';
 
 @Component({
   selector: 'app-external-type',
@@ -92,14 +93,18 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
       onClick: (to, fieldType, $event) => this.open(),
     }
 
-    
+    this.init();
+
     this.field.formControl.valueChanges.pipe(
       distinctUntilChanged(),
       takeUntil(this.onDestroy$),
       //perchè occorre lo startwith
       //startWith(this.field.formControl.value),
-      tap(selectedField => {
-        if (this.formControl.value && !this.nodecode) {
+      tap(selectedField => {        
+        if (!this.initdesc)
+          return this.init();
+
+        if (this.formControl.value && !this.nodecode) {          
           setTimeout(() => { this.isLoading = true; }, 0);
           this.service.getById(this.formControl.value).subscribe((data) => {
             setTimeout(() => { this.isLoading = false; }, 0);
@@ -111,6 +116,8 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
             //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
             if (this.field.templateOptions.descriptionProp in data){
               this.extDescription = data[this.field.templateOptions.descriptionProp];
+              if (this.field.templateOptions.initdescription in this.model)
+                this.model[this.field.templateOptions.initdescription] = data[this.field.templateOptions.descriptionProp];
               //this.field.formControl.markAsDirty();
             }
           });
@@ -135,13 +142,28 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
         label: 'Descrizione'
       }
     }
+    
+  }
 
+  private initdesc = false;
+  init(){   
+    //verifico in caso di cache e non se il modello è inizializzato
+    if (this.field.key in this.model)    
+      this.initdesc = true;
+
+    if (this.field.templateOptions.initdescription in this.model){      
+      this.extDescription = this.model[this.field.templateOptions.initdescription];        
+    }
+    return this.initdesc;
   }
 
   setDescription(data: any) {
     //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-    if (this.field.templateOptions.descriptionProp in data)
+    if (this.field.templateOptions.descriptionProp in data){
       this.extDescription = data[this.field.templateOptions.descriptionProp];
+      if (this.field.templateOptions.initdescription in this.model)
+        this.model[this.field.templateOptions.initdescription] = data[this.field.templateOptions.descriptionProp];
+    }          
   }
 
   setcode(data: any) {
