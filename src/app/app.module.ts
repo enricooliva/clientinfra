@@ -30,13 +30,15 @@ import { environment } from 'src/environments/environment';
 import { APP_BASE_HREF } from '@angular/common';
 import { RoleService } from './application/role.service';
 import { PermissionService } from './application/permission.service';
-import { TipoPagamentoService } from './application/tipopagamento.service';
+
 import { ToastrModule } from 'ngx-toastr';
 import { AziendaLocService } from './application/aziendaloc.service';
 import { PersonaInternaService } from './application/personainterna.service';
 import { StrutturaInternaService } from './application/strutturainterna.service';
 import { ClassificazioneService } from './application/classificazione.service';
 import { MappingUfficioService } from './application/mappingufficio.service';
+import { TipoPagamentoService } from './application/tipopagamento.service';
+import { UnitaOrganizzativaService } from './application/unitaorganizzativa.service';
 
 
 export function tokenGetter() {
@@ -86,6 +88,7 @@ export function tokenGetter() {
     {provide: 'personainternaService', useClass: PersonaInternaService},
     {provide: 'strutturainternaService', useClass: StrutturaInternaService},
     {provide: 'mapppingufficititulusService', useClass: MappingUfficioService},
+    {provide: 'unitaorganizzativaService', useClass: UnitaOrganizzativaService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     {provide: APP_BASE_HREF, useValue: environment.baseHref},

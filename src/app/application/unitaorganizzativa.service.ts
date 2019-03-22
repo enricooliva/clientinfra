@@ -13,34 +13,34 @@ const httpOptions = {
 };
 
 @Injectable()
-export class TipoPagamentoService extends BaseService {
+export class UnitaOrganizzativaService extends BaseService {
 
   getMetadata(): FormlyFieldConfig[] {
     return [
       {
-        key: 'id',
-        type: 'number',
+        key: 'uo',
+        type: 'string',
         hideExpression: false,
         templateOptions: {
-          label: 'Id',
+          label: 'Codice unità organizzativa',
           disabled: true,
           column: { width: 10, cellTemplate: 'valuecolumn' }
         }
       },
       {
-        key: 'name',
-        type: 'select',
+        key: 'descr',
+        type: 'string',
         templateOptions: {
-          label: 'Ruolo',
+          label: 'Descrizione',
           required: true,
           column: { cellTemplate: 'valuecolumn' }
         }
       },
       {
-        key: 'guard_name',
-        type: 'string',
+        key: 'data_fin',
+        type: 'date',
         templateOptions: {
-          label: 'Nome',
+          label: 'Data fine',
           required: true,
           column: { cellTemplate: 'valuecolumn' }
         }
@@ -51,7 +51,7 @@ export class TipoPagamentoService extends BaseService {
 
   constructor(protected http: HttpClient, public messageService: MessageService) {
      super(http,messageService);
-     this.basePath = 'tipopagamenti';     
+     this.basePath = 'unitaorganizzative';     
   }
 
 }

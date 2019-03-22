@@ -92,10 +92,12 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
       onClick: (to, fieldType, $event) => this.open(),
     }
 
-    this.formControl.valueChanges.pipe(
+    
+    this.field.formControl.valueChanges.pipe(
       distinctUntilChanged(),
       takeUntil(this.onDestroy$),
-      startWith(this.field.formControl.value),
+      //perchè occorre lo startwith
+      //startWith(this.field.formControl.value),
       tap(selectedField => {
         if (this.formControl.value && !this.nodecode) {
           setTimeout(() => { this.isLoading = true; }, 0);
@@ -107,20 +109,22 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
               return;
             }
             //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-            if (this.field.templateOptions.descriptionProp in data)
+            if (this.field.templateOptions.descriptionProp in data){
               this.extDescription = data[this.field.templateOptions.descriptionProp];
+              //this.field.formControl.markAsDirty();
+            }
           });
 
         } else {
           //codizione di empty
           this.extDescription = null;
+          //this.field.formControl.markAsDirty();
         }
       }),
     ).subscribe();
 
     // this.formlyConfig.getMergedField(tmpfield);
     this.codeField = this.field;
-
 
     //non è usato formly-field
     this.descriptionField = {
@@ -141,8 +145,10 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
   }
 
   setcode(data: any) {
-    if (this.field.templateOptions.codeProp in data)
+    if (this.field.templateOptions.codeProp in data){
       this.codeField.formControl.setValue(data[this.field.templateOptions.codeProp]);
+      this.field.formControl.markAsDirty();
+    }
   }
 
 

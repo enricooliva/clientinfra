@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.component';
 import { TipoPagamentoService } from '../../tipopagamento.service';
 
+
 @Component({
   selector: 'app-tipopagamento', 
   templateUrl: '../../../shared/base-component/base-entity.component.html',

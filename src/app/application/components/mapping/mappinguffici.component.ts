@@ -3,14 +3,13 @@ import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'src/app/shared/lookup/page';
-import { BaseResearchComponent } from 'src/app/shared/base-component/base-research.component';
-import { StrutturaInternaService } from '../strutturainterna.service';
-import { MappingUfficioService } from '../mappingufficio.service';
+import { BaseResearchComponent } from 'src/app/shared';
+import { MappingUfficioService } from '../../mappingufficio.service';
 
 
 @Component({
   selector: 'app-mappinguffici', 
-  templateUrl: '../../shared/base-component/base-research.component.html',
+  templateUrl: '../../../shared/base-component/base-research.component.html',
 })
 
 //ng g c application/pages/mappinguffici -s true --spec false -t true
@@ -92,5 +91,4 @@ export class MappingUfficiTitulus extends BaseResearchComponent {
     
   }
  
-
 }

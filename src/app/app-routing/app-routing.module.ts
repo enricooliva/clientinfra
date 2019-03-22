@@ -30,7 +30,8 @@ import { PersoneinterneTitulus } from '../application/pages/personeinterne-titul
 import { StruttureInterneTitulus } from '../application/pages/struttureinterne-titulus.component';
 import { ClassificazioneComponent } from '../application/components/classif/classificazione.component';
 import { ClassificazioniComponent } from '../application/components/classif/classificazioni.component';
-import { MappingUfficiTitulus } from '../application/pages/mappinguffici.component';
+import { MappingUfficiTitulus } from '../application/components/mapping/mappinguffici.component';
+import { MappingUfficioTitulus } from '../application/components/mapping/mappingufficio.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -374,7 +375,27 @@ const routes: Routes = [
           title: 'Mapping uffici',
           urls: [
             { title: 'Home', url: '/home' },
+            { title: 'Ricerca associazione uffici' }
+          ]
+        }
+      }, 
+      { 
+        path: 'mappinguffici/:id',  component: MappingUfficioTitulus,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Mapping uffici',
+          urls: [
+            { title: 'Home', url: '/home' },
             { title: 'Ricerca mapping uffici' }
+          ]
+        }
+      }, 
+      { 
+        path: 'mappinguffici/new',  component: MappingUfficioTitulus,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Nuova associazione uffici',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuova associazione uffici' }
           ]
         }
       }, 

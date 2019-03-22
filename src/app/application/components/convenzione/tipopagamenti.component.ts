@@ -7,6 +7,8 @@ import { PermissionService } from '../../permission.service';
 import { BaseResearchComponent } from 'src/app/shared/base-component/base-research.component';
 import { TipoPagamentoService } from '../../tipopagamento.service';
 
+
+
 @Component({
   selector: 'app-tipopagamenti', 
   templateUrl: '../../../shared/base-component/base-research.component.html',
