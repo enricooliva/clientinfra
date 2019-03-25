@@ -31,16 +31,16 @@ export class PersoneinterneTitulus extends BaseResearchComponent {
               description: 'Codice ufficio'
             },      
           },
-          // {
-          //   key: 'persint_coduff',
-          //   type: 'string',
-          //   hideExpression: false,
-          //   templateOptions: {
-          //     label: 'Codice ufficio',
-          //     disabled: true,
-          //     column: { width: 10, cellTemplate: 'valuecolumn'}
-          //   }
-          // },
+          {
+            key: 'persint_matricola',
+            type: 'string',
+            hideExpression: false,
+            templateOptions: {
+              label: 'Matricola',
+              disabled: true,
+              column: { width: 10, cellTemplate: 'valuecolumn'}
+            }
+          },
           {
             key: 'persint_nomcogn',
             type: 'string',

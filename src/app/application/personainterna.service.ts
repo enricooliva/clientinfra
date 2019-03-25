@@ -76,6 +76,15 @@ export class PersonaInternaService extends BaseService implements IQueryMetadata
         }
       },
       {
+        key: 'matricola',
+        type: 'string',
+        templateOptions: {
+          label: 'Matricola',
+          required: true,
+          column: { cellTemplate: 'valuecolumn' }
+        }
+      },
+      {
         key: 'cod_uff',
         type: 'string',
         templateOptions: {
