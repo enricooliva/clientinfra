@@ -11,7 +11,9 @@ import { FieldType, FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
       <formly-field *ngSwitchCase="'number'" [field]="f"></formly-field>
       <formly-field *ngSwitchCase="'select'" [field]="f"></formly-field>
       <formly-field *ngSwitchCase="'textarea'" [field]="f"></formly-field>   
-      <formly-field *ngSwitchCase="'externalquery'" [field]="f"></formly-field>         
+      <formly-field *ngSwitchCase="'externalquery'" [field]="f"></formly-field>   
+      <formly-field *ngSwitchCase="'datepicker'" [field]="f"></formly-field>         
+      <formly-field *ngSwitchCase="'date'" [field]="f"></formly-field>               
     </ng-container>
   </ng-container>
   `,
