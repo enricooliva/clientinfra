@@ -39,6 +39,7 @@ import { ClassificazioneService } from './application/classificazione.service';
 import { MappingUfficioService } from './application/mappingufficio.service';
 import { TipoPagamentoService } from './application/tipopagamento.service';
 import { UnitaOrganizzativaService } from './application/unitaorganizzativa.service';
+import { StrutturaEsternaService } from './application/strutturaesterna.service';
 
 
 export function tokenGetter() {
@@ -87,6 +88,7 @@ export function tokenGetter() {
     {provide: 'aziendaLocService', useClass: AziendaLocService},
     {provide: 'personainternaService', useClass: PersonaInternaService},
     {provide: 'strutturainternaService', useClass: StrutturaInternaService},
+    {provide: 'strutturaesternaService', useClass: StrutturaEsternaService},
     {provide: 'mapppingufficititulusService', useClass: MappingUfficioService},
     {provide: 'unitaorganizzativaService', useClass: UnitaOrganizzativaService},
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},

@@ -101,6 +101,15 @@ export const ROUTES: RouteInfo[] = [
         permissions: ['ADMIN'], 
       }, 
       {
+        path: 'struttureesterne',
+        title: 'Strutture esterne',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
+      {
         path: 'classificazioni',
         title: 'Classificazione',
         icon: '',
