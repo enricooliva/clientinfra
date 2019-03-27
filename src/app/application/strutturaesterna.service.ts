@@ -83,7 +83,7 @@ export class StrutturaEsternaService extends BaseService implements IQueryMetada
         }
       },
       {
-        key: 'email_certificata_addr',
+        key: 'email_certificata.addr',
         type: 'string',
         templateOptions: {
           label: 'Email certificata',
