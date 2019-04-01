@@ -390,7 +390,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
       },
       fieldGroup: [
         {
-          template: '<h5 class="mt-3">PEC di richiesta firma</h5>',
+          template: '<h5 class="mt-3">PEC destinatario</h5>',
         },
         {
           key: 'email',
