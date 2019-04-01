@@ -101,7 +101,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                       if (this.keymetadata[selectedField]) {
                         field.formControl.reset();
                         field.type = this.keymetadata[selectedField].type;
-
+                        field.wrappers = ['form-field'];
                         if (this.keymetadata[selectedField].type=='external'){      
                             field.type = 'externalquery';
                               //extern
