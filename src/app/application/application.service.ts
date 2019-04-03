@@ -672,6 +672,14 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return of([]);
   }
 
+  @Cacheable()
+  getAziende(id): Observable<any> {
+    if (id) {
+      return this.http.get(this._baseURL + '/convenzioni/'+ id.toString() +'/aziende/', httpOptions);
+    }
+    return of([]);
+  }
+
   download(id): Observable<any>{
     if (id) {
       return this.http.get(this._baseURL + '/attachments/download/' + id.toString(), httpOptions);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, OnChanges, SimpleChanges } from '@angular/core';
 import { FormlyFieldConfig, Field } from '@ngx-formly/core';
 import { BaseEntityComponent } from 'src/app/shared';
 import { ApplicationService } from '../application.service';
@@ -8,6 +8,7 @@ import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
 import { FileDetector } from 'protractor';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
 import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.field.config';
+import { AziendaService } from '../azienda.service';
 
 @Component({
   selector: 'app-sottoscrizione',
@@ -34,20 +35,21 @@ import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.f
   </form>
 
 
-  <button class="btn btn-primary mt-3" type="button" [disabled]="!form.valid" (click)="onSubmit()">Salva</button>
+  <button class="btn btn-primary mt-3" type="button" [disabled]="!form.valid" (click)="onSubmit()">{{labelButton}}</button>
   </div>
   `,
   // <p>Form value: {{ form.value | json }}</p> 
   styles: []
 })
-export class SottoscrizioneComponent extends BaseEntityComponent {
-
+export class SottoscrizioneComponent extends BaseEntityComponent {  
 
   //azioni possibili 
 
   //stato di partenza 'approvato'
   //firma_da_controparte1 --> stipula ditta --> ricevuta lettera con convenzione firmata dalla ditta
   //firma_da_direttore1 --> stipula uniurb --> ricevuta la convenzione firmata dal dipartimento
+
+  labelButton = "Salva";
 
   public static STATE = 'approvato';
   public static WORKFLOW_ACTIONS: string[] = ['firma_da_controparte1', 'firma_da_direttore1']; //TRASITION
@@ -89,8 +91,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         labelProp: 'descrizione',
         label: 'Formato di stipula',
         required: true,
-      },
-
+      }      
     },
     {
       key: 'stipula_type',
@@ -134,13 +135,21 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
               },
               hooks: {
                 onInit: (field) => {
+                  field.form.parent.parent.get('stipula_format').valueChanges.pipe(
+                    takeUntil(this.onDestroy$),
+                    tap(x => { 
+                      this.checkLabelButton(); 
+                    })
+                  ).subscribe();
+
                   field.form.parent.parent.get('stipula_type').valueChanges.pipe(
                     takeUntil(this.onDestroy$),
                     startWith(field.form.parent.parent.get('stipula_type').value),
                     tap(type => {
                       field.formControl.setValue(null);
+                      this.checkLabelButton();
                       if (type == 'uniurb') {
-                        field.templateOptions.options = [{ stipula_type: 'uniurb', codice: 'LTU_FIRM_UNIURB', descrizione: 'Lettera di trasmissione' }];
+                        field.templateOptions.options = [{ stipula_type: 'uniurb', codice: 'LTU_FIRM_UNIURB', descrizione: 'Lettera di trasmissione' }];                        
                       } else {
                         field.templateOptions.options = [{ stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Lettera ricevuta dalla ditta' }];
                       }
@@ -187,8 +196,9 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                   field.form.parent.parent.get('stipula_type').valueChanges.pipe(
                     takeUntil(this.onDestroy$),
                     startWith(field.form.parent.parent.get('stipula_type').value),
-                    tap(type => {
+                    tap(type => {                      
                       field.formControl.setValue(null);
+                      this.checkLabelButton();
                       if (type == 'uniurb') {
                         field.templateOptions.options = [{ stipula_type: 'uniurb', codice: 'CONV_FIRM_UNIURB', descrizione: 'Convenzione firmata dal direttore o rettore' }];
                       } else {
@@ -394,29 +404,31 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         },
         {
           key: 'email',
-          type: 'input',
+          type: 'input',          
           templateOptions: {
             label: 'Email ditta',
+            disabled: true,
             //required: true,                               
-          },
+          },          
         },
-        {
-          key: 'subject',
-          type: 'input',
-          templateOptions: {
-            label: 'Oggetto',
-            //required: true,                               
-          },
-        },
-        {
-          key: 'note',
-          type: 'textarea',
-          templateOptions: {
-            label: 'Note',
-            rows: 2,
-            //required: true,                               
-          },
-        },
+
+        // {
+        //   key: 'subject',
+        //   type: 'input',
+        //   templateOptions: {
+        //     label: 'Oggetto',
+        //     //required: true,                               
+        //   },
+        // },
+        // {
+        //   key: 'note',
+        //   type: 'textarea',
+        //   templateOptions: {
+        //     label: 'Note',
+        //     rows: 2,
+        //     //required: true,                               
+        //   },
+        // },
       ],
     },
   ]
@@ -465,7 +477,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
 
   }
 
-  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, private injector: Injector) {
     super(route, router)
     this.isLoading = false;
   }
@@ -473,11 +485,31 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.model.convenzione_id = params['id'];
+        this.model.convenzione_id = params['id'];      
+        this.service.getAziende(this.model.convenzione_id).subscribe(
+          result => { 
+            if (result && result[0])
+              this.model.email = result[0].pec_email; 
+            else 
+              this.model.email = 'email non associata';
+          }
+        );
+        
         this.options.formState.disabled_covenzione_id = true;
       };
     });
   }
+
+
+
+  checkLabelButton() {
+      if (this.model.stipula_type === 'uniurb' && this.model.stipula_format === 'digitale'){
+        this.labelButton = "Salva e invia PEC";
+      }else {
+        this.labelButton = "Salva";
+      }
+  }
+
 
   onSubmit() {
     if (this.form.valid) {
