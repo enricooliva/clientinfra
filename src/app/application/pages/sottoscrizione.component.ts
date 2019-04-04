@@ -151,7 +151,10 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                       if (type == 'uniurb') {
                         field.templateOptions.options = [{ stipula_type: 'uniurb', codice: 'LTU_FIRM_UNIURB', descrizione: 'Lettera di trasmissione' }];                        
                       } else {
-                        field.templateOptions.options = [{ stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Lettera ricevuta dalla ditta' }];
+                        field.templateOptions.options = [
+                          { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Lettera ricevuta dalla ditta' },
+                          { stipula_type: 'controparte', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
+                        ];
                       }
                       field.formControl.setValue(field.templateOptions.options[0].codice);
                     }),
@@ -168,11 +171,28 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                 type: 'input',
                 placeholder: 'Scegli file documento',
                 accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-                required: true,
+                required: true,                
                 onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
               },
+              hideExpression:(model: any, formState: any) => {               
+                  return (formState.model.stipula_format == 'cartaceo' && 
+                          formState.model.stipula_type == 'controparte' &&
+                          formState.model.an_dg_uniurb_an_controparte.attachment1.attachmenttype_codice == 'NESSUN_DOC');
+                },                            
             },
-
+            {
+              key: 'data_sottoscrizione',
+              type: 'datepicker',
+              className: "col-md-5",              
+              templateOptions: {
+                label: 'Data',
+                required: true,
+                //required: true,                               
+              },
+              hideExpression:(model: any, formState: any) => {               
+                return (formState.model.an_dg_uniurb_an_controparte.attachment1.attachmenttype_codice !== 'NESSUN_DOC');
+              },                            
+            },
           ],
         },
         {
