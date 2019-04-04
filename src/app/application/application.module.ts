@@ -53,6 +53,9 @@ import { MappingUfficioTitulus } from './components/mapping/mappingufficio.compo
 import { UnitaOrganizzativaService } from './unitaorganizzativa.service';
 import { StruttureEsterneTitulus } from './pages/struttureesterne-titulus.component';
 import { StrutturaEsternaService } from './strutturaesterna.service';
+import { DocumentoService } from './documento.service';
+import { DocumentiTitulus } from './pages/documenti-titulus.component';
+
 registerLocaleData(localeIt);
 @NgModule({
   imports: [
@@ -71,7 +74,8 @@ registerLocaleData(localeIt);
     HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
     TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
-    PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus
+    PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
+    DocumentiTitulus
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -80,7 +84,8 @@ registerLocaleData(localeIt);
     HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
     ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
-    PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus
+    PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
+    DocumentiTitulus
 
   ],
   providers: [ 
@@ -93,6 +98,7 @@ registerLocaleData(localeIt);
     MappingUfficioService, 
     UnitaOrganizzativaService,
     StrutturaEsternaService,
+    DocumentoService
   ], 
 })
 export class ApplicationModule { }

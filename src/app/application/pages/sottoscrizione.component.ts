@@ -256,15 +256,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         return !(formstate.model.stipula_format == 'digitale' && formstate.model.stipula_type == 'controparte');
       },
       key: 'digitale_controparte',
-      fieldGroup: [
-        {
-          key: 'pec',
-          type: 'checkbox',
-          defaultValue: true,
-          templateOptions: {
-            label: 'Ricezione via pec',
-          },
-        },
+      fieldGroup: [  
         {
           key: 'attachment1',
           fieldGroup: [
@@ -278,7 +270,11 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                   defaultValue: 'LTE_FIRM_CONTR',
                   templateOptions: {
                     //todo chiedere lato server 
-                    options: [{ stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Email ricevuta dalla ditta' }],
+                    options: [
+                      { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR_PROT', descrizione: 'Lettera ricevuta via PEC già protocollata' },
+                      { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Lettera ricevuta dalla ditta' },
+                      { stipula_type: 'controparte', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
+                    ],
                     valueProp: 'codice',
                     labelProp: 'descrizione',
                     label: 'Tipo documento',
@@ -297,8 +293,8 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                     required: true,
                     onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
                   },
-                  hideExpression: (model, formstate) => {
-                    return formstate.model.digitale_controparte.pec;
+                  hideExpression: (model, formState) => {
+                    return (formState.model.digitale_controparte.attachment1.attachmenttype_codice !== 'LTE_FIRM_CONTR');
                   },
                 },
                 {
@@ -315,9 +311,22 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                     descriptionProp: 'descrizione_titolo',
                     isLoading: false,                         
                   },      
-                  hideExpression: (model, formstate) => {
-                    return !formstate.model.digitale_controparte.pec;
+                  hideExpression: (model, formState) => {
+                    return (formState.model.digitale_controparte.attachment1.attachmenttype_codice !== 'LTE_FIRM_CONTR_PROT');
                   },
+                },
+                {
+                  key: 'data_sottoscrizione',
+                  type: 'datepicker',
+                  className: "col-md-5",              
+                  templateOptions: {
+                    label: 'Data',
+                    required: true,
+                    //required: true,                               
+                  },
+                  hideExpression:(model: any, formState: any) => {               
+                    return (formState.model.digitale_controparte.attachment1.attachmenttype_codice !== 'NESSUN_DOC');
+                  },                            
                 },
               ],
             },

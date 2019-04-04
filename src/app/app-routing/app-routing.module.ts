@@ -33,6 +33,7 @@ import { ClassificazioniComponent } from '../application/components/classif/clas
 import { MappingUfficiTitulus } from '../application/components/mapping/mappinguffici.component';
 import { MappingUfficioTitulus } from '../application/components/mapping/mappingufficio.component';
 import { StruttureEsterneTitulus } from '../application/pages/struttureesterne-titulus.component';
+import { DocumentiTitulus } from '../application/pages/documenti-titulus.component';
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
@@ -347,6 +348,16 @@ const routes: Routes = [
           urls: [
             { title: 'Home', url: '/home' },
             { title: 'Ricerca strutture esterne' }
+          ]
+        }
+      },
+      { 
+        path: 'documenti',  component: DocumentiTitulus, canActivate:[AuthGuard], 
+        data: {
+          title: 'Ricerca documenti',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca documenti' }
           ]
         }
       },
