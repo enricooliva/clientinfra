@@ -7,6 +7,7 @@ import { ServiceQuery } from '../query-builder/query-builder.interfaces';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LookupComponent } from '../lookup/lookup.component';
 import ControlUtils from './control-utils';
+import { FileDetector } from 'protractor';
 
 
 @Component({
@@ -98,6 +99,10 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
       return;
     }
 
+    if (!field.model[field.key]){
+      field.model[field.key] = new Object();
+    }
+
     field.fieldGroupClassName = 'row'        
     field.fieldGroup = [    
       {
@@ -151,7 +156,8 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
       size: 'lg'
     })
     modalRef.result.then((result) => {
-      this.nodecode = true
+      this.nodecode = true    
+      Object.keys(result).forEach( x=> this.field.model[x] = result[x]);
       this.setcode(result);
       this.setDescription(result);
       this.nodecode = false

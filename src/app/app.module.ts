@@ -40,6 +40,7 @@ import { MappingUfficioService } from './application/mappingufficio.service';
 import { TipoPagamentoService } from './application/tipopagamento.service';
 import { UnitaOrganizzativaService } from './application/unitaorganizzativa.service';
 import { StrutturaEsternaService } from './application/strutturaesterna.service';
+import { DocumentoService } from './application/documento.service';
 
 
 export function tokenGetter() {
@@ -82,6 +83,7 @@ export function tokenGetter() {
     { provide: RequestCache, useClass: RequestCacheWithMap },
     HttpInterceptorProviders,
     GlobalErrorHandlerProviders,        
+    {provide: 'documentoService', useClass: DocumentoService },
     {provide: 'userService', useClass: UserService},
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},

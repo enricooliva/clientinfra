@@ -298,23 +298,23 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                   },
                 },
                 {
-                  key: 'docnumber',
-                  type: 'external',
+                  key: 'doc',
+                  type: 'externalobject',
                   className: "col-md-7",
                   templateOptions: {
                     label: 'Numero di protocollo',
                     //required: true,      
                     type: 'string',
-                    entityName: 'application',
-                    entityLabel: 'Convenzione',
-                    codeProp: 'id',
-                    descriptionProp: 'descrizione_titolo',
+                    entityName: 'documento',
+                    entityLabel: 'Documenti',
+                    codeProp: 'num_prot',
+                    descriptionProp: 'oggetto',
                     isLoading: false,                         
                   },      
                   hideExpression: (model, formState) => {
                     return (formState.model.digitale_controparte.attachment1.attachmenttype_codice !== 'LTE_FIRM_CONTR_PROT');
                   },
-                },
+                },                
                 {
                   key: 'data_sottoscrizione',
                   type: 'datepicker',
@@ -543,7 +543,9 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
+      
+      var tosubmit = this.mergeDeep(this.model,this.form.value);
+
       this.service.sottoscrizioneStep(tosubmit, true).subscribe(
         result => {
           this.isLoading = false;
@@ -555,4 +557,33 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         });
     }
   }
+
+        /**
+     * Simple is object check.
+     * @param item
+     * @returns {boolean}
+     */
+    isObject(item) {
+      return (item && typeof item === 'object' && !Array.isArray(item) && item !== null);
+    }
+    
+    /**
+     * Deep merge two objects.
+     * @param target
+     * @param source
+     */
+    mergeDeep(target, source) {
+      if (this.isObject(target) && this.isObject(source)) {
+        Object.keys(source).forEach(key => {
+          if (this.isObject(source[key])) {
+            if (!target[key]) Object.assign(target, { [key]: {} });
+            this.mergeDeep(target[key], source[key]);
+          } else {
+            Object.assign(target, { [key]: source[key] });
+          }
+        });
+      }
+      return target;
+    }
+
 }
