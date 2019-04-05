@@ -111,20 +111,20 @@ const routes: Routes = [
       {
         path: 'firmadirettore/:id', component: FirmaDirettoreComponent, canActivate:[AuthGuard], pathMatch:'full',
         data: {
-          title: 'Completamento sottoscrizione firma direttore',
+          title: 'Completamento sottoscrizione controfirma UniUrb',
           urls: [
             { title: 'Home', url: '/home' },
-            { title: 'Completamento sottoscrizione firma direttore' }
+            { title: 'Completamento sottoscrizione controfirma UniUrb' }
           ]
         },
       },
       {
         path: 'firmadirettore', component: FirmaDirettoreComponent, canActivate:[AuthGuard],
         data: {
-          title: 'Completamento sottoscrizione firma direttore',
+          title: 'Completamento sottoscrizione controfirma UniUrb',
           urls: [
             { title: 'Home', url: '/home' },
-            { title: 'Completamento sottoscrizione firma direttore' }
+            { title: 'Completamento sottoscrizione controfirma UniUrb' }
           ]
         },
       },

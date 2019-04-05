@@ -309,7 +309,8 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                     entityLabel: 'Documenti',
                     codeProp: 'num_prot',
                     descriptionProp: 'oggetto',
-                    isLoading: false,                         
+                    isLoading: false,  
+                    rules: [{value: "arrivo", field: "doc_tipo", operator: "="}],                       
                   },      
                   hideExpression: (model, formState) => {
                     return (formState.model.digitale_controparte.attachment1.attachmenttype_codice !== 'LTE_FIRM_CONTR_PROT');

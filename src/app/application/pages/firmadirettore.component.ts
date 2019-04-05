@@ -73,109 +73,152 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
       },    
     },   
     {
-      key: 'attachments',
-      type: 'repeat',
-      templateOptions: {        
-        label: 'Documenti di firma',
-        min: 1,
-      },
-      validators: {
-        unique: {
-          expression: (c) => {
-            if (c.value) {
-              var valueArr = c.value.map(function (item) { return item.attachmenttype_codice }).filter(x => x != null).map(x => x.toString());
-              var isDuplicate = valueArr.some(function (item, idx) {
-                return valueArr.indexOf(item) != idx
-              });
-              return !isDuplicate;
-            }
-            return true;
-          },
-          message: (error, field: FormlyFieldConfig) => `Nome ripetuto`,
+      key: 'stipula_format',
+      type: 'select',
+      defaultValue: 'cartaceo',
+      templateOptions: {
+        options: [
+          { codice: 'cartaceo', descrizione: 'Stipula cartacea' },
+          { codice: 'digitale', descrizione: 'Stipula digitale' },
+        ],
+        valueProp: 'codice',
+        labelProp: 'descrizione',
+        label: 'Formato di stipula',
+        required: true,
+      }
+    },
+    {
+
+          key: 'attachment1',
+          fieldGroup: [
+            {
+              fieldGroupClassName: 'row',
+              fieldGroup: [
+                {
+                  key: 'attachmenttype_codice',
+                  type: 'select',
+                  className: "col-md-5",
+                  defaultValue: 'LTE_FIRM_ENTRAMBI',
+                  templateOptions: {
+                    //todo chiedere lato server 
+                    options: [],
+                    valueProp: 'codice',
+                    labelProp: 'descrizione',
+                    label: 'Tipo documento',
+                    required: true,
+                  },
+                  hooks: {
+                    onInit: (field) => {
+                      field.form.parent.get('stipula_format').valueChanges.pipe(
+                        takeUntil(this.onDestroy$),
+                        startWith(field.form.parent.get('stipula_format').value),
+                        tap(type => {
+                          field.formControl.setValue(null);
+                          if (type == 'digitale') {
+                            field.templateOptions.options = [
+                              { stipula_type: 'uniurb', codice: 'LTE_FIRM_ENTRAMBI_PROT', descrizione: 'Lettera di trasmissione via PEC' },
+                              { stipula_type: 'uniurb', codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera di trasmissione' },
+                              { stipula_type: 'uniurb', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
+                            ];
+                          } else {
+                            field.templateOptions.options = [                              
+                              { stipula_type: 'uniurb', codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera di trasmissione' },
+                              { stipula_type: 'uniurb', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
+                            ];
+                          }
+                          field.formControl.setValue(field.templateOptions.options[0].codice);
+                        }),
+                      ).subscribe();
+                    }
+                  }
+                },
+                {
+                  key: 'filename',
+                  type: 'fileinput',
+                  className: "col-md-5",
+                  templateOptions: {
+                    label: 'Scegli il documento',
+                    type: 'input',
+                    placeholder: 'Scegli file documento',
+                    accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                    required: true,
+                    onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+                  },
+                  hideExpression: (model, formState) => {
+                    return (formState.model.attachment1.attachmenttype_codice == 'NESSUN_DOC');
+                  },
+                },  
+                {
+                  key: 'data_sottoscrizione',
+                  type: 'datepicker',
+                  className: "col-md-5",
+                  templateOptions: {
+                    label: 'Data',
+                    required: true,
+                    //required: true,                               
+                  },
+                  hideExpression: (model: any, formState: any) => {
+                    return (formState.model.attachment1.attachmenttype_codice !== 'NESSUN_DOC');
+                  },
+                },
+              ],
+            },
+          ],
         },
-        atleastone: {
-          expression: (c) => {
-            if (c.value) {
-              if (c.value.length < 1)
-                return false;              
-            }else {
-              return false;
-            }
-            return true;
-          },
-          message: (error, field: FormlyFieldConfig) => `Inserire almeno un documento`,
-        }
-      },
-      fieldArray: {                                        
-        fieldGroup: [
-          {
-            fieldGroupClassName: 'row',
-            fieldGroup:[
+        {
+          fieldGroupClassName: 'row',
+          key: 'attachment2',
+          fieldGroup: [
             {
               key: 'attachmenttype_codice',
               type: 'select',
               className: "col-md-5",
-              defaultValue: 'LTU_FIRM_ENTRAMBI',
+              defaultValue: 'CONV_FIRM_ENTRAMBI',
               templateOptions: {
                 //todo chiedere lato server 
-                options:  [
-                  { codice: 'LTU_FIRM_ENTRAMBI', descrizione: 'Lettera spedita alla ditta' },                                       
-                  { codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata da entrambe le parti' },                       
-                ],
+                required: true,  
+                options: [{ stipula_type: 'ditta', codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata dalla controparte' }],
                 valueProp: 'codice',
                 labelProp: 'descrizione',
-                label: 'Tipo allegato',
-                required: true,
-            },                  
-          },
-          {
-            key: 'filename',
-            type: 'fileinput',
-            className: "col-md-5",
-            templateOptions: {
-              label: 'Scegli il documento',
-              type: 'input',              
-              placeholder: 'Scegli file documento',
-              accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
-              onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+                label: 'Tipo documento',
+              },
             },
-          },   
-        ],
+            {
+              key: 'filename',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                required: true,  
+                label: 'Scegli il documento',
+                type: 'input',
+                placeholder: 'Scegli file documento',
+                accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
+                onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+              },
+
+            },
+
+          ],
         },
         {
-          fieldGroupClassName: 'row',
+          hideExpression: (model, formstate) => {
+            return !(formstate.model.stipula_format === 'digitale' && formstate.model.attachment1.attachmenttype_codice === 'LTE_FIRM_ENTRAMBI_PROT');
+          },
           fieldGroup: [
             {
-              key: 'docnumber',
-              type: 'input',
-              className: "col-md-5",
-              templateOptions: {
-                label: 'Numero',
-                required: true,                               
-              },
+              template: '<h5 class="mt-3">PEC destinatario</h5>',
             },
             {
-              key: 'data_emissione',
-              type: 'datepicker',
-              className: "col-md-5",
+              key: 'email',
+              type: 'input',          
               templateOptions: {
-                label: 'Data',
+                label: 'Email ditta',
+                disabled: true,
                 //required: true,                               
-              },
-            },
-            {
-              key: 'filevalue',
-              type: 'textarea',               
-              hide: true,             
-              templateOptions: {                
-                //required: true,                               
-              },
-            },
+              },          
+            },         
           ],
-        },                              
-      ]
-    }
-    }
+        },
   ]
 
   onSelectCurrentFile(currentSelFile, field: FormlyFieldConfig){
@@ -196,17 +239,18 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
     reader.onload = async (e: any) => {
       this.isLoading = true;
       //currentAttachment.filevalue = encode(e.target.result);
-      field.formControl.parent.get('filevalue').setValue(encode(e.target.result));
-      if (currentSelFile.name.search('pdf')>0){
-        try {
-          let result = await ControlUtils.parsePdf(e.target.result);     
-          field.formControl.parent.get('docnumber').setValue(result.docnumber);
-          field.formControl.parent.get('data_emissione').setValue(result.converted);
-        } catch (error) {
-          console.log(error);
-          this.isLoading = false;
-        }
-      }
+      currentAttachment.filevalue = encode(e.target.result);
+      //field.formControl.get('filevalue').setValue(encode(e.target.result));
+      // if (currentSelFile.name.search('pdf')>0){
+      //   try {
+      //     let result = await ControlUtils.parsePdf(e.target.result);     
+      //     field.formControl.parent.get('docnumber').setValue(result.docnumber);
+      //     field.formControl.parent.get('data_emissione').setValue(result.converted);
+      //   } catch (error) {
+      //     console.log(error);
+      //     this.isLoading = false;
+      //   }
+      // }
 
       if (!currentAttachment.filevalue) {
         this.isLoading = false;
@@ -226,14 +270,23 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
     this.isLoading = false;
   }
 
-  ngOnInit() {    
-    this.route.params.subscribe(params => {            
-      if (params['id']){
-        this.model.convenzione_id = params['id'];
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.model.convenzione_id = params['id'];      
+        this.service.getAziende(this.model.convenzione_id).subscribe(
+          result => { 
+            if (result && result[0])
+              this.model.email = result[0].pec_email; 
+            else 
+              this.model.email = 'email non associata';
+          }
+        );
+        
         this.options.formState.disabled_covenzione_id = true;
       };
     });
-  }  
+  }
 
   onSubmit() {
     if (this.form.valid) {
