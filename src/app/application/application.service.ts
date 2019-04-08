@@ -680,6 +680,15 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return of([]);
   }
 
+  @Cacheable()
+  getMinimal(id): Observable<any> {
+    if (id) {
+      return this.http.get(this._baseURL + '/convenzioni/getminimal/'+ id.toString(), httpOptions);
+    }
+    return of([]);
+  }
+
+
   download(id): Observable<any>{
     if (id) {
       return this.http.get(this._baseURL + '/attachments/download/' + id.toString(), httpOptions);

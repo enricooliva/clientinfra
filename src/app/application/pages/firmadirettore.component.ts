@@ -55,8 +55,8 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
       template: '<h5></h5>',
     },
     {
-      key: 'convenzione_id',
-      type: 'external',      
+      key: 'convenzione',
+      type: 'externalobject',      
       templateOptions: {
         label: 'Convenzione',
         type: 'string',
@@ -77,6 +77,7 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
       type: 'select',
       defaultValue: 'cartaceo',
       templateOptions: {
+        disabled: true,
         options: [
           { codice: 'cartaceo', descrizione: 'Stipula cartacea' },
           { codice: 'digitale', descrizione: 'Stipula digitale' },
@@ -98,7 +99,7 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
                   key: 'attachmenttype_codice',
                   type: 'select',
                   className: "col-md-5",
-                  defaultValue: 'LTE_FIRM_ENTRAMBI',
+                  defaultValue: 'LTU_FIRM_ENTRAMBI',
                   templateOptions: {
                     //todo chiedere lato server 
                     options: [],
@@ -116,13 +117,13 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
                           field.formControl.setValue(null);
                           if (type == 'digitale') {
                             field.templateOptions.options = [
-                              { stipula_type: 'uniurb', codice: 'LTE_FIRM_ENTRAMBI_PROT', descrizione: 'Lettera di trasmissione via PEC' },
-                              { stipula_type: 'uniurb', codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera di trasmissione' },
+                              { stipula_type: 'uniurb', codice: 'LTU_FIRM_ENTRAMBI_PROT', descrizione: 'Lettera di trasmissione via PEC' },
+                              { stipula_type: 'uniurb', codice: 'LTU_FIRM_ENTRAMBI', descrizione: 'Lettera di trasmissione' },
                               { stipula_type: 'uniurb', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
                             ];
                           } else {
                             field.templateOptions.options = [                              
-                              { stipula_type: 'uniurb', codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera di trasmissione' },
+                              { stipula_type: 'uniurb', codice: 'LTU_FIRM_ENTRAMBI', descrizione: 'Lettera di trasmissione' },
                               { stipula_type: 'uniurb', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
                             ];
                           }
@@ -202,7 +203,7 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
         },
         {
           hideExpression: (model, formstate) => {
-            return !(formstate.model.stipula_format === 'digitale' && formstate.model.attachment1.attachmenttype_codice === 'LTE_FIRM_ENTRAMBI_PROT');
+            return !(formstate.model.stipula_format === 'digitale' && formstate.model.attachment1.attachmenttype_codice === 'LTU_FIRM_ENTRAMBI_PROT');
           },
           fieldGroup: [
             {
@@ -261,8 +262,6 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
       this.isLoading = false;
     }
     reader.readAsArrayBuffer(currentSelFile);
-
-
   }
   
   constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router) {
@@ -271,15 +270,30 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
   }
 
   ngOnInit() {
+    
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.model.convenzione_id = params['id'];      
+        this.model.convenzione_id = params['id'];         
+        this.isLoading=true;
+        //leggere la minimal della convenzione        
+        this.service.getMinimal(this.model.convenzione_id).subscribe(
+          result => {
+            if (result){            
+              //this.form.get('convenzione').setValue(result);  
+              this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);              
+              this.form.get('stipula_format').setValue(result.stipula_format);              
+              this.isLoading=false;
+            }
+          }
+        );
+
         this.service.getAziende(this.model.convenzione_id).subscribe(
           result => { 
             if (result && result[0])
-              this.model.email = result[0].pec_email; 
+              this.form.get('email').setValue(result[0].pec_email);
+              //this.model.email = result[0].pec_email; 
             else 
-              this.model.email = 'email non associata';
+              this.form.get('email').setValue('email non associata');
           }
         );
         

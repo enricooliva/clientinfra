@@ -102,6 +102,10 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     if (!field.model[field.key]){
       field.model[field.key] = new Object();
     }
+    
+    field.templateOptions.init = (result) => {
+      this.init(result);
+    }
 
     field.fieldGroupClassName = 'row'        
     field.fieldGroup = [    
@@ -151,16 +155,21 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     }
   }
 
+  init(result){    
+    this.nodecode = true  
+    this.setcode(result);
+    this.setDescription(result);
+    Object.keys(result).forEach( x=> this.field.model[x] = result[x]);
+    this.nodecode = false
+  }
+
+
   open() {
     const modalRef = this.modalService.open(LookupComponent, {
       size: 'lg'
     })
-    modalRef.result.then((result) => {
-      this.nodecode = true    
-      Object.keys(result).forEach( x=> this.field.model[x] = result[x]);
-      this.setcode(result);
-      this.setDescription(result);
-      this.nodecode = false
+    modalRef.result.then((result) => {      
+      this.init(result);      
     }, (reason) => {
     });
     modalRef.componentInstance.entityName = this.to.entityName;

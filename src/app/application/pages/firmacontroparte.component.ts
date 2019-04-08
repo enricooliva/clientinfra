@@ -56,8 +56,8 @@ export class FirmaControparteComponent extends BaseEntityComponent {
       template: '<h5></h5>',
     },
     {
-      key: 'convenzione_id',
-      type: 'external',
+      key: 'convenzione',
+      type: 'externalobject',
       templateOptions: {
         label: 'Convenzione',
         type: 'string',
@@ -226,8 +226,6 @@ export class FirmaControparteComponent extends BaseEntityComponent {
   ];
 
   onSelectCurrentFile(currentSelFile, field: FormlyFieldConfig) {
-
-
     let currentAttachment = field.formControl.parent.value;
     if (currentSelFile == null) {
       //caso di cancellazione
@@ -242,18 +240,19 @@ export class FirmaControparteComponent extends BaseEntityComponent {
 
     reader.onload = async (e: any) => {
       this.isLoading = true;
-      //currentAttachment.filevalue = encode(e.target.result);
-      field.formControl.parent.get('filevalue').setValue(encode(e.target.result));
-      if (currentSelFile.name.search('pdf') > 0) {
-        try {
-          let result = await ControlUtils.parsePdf(e.target.result);
-          field.formControl.parent.get('docnumber').setValue(result.docnumber);
-          field.formControl.parent.get('data_emissione').setValue(result.converted);
-        } catch (error) {
-          console.log(error);
-          this.isLoading = false;
-        }
-      }
+      currentAttachment.filevalue = encode(e.target.result);
+
+      //field.formControl.get('filevalue').setValue(encode(e.target.result));
+      // if (currentSelFile.name.search('pdf') > 0) {
+      //   try {
+      //     let result = await ControlUtils.parsePdf(e.target.result);
+      //     field.formControl.parent.get('docnumber').setValue(result.docnumber);
+      //     field.formControl.parent.get('data_emissione').setValue(result.converted);
+      //   } catch (error) {
+      //     console.log(error);
+      //     this.isLoading = false;
+      //   }
+      // }
 
       if (!currentAttachment.filevalue) {
         this.isLoading = false;
@@ -276,7 +275,30 @@ export class FirmaControparteComponent extends BaseEntityComponent {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.model.convenzione_id = params['id'];
+        this.model.convenzione_id = params['id'];         
+        this.isLoading=true;
+        //leggere la minimal della convenzione        
+        this.service.getMinimal(this.model.convenzione_id).subscribe(
+          result => {
+            if (result){            
+              //this.form.get('convenzione').setValue(result);  
+              this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);              
+              this.form.get('stipula_format').setValue(result.stipula_format);              
+              this.isLoading=false;
+            }
+          }
+        );
+
+        this.service.getAziende(this.model.convenzione_id).subscribe(
+          result => { 
+            if (result && result[0])
+              this.form.get('email').setValue(result[0].pec_email);
+              //this.model.email = result[0].pec_email; 
+            else 
+              this.form.get('email').setValue('email non associata');
+          }
+        );
+        
         this.options.formState.disabled_covenzione_id = true;
       };
     });
