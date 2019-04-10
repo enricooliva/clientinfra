@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule, NavigationExtras } from '@angular/router';
+import { NgModule, InjectionToken } from '@angular/core';
+import { Routes, RouterModule, NavigationExtras, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthGuard }                from '../core/auth.guard';
 import { NotFoundComponent } from '../not-found-component/not-found.component';
 import { HomeComponent } from '../application/home/home.component';
@@ -34,11 +34,26 @@ import { MappingUfficiTitulus } from '../application/components/mapping/mappingu
 import { MappingUfficioTitulus } from '../application/components/mapping/mappingufficio.component';
 import { StruttureEsterneTitulus } from '../application/pages/struttureesterne-titulus.component';
 import { DocumentiTitulus } from '../application/pages/documenti-titulus.component';
+import { NgxPermissionsGuard } from 'ngx-permissions';
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../core';
+import { LoginActivate } from '../core/login.activate';
+
+const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
 const routes: Routes = [
   //nota: se si usa il redirect vengono persi i parametri nell'url redirectTo: '/home'
   { path: '', component: BlankComponent }, 
-  { path: 'home',  component: FullComponent, children:[
+  { path: 'externallogin', 
+    resolve: {
+      url: externalLoginUrlProvider,
+    },
+    canActivate: [externalLoginUrlProvider],
+    component: NotFoundComponent,
+  },
+  { path: 'home',  component: FullComponent, 
+    canActivate: [LoginActivate],      
+    children:[
       //{ path:'', redirectTo:'dashboard/dashboard1',  pathMatch: 'full'},      
       {
         path: 'dashboard',
@@ -58,13 +73,18 @@ const routes: Routes = [
         } 
       },     
       { 
-        path: 'convenzioni',  component: ConvenzioniComponent,  canActivate:[AuthGuard],
+        path: 'convenzioni',  component: ConvenzioniComponent,  canActivate:[NgxPermissionsGuard],
         data: {
           title: 'Ricerca convenzioni',
           urls: [
             { title: 'Home', url: '/home' },
             { title: 'Ricerca convenzioni' }
-          ]
+          ],
+          //permessi 
+          // permissions: {
+          //   only: ['user'],          
+          //   redirectTo: ['home/dashboard/dashboard1'],
+          // }
         }
       }, 
       {
@@ -428,7 +448,18 @@ const routes: Routes = [
   { path: '**', component: NotFoundComponent }
 ];
 
+
+
 @NgModule({
+  providers: [
+    {
+        provide: externalLoginUrlProvider,
+        useValue: (route: ActivatedRouteSnapshot) => {
+            //const externalUrl = route.paramMap.get('externalUrl');
+            window.open(environment.API_URL + 'api/loginSaml', '_self');
+        },
+    },
+  ],
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })

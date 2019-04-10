@@ -41,6 +41,7 @@ import { TipoPagamentoService } from './application/tipopagamento.service';
 import { UnitaOrganizzativaService } from './application/unitaorganizzativa.service';
 import { StrutturaEsternaService } from './application/strutturaesterna.service';
 import { DocumentoService } from './application/documento.service';
+import { LoginActivate } from './core/login.activate';
 
 
 export function tokenGetter() {
@@ -71,6 +72,7 @@ export function tokenGetter() {
   providers: [
     NgbActiveModal,
     AuthGuard,  
+    LoginActivate,
     ApplicationService,
     UserService,
     AziendaService,

@@ -8,7 +8,7 @@
                 <span class="oi oi-document"></span>
                 <span class="ml-2">Nuovo</span>
             </button> 
-            <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()">
+            <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()"  *ngxPermissionsOnly="['ADMIN']">
                 <span class="oi oi-arrow-top"></span>
                 <span class="ml-2">Aggiorna</span>
             </button>

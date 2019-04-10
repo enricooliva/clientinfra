@@ -76,8 +76,9 @@ export class FirmaControparteComponent extends BaseEntityComponent {
     {
       key: 'stipula_format',
       type: 'select',
-      defaultValue: 'cartaceo',
+      defaultValue: 'cartaceo',      
       templateOptions: {
+        disabled: true,
         options: [
           { codice: 'cartaceo', descrizione: 'Stipula cartacea' },
           { codice: 'digitale', descrizione: 'Stipula digitale' },
@@ -276,6 +277,8 @@ export class FirmaControparteComponent extends BaseEntityComponent {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.model.convenzione_id = params['id'];         
+        this.model.disabled_covenzione_id = true;
+
         this.isLoading=true;
         //leggere la minimal della convenzione        
         this.service.getMinimal(this.model.convenzione_id).subscribe(
