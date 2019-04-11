@@ -101,33 +101,8 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             },
           },
         ]
-      },      
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            key: 'azienda',
-            type: 'externalobject',
-            className: "col-md-12",
-            defaultValue: { id_esterno: null, denominazione: '' },
-            templateOptions: {
-              label: 'Azienda',
-              type: 'string',
-              entityName: 'aziendaLoc',
-              entityLabel: 'Aziende',
-              codeProp: 'id',
-              //required: true,
-              descriptionProp: 'denominazione',
-            },
-            // validation: {
-            //   show: true,
-            // },
-            // expressionProperties: {
-            //   'templateOptions.required': (model: any, formState: any) => model.convenzione_type == 'TO',
-            // },                   
-          },
-        ]
-      },
+      }, 
+  
       {
         fieldGroupClassName: 'row',
         fieldGroup: [
@@ -213,6 +188,44 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             // }
           },
         ]
+      },
+      {
+        className: 'section-label',
+        template: '<h5>Aziende</h5>',
+      },
+      {
+        key: 'aziende',
+        type: 'repeat',
+        templateOptions: {
+          min: 1,
+          //label: 'Aziende',
+        },                 
+        fieldArray: {
+          fieldGroupClassName: 'row',
+          fieldGroup:  [      
+          {
+            //key: 'azienda',
+            type: 'externalobject',
+            className: "col-md-12",
+            defaultValue: { id: null, denominazione: '' },
+            templateOptions: {             
+              label: 'Azienda',
+              type: 'string',
+              entityName: 'aziendaLoc',
+              entityLabel: 'Aziende',
+              codeProp: 'id',
+              //required: true,
+              descriptionProp: 'denominazione',
+            },
+            // validation: {
+            //   show: true,
+            // },
+            // expressionProperties: {
+            //   'templateOptions.required': (model: any, formState: any) => model.convenzione_type == 'TO',
+            // },                   
+          },
+        ],
+        },
       },
       {
         className: 'section-label',
@@ -385,7 +398,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           type: 'string',
           entityName: 'azienda',
           entityLabel: 'Aziende',
-          codeProp: 'id_esterno',
+          codeProp: 'id',
           descriptionProp: 'denominazione',
         },
       },

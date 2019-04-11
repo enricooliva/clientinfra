@@ -562,8 +562,12 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         this.model.convenzione_id = params['id'];      
         this.service.getAziende(this.model.convenzione_id).subscribe(
           result => { 
-            if (result && result[0])
-              this.model.email = result[0].pec_email; 
+            if (result && result[0]){  
+              const emails = (result.map(it => it.pec_email)).join(', ');
+              this.model.email = emails;
+              if (this.form.get('email'))
+                this.form.get('email').setValue(emails);
+            }
             else 
               this.model.email = 'email non associata';
           }

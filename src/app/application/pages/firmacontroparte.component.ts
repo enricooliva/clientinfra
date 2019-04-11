@@ -294,10 +294,11 @@ export class FirmaControparteComponent extends BaseEntityComponent {
 
         this.service.getAziende(this.model.convenzione_id).subscribe(
           result => { 
-            if (result && result[0])
-              this.form.get('email').setValue(result[0].pec_email);
-              //this.model.email = result[0].pec_email; 
-            else 
+            if (result && result[0]){
+              const emails = (result.map(it => it.pec_email)).join(', ');
+              if (this.form.get('email'))
+                this.form.get('email').setValue(emails);
+            }else 
               this.form.get('email').setValue('email non associata');
           }
         );

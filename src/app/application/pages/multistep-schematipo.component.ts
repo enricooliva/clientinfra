@@ -97,10 +97,10 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       stato_avanzamento: null,
       convezione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
-      azienda: { id_esterno: null, denominazione: '' },
+      azienda: { id: null, denominazione: '' },
       unitaorganizzativa_uo: '',
-      attachments: [],      
-
+      attachments: [],    
+      aziende:[],  
     };
 
     this.options = {

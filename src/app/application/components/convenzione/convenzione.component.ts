@@ -315,8 +315,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       stato_avanzamento: null,
       convezione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
-      azienda: { id_esterno: null, denominazione: '' },
+      azienda: { id: null, denominazione: '' },
       unitaorganizzativa_uo: '',
+      aziende: [],
     }
 
     this.fields = this.fields.concat(service.getInformazioniDescrittiveFields(this.model)); //.concat(service.getConvenzioneFields(this.model));
@@ -334,7 +335,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         this.service.getConvenzioneById(params['id']).subscribe((data) => {
           try {
             if (!data.azienda){
-              data.azienda = { id_esterno: null, denominazione: '' };            
+              data.azienda = { id: null, denominazione: '' };            
             }                     
 
             this.updateTransition(data.id);
@@ -377,7 +378,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.service.getConvenzioneById(this.model.id).subscribe((data) => {
         //this.options.resetModel(data);
         if (!data.azienda){
-          data.azienda = { id_esterno: null, descrizione: null };
+          data.azienda = { id: null, descrizione: null };
         }
         this.options.forEach(tabOptions => tabOptions.resetModel(data));         
         this.isLoading = false;
@@ -394,7 +395,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           //this.options.resetModel(result);
           try {
             if (!result.azienda){
-              result.azienda = { id_esterno: null, descrizione: null };
+              result.azienda = { id: null, descrizione: null };
             }
             
             this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result)});               

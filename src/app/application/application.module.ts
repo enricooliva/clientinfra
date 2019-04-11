@@ -39,7 +39,6 @@ import { SottoscrizioneComponent } from './pages/sottoscrizione.component';
 import { FirmaControparteComponent } from './pages/firmacontroparte.component';
 import { FirmaDirettoreComponent } from './pages/firmadirettore.component';
 import { AziendaLocComponent } from './components/convenzione/aziendaloc.component';
-import { AziendeLocComponent } from './components/convenzione/aziendeloc.component';
 import { AziendaLocService } from './aziendaloc.service';
 import { PersoneinterneTitulus } from './pages/personeinterne-titulus.component';
 import { PersonaInternaService } from './personainterna.service';
@@ -55,6 +54,7 @@ import { StruttureEsterneTitulus } from './pages/struttureesterne-titulus.compon
 import { StrutturaEsternaService } from './strutturaesterna.service';
 import { DocumentoService } from './documento.service';
 import { DocumentiTitulus } from './pages/documenti-titulus.component';
+import { AziendeLocComponent } from './components/convenzione/aziendeloc.component';
 
 registerLocaleData(localeIt);
 @NgModule({
