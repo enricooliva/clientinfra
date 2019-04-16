@@ -27,7 +27,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   options: FormlyFormOptions = {
     formState: {
       model: this.model,
-      isLoading: false,
+      isLoading: this.isLoading,
     },
   };
 
@@ -50,16 +50,21 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
 
   ngOnInit() {    
     this.route.params.subscribe(params => {      
-      this.service.clearMessage();
+      this.service.clearMessage();      
       if (params['id']){
-        this.service.getById(params['id']).subscribe((data) => {
-          this.isLoading = false;
+        this.isLoading = true;
+        this.options.formState.isLoading = true;
+        //params['id'] coneitene il parametro letto dalla url, può contenere un id o anche la parola new
+        this.service.getById(params['id']).subscribe((data) => {         
           this.model = JSON.parse(JSON.stringify(data));
           this.postGetById();
+          this.isLoading = false;
+          this.options.formState.isLoading = false;
         });
       }else{          
         this.additionalFormInitialize();             
         this.isLoading = false;
+        this.options.formState.isLoading = false;
       }
       
     });

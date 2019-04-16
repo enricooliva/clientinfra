@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { FieldType, FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { takeUntil, startWith, tap, distinctUntilChanged, filter } from 'rxjs/operators';
+import { takeUntil, startWith, skip, tap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ServiceQuery } from '../query-builder/query-builder.interfaces';
@@ -8,6 +8,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LookupComponent } from '../lookup/lookup.component';
 import ControlUtils from './control-utils';
 import { FileDetector } from 'protractor';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 
 @Component({
@@ -63,6 +64,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     this.field.fieldGroup[0].hooks = {                    
         onInit: (field) => {          
           this.codeField.formControl.valueChanges.pipe(
+            skip(1),
             distinctUntilChanged(),
             takeUntil(this.onDestroy$),
             filter(() => !this.options.formState.isLoading),
@@ -95,14 +97,15 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
 
   //ATTENZIONE lo scope di esecuzione della onPopulate è esterno a questa classe.
   onPopulate(field: FormlyFieldConfig) {
+
     if (field.fieldGroup) {
       return;
     }
-
-    if (!field.model[field.key]){
+    
+    if (field.model && !field.model[field.key] ){
       field.model[field.key] = new Object();
     }
-    
+
     field.templateOptions.init = (result) => {
       this.init(result);
     }

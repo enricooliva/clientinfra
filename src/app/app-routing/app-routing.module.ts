@@ -38,6 +38,9 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../core';
 import { LoginActivate } from '../core/login.activate';
+import { ScadenzaService } from '../application/scadenza.service';
+import { ScadenzeComponent } from '../application/components/scadenza/scadenze.component';
+import { ScadenzaComponent } from '../application/components/scadenza/scadenza.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -442,6 +445,37 @@ const routes: Routes = [
         }
       }, 
 
+      //scadenze
+      { 
+        path: 'scadenze',  component: ScadenzeComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Scadenze pagamenti',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca scadenze pagamenti' }
+          ]
+        }
+      }, 
+      { 
+        path: 'scadenze/:id',  component: ScadenzaComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Scadenza pagamenti',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Scadenza pagamenti' }
+          ]
+        }
+      }, 
+      { 
+        path: 'scadenze/new',  component: ScadenzaComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Nuova scadenza pagamento',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuova scadenza pagamento' }
+          ]
+        }
+      }, 
 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 

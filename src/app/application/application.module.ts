@@ -55,6 +55,9 @@ import { StrutturaEsternaService } from './strutturaesterna.service';
 import { DocumentoService } from './documento.service';
 import { DocumentiTitulus } from './pages/documenti-titulus.component';
 import { AziendeLocComponent } from './components/convenzione/aziendeloc.component';
+import { ScadenzaComponent } from './components/scadenza/scadenza.component';
+import { ScadenzeComponent } from './components/scadenza/scadenze.component';
+import { ScadenzaService } from './scadenza.service';
 
 registerLocaleData(localeIt);
 @NgModule({
@@ -75,7 +78,7 @@ registerLocaleData(localeIt);
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
     TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
-    DocumentiTitulus
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -85,7 +88,7 @@ registerLocaleData(localeIt);
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
     ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
-    DocumentiTitulus
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent
 
   ],
   providers: [ 
@@ -98,7 +101,8 @@ registerLocaleData(localeIt);
     MappingUfficioService, 
     UnitaOrganizzativaService,
     StrutturaEsternaService,
-    DocumentoService
+    DocumentoService,
+    ScadenzaService
   ], 
 })
 export class ApplicationModule { }
