@@ -55,8 +55,11 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.options.formState.isLoading = true;
         //params['id'] coneitene il parametro letto dalla url, può contenere un id o anche la parola new
-        this.service.getById(params['id']).subscribe((data) => {         
-          this.model = JSON.parse(JSON.stringify(data));
+        this.service.getById(params['id']).subscribe((data) => {    
+          setTimeout(()=> {
+            this.model = JSON.parse(JSON.stringify(data));
+          }, 0);     
+          
           this.postGetById();
           this.isLoading = false;
           this.options.formState.isLoading = false;

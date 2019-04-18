@@ -41,9 +41,13 @@ export class RepeatTypeComponent extends FieldArrayType {
     super(builder);            
   }
 
-  ngOnInit(){
+  ngOnInit(){    
+    let count= 0;
+    if (this.model)
+      count = this.model.length;
+
     if (this.to.min && this.to.min>0){
-      for (let index = 0; index < this.to.min; index++) {
+      for (let index = count; index < this.to.min; index++) {
         setTimeout(()=> { this.add();  },0);            
       }
       this.cd.detectChanges();    

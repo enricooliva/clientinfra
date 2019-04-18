@@ -223,6 +223,41 @@ export class FirmaControparteComponent extends BaseEntityComponent {
 
           ],
         },
+
+        {
+          key: 'scadenze',
+          type: 'repeat',
+          templateOptions: {
+            label: 'Scadenziario',
+          },    
+          // hideExpression: (model, formstate) => {
+          //   return !(formstate.model.stipula_format === 'digitale');
+          // },  
+          fieldArray: {
+            fieldGroupClassName: 'row',
+            fieldGroup:  [
+              {
+                key: 'data_tranche',
+                type: 'datepicker',
+                className: "col-md-5",                
+                templateOptions: {                  
+                  required: true,                    
+                  label: 'Tranche prevista',
+                },
+              },
+              {
+                key: 'dovuto_tranche',
+                type: 'number',
+                className: "col-md-5",
+                templateOptions: {
+                  required: true,  
+                  label: 'Importo',                  
+                },  
+              },
+  
+            ],                
+          } 
+        }
     
   ];
 

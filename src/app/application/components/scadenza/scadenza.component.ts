@@ -40,8 +40,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
           className: "col-md-12",
           templateOptions: {
             label: 'Convenzione',
-            type: 'string',
-            required: true,
+            type: 'string',            
             entityName: 'application',
             entityLabel: 'Convenzione',
             codeProp: 'id',
@@ -52,6 +51,9 @@ export class ScadenzaComponent extends BaseEntityComponent {
           expressionProperties: {
             'templateOptions.disabled':(model: any, formState: any) => {
               return this.model.id
+            },
+            'templateOptions.required':(model: any, formState: any) => {
+              return !this.model.id
             }
           },
         },
@@ -121,7 +123,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
         },        
       },
       {
-        key: 'num_fattua',
+        key: 'num_fattura',
         type: 'input',
         className: "col-md-5",
         templateOptions: {
@@ -151,7 +153,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
   ]},
   {
     key: 'prelievo',
-    type: 'input',    
+    type: 'number',    
     templateOptions: {
       label: 'Prelievo',          
     },        

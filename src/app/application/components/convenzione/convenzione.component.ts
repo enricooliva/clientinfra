@@ -172,6 +172,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         btnHidden: true,
         label: 'Attività associate',
         hidetoolbar: true,
+        limit: "20",
         onDblclickRow: (event) => {
           //leggi dettagli 
           //crea la form
@@ -230,6 +231,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         btnHidden: true,
         label: 'Storia eventi',
         hidetoolbar: true,
+        limit: "20",
         columns: [
           { name: 'Utente', prop: 'user_id', wrapper: 'value' },
           { name: 'Transizione', prop: 'transition_leave', wrapper: 'value' },
