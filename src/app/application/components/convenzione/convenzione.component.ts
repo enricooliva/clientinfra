@@ -75,11 +75,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       template: '<h5>Lista allegati</h5>',
     },
     {
-      type: 'button',
-      className: "col-md-4",
+      type: 'button',  
       templateOptions: {
-        text: 'Inserisci allegato',
-        btnType: 'primary',
+        text: 'Nuovo',
+        btnType: 'btn btn-outline-primary btn-sm border-0 rounded-0',
+        icon: 'oi oi-document',
         onClick: ($event) => this.open()
       },
     },
@@ -275,6 +275,17 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     {
       className: 'section-label',
       template: '<h5>Scadenze</h5>',
+    },
+    {
+      type: 'button',      
+      templateOptions: {
+        text: 'Nuova',
+        btnType: 'btn btn-outline-primary btn-sm border-0 rounded-0',
+        icon: 'oi oi-document',
+        onClick: ($event) => {
+          this.router.navigate(['home/scadenze/new']); 
+        } 
+      },
     },
     {
       key: 'scadenze',
