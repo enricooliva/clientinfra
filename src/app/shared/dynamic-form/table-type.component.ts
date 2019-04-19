@@ -41,12 +41,7 @@ import { element } from 'protractor';
   (activate)='onEvents($event)'>     
   
   <ng-template #defaultcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
-    <formly-field             
-      [model]="getModel(model,column,rowIndex)"
-      [field]="getFields(field,column, rowIndex)"
-      [options]="options"
-      [form]="formControl">
-    </formly-field>
+    <formly-field [field]="getField(field, column, rowIndex)"></formly-field>
   </ng-template>  
   
   <ng-template #valuecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
@@ -60,15 +55,7 @@ import { element } from 'protractor';
 
 // <h1>Model</h1>
 // <pre>{{ model | json }}</pre>
-export class TableTypeComponent extends FieldArrayType {
-  differ: any;
-
-  constructor(builder: FormlyFormBuilder, private differs: KeyValueDiffers) {    
-    super(builder);
-    
-		this.differ = differs.find({}).create();
-  }
-
+export class TableTypeComponent extends FieldArrayType {  
   
   @ViewChild('defaultcolumn') public defaultColumn: TemplateRef<any>;
   @ViewChild('valuecolumn') public valuecolumn: TemplateRef<any>;
@@ -137,7 +124,7 @@ export class TableTypeComponent extends FieldArrayType {
     
   }
 
-  getFields( field: FormlyFieldConfig, column: TableColumn, rowIndex: number ) : any {         
+  getField( field: FormlyFieldConfig, column: TableColumn, rowIndex: number ) : any {         
     let result = field.fieldGroup[rowIndex].fieldGroup.find(f => f.key === column.prop);
     return result;
   }

@@ -30,7 +30,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   private tabs: NgbTabset;
 
   onDestroy$ = new Subject<void>();
-  form =new FormArray([0,1,2,3].map(() => new FormGroup({})));
+  form =new FormArray([0,1,2,3,4].map(() => new FormGroup({})));
 
   model: Convenzione;
   modelUserTaskDetail: any;
@@ -271,8 +271,50 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     }
 
   ];
+  fieldscadenze: FormlyFieldConfig[] = [
+    {
+      className: 'section-label',
+      template: '<h5>Scadenze</h5>',
+    },
+    {
+      key: 'scadenze',
+      type: 'datatable', //'repeat',      
+      templateOptions: {
+        btnHidden: true,
+        label: 'Scadenze',
+        hidetoolbar: true,
+        limit: "20",
+        columns: [
+          { name: 'Id', prop: 'id', wrapper: 'value' },
+          { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value' },
+          { name: 'Importo', prop: 'dovuto_tranche', wrapper: 'value' },
+          //{ name: 'Azione', prop: 'action_button' },
+        ],
+        onDblclickRow: (event) => {
+          //leggi dettagli 
+          //crea la form
+          if (event.row.id) {            
+            this.router.navigate(['home/scadenze/', event.row.id]);            
+          }
+        },
+      },    
+      fieldArray: {
+        fieldGroup: [
+          {
+            type: 'button',
+            key: 'action_button',
+            templateOptions: {
+              btnType: 'primary oi oi-data-transfer-download',               
+              onClick: ($event) => this.open()
+            },
+          },
+        ]
+      }
+    }
 
-  options: Array<FormlyFormOptions> = [0,1,2,3].map(() => ({
+  ];
+
+  options: Array<FormlyFormOptions> = [0,1,2,3,4].map(() => ({
     formState: {
       isLoading: false,
     },

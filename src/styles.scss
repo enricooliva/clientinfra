@@ -7,6 +7,21 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 //@import "~bootstrap/dist/css/bootstrap.css"; 
 
+
+.ngx-datatable .datatable-body-row.active:hover, 
+.ngx-datatable .datatable-body-row.active:hover .datatable-row-group, 
+.ngx-datatable .datatable-body-row.active:hover,
+.ngx-datatable .datatable-body-row.active:hover .datatable-row-group {
+	background-color: #d8d2fa;
+}
+
+.ngx-datatable .datatable-body-row.active,	
+.ngx-datatable .datatable-body-row.active .datatable-row-group,
+.ngx-datatable .datatable-body-row.active,	
+.ngx-datatable .datatable-body-row.active .datatable-row-group  {
+	background-color: #d8d2fa;
+}
+
 .ng-select.custom {
   border:0px;
   min-height: 0px;
