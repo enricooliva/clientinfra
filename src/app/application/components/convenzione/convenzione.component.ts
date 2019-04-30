@@ -24,7 +24,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'resp_scientifico',
   // 'ambito',
   // 'durata',
-  // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
+  // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convenzione',
 
   @ViewChild('tabs')
   private tabs: NgbTabset;
@@ -283,7 +283,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         btnType: 'btn btn-outline-primary btn-sm border-0 rounded-0',
         icon: 'oi oi-document',
         onClick: ($event) => {
-          this.router.navigate(['home/scadenze/new']); 
+          this.router.navigate(['home/scadenze/new'], { queryParams: {
+            returnUrl: this.router.url, 
+            initObj: JSON.stringify({convenzione: { id: this.model.id, descrizione_titolo: this.model.descrizione_titolo }})
+          }});            
         } 
       },
     },
@@ -305,7 +308,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           //leggi dettagli 
           //crea la form
           if (event.row.id) {            
-            this.router.navigate(['home/scadenze/', event.row.id]);            
+            this.router.navigate(['home/scadenze', event.row.id], { queryParams: {
+              returnUrl: this.router.url, 
+            }});            
           }
         },
       },    
@@ -368,7 +373,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       user: { id: null, name: null },
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
-      convezione_type: 'TO',
+      convenzione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id: null, denominazione: '' },
       unitaorganizzativa_uo: '',

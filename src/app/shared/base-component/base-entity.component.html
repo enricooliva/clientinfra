@@ -25,7 +25,14 @@
                 <span class="ml-2">Rimuovi</span>
             </button>
         </div>
+        <div class="btn-group">
+                <button *ngIf="returnUrl" class="btn btn-outline-primary border-0 rounded-0" (click)="onBack()">
+                    <span class="oi oi-arrow-left"></span>
+                    <span class="ml-2">Ritorna</span>
+                </button>
+            </div>
     </div>
+    
 
     <form [formGroup]="form">
         <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">

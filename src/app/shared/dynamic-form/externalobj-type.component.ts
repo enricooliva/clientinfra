@@ -60,7 +60,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
           onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
         };
-      
+          
     this.field.fieldGroup[0].hooks = {                    
         onInit: (field) => {          
           this.codeField.formControl.valueChanges.pipe(

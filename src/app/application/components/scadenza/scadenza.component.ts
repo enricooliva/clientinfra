@@ -177,9 +177,10 @@ export class ScadenzaComponent extends BaseEntityComponent {
     this.researchPath = 'home/scadenze';
     this.newPath = this.researchPath+'/new';
 
-    this.model = {
-      'convezione': { 'id':'', descrizione_titolo:'' }
-    };
+    //Il modello vuoto letto lato server
+    // this.model = {
+    //   'convenzione': { 'id':'', descrizione_titolo:'' }
+    // };
 
   }
 

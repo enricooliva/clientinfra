@@ -34,6 +34,13 @@ export class TokenInterceptor implements HttpInterceptor {
                 window.location.href = AppConstants.baseURL + '/loginSaml'; 
                 //router.navigateByUrl(); 
                 break;            
+              case 500:
+                if (error.message){
+                    this.toastr.error(error.message);                    
+                    const router = this.injector.get(Router);
+                    router.navigateByUrl("/unauthorized");                              
+                }
+                break;
             }
           }
           return throwError(error);

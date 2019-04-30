@@ -95,7 +95,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       user: { id: authService.userid, name: authService.username },
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
-      convezione_type: 'TO',
+      convenzione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
       azienda: { id: null, denominazione: '' },
       unitaorganizzativa_uo: '',
