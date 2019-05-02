@@ -38,6 +38,8 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
   extDescription: FormlyFieldConfig = null;
   codeField: FormlyFieldConfig = null;
 
+  private previusCodeValue: any = null;
+
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
@@ -49,6 +51,8 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     
     this.extDescription = this.field.fieldGroup.find(x=>x.key == this.to.descriptionProp || x.key =='description')
     this.codeField = this.field.fieldGroup.find(x=>x.key == this.to.codeProp || x.key =='id')
+
+    this.codeField.modelOptions.updateOn = 'blur';
 
     this.field.fieldGroup[0].templateOptions.keyup = (field, event: KeyboardEvent) => {
           if (event.key == "F4") {
@@ -63,36 +67,45 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           
     this.field.fieldGroup[0].hooks = {                    
         onInit: (field) => {          
-          this.codeField.formControl.valueChanges.pipe(
-            skip(1),
+          this.codeField.formControl.valueChanges.pipe(            
             distinctUntilChanged(),
             takeUntil(this.onDestroy$),
-            filter(() => !this.options.formState.isLoading),
-            //startWith(field.formControl.value),
+            //filter(() => !this.options.formState.isLoading),            
             tap(selectedField => {
-              if (field.formControl.value && !this.nodecode) {
-                this.isLoading = true;
-                this.service.getById(field.formControl.value).subscribe((data) => {
-                  this.isLoading = false;
-                  if (data == null) {
-                    this.extDescription.formControl.setValue(null);
-                    field.formControl.setErrors({ notfound: true });                    
-                    return;
-                  }
+              if (!this.isInitValue()){
+                if (field.formControl.value && !this.nodecode) {
+                  this.isLoading = true;
+                  this.service.getById(field.formControl.value).subscribe((data) => {
+                    this.isLoading = false;
+                    if (data == null) {
+                      this.extDescription.formControl.setValue(null);
+                      field.formControl.setErrors({ notfound: true });                    
+                      return;
+                    }
+                    this.setDescription(data);
+                  });
 
-                  this.setDescription(data);
-                });
-
-              } else {
-                //codizione di empty
-                this.extDescription.formControl.setValue(null);
-                this.codeField.formControl.markAsDirty();
+                } else {
+                  //codizione di empty
+                  this.extDescription.formControl.setValue(null);
+                  this.codeField.formControl.markAsDirty();
+                }
               }
+              this.previusCodeValue = selectedField;
             }),
           ).subscribe();
         },
-      };    
-  
+      };      
+  }
+
+  isInitValue(){
+    //se il valore del codice precedente è nullo 
+    //se la descrizione è valorizzata
+    //sono in fase di inizializzazione e NON fare la decodifica
+    if (this.model && this.previusCodeValue == null && this.model[this.to.descriptionProp]){
+      return true;
+    }
+    return false;
   }
 
   //ATTENZIONE lo scope di esecuzione della onPopulate è esterno a questa classe.
