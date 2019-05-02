@@ -116,7 +116,8 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
-    this.sub.unsubscribe();    
+    if (this.sub)
+      this.sub.unsubscribe();    
   }
 
   protected postGetById(){}// hook for child

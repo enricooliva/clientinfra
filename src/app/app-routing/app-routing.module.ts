@@ -41,6 +41,7 @@ import { LoginActivate } from '../core/login.activate';
 import { ScadenzaService } from '../application/scadenza.service';
 import { ScadenzeComponent } from '../application/components/scadenza/scadenze.component';
 import { ScadenzaComponent } from '../application/components/scadenza/scadenza.component';
+import { BolloRepertoriazioneComponent } from '../application/pages/bollorepertoriazione.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -173,6 +174,26 @@ const routes: Routes = [
         },
       },
 
+      {
+        path: 'bollorepertoriazione/:id', component: BolloRepertoriazioneComponent, canActivate:[AuthGuard], pathMatch:'full',
+        data: {
+          title: 'Repertoriare convenzione firmata e bollatta',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Repertoriare convenzione firmata e bollatta' }
+          ]
+        },
+      },
+      {
+        path: 'bollorepertoriazione', component: BolloRepertoriazioneComponent, canActivate:[AuthGuard],
+        data: {
+          title: 'Repertoriare convenzione firmata e bollatta',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Repertoriare convenzione firmata e bollatta' }
+          ]
+        },
+      },
       
       { path: 'allegati',  component: AllegatiComponent,  canActivate:[AuthGuard] }, 
       { path: 'multistep-schematipo',  component: MultistepSchematipoComponent,  canActivate:[AuthGuard],
