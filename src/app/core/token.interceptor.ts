@@ -35,11 +35,10 @@ export class TokenInterceptor implements HttpInterceptor {
                 //router.navigateByUrl(); 
                 break;            
               case 500:
-                if (error.message){
-                    this.toastr.error(error.message);                    
-                    const router = this.injector.get(Router);
-                    router.navigateByUrl("/unauthorized");                              
-                }
+                //filtrare errori oracle di login 
+                // if (error.message){
+                //   this.toastr.error(error.error.message);                                                                   
+                // }
                 break;
             }
           }

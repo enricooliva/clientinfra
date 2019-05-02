@@ -77,8 +77,7 @@ export class FirmaControparteComponent extends BaseEntityComponent {
       key: 'stipula_format',
       type: 'select',
       defaultValue: 'cartaceo',      
-      templateOptions: {
-        disabled: true,
+      templateOptions: {      
         options: [
           { codice: 'cartaceo', descrizione: 'Stipula cartacea' },
           { codice: 'digitale', descrizione: 'Stipula digitale' },
@@ -87,7 +86,10 @@ export class FirmaControparteComponent extends BaseEntityComponent {
         labelProp: 'descrizione',
         label: 'Formato di stipula',
         required: true,
-      }
+      },
+      expressionProperties: {
+        'templateOptions.disabled': 'formState.disabled_covenzione_id',
+      },   
     },
     {     
           key: 'attachment1',
@@ -151,6 +153,14 @@ export class FirmaControparteComponent extends BaseEntityComponent {
                   },
                   hideExpression: (model, formState) => {
                     return (formState.model.attachment1.attachmenttype_codice !== 'LTE_FIRM_ENTRAMBI');
+                  },
+                },
+                {
+                  key: 'filevalue',
+                  type: 'textarea',               
+                  hide: true,             
+                  templateOptions: {                
+                    //required: true,                               
                   },
                 },
                 {
@@ -218,7 +228,14 @@ export class FirmaControparteComponent extends BaseEntityComponent {
                 accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
                 onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
               },
-
+            },
+            {
+              key: 'filevalue',
+              type: 'textarea',               
+              hide: true,             
+              templateOptions: {                
+                //required: true,                               
+              },
             },
 
           ],
@@ -276,9 +293,9 @@ export class FirmaControparteComponent extends BaseEntityComponent {
 
     reader.onload = async (e: any) => {
       this.isLoading = true;
-      currentAttachment.filevalue = encode(e.target.result);
+      //currentAttachment.filevalue = encode(e.target.result);
 
-      //field.formControl.get('filevalue').setValue(encode(e.target.result));
+      field.formControl.parent.get('filevalue').setValue(encode(e.target.result));
       // if (currentSelFile.name.search('pdf') > 0) {
       //   try {
       //     let result = await ControlUtils.parsePdf(e.target.result);
@@ -346,7 +363,12 @@ export class FirmaControparteComponent extends BaseEntityComponent {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
+      var tosubmit = { 
+        ...this.model, 
+        ...this.form.value,         
+      };
+      tosubmit.attachment1.doc = {...this.model.attachment1.doc, ...this.form.value.attachment1.doc }
+      
       tosubmit.transition = this.workflowAction;
       this.service.complSottoscrizioneStep(tosubmit, true).subscribe(
         result => {

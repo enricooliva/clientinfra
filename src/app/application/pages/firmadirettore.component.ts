@@ -164,6 +164,14 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
                     return (formState.model.attachment1.attachmenttype_codice !== 'NESSUN_DOC');
                   },
                 },
+                {
+                  key: 'filevalue',
+                  type: 'textarea',               
+                  hide: true,             
+                  templateOptions: {                
+                    //required: true,                               
+                  },
+                },
               ],
             },
           ],
@@ -198,7 +206,14 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
                 accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
                 onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
               },
-
+            },
+            {
+              key: 'filevalue',
+              type: 'textarea',               
+              hide: true,             
+              templateOptions: {                
+                //required: true,                               
+              },
             },
 
           ],
@@ -262,7 +277,14 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
                   onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
                 },  
               },
-  
+              {
+                key: 'filevalue',
+                type: 'textarea',               
+                hide: true,             
+                templateOptions: {                
+                  //required: true,                               
+                },
+              },
             ],
             
           },
@@ -322,19 +344,9 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
     reader.onload = async (e: any) => {
       this.isLoading = true;
       //currentAttachment.filevalue = encode(e.target.result);
-      currentAttachment.filevalue = encode(e.target.result);
-      //field.formControl.get('filevalue').setValue(encode(e.target.result));
-      // if (currentSelFile.name.search('pdf')>0){
-      //   try {
-      //     let result = await ControlUtils.parsePdf(e.target.result);     
-      //     field.formControl.parent.get('docnumber').setValue(result.docnumber);
-      //     field.formControl.parent.get('data_emissione').setValue(result.converted);
-      //   } catch (error) {
-      //     console.log(error);
-      //     this.isLoading = false;
-      //   }
-      // }
-
+      //currentAttachment.filevalue = encode(e.target.result);
+      field.formControl.parent.get('filevalue').setValue(encode(e.target.result));
+      
       if (!currentAttachment.filevalue) {
         this.isLoading = false;
         return;
@@ -363,19 +375,22 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
             if (result){            
               //this.form.get('convenzione').setValue(result);  
               this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);              
-              this.form.get('stipula_format').setValue(result.stipula_format);              
-              this.isLoading=false;
+              this.form.get('stipula_format').setValue(result.stipula_format);                         
             }
+            this.isLoading=false;
           }
         );
 
         this.service.getAziende(this.model.convenzione_id).subscribe(
           result => { 
-            if (result && result[0])
-              this.form.get('email').setValue(result[0].pec_email);
-              //this.model.email = result[0].pec_email; 
-            else 
-              this.form.get('email').setValue('email non associata');
+            let control = this.form.get('email');
+            if (control){
+              if (result && result[0] && control)
+                control.setValue(result[0].pec_email);
+                //this.model.email = result[0].pec_email; 
+              else 
+                control.setValue('email non associata');
+            }
           }
         );
         

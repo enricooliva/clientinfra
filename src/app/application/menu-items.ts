@@ -218,7 +218,16 @@ export const ROUTES: RouteInfo[] = [
             permissions: ['ADMIN'],
           },         
         ],        
-      }
+      },
+      {
+        path: 'bollorepertoriazione',
+        title: 'Bollo repertoriazione',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'],
+      },     
     ]
   }
 ];

@@ -632,7 +632,17 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
-
+  bolloRepertoriazioneStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/bollorepertoriazionestep'}`;
+    let res = this.http.post(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Repertoriazione sottoscrizione effettuata con successo')
+        ),
+        catchError(this.handleError('bolloRepertoriazioneStep', null, retrow))
+      );
+    return res;
+  }
 
   //@Cacheable()
   getNextActions(id): Observable<any> {

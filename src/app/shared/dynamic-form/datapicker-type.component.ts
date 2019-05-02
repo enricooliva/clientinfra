@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 import { DatePipe } from '@angular/common';
-
+// placeholder="dd-mm-yyyy"      
 @Component({
   selector: 'app-datapicker-type',
   providers: [DatePipe],
@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
   <div class="input-group">    
     <input class="form-control" 
         
-        placeholder="dd-mm-yyyy"         
+          
         [formControl]="formControl"                
         [displayMonths]="displayMonths" 
         [navigation]="navigation"
