@@ -94,8 +94,8 @@ export class TaskComponent extends BaseEntityComponent {
     //       },
     //     },
     {
-      key: 'model_id',
-      type: 'external',
+      key: 'model',
+      type: 'externalobject',
       templateOptions: {
         label: 'Convenzione',
         type: 'string',
@@ -126,9 +126,9 @@ export class TaskComponent extends BaseEntityComponent {
       //       return !model.select
       //   },
       // },
-      lifecycle: {
-        onInit: (form, field) => {
-          form.get('model_id').valueChanges.pipe(
+      hooks: {        
+        onInit: (field) => {
+          field.form.get('model').get('id').valueChanges.pipe(
             takeUntil(this.onDestroy$),    
             distinct(),                  
             //startWith(form.get('unitaorganizzativa_uo').value),

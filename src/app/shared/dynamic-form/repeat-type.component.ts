@@ -37,8 +37,8 @@ import { map } from 'rxjs/operators';
 })
 
 export class RepeatTypeComponent extends FieldArrayType {
-  constructor(builder: FormlyFormBuilder, private cd: ChangeDetectorRef) {
-    super(builder);            
+  constructor(private cd: ChangeDetectorRef) {
+    super();            
   }
 
   ngOnInit(){    
