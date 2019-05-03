@@ -96,8 +96,8 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
                 
               this.isLoading = false;
               this.options.formState.isLoading = false;
-            });                           
-            this.postGetById();           
+              this.postGetById();       
+            });                                        
           },
           // complete: () => {
           //   this.isLoading = false;

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FirmaControparteComponent } from 'src/app/application/pages/firmacontroparte.component';
 import { FirmaDirettoreComponent } from 'src/app/application/pages/firmadirettore.component';
+import { BolloRepertoriazioneComponent } from 'src/app/application/pages/bollorepertoriazione.component';
 
 @Component({
   selector: 'app-tasklist',
@@ -59,6 +60,10 @@ export class TaskListComponent implements OnInit, AfterViewInit {
 
     if (task.workflow_transition == FirmaDirettoreComponent.WORKFLOW_ACTION){
       this.router.navigate([FirmaDirettoreComponent.ABSULTE_PATH, task.model_id]);
+    }
+
+    if (task.workflow_transition == BolloRepertoriazioneComponent.WORKFLOW_ACTION){
+      this.router.navigate([BolloRepertoriazioneComponent.ABSULTE_PATH, task.model_id]);
     }
 
   }

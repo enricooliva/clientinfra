@@ -32,7 +32,7 @@ import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.f
       <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">
       </formly-form>
   </form>
-  <button class="btn btn-primary mt-3" type="button" [disabled]="!form.valid" (click)="onSubmit()">Salva</button>
+  <button class="btn btn-primary mt-3" type="button" [disabled]="!form.valid" (click)="onSubmit()">Salva e repertoria</button>
   </div>
   `,
   styles: []
@@ -86,7 +86,9 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
               defaultValue: 'DOC_BOLLATO_FIRMATO',
               templateOptions: {
                 //todo chiedere lato server 
-                options: [],
+                options:  [
+                  { codice: 'DOC_BOLLATO_FIRMATO', descrizione: 'Convenzione firmata e bollata' },                  
+                ],
                 valueProp: 'codice',
                 labelProp: 'descrizione',
                 label: 'Tipo documento',
@@ -152,8 +154,11 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         this.service.getMinimal(this.model.convenzione_id).subscribe(
           result => {
             if (result){                          
-              this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);                                
-              this.isLoading=false;
+              setTimeout(
+                ()=> {
+                    this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);                                            
+                  });
+            this.isLoading=false;
             }
           }
         );
