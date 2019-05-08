@@ -5,6 +5,7 @@ import { PermissionService } from '../../permission.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.component';
 import { ScadenzaService } from '../../scadenza.service';
+import { ApplicationService } from '../../application.service';
 
 @Component({
   selector: 'app-scadenza', 
@@ -21,6 +22,14 @@ export class ScadenzaComponent extends BaseEntityComponent {
   
   isLoading = true;
   fields: FormlyFieldConfig[] = [
+    {           
+      type: 'button',  
+      templateOptions: {        
+        text: 'Richiesta emissione',
+        btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
+        onClick: ($event) => this.open()
+      },
+    },
     {
       fieldGroupClassName: 'row',
       fieldGroup: [
@@ -169,7 +178,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
   },
   ];  
 
-  constructor(protected service: ScadenzaService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(protected service: ScadenzaService, protected appService: ApplicationService, protected route: ActivatedRoute, protected router: Router) {
     super(route,router);
     //this.title = 'Tipo pagamento'
     this.activeNew =true;
@@ -184,4 +193,10 @@ export class ScadenzaComponent extends BaseEntityComponent {
 
   }
 
+  open() {
+    if(this.model.convenzione){
+      this.appService.setRichiestaEmissioneData(this.model);
+      this.router.navigate(['home/richiestaemissione', this.model.id]);
+    }
+  }
 }

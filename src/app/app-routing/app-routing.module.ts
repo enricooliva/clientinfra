@@ -42,6 +42,7 @@ import { ScadenzaService } from '../application/scadenza.service';
 import { ScadenzeComponent } from '../application/components/scadenza/scadenze.component';
 import { ScadenzaComponent } from '../application/components/scadenza/scadenza.component';
 import { BolloRepertoriazioneComponent } from '../application/pages/bollorepertoriazione.component';
+import { RichiestaEmissioneComponent } from '../application/pages/richiestaemissione.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -497,7 +498,17 @@ const routes: Routes = [
           ]
         }
       }, 
-
+      { 
+        path: 'richiestaemissione/:id',  component: RichiestaEmissioneComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Richiesta emissione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Richiesta emissione' }
+          ]
+        }
+      },
+      
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }

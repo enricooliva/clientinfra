@@ -644,6 +644,21 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
+
+  richiestaEmissioneStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/richiestaemissionestep'}`;
+    let res = this.http.post(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Richiesta emissione effettuata con successo')
+        ),
+        catchError(this.handleError('richiestaEmissioneStep', null, retrow))
+      );
+    return res;
+  }
+
+
+
   //@Cacheable()
   getNextActions(id): Observable<any> {
     const url = `${this._baseURL}/convenzioni/${id}/actions`
@@ -752,7 +767,14 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     };
   }
 
-
+  data:any;
+  getRichiestaEmissioneData(){ 
+     return this.data; 
+  } 
+  setRichiestaEmissioneData(data:any){
+      this.data = data;
+  }
+  
 
 
 }
