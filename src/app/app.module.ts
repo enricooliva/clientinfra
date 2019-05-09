@@ -42,6 +42,7 @@ import { UnitaOrganizzativaService } from './application/unitaorganizzativa.serv
 import { StrutturaEsternaService } from './application/strutturaesterna.service';
 import { DocumentoService } from './application/documento.service';
 import { LoginActivate } from './core/login.activate';
+import { ScadenzaService } from './application/scadenza.service';
 
 
 export function tokenGetter() {
@@ -95,6 +96,7 @@ export function tokenGetter() {
     {provide: 'strutturaesternaService', useClass: StrutturaEsternaService},
     {provide: 'mapppingufficititulusService', useClass: MappingUfficioService},
     {provide: 'unitaorganizzativaService', useClass: UnitaOrganizzativaService},
+    {provide: 'scadenzaService', useClass: ScadenzaService},    
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     {provide: APP_BASE_HREF, useValue: environment.baseHref},

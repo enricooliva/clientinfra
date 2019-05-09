@@ -90,8 +90,20 @@ export class UserTaskService extends BaseService {
   }
 
 
-  getNextActions(id): Observable<any> {
-    const url = `${this._baseURL}/convenzioni/${id}/actions`
+  getNextActions(id,model_type): Observable<any> {
+    let url = null;
+    switch (model_type) {
+      case 'App\\Convenzione':
+        url = `${this._baseURL}/convenzioni/${id}/actions`    
+        break;
+      case 'App\\Scadenza':
+        url = `${this._baseURL}/scadenze/${id}/actions`    
+        break;
+
+      default:
+        break;
+    }
+    
     return this.http.get(url, httpOptions);
   }
 

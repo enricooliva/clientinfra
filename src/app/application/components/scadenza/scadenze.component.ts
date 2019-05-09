@@ -49,13 +49,28 @@ export class ScadenzeComponent extends BaseResearchComponent {
           },
           {
             key: 'convenzione.id',
-            type: 'string',
+            type: 'external',
             templateOptions: {
-              label: 'Codice convenzione',
+              label: 'Convenzione',
+              type: 'string',
               required: true,
+              entityName: 'application',
+              entityLabel: 'Convenzione',
+              codeProp: 'id',
+              descriptionProp: 'descrizione_titolo',
+              isLoading: false, 
               column: { cellTemplate: 'valuecolumn'}
-            }
+            }   
           },
+          // {
+          //   key: 'convenzione.id',
+          //   type: 'external',
+          //   templateOptions: {
+          //     label: 'Codice convenzione',
+          //     required: true,
+          //     column: { cellTemplate: 'valuecolumn'}
+          //   }
+          // },
           {
             key: 'convenzione.descrizione_titolo',
             type: 'string',

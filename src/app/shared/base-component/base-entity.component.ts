@@ -67,7 +67,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
         }
         if (params.initObj){
           //setTimeout(()=> {
-            this.model = JSON.parse(params.initObj);
+            this.model = JSON.parse(params.initObj);            
             initObj = JSON.parse(params.initObj);
           //}, 0);     
         }        
@@ -94,6 +94,9 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
               else 
                 this.model = JSON.parse(JSON.stringify(data));
                 
+              //aggiornamento riferimento nel formstate
+              this.options.formState.model = this.model;
+
               this.isLoading = false;
               this.options.formState.isLoading = false;
               this.postGetById();       

@@ -11,6 +11,7 @@ import { FileDetector } from 'protractor';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 
+
 @Component({
   selector: 'formly-field-ext',
   template: `
@@ -47,9 +48,11 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
 
   ngOnInit() {    
     const servicename = ControlUtils.getServiceName(this.to.entityName)
-    this.service = this.injector.get(servicename) as ServiceQuery;
-    
+    this.service = this.injector.get(servicename) as ServiceQuery;    
+
     this.extDescription = this.field.fieldGroup.find(x=>x.key == this.to.descriptionProp || x.key =='description')
+    this.extDescription.templateOptions.disabled =true;
+
     this.codeField = this.field.fieldGroup.find(x=>x.key == this.to.codeProp || x.key =='id')
 
     this.codeField.modelOptions.updateOn = 'blur';
@@ -72,7 +75,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
             takeUntil(this.onDestroy$),
             //filter(() => !this.options.formState.isLoading),            
             tap(selectedField => {
-              if (!this.isInitValue()){
+              if (!this.isInitValue() && !this.field.templateOptions.hidden){
                 if (field.formControl.value && !this.nodecode) {
                   this.isLoading = true;
                   this.service.getById(field.formControl.value).subscribe((data) => {
@@ -102,6 +105,8 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     //se il valore del codice precedente è nullo 
     //se la descrizione è valorizzata
     //sono in fase di inizializzazione e NON fare la decodifica
+    
+    //se nel model non c'è la descrizione
     if (this.model && this.previusCodeValue == null && this.model[this.to.descriptionProp]){
       return true;
     }

@@ -19,22 +19,6 @@ export class TasksComponent extends BaseResearchComponent {
   
   isLoading = false;
   fieldsRow: FormlyFieldConfig[] = [
-    {
-      key: 'data',
-      type: 'datatablelookup',
-      wrappers: ['accordion'],      
-      templateOptions: {
-        label: 'Attività',   
-        columnMode: 'force',
-        scrollbarH: false,        
-        page: new Page(25),
-        hidetoolbar: true,      
-        onDblclickRow: (event) => this.onDblclickRow(event),
-        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
-      },
-      fieldArray: {
-        fieldGroupClassName: 'row',   
-        fieldGroup: [
           {
             key: 'id',
             type: 'number',
@@ -83,12 +67,31 @@ export class TasksComponent extends BaseResearchComponent {
           //   }
           // }
 
-        ]
+        ];
+
+
+  resultMetadata = [
+    {
+      key: 'data',
+      type: 'datatablelookup',
+      wrappers: ['accordion'],      
+      templateOptions: {
+        label: 'Attività',   
+        columnMode: 'force',
+        scrollbarH: false,        
+        page: new Page(25),
+        hidetoolbar: true,      
+        onDblclickRow: (event) => this.onDblclickRow(event),
+        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
+      },
+      fieldArray: {
+        fieldGroupClassName: 'row',   
+        fieldGroup: this.fieldsRow,
       }
     }
   ];
 
-  resultMetadata = this.fieldsRow;
+  
 
   constructor(protected service: UserTaskService, protected router: Router, protected route: ActivatedRoute,)  {    
     super(router,route)
