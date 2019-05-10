@@ -228,6 +228,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'],
       },     
+      {
+        path: 'richiestaemissione',
+        title: 'Richiesta emissione',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'],
+      },     
     ]
   }
 ];

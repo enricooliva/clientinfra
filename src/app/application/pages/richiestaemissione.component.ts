@@ -59,64 +59,59 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
     {
       fieldGroupClassName: 'row',
       fieldGroup: [
+        // {
+        //   key: 'id',
+        //   type: 'input',
+        //   hide: true,
+        //   className: "col-md-2",
+        //   templateOptions: {
+        //     label: 'Scadenza id',
+        //     disabled: true
+        //   }
+        // },
         {
           key: 'id',
-          type: 'input',
-          hide: true,
-          className: "col-md-2",
-          templateOptions: {
-            label: 'Scadenza id',
-            disabled: true
-          }
-        },
-        {
-          key: 'convenzione',
-          type: 'externalobject',
+          type: 'external',
           className: "col-md-12",
           templateOptions: {
-            label: 'Convenzione',
+            label: 'Scadenza',
             type: 'string',            
-            entityName: 'application',
-            entityLabel: 'Convenzione',
+            entityName: 'scadenza',
+            entityLabel: 'Scadenza',
             codeProp: 'id',
-            descriptionProp: 'descrizione_titolo',
-            isLoading: false,
-            //rules: [{ value: this.STATE, field: "current_place", operator: "=" }],
-          },
-          expressionProperties: {
-            'templateOptions.disabled':(model: any, formState: any) => {
-              return this.model.id
+            descriptionProp: 'dovuto_tranche',
+            descriptionFunc: (data) => {
+               return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
             },
-            'templateOptions.required':(model: any, formState: any) => {
-              return !this.model.id
-            }
+            copymodel: true,
+            isLoading: false,          
           },
         },
       ]
     },
-    {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-      {
-        key: 'data_tranche',
-        type: 'datepicker',
-        className: "col-md-5",          
-        templateOptions: {
-          label: 'Tranche prevista',          
-          required: true
-        },          
-      },
-      {
-        key: 'dovuto_tranche',
-        type: 'number',
-        className: "col-md-5",
-        templateOptions: {
-          label: 'Importo',
-          required: true
-        },
-      }
-    ]
-  }, 
+  //   {
+  //     fieldGroupClassName: 'row',
+  //     fieldGroup: [
+  //     {
+  //       key: 'data_tranche',
+  //       type: 'datepicker',
+  //       className: "col-md-5",          
+  //       templateOptions: {
+  //         label: 'Tranche prevista',          
+  //         required: true
+  //       },          
+  //     },
+  //     {
+  //       key: 'dovuto_tranche',
+  //       type: 'number',
+  //       className: "col-md-5",
+  //       templateOptions: {
+  //         label: 'Importo',
+  //         required: true
+  //       },
+  //     }
+  //   ]
+  // }, 
     {
       fieldGroup: [
       {
@@ -230,12 +225,9 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
           templateOptions: {
             label: 'Note',
             maxLength: 200,
-            rows: 5,
-            //required: true,
-          },
-          expressionProperties: {
-            'templateOptions.disabled': '!model.respons_v_ie_ru_personale_id_ab',
-          },
+            rows: 6,
+            required: true,
+          },         
         }
       ],
     }

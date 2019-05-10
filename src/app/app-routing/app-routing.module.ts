@@ -499,6 +499,16 @@ const routes: Routes = [
         }
       }, 
       { 
+        path: 'richiestaemissione',  component: RichiestaEmissioneComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Richiesta emissione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Richiesta emissione' }
+          ]
+        }
+      },
+      { 
         path: 'richiestaemissione/:id',  component: RichiestaEmissioneComponent,  canActivate:[AuthGuard], 
         data: {
           title: 'Richiesta emissione',

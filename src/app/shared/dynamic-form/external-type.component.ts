@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, ChangeDetectorRef } from '@angular/core';
 import { FieldType, FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldInput } from '@ngx-formly/bootstrap';
 import { takeUntil, startWith, tap, distinctUntilChanged } from 'rxjs/operators';
@@ -114,12 +114,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
               return;
             }
             //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-            if (this.field.templateOptions.descriptionProp in data){
-              this.extDescription = data[this.field.templateOptions.descriptionProp];
-              if (this.field.templateOptions.initdescription in this.model)
-                this.model[this.field.templateOptions.initdescription] = data[this.field.templateOptions.descriptionProp];
-              //this.field.formControl.markAsDirty();
-            }
+            this.setDescription(data);            
           });
 
         } else {
@@ -151,19 +146,26 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     if (this.field.key in this.model)    
       this.initdesc = true;
 
-    if (this.field.templateOptions.initdescription in this.model){      
+    if (typeof this.field.templateOptions.descriptionFunc === 'function'){
+      this.extDescription = this.field.templateOptions.descriptionFunc(this.model);    
+    }else if (this.field.templateOptions.initdescription in this.model){      
       this.extDescription = this.model[this.field.templateOptions.initdescription];        
     }
     return this.initdesc;
   }
 
   setDescription(data: any) {
-    //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-    if (this.field.templateOptions.descriptionProp in data){
-      this.extDescription = data[this.field.templateOptions.descriptionProp];
-      if (this.field.templateOptions.initdescription in this.model)
-        this.model[this.field.templateOptions.initdescription] = data[this.field.templateOptions.descriptionProp];
-    }          
+    if (typeof this.field.templateOptions.descriptionFunc === 'function'){
+      this.extDescription = this.field.templateOptions.descriptionFunc(data);    
+    } else {
+      //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
+      if (this.field.templateOptions.descriptionProp in data){
+        this.extDescription = data[this.field.templateOptions.descriptionProp];
+        if (this.field.templateOptions.initdescription in this.model)
+          this.model[this.field.templateOptions.initdescription] = data[this.field.templateOptions.descriptionProp];
+      } 
+    }
+             
   }
 
   setcode(data: any) {
@@ -173,6 +175,16 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     }
   }
 
+  setresult(result){    
+    this.nodecode = true  
+    this.setcode(result);
+    this.setDescription(result);
+    if (this.field.templateOptions.copymodel){
+      
+      Object.keys(result).forEach( x=> this.model[x] = result[x]);      
+    }
+    this.nodecode = false
+  }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
@@ -184,16 +196,12 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
       size: 'lg'
     })
     modalRef.result.then((result) => {
-      this.nodecode = true
-      this.setcode(result);
-      this.setDescription(result);
-      this.nodecode = false
+      this.setresult(result);
     }, (reason) => {
     });
     modalRef.componentInstance.entityName = this.to.entityName;
     modalRef.componentInstance.entityLabel = this.to.entityLabel;
     modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
-
   }
 
 
