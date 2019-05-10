@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FirmaControparteComponent } from 'src/app/application/pages/firmacontroparte.component';
 import { FirmaDirettoreComponent } from 'src/app/application/pages/firmadirettore.component';
 import { BolloRepertoriazioneComponent } from 'src/app/application/pages/bollorepertoriazione.component';
+import { EmissioneComponent } from 'src/app/application/pages/emissione.component';
 
 @Component({
   selector: 'app-tasklist',
@@ -66,6 +67,9 @@ export class TaskListComponent implements OnInit, AfterViewInit {
       this.router.navigate([BolloRepertoriazioneComponent.ABSULTE_PATH, task.model_id]);
     }
 
+    if (task.workflow_transition == EmissioneComponent.WORKFLOW_ACTION){
+      this.router.navigate([EmissioneComponent.ABSULTE_PATH, task.model_id]);
+    }
   }
 
 }

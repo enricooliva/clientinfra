@@ -61,35 +61,23 @@ export class EmissioneComponent extends BaseEntityComponent {
       fieldGroup: [
         {
           key: 'id',
-          type: 'input',
-          hide: true,
-          className: "col-md-2",
-          templateOptions: {
-            label: 'Scadenza id',
-            disabled: true
-          }
-        },
-        {
-          key: 'convenzione',
-          type: 'externalobject',
+          type: 'external',
           className: "col-md-12",
           templateOptions: {
-            label: 'Convenzione',
+            label: 'Scadenza',
             type: 'string',            
-            entityName: 'application',
-            entityLabel: 'Convenzione',
+            entityName: 'scadenza',
+            entityLabel: 'Scadenza',
             codeProp: 'id',
-            descriptionProp: 'descrizione_titolo',
-            isLoading: false,
-            //rules: [{ value: this.STATE, field: "current_place", operator: "=" }],
-          },
-          expressionProperties: {
-            'templateOptions.disabled':(model: any, formState: any) => {
-              return this.model.id
+            descriptionProp: 'dovuto_tranche',
+            descriptionFunc: (data) => {
+                if (data.dovuto_tranche){
+                  return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
+                }
+                return '';
             },
-            'templateOptions.required':(model: any, formState: any) => {
-              return !this.model.id
-            }
+            copymodel: true,
+            isLoading: false,          
           },
         },
       ]
@@ -136,11 +124,6 @@ export class EmissioneComponent extends BaseEntityComponent {
     this.route.params.subscribe(params => {
       if (params['id']) {                  
         //leggere la minimal della convenzione        
-        this.model = this.service.getRichiestaEmissioneData();
-        if (this.model){
-          this.options.formState.model = this.model;
-          this.options.formState.disabled_covenzione_id = true;
-        }else{
           this.isLoading=true;
           this.model = { convenzione: {}};
           //leggere la minimal della convenzione        
@@ -154,8 +137,7 @@ export class EmissioneComponent extends BaseEntityComponent {
             }
           );
         }        
-      };
-    });
+      });    
   }
 
   onSubmit() {

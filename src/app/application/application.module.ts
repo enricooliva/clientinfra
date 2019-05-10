@@ -60,6 +60,7 @@ import { ScadenzeComponent } from './components/scadenza/scadenze.component';
 import { ScadenzaService } from './scadenza.service';
 import { BolloRepertoriazioneComponent } from './pages/bollorepertoriazione.component';
 import { RichiestaEmissioneComponent } from './pages/richiestaemissione.component';
+import { EmissioneComponent } from './pages/emissione.component';
 
 registerLocaleData(localeIt);
 @NgModule({
@@ -80,7 +81,7 @@ registerLocaleData(localeIt);
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
     TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
-    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent,
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent 
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -90,7 +91,7 @@ registerLocaleData(localeIt);
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
     ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
-    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent,
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent 
 
   ],
   providers: [ 

@@ -43,6 +43,7 @@ import { ScadenzeComponent } from '../application/components/scadenza/scadenze.c
 import { ScadenzaComponent } from '../application/components/scadenza/scadenza.component';
 import { BolloRepertoriazioneComponent } from '../application/pages/bollorepertoriazione.component';
 import { RichiestaEmissioneComponent } from '../application/pages/richiestaemissione.component';
+import { EmissioneComponent } from '../application/pages/emissione.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -515,6 +516,26 @@ const routes: Routes = [
           urls: [
             { title: 'Home', url: '/home' },
             { title: 'Richiesta emissione' }
+          ]
+        }
+      },
+      { 
+        path: 'richiestaemissione',  component: EmissioneComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Richiesta emissione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Richiesta emissione' }
+          ]
+        }
+      },
+      { 
+        path: 'emissione/:id',  component: EmissioneComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Emissione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Emissione' }
           ]
         }
       },
