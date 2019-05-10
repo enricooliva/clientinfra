@@ -29,7 +29,11 @@ export class ScadenzaComponent extends BaseEntityComponent {
         btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
         onClick: ($event) => this.open()
       },
+      hideExpression: (model: any) => {
+        return !this.activeNew;
+     }, 
     },
+
     {
       fieldGroupClassName: 'row',
       fieldGroup: [

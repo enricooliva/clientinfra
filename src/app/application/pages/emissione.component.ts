@@ -12,7 +12,7 @@ import { ScadenzaService } from '../scadenza.service';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
-  selector: 'app-richiestaemissione',
+  selector: 'app-emissione',
   template: `
   <div class="container-fluid">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -40,14 +40,14 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
   styles: []
 })
 
-export class RichiestaEmissioneComponent extends BaseEntityComponent {
+export class EmissioneComponent extends BaseEntityComponent {
   
-  public STATE = 'attivo';
-  public static WORKFLOW_ACTION: string = 'inemissione'; //TRASITION
-  public static ABSULTE_PATH: string = 'home/richiestaemissione';
+  public STATE = 'inemissione';
+  public static WORKFLOW_ACTION: string = 'emissione'; //TRASITION
+  public static ABSULTE_PATH: string = 'home/emissione';
 
   get workflowAction(): string{
-    return RichiestaEmissioneComponent.WORKFLOW_ACTION;
+    return EmissioneComponent.WORKFLOW_ACTION;
   }
 
 
@@ -94,144 +94,7 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
         },
       ]
     },
-    {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-      {
-        key: 'data_tranche',
-        type: 'datepicker',
-        className: "col-md-5",          
-        templateOptions: {
-          label: 'Tranche prevista',          
-          required: true
-        },          
-      },
-      {
-        key: 'dovuto_tranche',
-        type: 'number',
-        className: "col-md-5",
-        templateOptions: {
-          label: 'Importo',
-          required: true
-        },
-      }
-    ]
-  }, 
-    {
-      fieldGroup: [
-      {
-        key: 'unitaorganizzativa_uo',
-        type: 'select',       
-        templateOptions: {
-          label: 'Ufficio affidatario procedura',
-          required: true,                 
-          options: this.service.getValidationOffices(),
-          valueProp: 'uo',
-          labelProp: 'descr',
-        },
-      },              
-      {
-          key: 'respons_v_ie_ru_personale_id_ab',
-          type: 'select',                
-          templateOptions: {
-            label: 'Responsabile ufficio',
-            valueProp: 'id',
-            labelProp: 'descr',   
-            required: true,                    
-          },
-          lifecycle: {
-            onInit: (form, field, model, options) => {
-              form.get('unitaorganizzativa_uo').valueChanges.pipe(
-                takeUntil(this.onDestroy$),    
-                distinct(),                  
-                //startWith(form.get('unitaorganizzativa_uo').value),
-                filter(ev => ev !== null),
-                tap(uo => {                                                                   
-                  field.formControl.setValue('');
-                  field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
-                    map(items => {
-                      return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D' || x.cd_tipo_posizorg == 'VIC_RES_PL' || x.cd_tipo_posizorg =='RESP_PLESSO');
-                    }),  
-                    tap(items => {
-                      if (items[0]){
-                        field.formControl.setValue(items[0].id); 
-                      }
-                    }),                                                  
-                  );
-                }),
-              ).subscribe();
-            },
-          },
-        },
-        {
-          key: 'assignments',
-          type: 'repeat',                                        
-          templateOptions: {                  
-            label: 'Ulteriori assegnatari',                                                                                        
-          },   
-          validators: {
-            unique: {
-              expression: (c) => {           
-                if (c.value)  {                              
-                  var valueArr = c.value.map(function(item){ return item.v_ie_ru_personale_id_ab }).filter(x => x != null );
-                  var isDuplicate = valueArr.some(function(item, idx){ 
-                      return valueArr.indexOf(item) != idx 
-                  });              
-                  return !isDuplicate;
-                }
-                return true;
-              },
-              message: (error, field: FormlyFieldConfig) => `Nome ripetuto`,
-            },
-          },
-          expressionProperties: {
-            'templateOptions.disabled': (model: any, formState: any) => {
-              // access to the main model can be through `this.model` or `formState` or `model
-              return formState.model.respons_v_ie_ru_personale_id_ab == null || formState.model.respons_v_ie_ru_personale_id_ab == '';
-            },
-          },            
-          fieldArray: {                  
-            fieldGroupClassName: 'row',
-            fieldGroup: [
-            {
-              key: 'v_ie_ru_personale_id_ab',
-              type: 'select',
-              className: "col-md-8",
-              templateOptions: {
-                label: 'Assegnamento attività',
-                valueProp: 'id',
-                labelProp: 'descr',  
-                required: true,                     
-              },
-              lifecycle: {
-                onInit: (form, field, model) => {                                              
-                  //field.formControl.setValue('');
-                  field.templateOptions.options = this.service.getValidationOfficesPersonale(this.model.unitaorganizzativa_uo).pipe(
-                    // map(items => {
-                    //   return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
-                    // }),                         
-                  );                      
-                },
-              },
-            },
-            ],   
-          },
-        },
-        {
-          key: 'description',
-          type: 'textarea',  
-          templateOptions: {
-            label: 'Note',
-            maxLength: 200,
-            rows: 5,
-            //required: true,
-          },
-          expressionProperties: {
-            'templateOptions.disabled': '!model.respons_v_ie_ru_personale_id_ab',
-          },
-        }
-      ],
-    }
+  
 
   ]
 
