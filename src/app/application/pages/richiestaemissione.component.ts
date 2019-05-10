@@ -139,25 +139,32 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
             labelProp: 'descr',   
             required: true,                    
           },
-          lifecycle: {
-            onInit: (form, field, model, options) => {
-              form.get('unitaorganizzativa_uo').valueChanges.pipe(
+          hooks: {
+            onInit: (field) => {
+              field.form.get('unitaorganizzativa_uo').valueChanges.pipe(
                 takeUntil(this.onDestroy$),    
                 distinct(),                  
                 //startWith(form.get('unitaorganizzativa_uo').value),
                 filter(ev => ev !== null),
                 tap(uo => {                                                                   
                   field.formControl.setValue('');
-                  field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
+                  
+                  this.service.getValidationOfficesPersonale(uo).pipe(
                     map(items => {
                       return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D' || x.cd_tipo_posizorg == 'VIC_RES_PL' || x.cd_tipo_posizorg =='RESP_PLESSO');
-                    }),  
-                    tap(items => {
-                      if (items[0]){
-                        field.formControl.setValue(items[0].id); 
+                    }),                                                                                
+                  ).subscribe(opt=> {
+
+                    setTimeout(() => {
+                      field.templateOptions.options = opt;
+                      if (opt[0]){
+                        field.formControl.setValue(opt[0].id); 
                       }
-                    }),                                                  
-                  );
+                    }, 0);
+  
+                  });
+
+                  
                 }),
               ).subscribe();
             },

@@ -30,10 +30,9 @@ export class ScadenzaComponent extends BaseEntityComponent {
         onClick: ($event) => this.open()
       },
       hideExpression: (model: any) => {
-        return !this.activeNew;
+        return !model.id;
      }, 
     },
-
     {
       fieldGroupClassName: 'row',
       fieldGroup: [

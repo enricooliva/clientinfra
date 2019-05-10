@@ -51,6 +51,21 @@ export class UserComponent extends BaseEntityComponent {
             required: true
           },
         }
+      ]            
+    },
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup: [
+        {
+          key: 'v_ie_ru_personale_id_ab',
+          type: 'input',
+          className: "col-md-3",
+          templateOptions: {
+            label: 'Codice personale per ufficio',
+            required: true,
+            //disabled: true
+          }
+        },
       ]
     },
     {
