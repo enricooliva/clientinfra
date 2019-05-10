@@ -154,6 +154,9 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           disabled: true,
           label: 'Descrizione'
         },
+        expressionProperties: {
+          'templateOptions.disabled': () => true,
+        },
       }
     ];
   }
