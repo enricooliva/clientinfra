@@ -21,7 +21,7 @@ import { ApplicationService } from '../../application.service';
 export class ScadenzaComponent extends BaseEntityComponent {
   
   isLoading = true;
-  fields: FormlyFieldConfig[] = [
+  fields: FormlyFieldConfig[] = [    
     {           
       type: 'button',  
       templateOptions: {        
@@ -30,8 +30,28 @@ export class ScadenzaComponent extends BaseEntityComponent {
         onClick: ($event) => this.open()
       },
       hideExpression: (model: any) => {
-        return !model.id;
-     }, 
+        return !model.id ||
+          (model.id && model.state != 'attivo');
+      }, 
+    },         
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup: [
+        {
+          key: 'state',
+          type: 'input',          
+          className: "col-md-5",
+          templateOptions: {
+            label: 'Stato',
+            disabled: true
+          },
+          hideExpression: (model: any) => {
+            //non c'è il model id 
+            return !model.id 
+                 
+          }, 
+        },
+      ],
     },
     {
       fieldGroupClassName: 'row',
@@ -102,25 +122,25 @@ export class ScadenzaComponent extends BaseEntityComponent {
         type: 'datepicker',
         className: "col-md-5",
         templateOptions: {
-          label: 'Data emissione richiesata',          
+          label: 'Data emissione richiesta',          
         },        
       },
-      {
-        key: 'protnum_emisrichiesta',
-        type: 'external',
-        className: "col-md-7",
-        templateOptions: {
-          label: 'Numero di protocollo',
-          //required: true,      
-          type: 'string',
-          entityName: 'documento',
-          entityLabel: 'Documenti',
-          codeProp: 'num_prot',
-          descriptionProp: 'oggetto',
-          isLoading: false,  
-          //rules: [{value: "arrivo", field: "doc_tipo", operator: "="}],                       
-        }, 
-      }
+      // {
+      //   key: 'protnum_emisrichiesta',
+      //   type: 'external',
+      //   className: "col-md-7",
+      //   templateOptions: {
+      //     label: 'Numero di protocollo',
+      //     //required: true,      
+      //     type: 'string',
+      //     entityName: 'documento',
+      //     entityLabel: 'Documenti',
+      //     codeProp: 'num_prot',
+      //     descriptionProp: 'oggetto',
+      //     isLoading: false,  
+      //     //rules: [{value: "arrivo", field: "doc_tipo", operator: "="}],                       
+      //   }, 
+      // }
     ],    
   },
   {

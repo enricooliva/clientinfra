@@ -656,15 +656,25 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
       );
     return res;
   }
+  
 
-
+  emissioneStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/emissionestep'}`;
+    let res = this.http.post(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Emissione effettuata con successo')
+        ),
+        catchError(this.handleError('emissioneStep', null, retrow))
+      );
+    return res;
+  }
 
   //@Cacheable()
   getNextActions(id): Observable<any> {
     const url = `${this._baseURL}/convenzioni/${id}/actions`
     return this.http.get(url, httpOptions);
   }
-
 
   @Cacheable()
   getDipartimenti(): Observable<any> {
@@ -673,8 +683,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
          return x.map(el => {return { cd_dip: parseInt(el.cd_dip), nome_breve: el.nome_breve }})
         }
       )
-    );      
-    
+    );          
   }
 
   @Cacheable()

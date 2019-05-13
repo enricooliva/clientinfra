@@ -79,7 +79,17 @@ export class ScadenzeComponent extends BaseResearchComponent {
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
+          },
+          {
+            key: 'state',
+            type: 'string',
+            templateOptions: {
+              label: 'Stato',
+              required: true,
+              column: { cellTemplate: 'valuecolumn'}
+            }
           }
+
         ];
 
  

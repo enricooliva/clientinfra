@@ -136,15 +136,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'], 
       }, 
-      {
-        path: 'scadenze',
-        title: 'Scadenze pagamenti',
-        icon: '',
-        class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'], 
-      }, 
+  
     ]
   },
   {
@@ -237,6 +229,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'],
       },     
+      {
+        path: 'scadenze',
+        title: 'Scadenze pagamenti',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
     ]
   }
 ];

@@ -302,6 +302,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
           { name: 'Id', prop: 'id', wrapper: 'value' },
           { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value' },
           { name: 'Importo', prop: 'dovuto_tranche', wrapper: 'value' },
+          { name: 'Stato', prop: 'state', wrapper: 'value' },
           //{ name: 'Azione', prop: 'action_button' },
         ],
         onDblclickRow: (event) => {

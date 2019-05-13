@@ -57,33 +57,125 @@ export class EmissioneComponent extends BaseEntityComponent {
       template: '<h5></h5>',
     },
     {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-        {
-          key: 'id',
-          type: 'external',
-          className: "col-md-12",
-          templateOptions: {
-            label: 'Scadenza',
-            type: 'string',            
-            entityName: 'scadenza',
-            entityLabel: 'Scadenza',
-            codeProp: 'id',
-            descriptionProp: 'dovuto_tranche',
-            descriptionFunc: (data) => {
-                if (data.dovuto_tranche){
-                  return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
-                }
-                return '';
-            },
-            copymodel: true,
-            isLoading: false,          
-          },
+      key: 'id',
+      type: 'external',
+      className: "col-md-12",
+      templateOptions: {
+        label: 'Scadenza',
+        type: 'string',            
+        entityName: 'scadenza',
+        entityLabel: 'Scadenza',
+        codeProp: 'id',
+        descriptionProp: 'dovuto_tranche',
+        descriptionFunc: (data) => {
+            if (data.dovuto_tranche){
+              return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
+            }
+            return '';
         },
-      ]
+        copymodel: true,
+        isLoading: false,          
+      },
+    },      
+    
+    {     
+      key: 'attachment1',
+      fieldGroup: [        
+        {
+          fieldGroupClassName: 'row',
+          fieldGroup: [
+            {
+              key: 'attachmenttype_codice',
+              type: 'select',
+              className: "col-md-5",
+              defaultValue: 'NOTA_DEBITO',
+              templateOptions: {
+                //todo chiedere lato server 
+                options: [
+                  { codice: 'NOTA_DEBITO', descrizione: 'Emissione nota di debito' },
+                  { codice: 'FATTURA_ELETTRONICA', descrizione: 'Fattura elettronica' },     
+                  { codice: 'RICHIESTA_PAGAMENTO', descrizione: 'Richiesta pagamento' },                  
+                ],
+                valueProp: 'codice',
+                labelProp: 'descrizione',
+                label: 'Tipo documento',
+                required: true,
+              }
+            },
+            {
+              key: 'filename',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Scegli il documento',
+                type: 'input',
+                placeholder: 'Scegli file documento',
+                accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                required: true,
+                onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+              },
+              hideExpression: (model, formState) => {
+               return model.attachmenttype_codice !== 'RICHIESTA_PAGAMENTO';
+              },
+            },
+            {
+              key: 'filevalue',
+              type: 'textarea',               
+              hide: true,             
+              templateOptions: {                
+                //required: true,                               
+              },
+            },
+            {
+              key: 'doc',
+              type: 'externalobject',
+              className: "col-md-7",
+              templateOptions: {
+                label: 'Numero di protocollo',
+                //required: true,      
+                type: 'string',
+                entityName: 'documento',
+                entityLabel: 'Documenti',
+                codeProp: 'num_prot',
+                descriptionProp: 'oggetto',
+                isLoading: false,
+                rules: [{ value: "partenza", field: "doc_tipo", operator: "=" }],
+              },
+              hideExpression: (model, formState) => {
+                return formState.model.attachment1 != null && formState.model.attachment1.attachmenttype_codice == 'RICHIESTA_PAGAMENTO';
+              },
+            },           
+          ],
+        },
+      ],
     },
-  
+    //data e numero fattura ???
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup: [    
+        {
+          key: 'data_fattura',
+          type: 'datepicker',
+          className: "col-md-5",
+          templateOptions: {
+            label: 'Data fattura',          
+          },        
+        },
+        {
+          key: 'num_fattura',
+          type: 'input',
+          className: "col-md-5",
+          templateOptions: {
+            label: 'Numero fattura',                    
+          },        
+        },    
+    ],
+    hideExpression: (model, formState) => {
+      return formState.model.attachment1 != null && formState.model.attachment1.attachmenttype_codice !== 'FATTURA_ELETTRONICA';
+    },
 
+    },
+    
   ]
 
   onSelectCurrentFile(currentSelFile, field: FormlyFieldConfig){
@@ -95,7 +187,7 @@ export class EmissioneComponent extends BaseEntityComponent {
     }
   
     this.isLoading = true;
-    currentAttachment.model_type = 'convenzione';
+    currentAttachment.model_type = 'scadenza';
     
     const reader = new FileReader();   
 
@@ -130,7 +222,7 @@ export class EmissioneComponent extends BaseEntityComponent {
           this.scadService.getById(params['id']).subscribe(
             result => {
               if (result){            
-                  this.model = result;   
+                  this.model = {...this.model, ...result};   
                   this.options.formState.model = this.model;         
               }
               this.isLoading=false;
@@ -144,8 +236,9 @@ export class EmissioneComponent extends BaseEntityComponent {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      
-      this.service.richiestaEmissioneStep(tosubmit,true).subscribe(
+      tosubmit.attachment1.doc = {...this.model.attachment1.doc, ...this.form.value.attachment1.doc }
+
+      this.service.emissioneStep(tosubmit,true).subscribe(
         result => {          
           this.isLoading = false;          
           this.router.navigate(['home/dashboard/dashboard1']);                
