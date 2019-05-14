@@ -158,6 +158,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
                   //icon: 'oi oi-data-transfer-download'
                   onClick: ($event, model) => this.download($event, model),
                 },
+                expressionProperties: {
+                  'templateOptions.disabled': (model: any, formState: any) => {                        
+                    return model.filetype == 'link';
+                  },
+                }
               },
             ],
           },
