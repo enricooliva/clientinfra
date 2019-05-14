@@ -461,50 +461,52 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         // },
       ],
     },
-    {
-      key: 'otherattachments',
-      type: 'repeat',
-      templateOptions: {
-        label: 'Allegati',
-      },    
-      hideExpression: (model, formstate) => {
-        return !(formstate.model.stipula_format === 'digitale');
-      },      
-      fieldArray: {
-        fieldGroupClassName: 'row',
-        fieldGroup:  [
-          {
-            key: 'attachmenttype_codice',
-            type: 'select',
-            className: "col-md-5",
-            defaultValue: 'GEN_ALLEGATO',
-            templateOptions: {
-              //todo chiedere lato server 
-              required: true,  
-              options: [{ stipula_type: 'ditta', codice: 'GEN_ALLEGATO', descrizione: 'Allegato' }],
-              valueProp: 'codice',
-              labelProp: 'descrizione',
-              label: 'Tipo documento',
-            },
-          },
-          {
-            key: 'filename',
-            type: 'fileinput',
-            className: "col-md-5",
-            templateOptions: {
-              required: true,  
-              label: 'Scegli il documento',
-              type: 'input',
-              placeholder: 'Scegli file documento',
-              accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
-              onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
-            },  
-          },
+    
+    //Inserimento allegati
+    // {
+    //   key: 'otherattachments',
+    //   type: 'repeat',
+    //   templateOptions: {
+    //     label: 'Allegati',
+    //   },    
+    //   hideExpression: (model, formstate) => {
+    //     return !(formstate.model.stipula_format === 'digitale');
+    //   },      
+    //   fieldArray: {
+    //     fieldGroupClassName: 'row',
+    //     fieldGroup:  [
+    //       {
+    //         key: 'attachmenttype_codice',
+    //         type: 'select',
+    //         className: "col-md-5",
+    //         defaultValue: 'GEN_ALLEGATO',
+    //         templateOptions: {
+    //           //todo chiedere lato server 
+    //           required: true,  
+    //           options: [{ stipula_type: 'ditta', codice: 'GEN_ALLEGATO', descrizione: 'Allegato' }],
+    //           valueProp: 'codice',
+    //           labelProp: 'descrizione',
+    //           label: 'Tipo documento',
+    //         },
+    //       },          
+    //       {
+    //         key: 'filename',
+    //         type: 'fileinput',
+    //         className: "col-md-5",
+    //         templateOptions: {
+    //           required: true,  
+    //           label: 'Scegli il documento',
+    //           type: 'input',
+    //           placeholder: 'Scegli file documento',
+    //           accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
+    //           onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+    //         },  
+    //       },
 
-        ],
+    //     ],
         
-      },
-    },
+    //   },
+    // },
   ]
 
   onSelectCurrentFile(currentSelFile, field: FormlyFieldConfig) {
