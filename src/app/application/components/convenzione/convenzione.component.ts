@@ -30,7 +30,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   private tabs: NgbTabset;
 
   onDestroy$ = new Subject<void>();
-  form =new FormArray([0,1,2,3,4].map(() => new FormGroup({})));
+  form = new FormArray([0, 1, 2, 3, 4].map(() => new FormGroup({})));
 
   model: Convenzione;
   modelUserTaskDetail: any;
@@ -38,32 +38,32 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   transitions = new Subject<any>();
 
   //caricati dal service
-  fields: FormlyFieldConfig[]= [
+  fields: FormlyFieldConfig[] = [
     {
       className: 'section-label',
       template: '<h5>Fasi processo</h5>',
     },
-    {      
+    {
       type: 'select',
       key: 'transition',
       defaultValue: 'self_transition',
       templateOptions: {
         label: 'Stato',
         options: [],
-      }, 
+      },
       // expressionProperties: {
       //   'templateOptions.disabled': (model: any, formState: any) => {                        
       //       return !model.id
       //   },
       // },
       lifecycle: {
-        onInit: (form, field) => {          
+        onInit: (form, field) => {
           this.transitions.subscribe(d => {
             field.templateOptions.options = d;
             field.templateOptions.disabled = false;
             field.formControl.setValue('self_transition');
           }
-          );          
+          );
         }
       }
 
@@ -75,7 +75,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       template: '<h5>Lista allegati</h5>',
     },
     {
-      type: 'button',  
+      type: 'button',
       templateOptions: {
         text: 'Nuovo',
         btnType: 'btn btn-outline-primary btn-sm border-0 rounded-0',
@@ -106,55 +106,102 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         return this.model.attachments == null || this.model.attachments.length == 0
       },
       fieldArray: {
-        template: '<hr />',
-        fieldGroupClassName: 'row',
+        template: '<hr />',       
         fieldGroup: [
+          //nome allegato, tipo allegato, data ora creazione
           {
-            className: 'col-md-1',
-            type: 'input',
-            key: 'id',
-            hide: true,
-            templateOptions: {
-              label: "Id",
-              hidden: true,
-              disabled: true,
-            },
+            fieldGroupClassName: 'row',
+            fieldGroup: [
+              {
+                className: 'col-md-1',
+                type: 'input',
+                key: 'id',
+                hide: true,
+                templateOptions: {
+                  label: "Id",
+                  hidden: true,
+                  disabled: true,
+                },
+              },
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'filename',
+                templateOptions: {
+                  label: "Nome dell'allegato",
+                  disabled: true,
+                },
+              },
+              {
+                type: 'input',
+                key: 'attachmenttype.descrizione',
+                className: 'col-md-3',
+                templateOptions: {
+                  label: 'Tipologia',
+                  disabled: true,
+                },
+              },
+              {
+                type: 'input',
+                key: 'created_at',
+                className: 'col-md-3',
+                templateOptions: {
+                  label: 'Data e ora di creazione',
+                  disabled: true,
+                },
+              },
+              {
+                type: 'button',
+                className: "col-md-2 d-flex align-items-start mt-4 pt-2",
+                templateOptions: {
+                  btnType: 'primary oi oi-data-transfer-download',
+                  //icon: 'oi oi-data-transfer-download'
+                  onClick: ($event, model) => this.download($event, model),
+                },
+              },
+            ],
           },
+          //numero protocolollo e data protocollo
           {
-            className: 'col-md-3',
-            type: 'input',
-            key: 'filename',
-            templateOptions: {
-              label: "Nome dell'allegato",
-              disabled: true,
-            },
-          },
-          {
-            type: 'input',
-            key: 'attachmenttype.descrizione',
-            className: 'col-md-3',
-            templateOptions: {
-              label: 'Tipologia',
-              disabled: true,
-            },
-          },
-          {
-            type: 'input',
-            key: 'created_at',
-            className: 'col-md-3',
-            templateOptions: {
-              label: 'Data e ora di creazione',
-              disabled: true,
-            },
-          },
-          {
-            type: 'button',
-            className: "col-md-2 d-flex align-items-start mt-4 pt-2",          
-            templateOptions: {              
-              btnType: 'primary oi oi-data-transfer-download',            
-             //icon: 'oi oi-data-transfer-download'
-              onClick: ($event, model) => this.download($event, model),
-            },
+            fieldGroupClassName: 'row',
+            fieldGroup: [
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'num_prot',
+                templateOptions: {
+                  label: "Numero protocollo",
+                  disabled: true,
+                },
+                hideExpression(model,formState){
+                  return !model.num_prot;
+                }
+              },
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'emission_date',
+                templateOptions: {
+                  label: "Data protocollo",
+                  disabled: true,
+                },
+                hideExpression(model,formState){
+                  return !model.emission_date;
+                }
+              },
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'num_rep',
+                templateOptions: {
+                  label: "Numero repertorio",
+                  disabled: true,
+                },
+                hideExpression(model,formState){
+                  return !model.num_rep;
+                }
+              },
+            ]
           }
         ],
       }
@@ -176,8 +223,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         onDblclickRow: (event) => {
           //leggi dettagli 
           //crea la form
-          if (event.row.id) {            
-            this.router.navigate(['home/tasks/', event.row.id]);            
+          if (event.row.id) {
+            this.router.navigate(['home/tasks/', event.row.id]);
           }
         },
         columns: [
@@ -277,17 +324,19 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       template: '<h5>Scadenze</h5>',
     },
     {
-      type: 'button',      
+      type: 'button',
       templateOptions: {
         text: 'Nuova',
         btnType: 'btn btn-outline-primary btn-sm border-0 rounded-0',
         icon: 'oi oi-document',
         onClick: ($event) => {
-          this.router.navigate(['home/scadenze/new'], { queryParams: {
-            returnUrl: this.router.url, 
-            initObj: JSON.stringify({convenzione: { id: this.model.id, descrizione_titolo: this.model.descrizione_titolo }})
-          }});            
-        } 
+          this.router.navigate(['home/scadenze/new'], {
+            queryParams: {
+              returnUrl: this.router.url,
+              initObj: JSON.stringify({ convenzione: { id: this.model.id, descrizione_titolo: this.model.descrizione_titolo } })
+            }
+          });
+        }
       },
     },
     {
@@ -308,20 +357,22 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         onDblclickRow: (event) => {
           //leggi dettagli 
           //crea la form
-          if (event.row.id) {            
-            this.router.navigate(['home/scadenze', event.row.id], { queryParams: {
-              returnUrl: this.router.url, 
-            }});            
+          if (event.row.id) {
+            this.router.navigate(['home/scadenze', event.row.id], {
+              queryParams: {
+                returnUrl: this.router.url,
+              }
+            });
           }
         },
-      },    
+      },
       fieldArray: {
         fieldGroup: [
           {
             type: 'button',
             key: 'action_button',
             templateOptions: {
-              btnType: 'primary oi oi-data-transfer-download',               
+              btnType: 'primary oi oi-data-transfer-download',
               onClick: ($event) => this.open()
             },
           },
@@ -331,18 +382,18 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
   ];
 
-  options: Array<FormlyFormOptions> = [0,1,2,3,4].map(() => ({
+  options: Array<FormlyFormOptions> = [0, 1, 2, 3, 4].map(() => ({
     formState: {
       isLoading: false,
     },
-  })); 
+  }));
 
   // options: FormlyFormOptions = {
   //   formState: {
   //     isLoading: false,
   //   },
   // }
-    
+
   private id: number;
 
   defaultColDef = { editable: true };
@@ -356,7 +407,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   set isLoading(value: boolean) {
     this._isLoading = value;
     //this.options.formState.isLoading = value;
-    this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);    
+    this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);
   }
 
   constructor(private service: ApplicationService, private route: ActivatedRoute, protected router: Router, private modalService: NgbModal, public activeModal: NgbActiveModal) {
@@ -388,30 +439,30 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     return this.model == null || this.model.id == null
   }
 
-  ngOnInit(){    
+  ngOnInit() {
     this.route.params.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       if (params['id']) {
         this.isLoading = true;
         this.service.clearMessage();
         this.service.getConvenzioneById(params['id']).subscribe((data) => {
           try {
-            if (!data.azienda){
-              data.azienda = { id: null, denominazione: '' };            
-            }                     
+            if (!data.azienda) {
+              data.azienda = { id: null, denominazione: '' };
+            }
 
             this.updateTransition(data.id);
 
             //this.options.every(tabOptions => { if (tabOptions.resetModel) return false; else return true; } )
 
             //Nota viene creata solo l'option del ng-tab attivo. Evito di fare il ciclo sulle tab.
-            if (this.options[0].resetModel){
+            if (this.options[0].resetModel) {
               //la resetmodel imposta tutti i valori del modello.
-              this.options[0].resetModel(data)              
-            }else{
+              this.options[0].resetModel(data)
+            } else {
               this.model = data;
             }
-            
-      
+
+
             this.isLoading = false;
           } catch (e) {
             console.log(e);
@@ -438,10 +489,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.service.getConvenzioneById(this.model.id).subscribe((data) => {
         //this.options.resetModel(data);
-        if (!data.azienda){
+        if (!data.azienda) {
           data.azienda = { id: null, descrizione: null };
         }
-        this.options.forEach(tabOptions => tabOptions.resetModel(data));         
+        this.options.forEach(tabOptions => tabOptions.resetModel(data));
         this.isLoading = false;
       });
     }
@@ -455,32 +506,32 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         result => {
           //this.options.resetModel(result);
           try {
-            if (!result.azienda){
+            if (!result.azienda) {
               result.azienda = { id: null, descrizione: null };
             }
-            
-            this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result)});               
+
+            this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result) });
             this.updateTransition(result.id);
 
-            this.isLoading = false;                            
+            this.isLoading = false;
           } catch (error) {
             this.onError(error);
           }
         },
         error => this.onError(error),
-        );
+      );
     }
   }
 
-  protected updateTransition(id){
-     //caricamento transisioni successive
-     this.service.getNextActions(id).subscribe((data)=>{                            
+  protected updateTransition(id) {
+    //caricamento transisioni successive
+    this.service.getNextActions(id).subscribe((data) => {
       this.transitions.next([]);
-      this.transitions.next(data);                       
+      this.transitions.next(data);
     });
   }
 
-  private onError(error){
+  private onError(error) {
     this.isLoading = false;
     this.service.messageService.error(error);
     console.log(error)
@@ -533,14 +584,14 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     );
   }
 
-  download(event, model){
+  download(event, model) {
     //console.log(model);
     this.service.download(model.id).subscribe(file => {
       if (file.filevalue)
         var blob = new Blob([decode(file.filevalue)]);
-        saveAs(blob, file.filename);
-      },
-      e => {  console.log(e); }  
+      saveAs(blob, file.filename);
+    },
+      e => { console.log(e); }
     );
 
   }
