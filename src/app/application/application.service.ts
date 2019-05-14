@@ -403,16 +403,18 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         },
       },
       {
-        key: 'tipopagamento_codice',
+        key: 'convenzione_type',
         type: 'select',
-        className: "col-md-6",
+        className: "col-md-4",
+        defaultValue: 'TO',
         templateOptions: {
-          options: this.getPagamenti(),
-          valueProp: 'codice',
-          labelProp: 'descrizione',
-          label: 'Pagamento',
-          required: true
-        }
+          options: [
+            { label: 'Titolo oneroso', value: 'TO' },
+            { label: 'Titolo gratuito', value: 'TG' },
+          ],
+          label: 'Tipo convenzione',
+          required: true,
+        },
       },
       {
         key: 'ambito',
@@ -447,16 +449,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           label: 'Corrispettivo iva esclusa se applicabile',
           required: true,
         },
-      },
-      {
-        key: 'importo',
-        type: 'input',
-        className: "col-md-6",
-        templateOptions: {
-          label: 'Importo iva esclusa ove applicabile',
-          required: true,
-        },
-      },
+      },   
       {
         key: 'current_place',
         type: 'select',
