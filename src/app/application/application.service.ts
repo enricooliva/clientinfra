@@ -663,6 +663,18 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
+  pagamentoStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/pagamentostep'}`;
+    let res = this.http.post(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Registrazione effettuata con successo')
+        ),
+        catchError(this.handleError('pagamentostep', null, retrow))
+      );
+    return res;
+  }
+  
   //@Cacheable()
   getNextActions(id): Observable<any> {
     const url = `${this._baseURL}/convenzioni/${id}/actions`

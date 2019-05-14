@@ -1,0 +1,156 @@
+import { Component, OnInit } from '@angular/core';
+import { FormlyFieldConfig, Field } from '@ngx-formly/core';
+import { BaseEntityComponent } from 'src/app/shared';
+import { ApplicationService } from '../application.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { encode, decode } from 'base64-arraybuffer';
+import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
+import { FileDetector } from 'protractor';
+import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.field.config';
+import { takeUntil, startWith, tap, filter, map, distinct } from 'rxjs/operators';
+import { ScadenzaService } from '../scadenza.service';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
+
+@Component({
+  selector: 'app-pagamento',
+  template: `
+  <div class="container-fluid">
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="btn-toolbar mb-4" role="toolbar">
+  <div class="btn-group btn-group">        
+    <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()" >              
+      <span class="oi oi-arrow-top"></span>  
+      <span class="ml-2">Aggiorna</span>              
+    </button> 
+    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onValidate()" >              
+    <span class="oi oi-flash"></span>  
+    <span class="ml-2">Valida</span>              
+  </button> 
+  </div>
+  </div>
+  <h4 *ngIf="title">{{title}}</h4>
+
+  <form [formGroup]="form">
+      <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">
+      </formly-form>
+  </form>
+  <button class="btn btn-primary mt-3" type="button" [disabled]="!form.valid" (click)="onSubmit()">Salva</button>
+  </div>
+  `,
+  styles: []
+})
+
+export class PagamentoComponent extends BaseEntityComponent {
+  
+  public STATE = 'inpagamento';
+  public static WORKFLOW_ACTION: string = 'registrazionepagamento'; //TRASITION
+  public static ABSULTE_PATH: string = 'home/pagamento';
+
+  get workflowAction(): string{
+    return PagamentoComponent.WORKFLOW_ACTION;
+  }
+
+
+  fields: FormlyFieldConfig[] = [
+    {
+      className: 'section-label',
+      template: '<h5></h5>',
+    },
+    {
+      key: 'id',
+      type: 'external',
+      className: "col-md-12",
+      templateOptions: {
+        label: 'Scadenza',
+        type: 'string',            
+        entityName: 'scadenza',
+        entityLabel: 'Scadenza',
+        codeProp: 'id',
+        descriptionProp: 'dovuto_tranche',
+        descriptionFunc: (data) => {
+            if (data.dovuto_tranche){
+              return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
+            }
+            return '';
+        },
+        copymodel: true,
+        isLoading: false,          
+        disabled: true,
+      },
+      // expressionProperties: {
+      //   'templateOptions.disabled': (model: any, formState: any) => {        
+      //     return model.id;
+      //   },
+      // },
+    },      
+    {
+      key: 'prelievo',
+      type: 'select',      
+      //defaultValue: 'PRE_NO',
+      templateOptions: {
+        options: [
+          { label: 'Nessun prelievo', value: 'PRE_NO' },
+          { label: 'TU previlevo 5% Dip', value: 'PRE_5' },
+          { label: 'TU previlevo 10% Ateneo', value: 'PRE_10' },
+          { label: 'TU previlevo 10% Ateneo e 5% Dip ', value: 'PRE_10_5' },
+        ],
+        label: 'Prelievo',
+        required: true,
+      },
+    },
+    {
+      key: 'note',
+      type: 'textarea',
+      templateOptions: {      
+        label: 'Note',
+        maxLength: 200,
+        rows: 5,     
+      },        
+    }, 
+  ]
+
+  
+  constructor(protected service: ApplicationService, protected scadService: ScadenzaService, protected route: ActivatedRoute, protected router: Router) {
+    super(route, router)
+    this.isLoading = false;
+  }
+
+  ngOnInit() {
+    
+    this.route.params.subscribe(params => {
+      if (params['id']) {                  
+        //leggere la minimal della convenzione        
+          this.isLoading=true;
+          this.model = { convenzione: {}};
+          //leggere la minimal della convenzione        
+          this.scadService.getById(params['id']).subscribe(
+            result => {
+              if (result){            
+                  this.model = {...this.model, ...result};   
+                  this.options.formState.model = this.model;         
+              }
+              this.isLoading=false;
+            }
+          );
+        }        
+      });    
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      this.isLoading = true;
+      var tosubmit = { ...this.model, ...this.form.value };
+      tosubmit.attachment1.doc = {...this.model.attachment1.doc, ...this.form.value.attachment1.doc }
+
+      this.service.pagamentoStep(tosubmit,true).subscribe(
+        result => {          
+          this.isLoading = false;          
+          this.router.navigate(['home/dashboard/dashboard1']);                
+        },
+        error => {
+          this.isLoading = false;
+          //this.service.messageService.error(error);          
+        });
+    }
+  }
+}

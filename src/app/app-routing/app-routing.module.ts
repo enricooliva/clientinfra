@@ -44,6 +44,7 @@ import { ScadenzaComponent } from '../application/components/scadenza/scadenza.c
 import { BolloRepertoriazioneComponent } from '../application/pages/bollorepertoriazione.component';
 import { RichiestaEmissioneComponent } from '../application/pages/richiestaemissione.component';
 import { EmissioneComponent } from '../application/pages/emissione.component';
+import { PagamentoComponent } from '../application/pages/pagamento.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -528,7 +529,7 @@ const routes: Routes = [
             { title: 'Richiesta emissione' }
           ]
         }
-      },
+      },      
       { 
         path: 'emissione/:id',  component: EmissioneComponent,  canActivate:[AuthGuard], 
         data: {
@@ -536,6 +537,16 @@ const routes: Routes = [
           urls: [
             { title: 'Home', url: '/home' },
             { title: 'Emissione' }
+          ]
+        }
+      },
+      { 
+        path: 'pagamento/:id',  component: PagamentoComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Registrazione prelievo',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Registrazione prelievo' }
           ]
         }
       },

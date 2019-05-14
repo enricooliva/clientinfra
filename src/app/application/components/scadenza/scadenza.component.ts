@@ -185,10 +185,19 @@ export class ScadenzaComponent extends BaseEntityComponent {
   ]},
   {
     key: 'prelievo',
-    type: 'number',    
+    type: 'select',
+    className: "col-md-6",
+    defaultValue: 'PRE_NO',
     templateOptions: {
-      label: 'Prelievo',          
-    },        
+      options: [
+        { label: 'Nessun prelievo', value: 'PRE_NO' },
+        { label: 'TU previlevo 5% Dip', value: 'PRE_5' },
+        { label: 'TU previlevo 10% Ateneo', value: 'PRE_10' },
+        { label: 'TU previlevo 10% Ateneo e 5% Dip ', value: 'PRE_10_5' },
+      ],
+      label: 'Prelievo',
+      required: true,
+    },
   },
   {
     key: 'note',

@@ -8,6 +8,7 @@ import { FirmaControparteComponent } from 'src/app/application/pages/firmacontro
 import { FirmaDirettoreComponent } from 'src/app/application/pages/firmadirettore.component';
 import { BolloRepertoriazioneComponent } from 'src/app/application/pages/bollorepertoriazione.component';
 import { EmissioneComponent } from 'src/app/application/pages/emissione.component';
+import { PagamentoComponent } from 'src/app/application/pages/pagamento.component';
 
 @Component({
   selector: 'app-tasklist',
@@ -69,6 +70,10 @@ export class TaskListComponent implements OnInit, AfterViewInit {
 
     if (task.workflow_transition == EmissioneComponent.WORKFLOW_ACTION){
       this.router.navigate([EmissioneComponent.ABSULTE_PATH, task.model_id]);
+    }
+
+    if (task.workflow_transition == PagamentoComponent.WORKFLOW_ACTION){
+      this.router.navigate([PagamentoComponent.ABSULTE_PATH, task.model_id]);
     }
   }
 
