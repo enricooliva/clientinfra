@@ -80,9 +80,16 @@ export class ScadenzeComponent extends BaseResearchComponent {
           },
           {
             key: 'state',
-            type: 'string',
+            type: 'select',
             templateOptions: {
-              label: 'Stato',
+              label: 'Stato',         
+              options: [
+                { label: 'Attiva', value: 'attivo' },
+                { label: 'In emissione', value: 'inemissione' },
+                //{ label: 'Emessa', value: 'emesso' },
+                { label: 'In pagamento ', value: 'inpagamento' },
+                { label: 'Pagata ', value: 'pagato' },
+              ],
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
