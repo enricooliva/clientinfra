@@ -73,7 +73,7 @@ export class PagamentoComponent extends BaseEntityComponent {
             }
             return '';
         },
-        copymodel: true,
+        copymodel: false,
         isLoading: false,          
         disabled: true,
       },
@@ -82,7 +82,27 @@ export class PagamentoComponent extends BaseEntityComponent {
       //     return model.id;
       //   },
       // },
-    },      
+    },     
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup: [    
+        {
+          key: 'data_ordincasso',
+          type: 'datepicker',
+          className: "col-md-5",
+          templateOptions: {
+            label: 'Data ordinativo incasso',          
+          },        
+        },
+        {
+          key: 'num_ordincasso',
+          type: 'input',
+          className: "col-md-5",
+          templateOptions: {
+            label: 'Numero ordinativo incasso',                    
+          },        
+        },    
+    ]}, 
     {
       key: 'prelievo',
       type: 'select',      
@@ -139,9 +159,7 @@ export class PagamentoComponent extends BaseEntityComponent {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
-      tosubmit.attachment1.doc = {...this.model.attachment1.doc, ...this.form.value.attachment1.doc }
-
+      var tosubmit = { ...this.model, ...this.form.value };      
       this.service.pagamentoStep(tosubmit,true).subscribe(
         result => {          
           this.isLoading = false;          

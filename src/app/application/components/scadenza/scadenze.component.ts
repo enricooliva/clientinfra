@@ -18,17 +18,15 @@ export class ScadenzeComponent extends BaseResearchComponent {
   isLoading = false;
   
   fieldsRow: FormlyFieldConfig[] = [
-          // {
-          //   key: 'id',
-          //   type: 'number',
-          //   hide: true,                        
-          //   templateOptions: {
-          //     label: 'Id',
-          //     disabled: true,
-          //     hidden: true,
-          //     column: { width: 10, cellTemplate: 'valuecolumn'}
-          //   }
-          // },
+          {
+            key: 'id',
+            type: 'number',                              
+            templateOptions: {
+              label: 'Codice',
+              disabled: true,              
+              column: { width: 10, cellTemplate: 'valuecolumn'}
+            }
+          },
           {
             key: 'data_tranche',
             type: 'string',

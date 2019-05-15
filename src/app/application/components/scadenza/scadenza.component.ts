@@ -38,9 +38,23 @@ export class ScadenzaComponent extends BaseEntityComponent {
       fieldGroupClassName: 'row',
       fieldGroup: [
         {
+          key: 'id',
+          type: 'input',         
+          className: "col-md-4",
+          templateOptions: {
+            label: 'Codice scadenza',
+            disabled: true
+          },
+          hideExpression: (model: any) => {
+            //non c'è il model id 
+            return !model.id 
+                 
+          }, 
+        },
+        {
           key: 'state',
           type: 'input',          
-          className: "col-md-5",
+          className: "col-md-8",
           templateOptions: {
             label: 'Stato',
             disabled: true
@@ -55,17 +69,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
     },
     {
       fieldGroupClassName: 'row',
-      fieldGroup: [
-        {
-          key: 'id',
-          type: 'input',
-          hide: true,
-          className: "col-md-2",
-          templateOptions: {
-            label: 'Id',
-            disabled: true
-          }
-        },
+      fieldGroup: [        
         {
           key: 'convenzione',
           type: 'externalobject',
