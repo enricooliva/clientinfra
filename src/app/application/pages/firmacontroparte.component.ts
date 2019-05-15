@@ -337,8 +337,10 @@ export class FirmaControparteComponent extends BaseEntityComponent {
           result => {
             if (result){            
               //this.form.get('convenzione').setValue(result);  
-              this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);              
-              this.form.get('stipula_format').setValue(result.stipula_format);              
+              setTimeout(()=> {
+                this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);                                            
+                this.form.get('stipula_format').setValue(result.stipula_format);          
+              });                             
               this.isLoading=false;
             }
           }
@@ -346,12 +348,14 @@ export class FirmaControparteComponent extends BaseEntityComponent {
 
         this.service.getAziende(this.model.convenzione_id).subscribe(
           result => { 
-            if (result && result[0]){
-              const emails = (result.map(it => it.pec_email)).join(', ');
-              if (this.form.get('email'))
-                this.form.get('email').setValue(emails);
-            }else 
-              this.form.get('email').setValue('email non associata');
+            setTimeout(() => {                        
+              if (result && result[0]){
+                const emails = (result.map(it => it.pec_email)).join(', ');
+                if (this.form.get('email'))
+                  this.form.get('email').setValue(emails);
+              }else 
+                this.form.get('email').setValue('email non associata');
+            }, 0);              
           }
         );
         

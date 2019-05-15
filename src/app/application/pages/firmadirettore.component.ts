@@ -374,8 +374,10 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
           result => {
             if (result){            
               //this.form.get('convenzione').setValue(result);  
-              this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);              
-              this.form.get('stipula_format').setValue(result.stipula_format);                         
+              setTimeout(()=> {
+                this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);                                            
+                this.form.get('stipula_format').setValue(result.stipula_format);           
+              });                                      
             }
             this.isLoading=false;
           }
@@ -383,14 +385,16 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
 
         this.service.getAziende(this.model.convenzione_id).subscribe(
           result => { 
-            let control = this.form.get('email');
-            if (control){
-              if (result && result[0] && control)
-                control.setValue(result[0].pec_email);
-                //this.model.email = result[0].pec_email; 
-              else 
-                control.setValue('email non associata');
-            }
+            setTimeout(()=> {
+              let control = this.form.get('email');
+              if (control){
+                if (result && result[0] && control)
+                  control.setValue(result[0].pec_email);
+                  //this.model.email = result[0].pec_email; 
+                else 
+                  control.setValue('email non associata');
+              }
+            },0);
           }
         );
         

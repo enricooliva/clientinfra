@@ -106,6 +106,7 @@ export class EmissioneComponent extends BaseEntityComponent {
               key: 'filename',
               type: 'fileinput',
               className: "col-md-5",
+              hide: true,
               templateOptions: {
                 label: 'Scegli il documento',
                 type: 'input',
@@ -151,12 +152,13 @@ export class EmissioneComponent extends BaseEntityComponent {
     },
     //data e numero fattura ???
     {
-      fieldGroupClassName: 'row',
+      fieldGroupClassName: 'row',      
       fieldGroup: [    
         {
           key: 'data_fattura',
           type: 'datepicker',
           className: "col-md-5",
+          hide: true,
           templateOptions: {
             label: 'Data fattura',          
           },        
@@ -165,6 +167,7 @@ export class EmissioneComponent extends BaseEntityComponent {
           key: 'num_fattura',
           type: 'input',
           className: "col-md-5",
+          hide: true,
           templateOptions: {
             label: 'Numero fattura',                    
           },        
@@ -222,8 +225,10 @@ export class EmissioneComponent extends BaseEntityComponent {
           this.scadService.getById(params['id']).subscribe(
             result => {
               if (result){            
+                setTimeout(() => {
                   this.model = {...this.model, ...result};   
                   this.options.formState.model = this.model;         
+                },0);
               }
               this.isLoading=false;
             }

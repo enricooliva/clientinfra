@@ -146,8 +146,10 @@ export class PagamentoComponent extends BaseEntityComponent {
           this.scadService.getById(params['id']).subscribe(
             result => {
               if (result){            
-                  this.model = {...this.model, ...result};   
-                  this.options.formState.model = this.model;         
+                  setTimeout(() => {
+                    this.model = {...this.model, ...result};   
+                    this.options.formState.model = this.model;         
+                  },0)
               }
               this.isLoading=false;
             }
