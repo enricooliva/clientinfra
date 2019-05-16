@@ -9,7 +9,7 @@ import { FileDetector } from 'protractor';
 import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.field.config';
 import { takeUntil, startWith, tap, filter, map, distinct } from 'rxjs/operators';
 import { ScadenzaService } from '../scadenza.service';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-pagamento',
@@ -130,8 +130,8 @@ export class PagamentoComponent extends BaseEntityComponent {
   ]
 
   
-  constructor(protected service: ApplicationService, protected scadService: ScadenzaService, protected route: ActivatedRoute, protected router: Router) {
-    super(route, router)
+  constructor(protected service: ApplicationService, protected scadService: ScadenzaService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route, router, location)
     this.isLoading = false;
   }
 

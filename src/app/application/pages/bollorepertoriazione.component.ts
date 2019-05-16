@@ -4,10 +4,7 @@ import { BaseEntityComponent } from 'src/app/shared';
 import { ApplicationService } from '../application.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
-import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
-import { FileDetector } from 'protractor';
-import { takeUntil, startWith, tap } from 'rxjs/operators';
-import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.field.config';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-bollorepertoriazione',
@@ -140,8 +137,8 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
     reader.readAsArrayBuffer(currentSelFile);
   }
   
-  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router) {
-    super(route, router)
+  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route, router, location)
     this.isLoading = false;
   }
 

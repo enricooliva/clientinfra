@@ -6,6 +6,7 @@ import { ServiceEntity } from '../query-builder/query-builder.interfaces';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { InfraMessageType } from '../message/message';
 import { filter } from 'rxjs/operators';
+import {Location} from '@angular/common';
 
 @Component({
   template: `NOT UI`
@@ -50,7 +51,10 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
 
   returnUrl: string = null;
 
-  constructor(protected route: ActivatedRoute, protected router: Router) {
+  locationBack: Boolean = true;
+
+  constructor(protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+
   }
 
   ngOnInit() {        
@@ -206,9 +210,14 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   onBack(){
     if (this.returnUrl){
       this.router.navigate([this.returnUrl]);
+    } else {
+      this.goBack();
     }
   }
 
+  goBack(): void {
+    this.location.back();
+  }
 
   public onValidate() {
     const invalid = [];

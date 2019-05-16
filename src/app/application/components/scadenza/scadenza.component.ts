@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.component';
 import { ScadenzaService } from '../../scadenza.service';
 import { ApplicationService } from '../../application.service';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-scadenza', 
   templateUrl: '../../../shared/base-component/base-entity.component.html',
@@ -79,6 +79,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
             type: 'string',            
             entityName: 'application',
             entityLabel: 'Convenzione',
+            entityPath: 'home/convenzioni',
             codeProp: 'id',
             descriptionProp: 'descrizione_titolo',
             isLoading: false,
@@ -214,8 +215,8 @@ export class ScadenzaComponent extends BaseEntityComponent {
   },
   ];  
 
-  constructor(protected service: ScadenzaService, protected appService: ApplicationService, protected route: ActivatedRoute, protected router: Router) {
-    super(route,router);
+  constructor(protected service: ScadenzaService, protected appService: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route,router, location);
     //this.title = 'Tipo pagamento'
     this.activeNew =true;
     this.isRemovable = true;

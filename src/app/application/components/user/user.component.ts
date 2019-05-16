@@ -4,6 +4,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-user',
@@ -181,8 +182,8 @@ export class UserComponent extends BaseEntityComponent {
     }
   ];
 
-  constructor(protected service: UserService, protected route: ActivatedRoute, protected router: Router) {
-    super(route,router);
+  constructor(protected service: UserService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route,router, location);
     //this.title = "Utente";
     this.researchPath = "home/users";
   }

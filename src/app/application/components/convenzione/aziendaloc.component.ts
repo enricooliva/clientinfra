@@ -5,7 +5,7 @@ import { PermissionService } from '../../permission.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.component';
 import { AziendaLocService } from '../../aziendaloc.service';
-
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-aziendaloc', 
@@ -142,8 +142,8 @@ export class AziendaLocComponent extends BaseEntityComponent {
     },
   ];  
 
-  constructor(protected service: AziendaLocService, protected route: ActivatedRoute, protected router: Router) {
-    super(route,router);
+  constructor(protected service: AziendaLocService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route,router,location);
     //this.title = 'Tipo pagamento'
     this.activeNew =true;
     this.researchPath = 'home/aziendeloc'

@@ -7,10 +7,8 @@ import { BaseEntityComponent } from 'src/app/shared';
 import { UserTaskService } from '../../usertask.service';
 import { of } from 'rxjs/internal/observable/of';
 import { takeUntil, startWith, filter, tap, map, distinct } from 'rxjs/operators';
-import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 import { Observable, Subject } from 'rxjs';
-import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
-import { toPublicName } from '@angular/compiler/src/i18n/serializers/xmb';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-task',
@@ -121,6 +119,7 @@ export class TaskComponent extends BaseEntityComponent {
         type: 'string',
         entityName: 'application',
         entityLabel: 'Convenzione',
+        entityPath: 'home/convenzioni',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
         isLoading: false,        
@@ -145,6 +144,7 @@ export class TaskComponent extends BaseEntityComponent {
         type: 'string',
         entityName: 'scadenza',
         entityLabel: 'Scadenza',
+        entityPath: 'home/scadenze',
         codeProp: 'id',
         descriptionProp: 'dovuto_tranche',
         isLoading: false,        
@@ -336,8 +336,8 @@ export class TaskComponent extends BaseEntityComponent {
     },
   ];
 
-  constructor(protected service: UserTaskService, protected route: ActivatedRoute, protected router: Router) {
-    super(route, router)
+  constructor(protected service: UserTaskService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route, router, location)
     //this.title = 'Permesso IN LAVORAZIONE'
     this.activeNew = true;
     this.researchPath = 'home/tasks'

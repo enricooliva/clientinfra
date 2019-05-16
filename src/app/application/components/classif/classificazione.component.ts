@@ -5,7 +5,7 @@ import { PermissionService } from '../../permission.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.component';
 import { ClassificazioneService } from '../../classificazione.service';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-classificazione', 
   templateUrl: '../../../shared/base-component/base-entity.component.html',
@@ -74,8 +74,8 @@ export class ClassificazioneComponent extends BaseEntityComponent {
     // }
   ];  
 
-  constructor(protected service: ClassificazioneService, protected route: ActivatedRoute, protected router: Router) {
-    super(route,router);
+  constructor(protected service: ClassificazioneService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route,router, location);
     //this.title = 'Tipo pagamento'
     this.activeNew =true;
     this.isRemovable = true;

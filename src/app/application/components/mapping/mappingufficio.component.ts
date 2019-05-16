@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.component';
 import { ClassificazioneService } from '../../classificazione.service';
 import { MappingUfficioService } from '../../mappingufficio.service';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-classificazione', 
   templateUrl: '../../../shared/base-component/base-entity.component.html',
@@ -64,8 +64,8 @@ export class MappingUfficioTitulus extends BaseEntityComponent {
     }     
   ];  
 
-  constructor(protected service: MappingUfficioService, protected route: ActivatedRoute, protected router: Router) {
-    super(route,router);    
+  constructor(protected service: MappingUfficioService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route,router,location);    
     this.activeNew =true;
     this.isRemovable = true;
     this.researchPath = 'home/mappinguffici';
