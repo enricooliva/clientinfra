@@ -49,6 +49,22 @@ export class ScadenzaService extends BaseService {
           required: true,
           column: { cellTemplate: 'valuecolumn'}
         }
+      },
+      {
+        key: 'state',
+        type: 'select',
+        templateOptions: {
+          label: 'Stato',         
+          options: [
+            { label: 'Attiva', value: 'attivo' },
+            { label: 'In emissione', value: 'inemissione' },
+            //{ label: 'Emessa', value: 'emesso' },
+            { label: 'In pagamento ', value: 'inpagamento' },
+            { label: 'Pagata ', value: 'pagato' },
+          ],
+          required: true,
+          column: { cellTemplate: 'valuecolumn'}
+        }
       }
     ];
 

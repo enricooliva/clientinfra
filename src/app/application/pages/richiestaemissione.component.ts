@@ -81,8 +81,12 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
             codeProp: 'id',
             descriptionProp: 'dovuto_tranche',
             descriptionFunc: (data) => {
-               return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
+                if (data && data.convenzione){
+                  return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
+                }
+                return '';
             },
+            rules: [{value: this.STATE, field: "state", operator: "="}],
             copymodel: true,
             isLoading: false,          
           },
