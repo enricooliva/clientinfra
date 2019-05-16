@@ -55,24 +55,40 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     this.extDescription.templateOptions.disabled =true;
 
     this.codeField = this.field.fieldGroup.find(x=>x.key == this.to.codeProp || x.key =='id')
+    this.codeField.modelOptions.updateOn = 'blur';  
 
-    this.codeField.modelOptions.updateOn = 'blur';
+    this.field.fieldGroup[0].templateOptions.addonRights= [
+      {
+          class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
+          text: 'Apri ricerca', 
+          onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
+      }
+    ];
+    if (this.to.entityPath){
+      //extra bottone sulla destra per aprire la gestione
+      this.field.fieldGroup[0].templateOptions.addonRights = [
+        ...this.field.fieldGroup[0].templateOptions.addonRights,
+        {
+          class: 'btn btn-outline-secondary oi oi-external-link d-flex align-items-center',    
+          text: 'Apri gestione',    
+          onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.openEntity()},
+        }
+      ];      
+    }
+    if (this.codeField.templateOptions.addonRights) {
+      this.codeField.wrappers = ['form-field','addonRights']//[...(this.codeField.wrappers || []), 'addonRight1'];
+    }
 
     this.field.fieldGroup[0].templateOptions.keyup = (field, event: KeyboardEvent) => {
-        if (event.key == "F4") {
-          this.open();
-        }
-        if (event.key == "F2"){
-          if (this.codeField.formControl.value && this.to.entityPath){
-            this.router.navigate([this.to.entityPath,this.codeField.formControl.value]);
-          }
-        }
+      if (event.key == "F4") {
+        this.open();
+      }
+      if (event.key == "F2"){
+        this.openEntity();
+      }
     };
 
-    this.field.fieldGroup[0].templateOptions.addonRight= {
-        class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
-        onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
-    };
+
           
     this.field.fieldGroup[0].hooks = {                    
         onInit: (field) => {          
@@ -146,9 +162,9 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           placeholder: 'Inserisci codice',     
           required: field.templateOptions.required == undefined ? false : field.templateOptions.required,
           disabled: field.templateOptions.disabled == undefined ? false : field.templateOptions.disabled,
-          addonRight: {
-            class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center' 
-          }          
+          // addonRight: {
+          //   class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center' 
+          // },                  
         },
         modelOptions: { updateOn: 'blur' },
       },
@@ -205,6 +221,12 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     modalRef.componentInstance.entityName = this.to.entityName;
     modalRef.componentInstance.entityLabel = this.to.entityLabel;
     modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
+  }
+
+  openEntity(){
+    if (this.codeField.formControl.value && this.to.entityPath){
+      this.router.navigate([this.to.entityPath,this.codeField.formControl.value]);
+    }
   }
 
 }

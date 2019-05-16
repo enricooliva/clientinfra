@@ -57,6 +57,7 @@ import { TooltipWrapperComponent } from './dynamic-form/wrapper/tooltip-wrapper.
 import { AccordionInfoWrapperComponent } from './dynamic-form/wrapper/accordioninfo-wrapper.component';
 import { FormlyFieldTypeahead } from './dynamic-form/typehead-type.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { RightaddonsWrapperComponent } from './dynamic-form/wrapper/rightaddons-wrapper.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -161,6 +162,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         { name: 'accordioninfo', component: AccordionInfoWrapperComponent },
         { name: 'form-field-horizontal', component: FormlyHorizontalWrapper },
         { name: 'tooltip', component: TooltipWrapperComponent },
+        { name: 'addonRights', component: RightaddonsWrapperComponent },
       ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
@@ -211,7 +213,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,
     SidebarComponent,
     TooltipWrapperComponent,    
-    FormlyFieldTypeahead
+    FormlyFieldTypeahead,
+    RightaddonsWrapperComponent
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -235,7 +238,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent,
     TooltipWrapperComponent,
     AccordionInfoWrapperComponent,
-    FormlyFieldTypeahead
+    FormlyFieldTypeahead,
+    RightaddonsWrapperComponent
   ],
   entryComponents: [LookupComponent]
 })
