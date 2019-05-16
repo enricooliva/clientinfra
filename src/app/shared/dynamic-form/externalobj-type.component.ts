@@ -60,6 +60,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     this.field.fieldGroup[0].templateOptions.addonRights= [
       {
           class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
+          alwaysenabled: false,
           text: 'Apri ricerca', 
           onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
       }
@@ -70,8 +71,9 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
         ...this.field.fieldGroup[0].templateOptions.addonRights,
         {
           class: 'btn btn-outline-secondary oi oi-external-link d-flex align-items-center',    
-          text: 'Apri gestione',    
-          onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.openEntity()},
+          alwaysenabled: true,
+          text: 'Apri gestione',              
+          onClick: (to, fieldType, $event) => {this.openEntity()},
         }
       ];      
     }

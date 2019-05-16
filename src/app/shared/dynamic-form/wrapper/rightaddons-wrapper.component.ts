@@ -11,7 +11,7 @@ import { FieldWrapper } from '@ngx-formly/core';
     <ng-container #fieldComponent></ng-container>
     <div class="input-group-append" *ngIf="to.addonRights" > 
       <ng-container *ngFor="let item of to.addonRights; index as i;">    
-        <button type="button" class="input-group-text" [disabled]="to.disabled" 
+        <button type="button" class="input-group-text" [disabled]="to.disabled && !item.alwaysenabled" 
             title="{{item.text}}" [ngClass]="item.class" *ngIf="item.class"  (click)="addonRightClick($event,i)"></button>               
       </ng-container>
     </div>

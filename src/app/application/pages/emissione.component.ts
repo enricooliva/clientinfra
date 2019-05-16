@@ -60,6 +60,7 @@ export class EmissioneComponent extends BaseEntityComponent {
         type: 'string',            
         entityName: 'scadenza',
         entityLabel: 'Scadenza',
+        entityPath: 'home/scadenze',
         codeProp: 'id',
         descriptionProp: 'dovuto_tranche',
         descriptionFunc: (data) => {
@@ -70,6 +71,9 @@ export class EmissioneComponent extends BaseEntityComponent {
         },
         copymodel: true,
         isLoading: false,          
+      },
+      expressionProperties: {
+        'templateOptions.disabled': (model: any, formState: any) => { return model.id; },
       },
     },      
     
@@ -152,8 +156,7 @@ export class EmissioneComponent extends BaseEntityComponent {
         {
           key: 'data_fattura',
           type: 'datepicker',
-          className: "col-md-5",
-          hide: true,
+          className: "col-md-5",          
           templateOptions: {
             label: 'Data fattura',          
           },        
@@ -161,8 +164,7 @@ export class EmissioneComponent extends BaseEntityComponent {
         {
           key: 'num_fattura',
           type: 'input',
-          className: "col-md-5",
-          hide: true,
+          className: "col-md-5",          
           templateOptions: {
             label: 'Numero fattura',                    
           },        

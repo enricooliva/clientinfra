@@ -28,14 +28,13 @@ import { Router } from '@angular/router';
           <input *ngIf="field.templateOptions.type !== 'number' else numberTmp" [type]="field.templateOptions.type" [formControl]="formControl" class="form-control" [formlyAttributes]="field" [class.is-invalid]="showError">
           <ng-template #numberTmp>
             <input type="number" [formControl]="formControl" class="form-control" [formlyAttributes]="field" [class.is-invalid]="showError">
-          </ng-template>          
-          <div class="input-group-addon input-group-append"
-            *ngIf="to.addonRight"
-            [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
-            (click)="addonRightClick($event)">
-            <i class="input-group-text" [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
-            <span *ngIf="to.addonRight.text" class="input-group-text">{{ to.addonRight.text }}</span>
-          </div>     
+          </ng-template>                    
+          <div class="input-group-addon  input-group-append" *ngIf="to.addonRights" > 
+            <ng-container *ngFor="let item of to.addonRights; index as i;">    
+              <button type="button" class="input-group-text" [disabled]="to.disabled && !item.alwaysenabled" 
+                  title="{{item.text}}" [ngClass]="item.class" *ngIf="item.class"  (click)="addonRightClick($event,i)"></button>               
+            </ng-container>
+          </div>          
         </div>
         <div *ngIf="showError">
         <small class="text-danger invalid-feedback" [style.display]="'block'" role="alert" [id]="validationId">
@@ -55,6 +54,12 @@ import { Router } from '@angular/router';
   `,
   styles: []
 })
+
+// *ngIf="to.addonRight"
+// [ngStyle]="{cursor: to.addonRight.onClick ? 'pointer' : 'inherit'}"
+// (click)="addonRightClick($event)">
+// <i class="input-group-text" [ngClass]="to.addonRight.class" *ngIf="to.addonRight.class"></i>
+// <span *ngIf="to.addonRight.text" class="input-group-text">{{ to.addonRight.text }}</span>
 
 // <formly-field *ngIf="descriptionField"
 //       class="col-md-8" 
@@ -94,9 +99,23 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
         }
       };
 
-    this.field.templateOptions.addonRight = {
+    this.field.templateOptions.addonRights = [{
       class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
+      alwaysenabled: false,
+      text: 'Apri ricerca',
       onClick: (to, fieldType, $event) => this.open(),
+    }];
+    if (this.to.entityPath){
+      //extra bottone sulla destra per aprire la gestione
+      this.field.templateOptions.addonRights = [
+        ...this.field.templateOptions.addonRights,
+        {
+          class: 'btn btn-outline-secondary oi oi-external-link d-flex align-items-center',    
+          alwaysenabled: true,
+          text: 'Apri gestione',    
+          onClick: (to, fieldType, $event) => {this.openEntity()},
+        }
+      ];      
     }
 
     this.init();
@@ -210,10 +229,15 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
   }
 
+  openEntity(){
+    if (this.codeField.formControl.value && this.to.entityPath){
+      this.router.navigate([this.to.entityPath,this.codeField.formControl.value]);
+    }
+  }
 
-  addonRightClick($event: any) {
-    if (this.to.addonRight.onClick) {
-      this.to.addonRight.onClick(this.to, this, $event);
+  addonRightClick($event: any,i) {
+    if (this.to.addonRights[i].onClick) {
+      this.to.addonRights[i].onClick(this.to, this, $event);
     }
   }
 
