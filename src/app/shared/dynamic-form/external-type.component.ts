@@ -9,6 +9,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LookupComponent } from '../lookup/lookup.component';
 import ControlUtils from './control-utils';
 import { initDomAdapter } from '@angular/platform-browser/src/browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-external-type',
@@ -72,7 +73,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
 
   nodecode = false;
 
-  constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal, protected router: Router) {
     super();
   }
 
@@ -85,6 +86,11 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
       keyup = (field, event: KeyboardEvent) => {
         if (event.key == "F4") {
           this.open();
+        }
+        if (event.key == "F2"){
+          if (this.codeField.formControl.value && this.to.entityPath){
+            this.router.navigate([this.to.entityPath,this.codeField.formControl.value]);
+          }
         }
       };
 

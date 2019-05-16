@@ -9,6 +9,7 @@ import { LookupComponent } from '../lookup/lookup.component';
 import ControlUtils from './control-utils';
 import { FileDetector } from 'protractor';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 
 
@@ -27,7 +28,7 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 })
 export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDestroy {
 
-  constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private formlyConfig: FormlyConfig, private injector: Injector, private modalService: NgbModal, public activeModal: NgbActiveModal,  protected router: Router) {
     super();
   }
 
@@ -58,15 +59,20 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
     this.codeField.modelOptions.updateOn = 'blur';
 
     this.field.fieldGroup[0].templateOptions.keyup = (field, event: KeyboardEvent) => {
-          if (event.key == "F4") {
-            this.open();
+        if (event.key == "F4") {
+          this.open();
+        }
+        if (event.key == "F2"){
+          if (this.codeField.formControl.value && this.to.entityPath){
+            this.router.navigate([this.to.entityPath,this.codeField.formControl.value]);
           }
-        };
+        }
+    };
 
     this.field.fieldGroup[0].templateOptions.addonRight= {
-          class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
-          onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
-        };
+        class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
+        onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
+    };
           
     this.field.fieldGroup[0].hooks = {                    
         onInit: (field) => {          
