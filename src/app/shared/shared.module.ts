@@ -58,6 +58,9 @@ import { AccordionInfoWrapperComponent } from './dynamic-form/wrapper/accordioni
 import { FormlyFieldTypeahead } from './dynamic-form/typehead-type.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RightaddonsWrapperComponent } from './dynamic-form/wrapper/rightaddons-wrapper.component';
+import { GridFormlyCellComponent } from './dynamic-form/ag-grid/grid-formly-cell.component';
+import { GridTypeComponent } from './dynamic-form/ag-grid/grid.type';
+import { AgGridModule } from 'ag-grid-angular';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -78,7 +81,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPermissionsModule,
     LoadingModule,
     PerfectScrollbarModule,
-    NgSelectModule,
+    NgSelectModule, 
+    AgGridModule.withComponents([GridFormlyCellComponent]),   
     FormlyModule.forRoot({
       types: [
         {
@@ -155,6 +159,18 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
           },
         }, 
       },
+      {
+        name: 'gridtable',
+        component: GridTypeComponent,
+        defaultOptions: {
+          className: "ag-theme-bootstrap",
+          //className: 'ag-theme-balham',
+          templateOptions: {
+            width: '100%',
+            height: '400px',
+          },
+        },
+      },
       ],
       wrappers: [
         { name: 'panel', component: PanelWrapperComponent },
@@ -214,7 +230,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent,
     TooltipWrapperComponent,    
     FormlyFieldTypeahead,
-    RightaddonsWrapperComponent
+    RightaddonsWrapperComponent,
+    GridTypeComponent,
+    GridFormlyCellComponent,
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -239,7 +257,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     TooltipWrapperComponent,
     AccordionInfoWrapperComponent,
     FormlyFieldTypeahead,
-    RightaddonsWrapperComponent
+    RightaddonsWrapperComponent,
+    GridTypeComponent,
+    GridFormlyCellComponent,
   ],
   entryComponents: [LookupComponent]
 })

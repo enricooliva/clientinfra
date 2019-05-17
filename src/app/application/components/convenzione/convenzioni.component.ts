@@ -17,7 +17,7 @@ import { Page } from '../../../shared/lookup/page';
   
   <app-query-builder [metadata]="researchMetadata" (find)="onFind($event)" ></app-query-builder>
 
-  <h4>Risultati</h4>
+  <h4>Risultati</h4>  
   <form [formGroup]="form" >
   <formly-form [model]="model" [fields]="resultMetadata" [form]="form">
     
@@ -39,9 +39,69 @@ export class ConvenzioniComponent implements OnInit {
   model = {
     data: new Array<any>(),
   };
-
   resultMetadata: FormlyFieldConfig[];
 
+  testgrid = [
+    {
+      key: 'data',
+      type: 'gridtable',
+      className: 'ag-theme-balham',
+      templateOptions: {
+        //height: '200px',        
+        gridOptions: {  
+          defaultColDef: { resizable: true, sortable: true, filter: true},        // width: 100,
+          rowSelection: 'single',          
+          columnDefs: [
+            {
+              headerName: 'Id',
+              field: 'id',                            
+            },
+            {
+              headerName: 'Codice utente',
+              field: 'user_id',
+                        
+            },
+            {
+              headerName: 'Descrizione titolo',
+              field: 'descrizione_titolo',              
+            },
+            {
+              headerName: 'Dipartimento',
+              field: 'dipartimemto_cd_dip',              
+            },
+            {
+              headerName: 'Responsabile scientifico',
+              field: 'resp_scientifico',              
+            },
+            {
+              headerName: 'Azienda',
+              field: 'azienda',              
+            },
+            {
+              headerName: 'Tipo convenzione',
+              field: 'convenzione_type',              
+            },
+            {
+              headerName: 'Ambito',
+              field: 'ambito',              
+            },
+            {
+              headerName: 'Modalità di pagamento',
+              field: 'tipopagamenti_codice',              
+            },
+            {
+              headerName: 'Corrispettivo',
+              field: 'corrispettivo',              
+            },
+            {
+              headerName: 'Stato',
+              field: 'current_place',              
+            },
+          ],
+        },
+      },
+    },
+  ];
   
   constructor(private injector: Injector, private router: Router ) { }
 
@@ -60,11 +120,11 @@ export class ConvenzioniComponent implements OnInit {
             label: 'Convenzioni',   
             columnMode: 'force',
             headerHeight: 50,
-            footerHeight: 50,
+            footerHeight: 50,            
             scrollbarH: true,             
             hidetoolbar: true, 
             selected: [],                        
-            page: new Page(25),
+            page: new Page(25),       
             onDblclickRow: (event) => this.onDblclickRow(event),
             onSetPage: (pageInfo) => this.onSetPage(pageInfo)                                     
           },
