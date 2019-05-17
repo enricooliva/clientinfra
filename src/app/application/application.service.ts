@@ -48,6 +48,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           type: 'string',
           entityName: 'user',
           entityLabel: 'Utenti',
+          entityPath: 'home/users',
           codeProp: 'id',
           descriptionProp: 'name',
           isLoading: false,

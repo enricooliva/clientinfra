@@ -66,6 +66,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         required: true,
         entityName: 'application',
         entityLabel: 'Convenzione',
+        entityPath: 'home/convenzioni',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
         isLoading: false,

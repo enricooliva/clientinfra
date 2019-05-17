@@ -78,6 +78,7 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
             type: 'string',            
             entityName: 'scadenza',
             entityLabel: 'Scadenza',
+            entityPath: 'home/scadenze',
             codeProp: 'id',
             descriptionProp: 'dovuto_tranche',
             descriptionFunc: (data) => {
