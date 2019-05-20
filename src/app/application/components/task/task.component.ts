@@ -9,6 +9,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { takeUntil, startWith, filter, tap, map, distinct } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import {Location} from '@angular/common';
+import { ApplicationService } from '../../application.service';
 
 @Component({
   selector: 'app-task',
@@ -249,9 +250,9 @@ export class TaskComponent extends BaseEntityComponent {
             filter(ev => ev !== null),
             tap(uo => {
               field.formControl.setValue('');
-              field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
+              field.templateOptions.options = this.service.getPersonaleUfficio(uo).pipe(
                 map(items => {
-                  return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D' || x.cd_tipo_posizorg == 'VIC_RES_PL' || x.cd_tipo_posizorg =='RESP_PLESSO' );
+                  return items.filter(x => ApplicationService.isResponsabileUfficio(x.cd_tipo_posizorg) );
                 }),
                 tap(items => {
                   if (items[0] && !field.model.respons_v_ie_ru_personale_id_ab) {
@@ -307,7 +308,7 @@ export class TaskComponent extends BaseEntityComponent {
                   distinct(),
                   filter(ev => ev !== null),
                   tap(uo => {                    
-                    field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe();
+                    field.templateOptions.options = this.service.getPersonaleUfficio(uo).pipe();
                   }),                  
                 ).subscribe();
               

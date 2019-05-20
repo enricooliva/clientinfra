@@ -715,16 +715,26 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
 
   @Cacheable()
   getValidationOffices(): Observable<any> {
-    return this.http.get(this._baseURL + '/convenzioni/validationoffices/', httpOptions);
+    return this.http.get(this._baseURL + '/convenzioni/uffici/'+'validazione', httpOptions);
   }
 
   @Cacheable()
-  getValidationOfficesPersonale(id): Observable<any> {
+  getUfficiFiscali(): Observable<any> {
+    return this.http.get(this._baseURL + '/convenzioni/uffici/'+'inemissione', httpOptions);
+  }
+
+  @Cacheable()
+  getPersonaleUfficio(id): Observable<any> {
     if (id) {
-      return this.http.get(this._baseURL + '/convenzioni/validationoffices/' + id.toString(), httpOptions);
+      return this.http.get(this._baseURL + '/convenzioni/personaleufficio/' + id.toString(), httpOptions);
     }
     return of([]);
   }
+
+  static isResponsabileUfficio(posizorg: string): boolean {
+    return posizorg == 'RESP_UFF' || posizorg == 'COOR_PRO_D' || posizorg == 'VIC_RES_PL' || posizorg =='RESP_PLESSO' || posizorg == 'DIRIGENTE';
+  }
+
 
   @Cacheable()
   getAziende(id): Observable<any> {

@@ -48,20 +48,20 @@ export class UserTaskService extends BaseService {
 
   @Cacheable()
   getValidationOffices(): Observable<any> {
-    return this.http.get(this._baseURL + '/convenzioni/validationoffices/', httpOptions).pipe(
-      catchError(this.handleError('getValidationOfficesPersonale', []))
+    return this.http.get(this._baseURL + '/convenzioni/uffici/'+'validazione', httpOptions).pipe(
+      catchError(this.handleError('getValidationOffices', []))
     );
   }
 
   @Cacheable()
-  getValidationOfficesPersonale(id): Observable<any> {
+  getPersonaleUfficio(id): Observable<any> {
     if (id){
-      return this.http.get<any>(this._baseURL + '/convenzioni/validationoffices/' + id.toString(), httpOptions)
+      return this.http.get<any>(this._baseURL + '/convenzioni/personaleufficio/' + id.toString(), httpOptions)
       .pipe(
         map(x => {
           return x.map(el => {el.id = parseInt(el.id); return el; })
          }),
-        catchError(this.handleError('getValidationOfficesPersonale', []))
+        catchError(this.handleError('getPersonaleUfficio', []))
       );
     } 
     return of([]);

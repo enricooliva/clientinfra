@@ -121,11 +121,11 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
       fieldGroup: [
       {
         key: 'unitaorganizzativa_uo',
-        type: 'select',       
+        type: 'select',               
         templateOptions: {
           label: 'Ufficio affidatario procedura',
           required: true,                 
-          options: this.service.getValidationOffices(),
+          options: this.service.getUfficiFiscali(),          
           valueProp: 'uo',
           labelProp: 'descr',
         },
@@ -149,9 +149,9 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
                 tap(uo => {                                                                   
                   field.formControl.setValue('');
                   
-                  this.service.getValidationOfficesPersonale(uo).pipe(
+                  this.service.getPersonaleUfficio(uo).pipe(
                     map(items => {
-                      return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D' || x.cd_tipo_posizorg == 'VIC_RES_PL' || x.cd_tipo_posizorg =='RESP_PLESSO');
+                      return items.filter(x => ApplicationService.isResponsabileUfficio(x.cd_tipo_posizorg));
                     }),                                                                                
                   ).subscribe(opt=> {
 
@@ -213,7 +213,7 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
               lifecycle: {
                 onInit: (form, field, model) => {                                              
                   //field.formControl.setValue('');
-                  field.templateOptions.options = this.service.getValidationOfficesPersonale(this.model.unitaorganizzativa_uo).pipe(
+                  field.templateOptions.options = this.service.getPersonaleUfficio(this.model.unitaorganizzativa_uo).pipe(
                     // map(items => {
                     //   return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
                     // }),                         
