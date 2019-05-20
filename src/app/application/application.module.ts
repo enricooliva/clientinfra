@@ -62,6 +62,7 @@ import { BolloRepertoriazioneComponent } from './pages/bollorepertoriazione.comp
 import { RichiestaEmissioneComponent } from './pages/richiestaemissione.component';
 import { EmissioneComponent } from './pages/emissione.component';
 import { PagamentoComponent } from './pages/pagamento.component';
+import { InvioRichiestaPagamentoComponent } from './pages/inviorichiestapagamento.component';
 
 registerLocaleData(localeIt);
 @NgModule({
@@ -82,7 +83,8 @@ registerLocaleData(localeIt);
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
     TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
-    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent,
+    InvioRichiestaPagamentoComponent,
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -92,7 +94,8 @@ registerLocaleData(localeIt);
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
     ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
-    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent, 
+    InvioRichiestaPagamentoComponent,
 
   ],
   providers: [ 

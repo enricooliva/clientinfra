@@ -22,18 +22,37 @@ export class ScadenzaComponent extends BaseEntityComponent {
   
   isLoading = true;
   fields: FormlyFieldConfig[] = [    
-    {           
-      type: 'button',  
-      templateOptions: {        
-        text: 'Richiesta emissione',
-        btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
-        onClick: ($event) => this.open()
-      },
-      hideExpression: (model: any) => {
-        return !model.id ||
-          (model.id && model.state != 'attivo');
-      }, 
-    },         
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup: [
+        {           
+          type: 'button',  
+          className: "col-md-2",
+          templateOptions: {        
+            text: 'Richiesta emissione',
+            btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
+            onClick: ($event) => this.open()
+          },
+          hideExpression: (model: any) => {
+            return !model.id ||
+              (model.id && model.state != 'attivo');
+          }, 
+        },
+        {           
+          type: 'button',  
+          className: "col-md-2",
+          templateOptions: {        
+            text: 'Invio richiesta pagamento',            
+            btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
+            onClick: ($event) => this.openInvioRichiestaPagamento()
+          },
+          hideExpression: (model: any) => {
+            return !model.id ||
+              (model.id && model.state != 'attivo');
+          }, 
+        },         
+      ]
+    },
     {
       fieldGroupClassName: 'row',
       fieldGroup: [
@@ -47,8 +66,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
           },
           hideExpression: (model: any) => {
             //non c'è il model id 
-            return !model.id 
-                 
+            return !model.id                  
           }, 
         },
         {
@@ -234,6 +252,13 @@ export class ScadenzaComponent extends BaseEntityComponent {
     if(this.model.convenzione){
       this.appService.setRichiestaEmissioneData(this.model);
       this.router.navigate(['home/richiestaemissione', this.model.id]);
+    }
+  }
+
+  openInvioRichiestaPagamento() {
+    if(this.model.convenzione){
+      this.appService.setRichiestaEmissioneData(this.model);
+      this.router.navigate(['home/inviorichiestapagamento', this.model.id]);
     }
   }
 }

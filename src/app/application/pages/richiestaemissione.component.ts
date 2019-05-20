@@ -9,7 +9,7 @@ import { FileDetector } from 'protractor';
 import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.field.config';
 import { takeUntil, startWith, tap, filter, map, distinct } from 'rxjs/operators';
 import { ScadenzaService } from '../scadenza.service';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-richiestaemissione',

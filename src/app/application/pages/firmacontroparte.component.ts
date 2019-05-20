@@ -343,19 +343,6 @@ export class FirmaControparteComponent extends BaseEntityComponent {
             }
           }
         );
-
-        this.service.getAziende(this.model.convenzione_id).subscribe(
-          result => { 
-            setTimeout(() => {                        
-              if (result && result[0]){
-                const emails = (result.map(it => it.pec_email)).join(', ');
-                if (this.form.get('email'))
-                  this.form.get('email').setValue(emails);
-              }else 
-                this.form.get('email').setValue('email non associata');
-            }, 0);              
-          }
-        );
         
         this.options.formState.disabled_covenzione_id = true;
       };

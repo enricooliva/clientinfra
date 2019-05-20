@@ -45,6 +45,7 @@ import { BolloRepertoriazioneComponent } from '../application/pages/bolloreperto
 import { RichiestaEmissioneComponent } from '../application/pages/richiestaemissione.component';
 import { EmissioneComponent } from '../application/pages/emissione.component';
 import { PagamentoComponent } from '../application/pages/pagamento.component';
+import { InvioRichiestaPagamentoComponent } from '../application/pages/inviorichiestapagamento.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -529,6 +530,16 @@ const routes: Routes = [
             { title: 'Richiesta emissione' }
           ]
         }
+      },
+      { 
+        path: 'inviorichiestapagamento/:id',  component: InvioRichiestaPagamentoComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Invio richiesta di pagamento',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Invio richiesta di pagamento' }
+          ]
+        }
       },      
       { 
         path: 'emissione/:id',  component: EmissioneComponent,  canActivate:[AuthGuard], 
@@ -550,7 +561,8 @@ const routes: Routes = [
           ]
         }
       },
-      
+     
+
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
   { path: '**', component: NotFoundComponent }

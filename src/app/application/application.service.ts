@@ -651,6 +651,18 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
       );
     return res;
   }
+
+  invioRichiestaPagamentoStep(data: any, retrow: boolean = false): Observable<any>{
+    const url = `${this._baseURL + '/convenzioni/inviorichiestapagamentostep'}`;
+    let res = this.http.post(url, data, httpOptions)
+      .pipe(
+        tap(sub =>
+          this.messageService.info('Richiesta di pagamento effettuata con successo')
+        ),
+        catchError(this.handleError('invioRichiestaPagamentoStep', null, retrow))
+      );
+    return res;
+  }
   
 
   emissioneStep(data: any, retrow: boolean = false): Observable<any>{
