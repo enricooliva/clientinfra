@@ -81,6 +81,16 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
             copymodel: true,
             isLoading: false,          
           },
+          expressionProperties: {
+            'templateOptions.disabled': (model: any, formState: any) => {                        
+                return formState.disabled_id;
+            },
+          },   
+          hooks: {
+            onInit: (field) => {
+              //field.formControl.valueChanges.subscribe(() => this.updateEmail(this.model.))
+            }
+          }       
         },
       ]
     },
@@ -178,7 +188,9 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
   ngOnInit() {
     
     this.route.params.subscribe(params => {
-      if (params['id']) {                  
+      this.options.formState.disabled_id = false;                
+      if (params['id']) {  
+        this.options.formState.disabled_id = true;                
         //leggere la minimal della convenzione        
         this.model = this.service.getRichiestaEmissioneData();
         if (this.model){

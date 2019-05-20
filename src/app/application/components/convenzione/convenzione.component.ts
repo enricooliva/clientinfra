@@ -40,8 +40,20 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   //caricati dal service
   fields: FormlyFieldConfig[] = [
     {
+      key: 'id',
+      type: 'input',       
+      className: 'col-md-4', 
+      templateOptions: {
+        label: 'Codice convenzione',
+        disabled: true
+      },
+      hideExpression(model,formState){
+        return !model.id;
+      }
+    },
+    {
       className: 'section-label',
-      template: '<h5>Fasi processo</h5>',
+      template: '<h5>Fase processo</h5>',
     },
     {
       type: 'select',
