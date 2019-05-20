@@ -23,11 +23,10 @@ export class ScadenzaComponent extends BaseEntityComponent {
   isLoading = true;
   fields: FormlyFieldConfig[] = [    
     {
-      fieldGroupClassName: 'row',
+      fieldGroupClassName: 'display-flex',
       fieldGroup: [
         {           
-          type: 'button',  
-          className: "col-md-2",
+          type: 'button',                              
           templateOptions: {        
             text: 'Richiesta emissione',
             btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
@@ -39,8 +38,8 @@ export class ScadenzaComponent extends BaseEntityComponent {
           }, 
         },
         {           
-          type: 'button',  
-          className: "col-md-2",
+          type: 'button',         
+          className: 'ml-1 pl-1',     
           templateOptions: {        
             text: 'Invio richiesta pagamento',            
             btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
