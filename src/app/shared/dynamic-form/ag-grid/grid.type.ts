@@ -37,8 +37,8 @@ export class GridTypeComponent extends FieldArrayType implements OnInit {
   private gridApi;
   private gridColumnApi;
 
-  private paginationPageSize;
-  private paginationNumberFormatter;
+  public paginationPageSize;
+  public paginationNumberFormatter;
 
   gridOptions: GridOptions;
   style: any = {};
