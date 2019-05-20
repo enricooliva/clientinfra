@@ -228,6 +228,15 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
         permissions: ['ADMIN'],
+      },    
+      {
+        path: 'inviorichiestapagamento',
+        title: 'Richiesta pagamento',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'],
       },     
       {
         path: 'scadenze',

@@ -532,6 +532,16 @@ const routes: Routes = [
         }
       },
       { 
+        path: 'inviorichiestapagamento',  component: InvioRichiestaPagamentoComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Invio richiesta di pagamento',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Invio richiesta di pagamento' }
+          ]
+        }
+      },    
+      { 
         path: 'inviorichiestapagamento/:id',  component: InvioRichiestaPagamentoComponent,  canActivate:[AuthGuard], 
         data: {
           title: 'Invio richiesta di pagamento',
