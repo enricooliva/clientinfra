@@ -73,6 +73,7 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
             descriptionProp: 'dovuto_tranche',
             descriptionFunc: (data) => {
                 if (data && data.convenzione){
+                  this.updateEmail(data.convenzione.id); 
                   return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
                 }
                 return '';
@@ -85,12 +86,7 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
             'templateOptions.disabled': (model: any, formState: any) => {                        
                 return formState.disabled_id;
             },
-          },   
-          hooks: {
-            onInit: (field) => {
-              //field.formControl.valueChanges.subscribe(() => this.updateEmail(this.model.))
-            }
-          }       
+          },              
         },
       ]
     },
@@ -195,8 +191,7 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
         this.model = this.service.getRichiestaEmissioneData();
         if (this.model){
           this.options.formState.model = this.model;
-          this.options.formState.disabled_covenzione_id = true;
-          this.updateEmail(this.model.convenzione_id);     
+          this.options.formState.disabled_covenzione_id = true;          
         }else{
           this.isLoading=true;
           this.model = { convenzione: {}};
@@ -205,8 +200,7 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
             result => {
               if (result){            
                   this.model = result;   
-                  this.options.formState.model = this.model;    
-                  this.updateEmail(this.model.convenzione_id);     
+                  this.options.formState.model = this.model;                      
               }
               this.isLoading=false;
             }
@@ -220,18 +214,20 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
   }
 
   updateEmail(convenzione_id){
-    this.service.getAziende(convenzione_id).subscribe(
-      result => { 
-        setTimeout(() => {                        
-          if (result && result[0]){
-            const emails = (result.map(it => it.pec_email)).join(', ');
-            if (this.form.get('email'))
-              this.form.get('email').setValue(emails);
-          }else 
-            this.form.get('email').setValue('email non associata');
-        }, 0);              
-      }
-    );
+    if (convenzione_id){
+      this.service.getAziende(convenzione_id).subscribe(
+        result => { 
+          setTimeout(() => {                        
+            if (result && result[0]){
+              const emails = (result.map(it => it.pec_email)).join(', ');
+              if (this.form.get('email'))
+                this.form.get('email').setValue(emails);
+            }else 
+              this.form.get('email').setValue('email non associata');
+          }, 0);              
+        }
+      );
+    }
   }
 
 
