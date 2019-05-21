@@ -5,6 +5,7 @@ import { ApplicationService } from '../application.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
 import {Location} from '@angular/common';
+import { FormlyGroup } from '@ngx-formly/core/lib/components/formly.group';
 
 @Component({
   selector: 'app-bollorepertoriazione',
@@ -63,6 +64,13 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         entityPath: 'home/convenzioni',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
+        descriptionFunc: (data) => {
+          if (data){
+            this.updateStipula(data.stipula_format); 
+            return data.descrizione_titolo;
+          }
+          return '';
+        },
         isLoading: false,    
         rules: [{value: this.STATE, field: "current_place", operator: "="}],
       },  
@@ -70,9 +78,60 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         'templateOptions.disabled': 'formState.disabled_covenzione_id',
       },    
     },   
-   
+    {
+      key:'stipula_format',
+      type: 'select',
+      templateOptions:{
+        options: [
+          { codice: 'cartaceo', descrizione: 'Stipula cartacea' },
+          { codice: 'digitale', descrizione: 'Stipula digitale' },
+        ],
+        valueProp: 'codice',
+        labelProp: 'descrizione',
+        label: 'Formato di stipula',
+        disabled: true,
+        required: true,  
+      }
+
+    },
+    {  
+      fieldGroupClassName: 'row',
+      fieldGroup: [
+      {
+        key: 'bollo_virtuale', 
+        type: 'select',         
+        defaultValue: false,  
+        className: 'col-md-2',             
+        templateOptions: {
+          label: 'Bollo virtuale',     
+          options: [
+            //{ label: 'Si', value: true },
+            { label: 'No', value: false },
+          ],
+        },
+        hideExpression: (model: any, formState: any) => {
+          //se non è valorizzato lo stipula_format o 
+          return !model.stipula_format || (model.stipula_format && model.stipula_format == 'cartaceo')
+        },
+      }]
+    },    
+    // {  
+    //   key: 'bollo_virtuale', 
+    //   type: 'checkbox',                        
+    //   templateOptions: {
+    //     label: 'Bollo virtuale',     
+    //     indeterminate: false,                              
+    //   },
+    //   hideExpression: (model: any, formState: any) => {
+    //     //se non è valorizzato lo stipula_format o 
+    //     return !model.stipula_format || (model.stipula_format && model.stipula_format == 'cartaceo')
+    //   },     
+    // }, 
     {
       key: 'attachment1',
+      hideExpression: (model, formstate) => {
+        return (formstate.model.bollo_virtuale == true);
+      },
       fieldGroup: [
         {
           fieldGroupClassName: 'row',
@@ -96,7 +155,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
             {
               key: 'filename',
               type: 'fileinput',
-              className: "col-md-5",
+              className: "col-md-7",
               templateOptions: {
                 label: 'Scegli il documento',
                 type: 'input',
@@ -108,7 +167,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
             },  
           ],
         },
-      ],
+      ],  
     },
   ]
 
@@ -155,7 +214,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
               setTimeout(
                 ()=> {
                     this.fields.find(x=> x.key == 'convenzione').templateOptions.init(result);                                            
-                  });
+                });
             this.isLoading=false;
             }
           }
@@ -179,6 +238,12 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
           this.isLoading = false;
           //this.service.messageService.error(error);          
         });
+    }
+  }
+
+  updateStipula(value){
+    if (value){
+      this.form.get('stipula_format').setValue(value);
     }
   }
 }
