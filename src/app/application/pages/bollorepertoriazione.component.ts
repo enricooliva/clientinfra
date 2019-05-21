@@ -94,6 +94,19 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
       }
 
     },
+    // {  
+    //   key: 'bollo_virtuale', 
+    //   type: 'checkbox',                  
+    //   className: 'inline pr-1',
+    //   templateOptions: {
+    //      label: 'Bollo virtuale',     
+    //      indeterminate: false,                              
+    //   },
+    //   hideExpression: (model: any, formState: any) => {
+    //     //se non è valorizzato lo stipula_format o 
+    //     return !model.stipula_format || (model.stipula_format && model.stipula_format == 'cartaceo')
+    //   },
+    // },
     {  
       fieldGroupClassName: 'row',
       fieldGroup: [
@@ -115,18 +128,6 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         },
       }]
     },    
-    // {  
-    //   key: 'bollo_virtuale', 
-    //   type: 'checkbox',                        
-    //   templateOptions: {
-    //     label: 'Bollo virtuale',     
-    //     indeterminate: false,                              
-    //   },
-    //   hideExpression: (model: any, formState: any) => {
-    //     //se non è valorizzato lo stipula_format o 
-    //     return !model.stipula_format || (model.stipula_format && model.stipula_format == 'cartaceo')
-    //   },     
-    // }, 
     {
       key: 'attachment1',
       hideExpression: (model, formstate) => {
