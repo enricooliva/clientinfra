@@ -39,17 +39,16 @@ import { element } from 'protractor';
   (sort)="onSort($event)"
   (select)='onSelect($event)'
   (activate)='onEvents($event)'>     
-  
-  <ng-template #defaultcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
-    <formly-field [field]="getField(field, column, rowIndex)"></formly-field>
-  </ng-template>  
-  
-  <ng-template #valuecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
-    {{ value }}    
-  </ng-template>  
-
-
 </ngx-datatable>
+  
+<ng-template #defaultcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
+<formly-field [field]="getField(field, column, rowIndex)"></formly-field>
+</ng-template>  
+
+<ng-template #valuecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
+{{ value }}    
+</ng-template>  
+
 `
 })
 

@@ -61,6 +61,8 @@ import { RightaddonsWrapperComponent } from './dynamic-form/wrapper/rightaddons-
 import { GridFormlyCellComponent } from './dynamic-form/ag-grid/grid-formly-cell.component';
 import { GridTypeComponent } from './dynamic-form/ag-grid/grid.type';
 import { AgGridModule } from 'ag-grid-angular';
+import { TableGroupTypeComponent } from './dynamic-form/tablegroup-type.component';
+import { MycurrencyPipe } from './pipe/custom.currencypipe';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -145,7 +147,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
           },
         }, 
       },
-      { name: 'datatablelookup', 
+      { 
+        name: 'datatablelookup', 
         component: TableLookupTypeComponent, 
         defaultOptions: {
           templateOptions: {
@@ -156,6 +159,21 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             limit: "100",
             scrollbarH: "true",
             reorderable: "reorderable"
+          },
+        }, 
+      },    
+      { 
+        name: 'datatablegroup', 
+        component: TableGroupTypeComponent, 
+        defaultOptions: {
+          templateOptions: {
+            columnMode: "force",    
+            rowHeight: "auto",    
+            headerHeight: "30",
+            footerHeight: "30",
+            limit: "100",
+            scrollbarH: "true",
+            reorderable: false,
           },
         }, 
       },
@@ -233,6 +251,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RightaddonsWrapperComponent,
     GridTypeComponent,
     GridFormlyCellComponent,
+    TableGroupTypeComponent,
+    MycurrencyPipe,
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -260,6 +280,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RightaddonsWrapperComponent,
     GridTypeComponent,
     GridFormlyCellComponent,
+    TableGroupTypeComponent,
+    MycurrencyPipe,
   ],
   entryComponents: [LookupComponent]
 })

@@ -10,6 +10,8 @@ import { encode, decode } from 'base64-arraybuffer';
 import { takeUntil, startWith, tap, distinctUntilChanged, filter, map, finalize } from 'rxjs/operators';
 import { UploadfileComponent } from './uploadfile.component';
 import { NgbModal, NgbActiveModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { MycurrencyPipe } from 'src/app/shared/pipe/custom.currencypipe';
 
 
 @Component({
@@ -36,6 +38,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   modelUserTaskDetail: any;
 
   transitions = new Subject<any>();
+
+  currency = new MycurrencyPipe();
 
   //caricati dal service
   fields: FormlyFieldConfig[] = [
@@ -358,17 +362,25 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     },
     {
       key: 'scadenze',
-      type: 'datatable', //'repeat',      
+      type: 'datatablegroup', //'repeat',      
       templateOptions: {
         btnHidden: true,
         label: 'Scadenze',
-        hidetoolbar: true,
+        hidetoolbar: true,   
         limit: "20",
+        groupRowsBy: 'state',
+        groupExpansionDefault: true,
+        enableSummary: true,
+        summaryPosition:'bottom',
         columns: [
-          { name: 'Id', prop: 'id', wrapper: 'value' },
-          { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value' },
-          { name: 'Importo', prop: 'dovuto_tranche', wrapper: 'value' },
-          { name: 'Stato', prop: 'state', wrapper: 'value' },
+          { name: 'Id', prop: 'id', wrapper: 'value', summaryFunc:  null, },
+          { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value', summaryFunc:  null, },
+          { name: 'Stato', prop: 'state', wrapper: 'value', summaryFunc: null},
+          { 
+            name: 'Importo', prop: 'dovuto_tranche', wrapper: 'value', 
+            cellClass: "text-right", summaryFunc: (cells) => this.sumImporto(cells), maxWidth:'150', pipe: this.currency,
+          },
+       
           //{ name: 'Azione', prop: 'action_button' },
         ],
         onDblclickRow: (event) => {
@@ -427,7 +439,12 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);
   }
 
-  constructor(private service: ApplicationService, private route: ActivatedRoute, protected router: Router, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private service: ApplicationService, 
+              private route: ActivatedRoute, 
+              protected router: Router, 
+              private modalService: NgbModal,
+              public activeModal: NgbActiveModal,              
+              ) {
 
     //modello vuoto
     this.model = {
@@ -540,8 +557,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected updateTransition(id) {
-    //caricamento transisioni successive
+  protected updateTransition(id) {        
     this.service.getNextActions(id).subscribe((data) => {
       this.transitions.next([]);
       this.transitions.next(data);
@@ -621,4 +637,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   //     "</object>");
   // }
 
+  private sumImporto(cells: number[]): number {
+    const filteredCells = cells.filter(cell => !!cell);
+    let total = filteredCells.reduce((sum, cell) => sum += Number(cell), 0);
+    return total; // `Totale: ${total}`;
+  }
 }
