@@ -27,7 +27,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'ambito',
   // 'durata',
   // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convenzione',  
- 
+  @ViewChild('statetemplate') statetemplate: TemplateRef<any>;
+
   @ViewChild('tabs')
   private tabs: NgbTabset;
 
@@ -375,11 +376,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         columns: [
           { name: 'Id', prop: 'id', wrapper: 'value', summaryFunc:  null, },
           { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value', summaryFunc:  null, },
-          { name: 'Stato', prop: 'state', wrapper: 'value', summaryFunc: null, cellTemplate: 'statetemplate' },
+          { name: 'Stato', prop: 'state', wrapper: 'value', summaryFunc: null },
           { 
             name: 'Importo', prop: 'dovuto_tranche', wrapper: 'value', 
             cellClass: "text-right", summaryFunc: (cells) => this.sumImporto(cells), maxWidth:'150', pipe: this.currency,
-
           },
        
           //{ name: 'Azione', prop: 'action_button' },
@@ -475,6 +475,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    let cols: (Array<any>) = this.fieldscadenze.find(x => x.key == "scadenze").templateOptions.columns;
+    cols.find(x => x.prop == 'state').cellTemplate = this.statetemplate;
+
     this.route.params.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       if (params['id']) {
         this.isLoading = true;
