@@ -47,6 +47,21 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 
 </ngx-datatable>
 
+<ng-template #statetemplate ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
+<span [ngSwitch]="value">                        
+  <span *ngSwitchCase="'attivo'" class="label label-rounded label-primary">{{value}}</span>                        
+  <span *ngSwitchCase="'inpagamento'" class="label label-rounded label-warning">{{value}}</span> 
+  <span *ngSwitchCase="'inemissione'" class="label label-rounded label-warning">{{value}}</span>   
+  <span *ngSwitchCase="'pagato'" class="label label-rounded label-success">{{value}}</span>     
+</span>
+</ng-template>  
+
+<ng-template #staterow let-row="row" let-value="value">
+  <strong>{{ value }}</strong>
+  <i class="pb-icon icon-edit"></i>
+  <i *ngIf="row.canDelete == true" class="pb-icon icon-garbage"></i>
+  <i *ngIf="row.canSend== true" class="pb-icon icon-send"></i>
+</ng-template>
 `
 })
 
@@ -55,6 +70,7 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 
 export class TableGroupTypeComponent extends FieldArrayType {  
 
+  @ViewChild('statetemplate') statetemplate: TemplateRef<any>;
   @ViewChild('grouptable') table: any;
 
   constructor(builder: FormlyFormBuilder, private differs: KeyValueDiffers) {    
@@ -72,7 +88,7 @@ export class TableGroupTypeComponent extends FieldArrayType {
       });
       this.to.selected= [];
     }
-
+    
     if (typeof this.to.columns == 'undefined'){
       //configurazione basata sulla dichiarazione delle colonne nel json 
       // modalità implicità di costruzione delle colonne 
@@ -95,6 +111,9 @@ export class TableGroupTypeComponent extends FieldArrayType {
         return c;
       });
       
+    }else{
+
+      (this.to.columns as Array<any>).find(x => x.prop=='state').cellTemplate = this.statetemplate;
     }   
     
   }
