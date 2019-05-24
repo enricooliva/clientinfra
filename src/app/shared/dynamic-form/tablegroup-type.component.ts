@@ -5,6 +5,7 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 import { Router } from '@angular/router';
 import { Page, PagedData } from '../lookup/page';
 import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
+import { DatatableRowDetailDirective } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-tablegroup-type',
@@ -30,8 +31,13 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
   [summaryHeight]="'auto'"
   (activate)='onEvents($event)'
 >     
+
+
+<ngx-datatable-row-detail  [rowHeight]="'auto'" #myDetailRow>
+</ngx-datatable-row-detail>
+
 <!-- Group Header Template -->
-<ngx-datatable-group-header [rowHeight]="50" #myGroupHeader (toggle)="onDetailToggle($event)">
+<ngx-datatable-group-header [rowHeight]="70" #myGroupHeader (toggle)="onDetailToggle($event)">
   <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
     <div style="padding-left:5px;">
       <a    
@@ -39,7 +45,7 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
         [class.datatable-icon-down]="expanded"
         title="Expand/Collapse Group"
         (click)="toggleExpandGroup(group)">
-        <b>Stato: {{group.value[0].state}}</b>
+        <b>{{ getGroupHeaderTitle(group) }}</b>
       </a>                          
     </div>
   </ng-template>
@@ -47,12 +53,26 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 
 </ngx-datatable>
 
+<!-- Colonna per azioni -->
 <ng-template #staterow let-row="row" let-value="value">
   <strong>{{ value }}</strong>
   <i class="pb-icon icon-edit"></i>
   <i *ngIf="row.canDelete == true" class="pb-icon icon-garbage"></i>
   <i *ngIf="row.canSend== true" class="pb-icon icon-send"></i>
 </ng-template>
+
+
+<!-- Colonna per aprire il dettaglio -->
+<ng-template #colDetail let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+  <a
+    href="javascript:void(0)"
+    [class.datatable-icon-right]="!expanded"
+    [class.datatable-icon-down]="expanded"
+    title="Expand/Collapse Row"
+    (click)="toggleExpandRow(row)">
+  </a>
+</ng-template>
+
 `
 })
 
@@ -61,7 +81,8 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 
 export class TableGroupTypeComponent extends FieldArrayType {  
   
-  @ViewChild('grouptable') table: any;
+  @ViewChild('grouptable') table: any;  
+  @ViewChild('colDetail') colDetail: any;
 
   constructor(builder: FormlyFormBuilder, private differs: KeyValueDiffers) {    
     super(builder);        
@@ -69,7 +90,7 @@ export class TableGroupTypeComponent extends FieldArrayType {
   }
         
   ngOnInit() {      
-   
+    
     if (!('selected' in this.to)){
       Object.defineProperty(this.to,'selected',{
         enumerable: true,
@@ -78,7 +99,25 @@ export class TableGroupTypeComponent extends FieldArrayType {
       });
       this.to.selected= [];
     }
-    
+
+    if(this.to.headerColGroupTemplate){
+      this.table.groupHeader.template = this.to.headerColGroupTemplate;
+    }
+  
+    if (this.to.rowDetailTemplate){
+      //aggiunta della colonna per aprire il dettaglio
+      (this.to.columns as Array<any>).splice(0,0,{
+        'maxwith': 50,
+        'resisable': false,
+        'sortable': false,
+        'draggable': false,
+        'canAutoResize':false,
+        'cellTemplate': this.colDetail
+      })
+      //aggiunto il template della riga di dettaglio
+      this.table.rowDetail.template = this.to.rowDetailTemplate;
+    }
+
     if (typeof this.to.columns == 'undefined'){
       //configurazione basata sulla dichiarazione delle colonne nel json 
       // modalità implicità di costruzione delle colonne 
@@ -108,7 +147,7 @@ export class TableGroupTypeComponent extends FieldArrayType {
  
   onEvents(event) {
     if (event.type == "dblclick" && typeof this.to.onDblclickRow !== "undefined"){
-      this.to.onDblclickRow(event);    
+      this.to.onDblclickRow(event);         
     }
   }
   
@@ -136,6 +175,21 @@ export class TableGroupTypeComponent extends FieldArrayType {
     //console.log('Detail Toggled', event);
   }
 
+  toggleExpandRow(row) {
+    //console.log('Toggled Expand Row!', row);    
+    this.table.rowDetail.toggleExpandRow(row);
+  }
 
-  
+  getHeight(row: any, index: number): number {
+    return 100;
+  }
+
+  getGroupHeaderTitle(group){
+    if (this.to.groupHeaderTitle){
+      return this.to.groupHeaderTitle(group)
+    }
+    //<b>Stato: {{group.value[0].state}}</b>
+    return group.value[0];
+  }
+
  }
