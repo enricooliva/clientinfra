@@ -373,6 +373,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         groupExpansionDefault: true,
         enableSummary: true,
         summaryPosition:'bottom',
+        groupHeaderTitle: (group) => this.groupHeaderTitle(group),
         columns: [
           { name: 'Id', prop: 'id', wrapper: 'value', summaryFunc:  null, },
           { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value', summaryFunc:  null, },
@@ -478,6 +479,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     let cols: (Array<any>) = this.fieldscadenze.find(x => x.key == "scadenze").templateOptions.columns;
     cols.find(x => x.prop == 'state').cellTemplate = this.statetemplate;
+
+
+
 
     this.route.params.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       if (params['id']) {
@@ -641,6 +645,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   //     "Object " + pdfurl + " failed" +
   //     "</object>");
   // }
+
+  private groupHeaderTitle(group){
+    const totale = this.currency.transform(this.sumImporto(group.value.map(x=>x.dovuto_tranche)));
+    return `Stato ${group.value[0].state} ${totale}`
+  }
 
   private sumImporto(cells: number[]): number {
     const filteredCells = cells.filter(cell => !!cell);
