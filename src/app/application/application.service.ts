@@ -8,6 +8,7 @@ import { AppConstants } from '../app-constants';
 import { Convenzione, FileAttachment } from './convenzione';
 import { saveAs } from 'file-saver';
 import { Cacheable } from 'ngx-cacheable';
+import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,7 +22,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
 
   _baseURL: string;
 
-  constructor(private http: HttpClient, public messageService: MessageService) {
+  constructor(private http: HttpClient, public messageService: MessageService, public confirmationDialogService: ConfirmationDialogService) {
     this._baseURL = AppConstants.baseApiURL;
   }
 

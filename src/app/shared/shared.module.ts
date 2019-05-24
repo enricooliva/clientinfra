@@ -63,6 +63,7 @@ import { GridTypeComponent } from './dynamic-form/ag-grid/grid.type';
 import { AgGridModule } from 'ag-grid-angular';
 import { TableGroupTypeComponent } from './dynamic-form/tablegroup-type.component';
 import { MycurrencyPipe } from './pipe/custom.currencypipe';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -253,6 +254,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GridFormlyCellComponent,
     TableGroupTypeComponent,
     MycurrencyPipe,
+    ConfirmationDialogComponent
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -282,6 +284,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GridFormlyCellComponent,
     TableGroupTypeComponent,
     MycurrencyPipe,
+    ConfirmationDialogComponent
   ],
   entryComponents: [LookupComponent]
 })

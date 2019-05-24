@@ -7,6 +7,7 @@ import { Subject, Observable, Subscription } from 'rxjs';
 import { InfraMessageType } from '../message/message';
 import { filter } from 'rxjs/operators';
 import {Location} from '@angular/common';
+import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   template: `NOT UI`
@@ -143,7 +144,26 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
     
   }
 
+  public openConfirmationDialog() {
+    
+  }
+
+
   onRemove() {
+
+    //console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)')
+    this.service.confirmationDialogService.confirm('Conferma', "Vuoi procedere con l'operazione di elminazione?" )
+      .then((confirmed) => {
+        if (confirmed){
+          this.remove();        
+        }
+        console.log(confirmed);        
+      })
+      .catch(() => {});
+    
+  }
+
+  remove(){
     this.isLoading = true;
     this.service.remove(this.model['id']).subscribe(
       prop => {

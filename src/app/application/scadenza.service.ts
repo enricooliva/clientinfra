@@ -9,6 +9,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Cacheable } from 'ngx-cacheable';
 import { BaseService } from '../shared/base-service/base.service';
+import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 
 
 const httpOptions = {
@@ -70,8 +71,8 @@ export class ScadenzaService extends BaseService {
 
   }
 
-  constructor(protected http: HttpClient, public messageService: MessageService) {
-     super(http,messageService);
+  constructor(protected http: HttpClient, public messageService: MessageService,public confirmationDialogService: ConfirmationDialogService) {
+     super(http,messageService,confirmationDialogService);
      this.basePath = 'scadenze';     
   }
 

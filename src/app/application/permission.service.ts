@@ -8,6 +8,7 @@ import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Cacheable } from 'ngx-cacheable';
+import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 
 
 const httpOptions = {
@@ -53,8 +54,8 @@ export class PermissionService extends BaseService {
 
   }
   
-  constructor(protected http: HttpClient, public messageService: MessageService) {
-    super(http,messageService);
+  constructor(protected http: HttpClient, public messageService: MessageService, public confirmationDialogService: ConfirmationDialogService) {
+    super(http,messageService, confirmationDialogService);
     this.basePath = 'permissions';     
   }
 

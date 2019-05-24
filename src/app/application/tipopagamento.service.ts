@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ControlBase, TextboxControl, DropdownControl, DateControl, MessageService, ServiceQuery, ServiceEntity } from '../shared';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BaseService } from '../shared/base-service/base.service';
+import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 
 
 const httpOptions = {
@@ -49,8 +50,8 @@ export class TipoPagamentoService extends BaseService {
 
   }
 
-  constructor(protected http: HttpClient, public messageService: MessageService) {
-     super(http,messageService);
+  constructor(protected http: HttpClient, public messageService: MessageService, public confirmationDialogService: ConfirmationDialogService) {
+     super(http,messageService,confirmationDialogService);
      this.basePath = 'tipopagamenti';     
   }
 

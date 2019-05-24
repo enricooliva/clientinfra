@@ -43,6 +43,8 @@ import { StrutturaEsternaService } from './application/strutturaesterna.service'
 import { DocumentoService } from './application/documento.service';
 import { LoginActivate } from './core/login.activate';
 import { ScadenzaService } from './application/scadenza.service';
+import { ConfirmationDialogService } from './shared/confirmation-dialog/confirmation-dialog.service';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 
 
 export function tokenGetter() {
@@ -82,7 +84,8 @@ export function tokenGetter() {
     RoleService,
     PermissionService,
     TipoPagamentoService,
-    ClassificazioneService,      
+    ClassificazioneService,     
+    ConfirmationDialogService, 
     { provide: RequestCache, useClass: RequestCacheWithMap },
     HttpInterceptorProviders,
     GlobalErrorHandlerProviders,        
@@ -103,7 +106,7 @@ export function tokenGetter() {
     
   ],
   bootstrap: [AppComponent],
-  entryComponents: [UploadfileComponent],
+  entryComponents: [UploadfileComponent, ConfirmationDialogComponent],
 })
 
 

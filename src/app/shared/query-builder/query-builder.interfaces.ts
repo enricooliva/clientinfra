@@ -1,6 +1,7 @@
 import { Observable } from "rxjs";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { MessageService } from "../message.service";
+import { ConfirmationDialogService } from "../confirmation-dialog/confirmation-dialog.service";
 
 
 export interface Operator{
@@ -25,6 +26,7 @@ export interface ServiceEntity extends ServiceBase {
   remove(id: any): Observable<any>;
   clearMessage();
   messageService: MessageService;
+  confirmationDialogService: ConfirmationDialogService;
 }
 
 
