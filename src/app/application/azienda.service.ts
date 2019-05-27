@@ -24,7 +24,7 @@ export class AziendaService implements ServiceQuery {
     return  [
       {
         key: 'id_esterno',
-        type: 'number',
+        type: 'string',
         hideExpression: false,
         templateOptions: {
           label: 'Id',
