@@ -253,6 +253,11 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
               label: 'Classificazione',
               required: true,
             },
+            expressionProperties: {
+              'templateOptions.disabled': (model: any, formState: any) => {                        
+                  return model.id;
+              },
+            },
           },
           {
             key: 'oggetto_fascicolo',
@@ -262,9 +267,32 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
               label: 'Oggetto del fascicolo',
               required: true,
             },
+            expressionProperties: {
+              'templateOptions.disabled': (model: any, formState: any) => {                        
+                  return model.id;
+              },
+            },            
           },
+        ],
+          
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'numero',
+            type: 'string',            
+            className: "col-md-6",                   
+            templateOptions: {              
+              label: 'Numero protocollo',              
+              disabled: true,     
+            },
+            hideExpression: (model: any, formState: any) => {
+              return !model.id;
+            }            
+          }
         ]
-      },      
+      }      
       // {
       // fieldGroupClassName: 'row',
       //   fieldGroup: [          
