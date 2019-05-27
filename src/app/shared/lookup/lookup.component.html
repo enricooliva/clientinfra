@@ -1,3 +1,4 @@
+
 <div class="modal-header">
   <h4 class="modal-title" id="modal-basic-title">Ricerca</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
@@ -7,7 +8,8 @@
 <div class="modal-body">
 
   <app-query-builder [rules]="rules" [metadata]="researchMetadata" (find)="onFind($event)"></app-query-builder>
-
+  
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <h4>Risultati</h4>
   <form [formGroup]="form">
     <formly-form [model]="model" [fields]="resultMetadata" [form]="form">
