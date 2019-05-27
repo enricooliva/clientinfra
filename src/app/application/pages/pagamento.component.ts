@@ -69,7 +69,7 @@ export class PagamentoComponent extends BaseEntityComponent {
         codeProp: 'id',
         descriptionProp: 'dovuto_tranche',
         descriptionFunc: (data) => {
-            if (data.dovuto_tranche){
+            if (data && data.dovuto_tranche){
               return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
             }
             return '';

@@ -65,7 +65,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
         descriptionFunc: (data) => {
-          if (data){
+          if (data && data.descrizione_titolo){
             this.updateStipula(data.stipula_format); 
             return data.descrizione_titolo;
           }
