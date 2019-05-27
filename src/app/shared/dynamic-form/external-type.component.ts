@@ -184,15 +184,17 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
   setDescription(data: any) {
     if (typeof this.field.templateOptions.descriptionFunc === 'function'){
       this.extDescription = this.field.templateOptions.descriptionFunc(data);    
-    } else {
+    } else if (data){
       //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
       if (this.field.templateOptions.descriptionProp in data){
         this.extDescription = data[this.field.templateOptions.descriptionProp];
         if (this.field.templateOptions.initdescription in this.model)
           this.model[this.field.templateOptions.initdescription] = data[this.field.templateOptions.descriptionProp];
       } 
-    }
-             
+    }else{
+      if (this.field.templateOptions.initdescription in this.model)
+      this.model[this.field.templateOptions.initdescription] = '';
+    }     
   }
 
   setcode(data: any) {
@@ -223,12 +225,17 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
       size: 'lg'
     })
     modalRef.result.then((result) => {
-      this.setresult(result);
+      if (result!=='new'){
+        this.setresult(result);
+      }else{
+        this.openNewEnity();
+      }
     }, (reason) => {
     });
     modalRef.componentInstance.entityName = this.to.entityName;
     modalRef.componentInstance.entityLabel = this.to.entityLabel;
     modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
+    modalRef.componentInstance.enableNew = this.to.enableNew == undefined ? true : this.to.enableNew;
   }
 
   openEntity(){
@@ -245,6 +252,12 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
 
   onPopulate(field: FormlyFieldConfig) {
     field.modelOptions.updateOn = 'blur';
+  }
+
+  openNewEnity(){
+    if (this.to.entityPath){
+      this.router.navigate([this.to.entityPath,'new']);
+    }
   }
 
 }

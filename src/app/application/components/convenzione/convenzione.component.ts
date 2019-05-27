@@ -480,9 +480,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     let cols: (Array<any>) = this.fieldscadenze.find(x => x.key == "scadenze").templateOptions.columns;
     cols.find(x => x.prop == 'state').cellTemplate = this.statetemplate;
 
-
-
-
     this.route.params.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       if (params['id']) {
         this.isLoading = true;

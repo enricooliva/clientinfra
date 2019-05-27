@@ -19,6 +19,7 @@ export class LookupComponent implements OnInit {
   @Input() entityName; 
   @Input() entityLabel;
   @Input() rules;
+  @Input() enableNew = false;
 
   isLoading: boolean = false;
   service: ServiceQuery;
@@ -77,7 +78,6 @@ export class LookupComponent implements OnInit {
   
   }  
 
-
   close(){
     if (this.resultMetadata[0].templateOptions.selected.length>0)
       this.activeModal.close(this.resultMetadata[0].templateOptions.selected[0]);
@@ -89,6 +89,10 @@ export class LookupComponent implements OnInit {
     }
   }
   
+  onNew(event) {        
+    this.activeModal.close('new');    
+  }
+
   onFind(model){
     this.querymodel.rules = model.rules;  
     this.isLoading = true;        

@@ -217,17 +217,29 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
       size: 'lg'
     })
     modalRef.result.then((result) => {      
-      this.init(result);      
+      if (result!=='new'){
+        this.init(result);      
+      }else{
+        this.openNewEnity();
+      }
+      
     }, (reason) => {
     });
     modalRef.componentInstance.entityName = this.to.entityName;
     modalRef.componentInstance.entityLabel = this.to.entityLabel;
     modalRef.componentInstance.rules = this.to.rules ? this.to.rules : null;
+    modalRef.componentInstance.enableNew = this.to.enableNew == undefined ? false : this.to.enableNew;
   }
 
   openEntity(){
     if (this.codeField.formControl.value && this.to.entityPath){
       this.router.navigate([this.to.entityPath,this.codeField.formControl.value]);
+    }
+  }
+
+  openNewEnity(){
+    if (this.to.entityPath){
+      this.router.navigate([this.to.entityPath,'new']);
     }
   }
 
