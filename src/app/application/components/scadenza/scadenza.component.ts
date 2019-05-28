@@ -247,9 +247,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
     templateOptions: {
       options: [
         { label: 'Nessun prelievo', value: 'PRE_NO' },
-        { label: 'TU previlevo 5% Dip', value: 'PRE_5' },
-        { label: 'TU previlevo 10% Ateneo', value: 'PRE_10' },
-        { label: 'TU previlevo 10% Ateneo e 5% Dip ', value: 'PRE_10_5' },
+        { label: 'Prelievo applicabile', value: 'PRE_SI' },       
       ],
       label: 'Prelievo',
       required: true,

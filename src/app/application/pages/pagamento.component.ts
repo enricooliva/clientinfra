@@ -70,6 +70,7 @@ export class PagamentoComponent extends BaseEntityComponent {
         descriptionProp: 'dovuto_tranche',
         descriptionFunc: (data) => {
             if (data && data.dovuto_tranche){
+              this.model.prelievo = data.prelievo;
               return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
             }
             return '';
@@ -111,9 +112,7 @@ export class PagamentoComponent extends BaseEntityComponent {
       templateOptions: {
         options: [
           { label: 'Nessun prelievo', value: 'PRE_NO' },
-          { label: 'TU previlevo 5% Dip', value: 'PRE_5' },
-          { label: 'TU previlevo 10% Ateneo', value: 'PRE_10' },
-          { label: 'TU previlevo 10% Ateneo e 5% Dip ', value: 'PRE_10_5' },
+          { label: 'Prelievo applicabile', value: 'PRE_SI' },          
         ],
         label: 'Prelievo',
         required: true,
