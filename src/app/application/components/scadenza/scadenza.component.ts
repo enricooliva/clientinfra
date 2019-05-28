@@ -7,6 +7,7 @@ import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.c
 import { ScadenzaService } from '../../scadenza.service';
 import { ApplicationService } from '../../application.service';
 import {Location} from '@angular/common';
+import { encode, decode } from 'base64-arraybuffer';
 @Component({
   selector: 'app-scadenza', 
   templateUrl: '../../../shared/base-component/base-entity.component.html',
@@ -173,22 +174,6 @@ export class ScadenzaComponent extends BaseEntityComponent {
           },
         },        
       },
-      // {
-      //   key: 'protnum_emisrichiesta',
-      //   type: 'external',
-      //   className: "col-md-7",
-      //   templateOptions: {
-      //     label: 'Numero di protocollo',
-      //     //required: true,      
-      //     type: 'string',
-      //     entityName: 'documento',
-      //     entityLabel: 'Documenti',
-      //     codeProp: 'num_prot',
-      //     descriptionProp: 'oggetto',
-      //     isLoading: false,  
-      //     //rules: [{value: "arrivo", field: "doc_tipo", operator: "="}],                       
-      //   }, 
-      // }
     ],    
   },
   {
@@ -239,7 +224,6 @@ export class ScadenzaComponent extends BaseEntityComponent {
         },        
       },    
   ]},
-
   {
     key: 'prelievo',
     type: 'select',    
@@ -262,6 +246,109 @@ export class ScadenzaComponent extends BaseEntityComponent {
       rows: 5,     
     },        
   },
+  {
+    className: 'section-label',
+    template: '<h5>Documenti</h5>',
+  },
+  {
+    key: 'attachments',
+    type: 'repeat',
+    templateOptions: {
+      btnHidden: true,
+      btnRemoveHidden: true,
+      label: '',     
+      //(index, callback, context) => this.onRemoveFile(index, callback, context),
+      //onAddInitialModel: (event) => this.onAddInitialModel(event),
+    },
+    hideExpression: (model: any, formState: any) => {
+      return this.model.attachments == null || this.model.attachments.length == 0
+    },
+    fieldArray: {
+      template: '<hr />',       
+      fieldGroup: [
+        //nome allegato, tipo allegato, data ora creazione
+        {
+          fieldGroupClassName: 'row',
+          fieldGroup: [        
+            {
+              className: 'col-md-3',
+              type: 'input',
+              key: 'filename',
+              templateOptions: {
+                label: "Nome dell'allegato",
+                disabled: true,
+              },
+            },
+            {
+              type: 'input',
+              key: 'attachmenttype.descrizione',
+              className: 'col-md-3',
+              templateOptions: {
+                label: 'Tipologia',
+                disabled: true,
+              },
+            },
+            {
+              type: 'input',
+              key: 'created_at',
+              className: 'col-md-3',
+              templateOptions: {
+                label: 'Data e ora di creazione',
+                disabled: true,
+              },
+            },
+            {
+              type: 'button',
+              className: "col-md-2 d-flex align-items-start mt-4 pt-2",
+              templateOptions: {
+                btnType: 'primary oi oi-data-transfer-download',
+                //icon: 'oi oi-data-transfer-download'
+                onClick: ($event, model) => this.download($event, model),
+              },
+              expressionProperties: {
+                'templateOptions.disabled': (model: any, formState: any) => {                        
+                  return model.filetype == 'link';
+                },
+              }
+            },
+          ],
+        },
+        //numero protocolollo e data protocollo
+        {
+          fieldGroupClassName: 'row',
+          fieldGroup: [
+            {
+              className: 'col-md-3',
+              type: 'input',
+              key: 'num_prot',
+              templateOptions: {
+                label: "Numero protocollo",
+                disabled: true,
+              },
+              hideExpression(model,formState){
+                return !model.num_prot;
+              }
+            },
+            {
+              className: 'col-md-3',
+              type: 'input',
+              key: 'emission_date',
+              templateOptions: {
+                label: "Data protocollo",
+                disabled: true,
+              },
+              hideExpression(model,formState){
+                return !model.emission_date;
+              }
+            },            
+          ]
+        }
+      ],
+    }
+  }
+
+
+
   ];  
 
   constructor(protected service: ScadenzaService, protected appService: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
@@ -291,5 +378,17 @@ export class ScadenzaComponent extends BaseEntityComponent {
       this.appService.setRichiestaEmissioneData(this.model);
       this.router.navigate(['home/inviorichiestapagamento', this.model.id]);
     }
+  }
+
+  download(event, model) {
+    //console.log(model);
+    this.appService.download(model.id).subscribe(file => {
+      if (file.filevalue)
+        var blob = new Blob([decode(file.filevalue)]);
+      saveAs(blob, file.filename);
+    },
+      e => { console.log(e); }
+    );
+
   }
 }

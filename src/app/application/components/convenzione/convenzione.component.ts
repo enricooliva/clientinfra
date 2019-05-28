@@ -86,6 +86,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     },
   ];
+  
   fieldsattachment: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -229,6 +230,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       }
     }
   ]
+
   fieldsusertask: FormlyFieldConfig[] = [
     {
       className: 'section-label',
