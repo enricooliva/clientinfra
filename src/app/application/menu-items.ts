@@ -23,7 +23,16 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '',
     title: 'Gestione',
-    icon: 'icon-Paint-Brush',
+    icon: 'mdi mdi-dots-horizontal',
+    class: 'nav-small-cap',
+    extralink: true,
+    permissions: [],
+    submenu: [],    
+  },
+  {
+    path: '',
+    title: 'Utenti',
+    icon: 'icon-Administrator',
     class: 'has-arrow',
     extralink: false,
     permissions: [],
@@ -54,7 +63,16 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
         permissions: ['ADMIN'], 
-      },     
+      },  
+    ]}, //chiude gestione utenti
+    {
+      path: '',
+      title: 'Configurazioni',
+      icon: 'icon-Gear',
+      class: 'has-arrow',
+      extralink: false,
+      permissions: [],
+      submenu: [  
       {
         path: 'tipopagamenti',
         title: 'Tipo pagamenti',
@@ -63,7 +81,25 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
         permissions: ['ADMIN'], 
-      },     
+      },          
+      {
+        path: 'classificazioni',
+        title: 'Classificazione',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
+      {
+        path: 'mappinguffici',
+        title: 'Mapping uffici',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
+      }, 
       {
         path: 'tasks',
         title: 'Attività',
@@ -81,7 +117,16 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
         permissions: ['ADMIN'], 
-      }, 
+      },
+    ]}, //chiude configurazioni 
+    {
+    path: '',
+    title: 'Ricerche Titulus',
+    icon: 'icon-Paint-Brush',
+    class: 'has-arrow',
+    extralink: false,
+    permissions: [],
+    submenu: [ 
       {
         path: 'personeinterne',
         title: 'Persone interne',
@@ -118,53 +163,53 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'], 
       }, 
-      {
-        path: 'classificazioni',
-        title: 'Classificazione',
-        icon: '',
-        class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'], 
-      }, 
-      {
-        path: 'mappinguffici',
-        title: 'Mapping uffici',
-        icon: '',
-        class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'], 
-      }, 
+    ]},//chiude ricerche titulus
+    
   
-    ]
-  },
   {
     path: '',
     title: 'Funzionalità',
-    icon: 'mdi mdi-notification-clear-all',
+    icon: 'mdi mdi-dots-horizontal',
+    class: 'nav-small-cap',
+    extralink: true,
+    permissions: [],
+    submenu: [],    
+  },    
+  {
+    path: 'multistep-schematipo',
+    title: 'Nuova convenzione',
+    icon: 'icon-File',
+    class: '',
+    extralink: false,
+    submenu: [],
+    permissions: ['ADMIN'],
+  },
+  {
+    path: 'convenzioni',
+    title: 'Convenzioni',
+    icon: 'icon-File-Search',
+    class: '',
+    extralink: false,
+    submenu: [],
+    permissions: ['ADMIN'],
+  },
+  {
+    path: 'scadenze',
+    title: 'Scadenze pagamenti',
+    icon: 'icon-File-Search',
+    class: '',
+    extralink: false,
+    submenu: [],
+    permissions: ['ADMIN'], 
+  }, 
+  {
+    path: '',
+    title: 'Fasi',
+    icon: 'icon-Wrench',
     class: 'has-arrow',
     extralink: false,
-    permissions: [], 
-    submenu: [    
-      {
-        path: 'convenzioni',
-        title: 'Ricerca convenzioni',
-        icon: '',
-        class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'],
-      },
-      {
-        path: 'multistep-schematipo',
-        title: 'Nuova convenzione',
-        icon: '',
-        class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'],
-      },
+    permissions: [],
+    submenu: [ 
       {
         path: 'validazione',
         title: 'Approvazione',
@@ -178,7 +223,7 @@ export const ROUTES: RouteInfo[] = [
         path: '',
         title: 'Sottoscrizione',
         icon: '',
-        class: '',
+        class: 'has-arrow',
         extralink: false,        
         permissions: ['ADMIN'],        
         submenu: [  
@@ -238,15 +283,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN'],
       },     
-      {
-        path: 'scadenze',
-        title: 'Scadenze pagamenti',
-        icon: '',
-        class: '',
-        extralink: false,
-        submenu: [],
-        permissions: ['ADMIN'], 
-      }, 
+
     ]
   }
 ];
