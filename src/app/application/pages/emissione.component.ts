@@ -65,6 +65,7 @@ export class EmissioneComponent extends BaseEntityComponent {
         descriptionProp: 'dovuto_tranche',
         descriptionFunc: (data) => {
             if (data && data.dovuto_tranche){
+              this.model.attachment1.attachmenttype_codice = data.tipo_emissione;
               return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
             }
             return '';
@@ -86,8 +87,7 @@ export class EmissioneComponent extends BaseEntityComponent {
             {
               key: 'attachmenttype_codice',
               type: 'select',
-              className: "col-md-5",
-              defaultValue: 'NOTA_DEBITO',
+              className: "col-md-5",          
               templateOptions: {
                 //todo chiedere lato server 
                 options: [
@@ -98,6 +98,7 @@ export class EmissioneComponent extends BaseEntityComponent {
                 valueProp: 'codice',
                 labelProp: 'descrizione',
                 label: 'Tipo documento',
+                disabled: true,
                 required: true,
               }
             },
@@ -224,7 +225,7 @@ export class EmissioneComponent extends BaseEntityComponent {
               if (result){            
                 setTimeout(() => {
                   this.model = {...this.model, ...result};   
-                  this.options.formState.model = this.model;         
+                  this.options.formState.model = this.model;                           
                 },0);
               }
               this.isLoading=false;
@@ -237,7 +238,8 @@ export class EmissioneComponent extends BaseEntityComponent {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
+      var tosubmit = { ...this.model, ...this.form.value };      
+      tosubmit.attachment1 = {...this.model.attachment1, ...this.form.value.attachment1 }
       tosubmit.attachment1.doc = {...this.model.attachment1.doc, ...this.form.value.attachment1.doc }
 
       this.service.emissioneStep(tosubmit,true).subscribe(

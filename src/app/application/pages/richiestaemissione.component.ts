@@ -93,7 +93,26 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
           },
         },
       ]
+    },    
+    {
+      key: 'tipo_emissione',
+      type: 'select',
+      className: "col-md-5",
+      defaultValue: 'FATTURA_ELETTRONICA',
+      templateOptions: {
+        //todo chiedere lato server 
+        options: [
+          { codice: 'NOTA_DEBITO', descrizione: 'Emissione nota di debito' },
+          { codice: 'FATTURA_ELETTRONICA', descrizione: 'Fattura elettronica' },     
+          { codice: 'RICHIESTA_PAGAMENTO', descrizione: 'Richiesta pagamento' },                  
+        ],
+        valueProp: 'codice',
+        labelProp: 'descrizione',
+        label: 'Tipo documento da emettere',
+        required: true,
+      }
     },
+
   //   {
   //     fieldGroupClassName: 'row',
   //     fieldGroup: [

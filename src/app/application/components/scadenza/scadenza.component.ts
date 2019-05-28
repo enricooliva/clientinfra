@@ -119,7 +119,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
         {
           key: 'data_tranche',
           type: 'datepicker',
-          className: "col-md-5",          
+          className: "col-md-6",          
           templateOptions: {
             label: 'Tranche prevista',          
             required: true
@@ -128,23 +128,49 @@ export class ScadenzaComponent extends BaseEntityComponent {
         {
           key: 'dovuto_tranche',
           type: 'number',
-          className: "col-md-5",
+          className: "col-md-6",
           templateOptions: {
             label: 'Importo',
             required: true
           },
         }
       ]
-    },    
+    }, 
+    {
+      className: 'section-label',
+      template: '<h5>Documenti di debito</h5>',
+    },
     {
       fieldGroupClassName: 'row',
       fieldGroup: [
       {
+        key: 'tipo_emissione',
+        type: 'select',
+        className: "col-md-6",
+        defaultValue: 'FATTURA_ELETTRONICA',
+        templateOptions: {
+          //todo chiedere lato server 
+          options: [
+            { codice: 'NOTA_DEBITO', descrizione: 'Emissione nota di debito' },
+            { codice: 'FATTURA_ELETTRONICA', descrizione: 'Fattura elettronica' },     
+            { codice: 'RICHIESTA_PAGAMENTO', descrizione: 'Richiesta pagamento' },                  
+          ],
+          valueProp: 'codice',
+          labelProp: 'descrizione',
+          label: 'Tipo documento da emettere',        
+        }      
+      },
+      {
         key: 'data_emisrichiesta',
         type: 'datepicker',
-        className: "col-md-5",
+        className: "col-md-6",
         templateOptions: {
           label: 'Data emissione richiesta',          
+        },
+        expressionProperties: {
+          'templateOptions.label': (model: any, formState: any) => {                        
+              return model.tipo_emissione == 'NOTA_DEBITO' ? 'Data richiesta' : 'Data emissione richiesta';
+          },
         },        
       },
       // {
@@ -171,7 +197,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
       {
         key: 'data_fattura',
         type: 'datepicker',
-        className: "col-md-5",
+        className: "col-md-6",
         templateOptions: {
           label: 'Data fattura',          
         },        
@@ -179,19 +205,27 @@ export class ScadenzaComponent extends BaseEntityComponent {
       {
         key: 'num_fattura',
         type: 'input',
-        className: "col-md-5",
+        className: "col-md-6",
         templateOptions: {
           label: 'Numero fattura',                    
         },        
       },    
-  ]},
+  ],  
+  hideExpression: (model, formState) => {
+    return model.tipo_emissione !== 'FATTURA_ELETTRONICA';
+  },
+  },
+  {
+    className: 'section-label',
+    template: '<h5>Incassi e prelievi</h5>',
+  },
   {
     fieldGroupClassName: 'row',
     fieldGroup: [    
       {
         key: 'data_ordincasso',
         type: 'datepicker',
-        className: "col-md-5",
+        className: "col-md-6",
         templateOptions: {
           label: 'Data ordinativo incasso',          
         },        
@@ -199,16 +233,16 @@ export class ScadenzaComponent extends BaseEntityComponent {
       {
         key: 'num_ordincasso',
         type: 'input',
-        className: "col-md-5",
+        className: "col-md-6",
         templateOptions: {
           label: 'Numero ordinativo incasso',                    
         },        
       },    
   ]},
+
   {
     key: 'prelievo',
-    type: 'select',
-    className: "col-md-6",
+    type: 'select',    
     defaultValue: 'PRE_NO',
     templateOptions: {
       options: [
