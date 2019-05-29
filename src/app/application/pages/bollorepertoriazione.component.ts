@@ -6,6 +6,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
 import {Location} from '@angular/common';
 import { FormlyGroup } from '@ngx-formly/core/lib/components/formly.group';
+import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
+import { PDFJSStatic } from "pdfjs-dist";
+
+const PDFJS: PDFJSStatic = require('pdfjs-dist');
 
 @Component({
   selector: 'app-bollorepertoriazione',
@@ -118,21 +122,34 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         templateOptions: {
           label: 'Bollo virtuale',     
           options: [
-            //{ label: 'Si', value: true },
+            { label: 'Si', value: true },
             { label: 'No', value: false },
           ],
         },
-        hideExpression: (model: any, formState: any) => {
+        //hideExpression: (model: any, formState: any) => {
           //se non è valorizzato lo stipula_format o 
-          return !model.stipula_format || (model.stipula_format && model.stipula_format == 'cartaceo')
+          //return !model.stipula_format || (model.stipula_format && model.stipula_format == 'cartaceo')
+        //},
+      },
+      {
+        key: 'num_bolli',
+        type: 'number',
+        className: 'col-md-4',        
+        templateOptions: {
+          label: 'Numero bolli applicati',
+          description: 'Viene calcolato un bollo ogni 100 righe di convenzione',       
         },
-      }]
+        hideExpression: (model, formstate) => {
+          return (formstate.model.bollo_virtuale == false);
+        },
+      }
+    ]
     },    
     {
       key: 'attachment1',
-      hideExpression: (model, formstate) => {
-        return (formstate.model.bollo_virtuale == true);
-      },
+      // hideExpression: (model, formstate) => {
+      //   return (formstate.model.bollo_virtuale == true && model.stipula_format == 'digitale');
+      // },
       fieldGroup: [
         {
           fieldGroupClassName: 'row',
@@ -149,9 +166,14 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
                 ],
                 valueProp: 'codice',
                 labelProp: 'descrizione',
-                label: 'Tipo documento',
-                required: true,
+                label: 'Tipo documento',               
               },
+              expressionProperties: {
+                'templateOptions.required': (model: any, formState: any) => 
+                { 
+                  return !(formState.model.bollo_virtuale == true && formState.model.stipula_format == 'digitale') 
+                },
+              },              
             },
             {
               key: 'filename',
@@ -161,11 +183,14 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
                 label: 'Scegli il documento',
                 type: 'input',
                 placeholder: 'Scegli file documento',
-                accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-                required: true,
+                accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,                
                 onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
-              },                
-            },  
+              },    
+              expressionProperties: {
+                'templateOptions.required': (model: any, formState: any) => { return !(formState.model.bollo_virtuale == true && formState.model.stipula_format == 'digitale') },
+              },            
+            },
+              
           ],
         },
       ],  
@@ -189,6 +214,13 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
     reader.onload = async (e: any) => {
       this.isLoading = true;      
       currentAttachment.filevalue = encode(e.target.result);
+      
+      const lineNumber = await this.lineNumber(e.target.result);
+      console.log('numero righe '+lineNumber);
+      this.model.num_bolli = this.bolliCount(lineNumber);
+      if (this.form.get('num_bolli'))
+        this.form.get('num_bolli').setValue(this.model.num_bolli);      
+      
       if (!currentAttachment.filevalue) {
         this.isLoading = false;
         return;        
@@ -198,6 +230,38 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
     reader.readAsArrayBuffer(currentSelFile);
   }
   
+  async lineNumber(data): Promise<number> {
+    let text = '';
+    return await PDFJS.getDocument({ data: data }).then(async (doc) => {
+      let counter: number = 100;
+      counter = counter > doc.numPages ? doc.numPages : counter;
+
+      let linecount: number = 0;
+      for (var i = 1; i <= counter; i++) {
+        let pageText = await doc.getPage(i).then(pageData => ControlUtils.render_page(pageData)) as string;
+
+        linecount += pageText.split('\n').length;
+       
+      }    
+            
+      return linecount;
+
+    });
+  }
+
+  bolliCount(num_lines: number): number{  
+    if (num_lines>0){      
+      let arround = 0;
+      if (num_lines % 100 > 0)
+        arround = 1;
+
+      return Math.floor(num_lines / 100) + arround;
+    }
+      
+    return 0;
+  }
+
+
   constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
     super(route, router, location)
     this.isLoading = false;
