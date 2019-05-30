@@ -298,18 +298,45 @@ export class ScadenzaComponent extends BaseEntityComponent {
               },
             },
             {
-              type: 'button',
-              className: "col-md-2 d-flex align-items-start mt-4 pt-2",
-              templateOptions: {
-                btnType: 'primary oi oi-data-transfer-download',
-                //icon: 'oi oi-data-transfer-download'
-                onClick: ($event, model) => this.download($event, model),
-              },
-              expressionProperties: {
-                'templateOptions.disabled': (model: any, formState: any) => {                        
-                  return model.filetype == 'link';
+              fieldGroupClassName: 'btn-toolbar',   
+              className: 'col-md-3 btn-group',
+              fieldGroup: [
+                {
+                  type: 'button',
+                  className: "mt-4 pt-2",
+                  templateOptions: {
+                    btnType: 'primary oi oi-data-transfer-download',
+                    title: 'Scarica documento',
+                    //icon: 'oi oi-data-transfer-download'
+                    onClick: ($event, model) => this.download($event, model),
+                  },
+                  hideExpression: (model: any, formState: any) => {
+                    return model.filetype == 'link';
+                  },                                
                 },
-              }
+                {
+                  type: 'button',
+                  className: "ml-2 mt-4 pt-2",
+                  templateOptions: {
+                    btnType: 'primary oi oi-external-link',
+                    title: 'Apri pagina esterna',                  
+                    onClick: ($event, model) => {                                        
+                      let titulus = window.open('', '_blank'); 
+                      this.appService.getTitulusDocumentURL(model.id).subscribe(
+                        (data)=> titulus.location.href = data.url, 
+                        (error) => { 
+                          titulus.close(); 
+                          console.log(error);
+                        }                                            
+                      );
+                      
+                    },
+                  },      
+                  hideExpression: (model: any, formState: any) => {
+                    return !model.num_prot;
+                  },          
+                },
+              ],
             },
           ],
         },

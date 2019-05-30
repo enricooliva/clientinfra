@@ -12,6 +12,7 @@ import { UploadfileComponent } from './uploadfile.component';
 import { NgbModal, NgbActiveModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { MycurrencyPipe } from 'src/app/shared/pipe/custom.currencypipe';
+import { HttpParams } from '@angular/common/http';
 
 
 @Component({
@@ -128,7 +129,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         fieldGroup: [
           //nome allegato, tipo allegato, data ora creazione
           {
-            fieldGroupClassName: 'row',
+            fieldGroupClassName: 'row',            
             fieldGroup: [
               {
                 className: 'col-md-1',
@@ -169,19 +170,52 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
                 },
               },
               {
+              fieldGroupClassName: 'btn-toolbar',   
+              className: 'col-md-3 btn-group',
+              fieldGroup: [
+              {
                 type: 'button',
-                className: "col-md-2 d-flex align-items-start mt-4 pt-2",
+                className: "mt-4 pt-2",
                 templateOptions: {
                   btnType: 'primary oi oi-data-transfer-download',
+                  title: 'Scarica documento',
                   //icon: 'oi oi-data-transfer-download'
                   onClick: ($event, model) => this.download($event, model),
                 },
-                expressionProperties: {
-                  'templateOptions.disabled': (model: any, formState: any) => {                        
-                    return model.filetype == 'link';
-                  },
-                }
+                hideExpression: (model: any, formState: any) => {
+                  return model.filetype == 'link';
+               },                                
               },
+              {
+                type: 'button',
+                className: "ml-2 mt-4 pt-2",
+                templateOptions: {
+                  btnType: 'primary oi oi-external-link',
+                  title: 'Apri pagina esterna',
+                  //icon: 'oi oi-data-transfer-download'
+                  onClick: ($event, model) => {
+                    
+                    // let params = new HttpParams()
+                    //   .set('verbo', 'queryplain')
+                    //   .set('codammaoo', 'UNURCLE')
+                    //   .set('query', '[//@physdoc]=823284');
+                    let titulus = window.open('', '_blank'); 
+                    this.service.getTitulusDocumentURL(model.id).subscribe(
+                      (data)=> titulus.location.href = data.url, //window.open(data.url, '_blank'),
+                      (error) => { 
+                        titulus.close(); 
+                        console.log(error);
+                      }                                            
+                    );
+                    
+                  },
+                },      
+                hideExpression: (model: any, formState: any) => {
+                  return !model.num_prot;
+               },          
+              },
+            ],
+            },
             ],
           },
           //numero protocolollo e data protocollo

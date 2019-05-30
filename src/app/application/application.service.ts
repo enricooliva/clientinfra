@@ -726,6 +726,13 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
   }
 
   @Cacheable()
+  getTitulusDocumentURL(id): Observable<any>{
+    return this.http.get(this._baseURL + '/convenzioni/gettitulusdocumenturl/' + id.toString(), httpOptions).pipe(
+      catchError(this.handleError('getTitulusDocumentURL', null, true))
+    )
+  }
+
+  @Cacheable()
   getDipartimenti(): Observable<any> {
     return this.http.get<any>(this._baseURL + '/dipartimenti', httpOptions).pipe(      
         map(x => {
