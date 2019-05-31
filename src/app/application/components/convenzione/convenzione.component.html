@@ -92,7 +92,14 @@
       <span *ngSwitchCase="'pagato'" class="label label-rounded label-success">{{value}}</span>     
     </span>
 </ng-template>  
-    
+
+<ng-template #stateattivita ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
+  <span [ngSwitch]="value">                        
+    <span *ngSwitchCase="'aperto'" class="label label-rounded label-primary">{{value}}</span>                        
+    <span *ngSwitchCase="'annullato'" class="label label-rounded label-danger">{{value}}</span>     
+    <span *ngSwitchCase="'completato'" class="label label-rounded label-success">{{value}}</span>     
+  </span>
+</ng-template>  
 
 
 <!-- [pdfFile]="model.convenzione_pdf" -->

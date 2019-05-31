@@ -29,6 +29,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'durata',
   // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convenzione',  
   @ViewChild('statetemplate') statetemplate: TemplateRef<any>;
+  @ViewChild('stateattivita') stateattivita: TemplateRef<any>;
 
   @ViewChild('tabs')
   private tabs: NgbTabset;
@@ -515,6 +516,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
 
     let cols: (Array<any>) = this.fieldscadenze.find(x => x.key == "scadenze").templateOptions.columns;
     cols.find(x => x.prop == 'state').cellTemplate = this.statetemplate;
+
+    cols= this.fieldsusertask.find(x => x.key == "usertasks").templateOptions.columns;
+    cols.find(x => x.prop == 'state').cellTemplate = this.stateattivita;
 
     this.route.params.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       if (params['id']) {
