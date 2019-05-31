@@ -46,6 +46,10 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
   public static WORKFLOW_ACTION: string = 'repertorio'; //TRASITION
   public static ABSULTE_PATH: string = 'home/bollorepertoriazione';
 
+  public numPages: number;
+  public numLines: number;
+
+
   get workflowAction(): string{
     return BolloRepertoriazioneComponent.WORKFLOW_ACTION;
   }
@@ -137,14 +141,31 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         className: 'col-md-4',        
         templateOptions: {
           label: 'Numero bolli applicati',
-          description: 'Viene calcolato un bollo ogni 100 righe di convenzione',       
+          description: 'Calcolare un bollo ogni 100 righe di convenzione',       
         },
         hideExpression: (model, formstate) => {
           return (formstate.model.bollo_virtuale == false);
         },
-      }
+      },
+      {
+        type: 'template',
+        className: 'col-md-6 mt-4 pt-3',       
+        templateOptions: {          
+          template: '',
+        },
+        hideExpression: (model, formstate) => {
+          return !(this.model.bollo_virtuale &&  this.numPages != undefined);
+        },
+        expressionProperties: {
+          'templateOptions.template': () => `           
+            <h6 class="panel-title">
+             Numero di pagine ${this.numPages} e numero linee calcolate ${this.numLines}
+            </h6>
+          `
+        }
+      },
     ]
-    },    
+    },             
     {
       key: 'attachment1',
       // hideExpression: (model, formstate) => {
@@ -190,7 +211,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
                 'templateOptions.required': (model: any, formState: any) => { return !(formState.model.bollo_virtuale == true && formState.model.stipula_format == 'digitale') },
               },            
             },
-              
+      
           ],
         },
       ],  
@@ -215,11 +236,12 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
       this.isLoading = true;      
       currentAttachment.filevalue = encode(e.target.result);
       
-      const lineNumber = await this.lineNumber(e.target.result);
-      console.log('numero righe '+lineNumber);
-      this.model.num_bolli = this.bolliCount(lineNumber);
-      if (this.form.get('num_bolli'))
-        this.form.get('num_bolli').setValue(this.model.num_bolli);      
+      this.numLines = await this.lineNumber(e.target.result);
+      //console.log('numero righe '+this.numLines);
+
+      // this.model.num_bolli = this.bolliCount(this.numLines);
+      // if (this.form.get('num_bolli'))
+      //   this.form.get('num_bolli').setValue(this.model.num_bolli);      
       
       if (!currentAttachment.filevalue) {
         this.isLoading = false;
@@ -234,6 +256,9 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
     let text = '';
     return await PDFJS.getDocument({ data: data }).then(async (doc) => {
       let counter: number = 100;
+      
+      this.numPages = doc.numPages;
+
       counter = counter > doc.numPages ? doc.numPages : counter;
 
       let linecount: number = 0;
