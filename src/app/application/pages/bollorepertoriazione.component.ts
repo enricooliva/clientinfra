@@ -5,7 +5,6 @@ import { ApplicationService } from '../application.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
 import {Location} from '@angular/common';
-import { FormlyGroup } from '@ngx-formly/core/lib/components/formly.group';
 import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
 import { PDFJSStatic } from "pdfjs-dist";
 

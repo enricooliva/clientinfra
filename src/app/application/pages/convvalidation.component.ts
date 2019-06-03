@@ -40,7 +40,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
 
   public static WORKFLOW_ACTION: string = 'store_validazione'; //TRASITION
   public static ABSULTE_PATH: string = 'home/validazione';
-
+  
   fields: FormlyFieldConfig[] = [
     {
       className: 'section-label',

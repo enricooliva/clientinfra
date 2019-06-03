@@ -168,12 +168,25 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
   private initdesc = false;
   init(){   
     //verifico in caso di cache e non se il modello è inizializzato
-    if (this.field.key in this.model && this.model[this.field.key]){    
+    if (!this.initdesc && this.field.key in this.model && this.model[this.field.key]){    
       this.initdesc = true;
       if (typeof this.field.templateOptions.descriptionFunc === 'function'){
         this.extDescription = this.field.templateOptions.descriptionFunc(this.model);    
       }else if (this.field.templateOptions.initdescription in this.model){      
         this.extDescription = this.model[this.field.templateOptions.initdescription];        
+      } else if (!this.extDescription){
+        //far scattare la decodifica 
+        setTimeout(() => { this.isLoading = true; }, 0);
+        this.service.getById(this.formControl.value).subscribe((data) => {
+          setTimeout(() => { this.isLoading = false; }, 0);
+          if (data == null) {
+            this.extDescription = null;
+            this.formControl.setErrors({ notfound: true });
+            return;
+          }
+          //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
+          this.setDescription(data);            
+        });
       }
     } else {
       this.setDescription(null);
