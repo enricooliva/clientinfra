@@ -491,7 +491,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             { value: 'proposta', label: 'Proposta' }, 
             { value: 'approvato', label: 'Approvato' }, 
             { value: 'inapprovazione', label: 'In approvazione' },            
-            { value: 'da_firmare_direttore2', label: 'Da controfirmare direttore' },
+            { value: 'da_firmare_direttore2', label: 'Da controfirmare UniUrb' },
             { value: 'da_firmare_cotroparte2', label: 'Da controfirmare controparte' },            
           ],
           label: 'Stato',

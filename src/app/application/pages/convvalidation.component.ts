@@ -30,6 +30,7 @@ import {Location} from '@angular/common';
       <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">
       </formly-form>
   </form>
+  
   <button class="btn btn-primary mt-3" type="button" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()">Salva</button>
   </div>
   `,
@@ -105,38 +106,38 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           {
             fieldGroupClassName: 'row',
             fieldGroup:[
-          {
-            key: 'attachmenttype_codice',
-            type: 'select',
-            defaultValue: 'DSA',
-            className: "col-md-5",
-            templateOptions: {
-              //todo chiedere lato server 
-              options: [
-                { codice: 'DSA', descrizione: 'Delibera Senato Accademico' },
-                { codice: 'DCA', descrizione: 'Delibera Consiglio di Amministrazione' },
-                { codice: 'DR', descrizione: 'Decreto Rettorale' },
-                { codice: 'DRU', descrizione: "Decreto Rettorale d'urgenza" },
-              ],
-              valueProp: 'codice',
-              labelProp: 'descrizione',
-              label: 'Tipologia atto di approvazione',
-              required: true,
-            }
-          },
-          {
-            key: 'filename',
-            type: 'fileinput',
-            className: "col-md-5",
-            templateOptions: {
-              label: 'Scegli documento',
-              type: 'input',              
-              placeholder: 'Scegli file documento',
-              accept: 'application/pdf,.p7m', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-              required: true,
-              onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+            {
+              key: 'attachmenttype_codice',
+              type: 'select',
+              defaultValue: 'DSA',
+              className: "col-md-5",
+              templateOptions: {
+                //todo chiedere lato server 
+                options: [
+                  { codice: 'DSA', descrizione: 'Delibera Senato Accademico' },
+                  { codice: 'DCA', descrizione: 'Delibera Consiglio di Amministrazione' },
+                  { codice: 'DR', descrizione: 'Decreto Rettorale' },
+                  { codice: 'DRU', descrizione: "Decreto Rettorale d'urgenza" },
+                ],
+                valueProp: 'codice',
+                labelProp: 'descrizione',
+                label: 'Tipologia atto di approvazione',
+                required: true,
+              }
             },
-          },   
+            {
+              key: 'filename',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Scegli documento',
+                type: 'input',              
+                placeholder: 'Scegli file documento',
+                accept: 'application/pdf,.p7m', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                required: true,
+                onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+              },
+            },   
         ],
         },
         {
@@ -199,6 +200,8 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           let result = await ControlUtils.parsePdf(e.target.result);     
           field.formControl.parent.get('docnumber').setValue(result.docnumber);
           field.formControl.parent.get('data_emissione').setValue(result.converted);
+
+          field.formControl.markAsDirty();         
         } catch (error) {
           console.log(error);
           this.isLoading = false;
