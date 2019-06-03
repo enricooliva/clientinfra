@@ -1,10 +1,7 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef, KeyValueDiffers } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { FormlyFieldConfig, FieldArrayType } from '@ngx-formly/core';
 import { TableColumn } from '@swimlane/ngx-datatable/release/types';
-import { Router } from '@angular/router';
-import { isEmpty } from 'rxjs/operators';
-import { element } from 'protractor';
+
 
 @Component({
   selector: 'app-table-type',

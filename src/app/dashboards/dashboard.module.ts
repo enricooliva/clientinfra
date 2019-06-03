@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -17,16 +17,20 @@ import { InfocardComponent } from './dashboard-components/info-card/info-card.co
 import { DashboardService } from './dashboard.service';
 import { LoadingModule } from 'ngx-loading';
 import { NotificationsComponent } from './dashboard-components/notifications/notifications.component';
+import { SharedModule } from '../shared';
+import { TableTypeComponent } from '../shared/dynamic-form/table-type.component';
 
 @NgModule({
-  imports: [
+  imports: [  
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     NgbModule,   
     LoadingModule, 
     RouterModule.forChild(DashboardRoutes),
     PerfectScrollbarModule,    
-    NgxDatatableModule
+    NgxDatatableModule,        
+    SharedModule,
   ],
   declarations: [
     Dashboard1Component,

@@ -56,8 +56,7 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent,
-    TableTypeComponent,
+    NotFoundComponent,    
     TestTabComponent,    
 ],
   imports: [
