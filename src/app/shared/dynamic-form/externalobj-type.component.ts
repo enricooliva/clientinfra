@@ -19,9 +19,7 @@ import { Router } from '@angular/router';
     <div  style="position: relative">    
     <ngx-loading [show]="isLoading" [config]="{  fullScreenBackdrop: false, backdropBorderRadius: '4px' }"></ngx-loading>
     <formly-group 
-      [field]="field"
-      [options]="options"
-      [form]="formControl">  
+      [field]="field">  
     </formly-group>     
     </div>
  `,
