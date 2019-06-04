@@ -8,11 +8,11 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
   template: `
   <div class="btn-toolbar mb-2" role="toolbar" *ngIf="!to.hidetoolbar">
     <div class="btn-group btn-group-sm">    
-        <button class="btn btn-outline-primary border-0 rounded-0" (click)="addFirst()"  >              
+        <button type="button" class="btn btn-outline-primary border-0 rounded-0" (click)="addFirst()"  >              
             <span class="oi oi-plus"></span>
             <span class="ml-2">Aggiungi</span>
         </button>    
-        <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="to.selected.length == 0" (click)="removeSelected()"  >              
+        <button type="button" class="btn btn-outline-primary border-0 rounded-0" [disabled]="to.selected.length == 0" (click)="removeSelected()"  >              
             <span class="oi oi-trash"></span>  
             <span class="ml-2">Rimuovi</span>
         </button>

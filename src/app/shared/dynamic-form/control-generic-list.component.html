@@ -3,11 +3,11 @@
 
   <div class="btn-toolbar mb-4" role="toolbar">
     <div class="btn-group">
-      <button class="btn btn-outline-primary" (click)="add()">
+      <button type="button" class="btn btn-outline-primary" (click)="add()">
         <span class="oi oi-plus"></span>
         <span class="ml-2">Aggiungi</span>
       </button>
-      <button class="btn btn-outline-primary" [disabled]="!form.valid">
+      <button type="button" class="btn btn-outline-primary" [disabled]="!form.valid">
         <span class="oi oi-trash"></span>
         <span class="ml-2">Rimuovi</span>
       </button>
