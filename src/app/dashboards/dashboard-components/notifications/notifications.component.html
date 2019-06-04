@@ -8,14 +8,25 @@
               <!-- Comment Row -->                    
             <ul class="list-task todo-list list-group m-b-0" data-role="notifications" >       
                 <div *ngFor="let notification of model | async">  
-                    <li class="list-group-item list-group-item-action todo-item" data-role="notification"  (click)="open(content, notification)">                               
+                    <li class="list-group-item list-group-item-action todo-item" data-role="notification" >                               
                         <div class="todo-label" style="padding-left: 25px;">
                             <span class="todo-desc">{{ notification.data.message }}</span>
                             <span *ngIf="notification.type == 'App\\\Notifications\\\ConvenzioneApprovata'" class="badge badge-pill badge-success float-right">Convenzione Approvata</span>
                             <span *ngIf="notification.type == 'App\\\Notifications\\\ConvenzioneRepertoriata'" class="badge badge-pill badge-success float-right">Convenzione Repertoriata</span>                           
-                        </div>                                        
-                        <div class="item-date">{{notification.created_at | date:'d MMMM, yyyy'}}</div>
-
+                        </div>                                                                
+                        <div class="item-date">{{notification.created_at | date:'d MMMM, yyyy'}}</div>   
+                                                
+                            <div class="button-group mt-1 pt-1 ml-4">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="open(content, notification)" data-toggle="tooltip" title="Apre attività">
+                                Dettagli
+                                <i class="ti-pencil-alt"></i>
+                            </button>                          
+                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onOpen(notification)" data-toggle="tooltip"  title="Apre entità">
+                                Apri
+                                <i class="ti-arrow-top-right"></i>
+                            </button>
+                        </div>                        
+                    
                     </li>
                 </div>   
             </ul>
