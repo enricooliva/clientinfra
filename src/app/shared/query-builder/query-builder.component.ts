@@ -72,7 +72,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                   tap(selectedField => {                                     
                     field.formControl.setValue('');
                     if (this.keymetadata[selectedField] )                     
-                      field.templateOptions.options = this.getOperators(selectedField);  
+                      field.templateOptions.options = this.getOperators(selectedField,field.model);  
                       if (field.templateOptions.options[0] !== undefined) 
                         field.formControl.setValue(field.templateOptions.options[0].value);                                                                           
                   }),
@@ -213,14 +213,15 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
   //   });
   // }
 
-  getOperators(field: string): Operator[] {
+  getOperators(field: string, rawmodel): Operator[] {
     if (this.operatorsCache[field]) {
       return this.operatorsCache[field];
     }
     let operators = this.defaultEmptyList;
     const fieldObject = this.keymetadata[field];    
-    let type = fieldObject.type;
-
+    let type = fieldObject.type;  
+    rawmodel.type = fieldObject.type;
+    
     if (type) {
       if (type === 'external')
         type = (fieldObject.templateOptions.type || 'string');
@@ -265,7 +266,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
    */
   getFormValidationErrors() {      
 
-  let fa = this.form.controls['rules'] as FormArray;
+    let fa = this.form.controls['rules'] as FormArray;
     
     for (let index = 0; index < fa.controls.length; index++) {
       const fg = fa.controls[index] as FormGroup;  

@@ -100,7 +100,7 @@ export class LookupComponent implements OnInit {
     this.service.query(this.querymodel).subscribe((data) => {
       const to = this.resultMetadata[0].templateOptions;
       this.isLoading = false;   
-      this.model=  {
+      this.model = {
         data: data.data
       }
       to.page.totalElements = data.total; 

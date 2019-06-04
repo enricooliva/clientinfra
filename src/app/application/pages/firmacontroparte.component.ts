@@ -238,7 +238,29 @@ export class FirmaControparteComponent extends BaseEntityComponent {
 
           ],
         },
-
+        {
+          fieldGroupClassName: 'row',
+          fieldGroup: [
+            {
+              key: 'data_inizio_conv',
+              type: 'datepicker',
+              className: "col-md-6",
+              templateOptions: {
+                required: true,  
+                label: 'Data inizio convenzione',
+              }
+            },
+            {
+              key: 'data_fine_conv',
+              type: 'datepicker',
+              className: "col-md-6",        
+              templateOptions: {
+                required: true,  
+                label: 'Data fine convenzione',
+              }      
+            }            
+          ]       
+        },
         {
           key: 'scadenze',
           type: 'repeat',

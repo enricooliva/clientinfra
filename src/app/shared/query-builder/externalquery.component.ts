@@ -75,8 +75,8 @@ export class ExternalqueryComponent extends FieldType implements OnInit {
 
   setcode(data: any) {
     if (this.field.templateOptions.codeProp in data){
-      this.codeField.formControl.setValue(data[this.field.templateOptions.codeProp]);
-      this.codeField.templateOptions.description = data[this.field.templateOptions.descriptionProp];
+      this.codeField.formControl.setValue(data[this.field.templateOptions.codeProp]);    
+      //this.codeField.templateOptions.description = data[this.field.templateOptions.descriptionProp];
     }
   }
 

@@ -374,7 +374,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         type: 'external',
         wrappers: [],
         templateOptions: {
-          label: 'UserId',
+          label: 'Codice utente',
           type: 'string',
           entityName: 'user',
           entityLabel: 'Utenti',
@@ -472,7 +472,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           label: 'Modalità di pagamento',
           required: true
         }
-      },
+      }, 
       {
         key: 'corrispettivo',
         type: 'input',
@@ -481,7 +481,25 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           label: 'Corrispettivo iva esclusa se applicabile',
           required: true,
         },
-      },   
+      },
+      {
+        key: 'data_inizio_conv',
+        type: 'date',
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Data inizio',
+          required: true,
+        },
+      },  
+      {
+        key: 'data_fine_conv',
+        type: 'date',
+        className: "col-md-6",
+        templateOptions: {
+          label: 'Data fine',
+          required: true,
+        },
+      },     
       {
         key: 'current_place',
         type: 'select',
