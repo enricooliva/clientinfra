@@ -77,4 +77,17 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onOpen(task){
+    //a quale entità è riferito
+    //model_type: "App\Convenzione"
+    //model_type: "App\Scadenza"
+    if (task.model_type == 'App\\Convenzione'){
+      this.router.navigate(['home/convenzioni', task.model_id]);
+    }
+    if (task.model_type == 'App\\Scadenza'){
+      this.router.navigate(['home/scadenze', task.model_id]);
+    }
+
+  }
+
 }

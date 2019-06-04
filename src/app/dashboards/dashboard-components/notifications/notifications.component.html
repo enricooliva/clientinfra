@@ -11,15 +11,11 @@
                     <li class="list-group-item list-group-item-action todo-item" data-role="notification"  (click)="open(content, notification)">                               
                         <div class="todo-label" style="padding-left: 25px;">
                             <span class="todo-desc">{{ notification.data.message }}</span>
-                            <span class="badge badge-pill badge-success float-right" i18n>{notification.type, select, App\Notifications\ConvenzioneApprovata {ConvenzioneApprovata}}</span>
-                        </div>                    
-                        <ul class="list-style-none assignedto">
-                            <!-- <li class="assignee">
-                                <img class="assignee-img" src="assets/images/users/1.jpg" alt="user" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Steave">
-                            </li>                       -->
-                        </ul>
+                            <span *ngIf="notification.type == 'App\\\Notifications\\\ConvenzioneApprovata'" class="badge badge-pill badge-success float-right">Convenzione Approvata</span>
+                            <span *ngIf="notification.type == 'App\\\Notifications\\\ConvenzioneRepertoriata'" class="badge badge-pill badge-success float-right">Convenzione Repertoriata</span>                           
+                        </div>                                        
                         <div class="item-date">{{notification.created_at | date:'d MMMM, yyyy'}}</div>
+
                     </li>
                 </div>   
             </ul>

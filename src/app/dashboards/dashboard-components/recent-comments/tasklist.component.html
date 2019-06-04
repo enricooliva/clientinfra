@@ -14,7 +14,7 @@
                      n. {{task.model_id}}</span>
                 <h6 *ngIf="!task.namelist" class="font-medium">...</h6>   
                 <h6 *ngIf="task.namelist" class="font-medium">{{task.namelist | titlecase}}</h6>                
-                <span class="m-b-15 d-block">{{task.subject}}</span>              
+                <span class="m-b-15 d-block">{{task.subject}}</span>                    
                 <div class="comment-footer">
                     <span class="text-muted float-right">{{task.created_at | date:'d MMMM, yyyy' }}</span>                  
                     <span [ngSwitch]="task.state">                        
@@ -25,16 +25,21 @@
                         <span *ngSwitchDefault class="label label-rounded label-info">{{task.state}}</span>                        
                     </span>
                     <!-- 'aperto', 'inlavorazione', 'completato', 'annullato' -->
-                    <span class="action-icons">
-                        <a (click)="onClick(task)" data-toggle="tooltip" title="Apre attività">
-                            <i class="ti-pencil-alt"></i>
-                        </a>
-                        <a *ngIf="task.state == 'aperto'" (click)="onCheck(task)" data-toggle="tooltip" title="Esegui attività">
-                           <i class="ti-check"></i>
-                        </a>
-                        <!-- <a href="javascript:void(0)">
-                            <i class="ti-heart"></i>
-                        </a> -->
+                    <span class="action-icons float-right">
+                        <span class="button-group mr-4">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onClick(task)" data-toggle="tooltip" title="Apre attività">
+                                Dettagli
+                                <i class="ti-pencil-alt"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" *ngIf="task.state == 'aperto'" (click)="onCheck(task)" data-toggle="tooltip"  title="Esegui attività">
+                                Esegui
+                                <i class="ti-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onOpen(task)" data-toggle="tooltip"  title="Apre entità">
+                                Apri
+                                <i class="ti-arrow-top-right"></i>
+                            </button>
+                        </span>                        
                     </span>
                 </div>
             </div>
