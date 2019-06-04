@@ -13,6 +13,7 @@ import { NgbModal, NgbActiveModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap'
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { MycurrencyPipe } from 'src/app/shared/pipe/custom.currencypipe';
 import { HttpParams } from '@angular/common/http';
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -43,6 +44,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   transitions = new Subject<any>();
 
   currency = new MycurrencyPipe();
+
+  returnUrl: string = null;
+
+  locationBack: Boolean = true;
 
   //caricati dal service
   fields: FormlyFieldConfig[] = [
@@ -478,12 +483,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);
   }
 
-  constructor(private service: ApplicationService, 
-              private route: ActivatedRoute, 
-              protected router: Router, 
-              private modalService: NgbModal,
-              public activeModal: NgbActiveModal,              
-              ) {
+  constructor(private service: ApplicationService, private route: ActivatedRoute, protected router: Router, private modalService: NgbModal, 
+    public activeModal: NgbActiveModal,        
+    protected location: Location) 
+  {
 
     //modello vuoto
     this.model = {
@@ -692,5 +695,17 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     const filteredCells = cells.filter(cell => !!cell);
     let total = filteredCells.reduce((sum, cell) => sum += Number(cell), 0);
     return total; // `Totale: ${total}`;
+  }
+
+  onBack(){
+    if (this.returnUrl){
+      this.router.navigate([this.returnUrl]);
+    } else {
+      this.goBack();
+    }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
