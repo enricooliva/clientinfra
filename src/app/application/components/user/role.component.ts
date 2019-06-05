@@ -5,6 +5,7 @@ import { RoleService } from '../../role.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared';
 import { SourceMapGenerator } from '@angular/compiler/src/output/source_map';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-role',
@@ -110,8 +111,8 @@ export class RoleComponent extends BaseEntityComponent {
     }
   ];
 
-  constructor(protected service: RoleService, protected route: ActivatedRoute, protected router: Router) {
-    super(route, router);
+  constructor(protected service: RoleService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route, router, location);
     //this.title = "Ruolo";
     this.activeNew =true;
     this.newPath = 'home/roles/new'

@@ -31,7 +31,9 @@ export class InputFileComponent extends FieldType implements OnInit{
       }
    
       this.field.templateOptions.addonRight.onClick = (to, fieldType, $event) => this.reset();      
-      this.field.templateOptions.addonLeft.onClick = (to, fieldType, $event) => this.fileInput.nativeElement.click()       
+      this.field.templateOptions.addonLeft.onClick = (to, fieldType, $event) => { 
+        this.fileInput.nativeElement.click();             
+      }
     
       this.field.templateOptions.keyup = (field, event: KeyboardEvent) => {
         if (event.key == "F2") {

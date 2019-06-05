@@ -9,6 +9,7 @@ import { ServiceQuery, ServiceEntity } from '../query-builder/query-builder.inte
 import { MessageService } from '../message.service';
 import { AppConstants } from 'src/app/app-constants';
 import { create } from 'domain';
+import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -76,7 +77,7 @@ export class BaseService extends CoreSevice implements ServiceQuery, ServiceEnti
     );
   }
 
-  constructor(protected http: HttpClient, public messageService: MessageService) {
+  constructor(protected http: HttpClient, public messageService: MessageService, public confirmationDialogService: ConfirmationDialogService) {
      super(http,messageService)
   }
 

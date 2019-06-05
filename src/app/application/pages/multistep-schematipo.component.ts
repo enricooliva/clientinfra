@@ -95,12 +95,12 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       user: { id: authService.userid, name: authService.username },
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
-      convezione_type: 'TO',
+      convenzione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
-      azienda: { id_esterno: null, denominazione: '' },
+      azienda: { id: null, denominazione: '' },
       unitaorganizzativa_uo: '',
-      attachments: [],      
-
+      attachments: [],    
+      aziende:[],  
     };
 
     this.options = {
@@ -353,9 +353,9 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                       filter(ev => ev !== null),
                       tap(uo => {                                                                   
                         field.formControl.setValue('');
-                        field.templateOptions.options = this.service.getValidationOfficesPersonale(uo).pipe(
+                        field.templateOptions.options = this.service.getPersonaleUfficio(uo).pipe(
                           map(items => {
-                            return items.filter(x => x.cd_tipo_posizorg == 'RESP_UFF' || x.cd_tipo_posizorg == 'COOR_PRO_D' || x.cd_tipo_posizorg == 'VIC_RES_PL' || x.cd_tipo_posizorg =='RESP_PLESSO');
+                            return items.filter(x => ApplicationService.isResponsabileUfficio(x.cd_tipo_posizorg));
                           }),  
                           tap(items => {
                             if (items[0]){
@@ -412,7 +412,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     lifecycle: {
                       onInit: (form, field, model) => {                                              
                         //field.formControl.setValue('');
-                        field.templateOptions.options = this.service.getValidationOfficesPersonale(this.model.unitaorganizzativa_uo).pipe(
+                        field.templateOptions.options = this.service.getPersonaleUfficio(this.model.unitaorganizzativa_uo).pipe(
                           // map(items => {
                           //   return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
                           // }),                         

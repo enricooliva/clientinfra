@@ -5,7 +5,7 @@ import { PermissionService } from '../../permission.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.component';
 import { AziendaLocService } from '../../aziendaloc.service';
-
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-aziendaloc', 
@@ -49,6 +49,21 @@ export class AziendaLocComponent extends BaseEntityComponent {
         entityName: 'azienda',
         entityLabel: 'Aziende',
         codeProp: 'id_esterno',        
+        descriptionFunc: (data) => {
+          if (data && data.denominazione){            
+            this.updateAzienda(data);
+            return data.denominazione;
+          } 
+          else if(data && (data.nome || data.cognome))
+          {
+            data.denominazione = data.nome+' '+data.cognome;
+            this.updateAzienda(data);
+
+            return data.denominazione;
+          }
+          
+          return '';
+        },
         descriptionProp: 'denominazione',
         description: 'Riferimento azienda sistema gestionale di ateneo'
       },      
@@ -92,7 +107,7 @@ export class AziendaLocComponent extends BaseEntityComponent {
     {
       fieldGroupClassName: 'row',
       fieldGroup: [
-          {      
+        {      
           key: 'cod_fisc',
           type: 'input',  
           className: "col-md-6",    
@@ -101,12 +116,11 @@ export class AziendaLocComponent extends BaseEntityComponent {
           },
         },
         {
-          key: 'indirizzo1',
+          key: 'part_iva',
           type: 'input',      
           className: "col-md-6",    
           templateOptions: {
-            label: 'Indirizzo',                
-            description: 'Via e località'
+            label: 'Partita iva',                
           },
         }]
     },
@@ -114,16 +128,25 @@ export class AziendaLocComponent extends BaseEntityComponent {
       fieldGroupClassName: 'row',
       fieldGroup: [
         {
+          key: 'indirizzo1',
+          type: 'input',      
+          className: "col-md-5",    
+          templateOptions: {
+            label: 'Indirizzo',                
+            description: 'Via e località'
+          },
+        },
+        {
           key: 'cap',
           type: 'input',    
-          className: "col-md-6",   
+          className: "col-md-3",   
           templateOptions: {
             label: 'Cap',                
           },
         },
         {
           key: 'comune',
-          className: "col-md-6", 
+          className: "col-md-4", 
           type: 'input',      
           templateOptions: {
             label: 'Comune',                
@@ -137,13 +160,13 @@ export class AziendaLocComponent extends BaseEntityComponent {
       templateOptions: {
         label: 'Email di contatto (PEC)',                
         required: true,       
-        pattern: '^[a-z0-9_]+@[a-z0-9\-]+\.[a-z0-9\-\.]+$]',
+        pattern: /(\w+(\s|)@(\s|)[a-zA-Z_]+?\.[a-zA-Z]{2,3})$/,
       },
     },
   ];  
 
-  constructor(protected service: AziendaLocService, protected route: ActivatedRoute, protected router: Router) {
-    super(route,router);
+  constructor(protected service: AziendaLocService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route,router,location);
     //this.title = 'Tipo pagamento'
     this.activeNew =true;
     this.researchPath = 'home/aziendeloc'
@@ -151,6 +174,19 @@ export class AziendaLocComponent extends BaseEntityComponent {
   }
 
 
+  updateAzienda(data){
+    //'nome','cognome', 'denominazione', 'cod_fis', 'part_iva', 'rappresentante_legale'
+    this.form.get('denominazione').setValue(data.denominazione);
+    this.form.get('nome').setValue(data.nome);
+    this.form.get('cognome').setValue(data.cognome);
+    this.form.get('cod_fisc').setValue(data.cod_fis);
+    this.form.get('part_iva').setValue(data.part_iva);
 
+    if (data.rappresentante_legale){
+      this.form.get('nome').setValue(data.rappresentante_legale.split(' ').slice(0, -1).join(' '));
+      this.form.get('cognome').setValue(data.rappresentante_legale.split(' ').slice(-1).join(' '));
+    }
+
+  }
   
 }

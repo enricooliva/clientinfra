@@ -55,6 +55,16 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TooltipWrapperComponent } from './dynamic-form/wrapper/tooltip-wrapper.component';
 import { AccordionInfoWrapperComponent } from './dynamic-form/wrapper/accordioninfo-wrapper.component';
+import { FormlyFieldTypeahead } from './dynamic-form/typehead-type.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { RightaddonsWrapperComponent } from './dynamic-form/wrapper/rightaddons-wrapper.component';
+import { GridFormlyCellComponent } from './dynamic-form/ag-grid/grid-formly-cell.component';
+import { GridTypeComponent } from './dynamic-form/ag-grid/grid.type';
+import { AgGridModule } from 'ag-grid-angular';
+import { TableGroupTypeComponent } from './dynamic-form/tablegroup-type.component';
+import { MycurrencyPipe } from './pipe/custom.currencypipe';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { FormlyFieldTemplate } from './dynamic-form/template.type.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -75,6 +85,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPermissionsModule,
     LoadingModule,
     PerfectScrollbarModule,
+    NgSelectModule, 
+    AgGridModule.withComponents([GridFormlyCellComponent]),   
     FormlyModule.forRoot({
       types: [
         {
@@ -88,6 +100,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             },
           },
         },
+      { name: 'template', component: FormlyFieldTemplate },
       { name: 'pdfviewerinput', component: PdfTypeInputComponent, wrappers: ['form-field']},
       { name: 'pdfviewer', component: PdfTypeComponent, wrappers: ['form-field']},
       { name: 'fileinput', component: InputFileComponent },
@@ -98,6 +111,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       { name: 'selectinfra', component: SelectTypeComponent },
       { name: 'tabinfra', component: TabTypeComponent },
       { name: 'string', extends: 'input' },
+      { name: 'typeahead', component: FormlyFieldTypeahead },
       {
         name: 'number',
         extends: 'input',
@@ -136,7 +150,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
           },
         }, 
       },
-      { name: 'datatablelookup', 
+      { 
+        name: 'datatablelookup', 
         component: TableLookupTypeComponent, 
         defaultOptions: {
           templateOptions: {
@@ -149,6 +164,33 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             reorderable: "reorderable"
           },
         }, 
+      },    
+      { 
+        name: 'datatablegroup', 
+        component: TableGroupTypeComponent, 
+        defaultOptions: {
+          templateOptions: {
+            columnMode: "force",    
+            rowHeight: "auto",    
+            headerHeight: "30",
+            footerHeight: "30",
+            limit: "100",
+            scrollbarH: "true",
+            reorderable: false,
+          },
+        }, 
+      },
+      {
+        name: 'gridtable',
+        component: GridTypeComponent,
+        defaultOptions: {
+          className: "ag-theme-bootstrap",
+          //className: 'ag-theme-balham',
+          templateOptions: {
+            width: '100%',
+            height: '400px',
+          },
+        },
       },
       ],
       wrappers: [
@@ -157,6 +199,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         { name: 'accordioninfo', component: AccordionInfoWrapperComponent },
         { name: 'form-field-horizontal', component: FormlyHorizontalWrapper },
         { name: 'tooltip', component: TooltipWrapperComponent },
+        { name: 'addonRights', component: RightaddonsWrapperComponent },
       ],
       validationMessages: [
         { name: 'required', message: 'Campo richiesto' },
@@ -193,6 +236,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SelectTypeComponent,
     NavstepperWrapperComponent,
     TabTypeComponent,    
+    TableTypeComponent,
     FormInfraComponent,
     InputFileComponent,
     PdfInfraComponent,
@@ -207,13 +251,22 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,
     SidebarComponent,
     TooltipWrapperComponent,    
+    FormlyFieldTypeahead,
+    RightaddonsWrapperComponent,
+    GridTypeComponent,
+    GridFormlyCellComponent,
+    TableGroupTypeComponent,
+    MycurrencyPipe,
+    ConfirmationDialogComponent,
+    FormlyFieldTemplate
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
     DynamicFormComponent, MessageComponent, ControlGenericListComponent, DynamicTableComponent,
     DatepickerTypeComponent, RepeatTypeComponent, PanelWrapperComponent, AccordionWrapperComponent, 
     QueryBuilderComponent, GenericTypeComponent, ExternalTypeComponent, LookupComponent, ExternalqueryComponent, 
-    TableLookupTypeComponent, ExternalobjTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, TabTypeComponent,
+    TableLookupTypeComponent, ExternalobjTypeComponent, SelectTypeComponent, NavstepperWrapperComponent, TabTypeComponent,
+    TableTypeComponent,
     FormInfraComponent,
     InputFileComponent,
     PdfInfraComponent,
@@ -230,6 +283,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent,
     TooltipWrapperComponent,
     AccordionInfoWrapperComponent,
+    FormlyFieldTypeahead,
+    RightaddonsWrapperComponent,
+    GridTypeComponent,
+    GridFormlyCellComponent,
+    TableGroupTypeComponent,
+    MycurrencyPipe,
+    ConfirmationDialogComponent,
+    FormlyFieldTemplate
   ],
   entryComponents: [LookupComponent]
 })

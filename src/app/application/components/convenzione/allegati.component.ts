@@ -52,6 +52,7 @@ export class AllegatiComponent implements OnInit {
         type: 'string',
         entityName: 'application',
         entityLabel: 'Convenzione',
+        entityPath: 'home/convenzioni',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
         isLoading: false,
@@ -94,7 +95,7 @@ export class AllegatiComponent implements OnInit {
           type: 'button',
           className: "col-md-2 d-flex align-items-start mt-4 pt-2",          
           templateOptions: {
-            text: 'Carica',
+            text: 'Carica',            
             btnType: 'primary',            
             onClick: ($event, model) => this.add(),
           },

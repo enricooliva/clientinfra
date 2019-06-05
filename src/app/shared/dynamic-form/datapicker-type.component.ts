@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 import { DatePipe } from '@angular/common';
-
+// placeholder="dd-mm-yyyy"      
 @Component({
   selector: 'app-datapicker-type',
   providers: [DatePipe],
   template: `
-  <!--Datapicker-->
+  <!--Datapicker container='body'-->
   <div class="input-group">    
     <input class="form-control" 
-        container='body'
-        placeholder="dd-mm-yyyy"         
+        
+          
         [formControl]="formControl"                
         [displayMonths]="displayMonths" 
         [navigation]="navigation"
         [outsideDays]="outsideDays" 
-        [showWeekNumbers]="showWeekNumbers"         
-        ngbDatepicker="" #d="ngbDatepicker" 
+        [showWeekNumbers]="showWeekNumbers"     
+        name="d"    
+        ngbDatepicker #d="ngbDatepicker"       
         [ngClass]="{'is-invalid': formControl.invalid && (formControl.dirty || formControl.touched)}">
       <div class="input-group-append">
         <button class="btn btn-outline-secondary input-group-text oi oi-calendar" (click)="d.toggle()" type="button">

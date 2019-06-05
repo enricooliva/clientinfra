@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FirmaControparteComponent } from 'src/app/application/pages/firmacontroparte.component';
 import { FirmaDirettoreComponent } from 'src/app/application/pages/firmadirettore.component';
+import { BolloRepertoriazioneComponent } from 'src/app/application/pages/bollorepertoriazione.component';
+import { EmissioneComponent } from 'src/app/application/pages/emissione.component';
+import { PagamentoComponent } from 'src/app/application/pages/pagamento.component';
 
 @Component({
   selector: 'app-tasklist',
@@ -59,6 +62,30 @@ export class TaskListComponent implements OnInit, AfterViewInit {
 
     if (task.workflow_transition == FirmaDirettoreComponent.WORKFLOW_ACTION){
       this.router.navigate([FirmaDirettoreComponent.ABSULTE_PATH, task.model_id]);
+    }
+
+    if (task.workflow_transition == BolloRepertoriazioneComponent.WORKFLOW_ACTION){
+      this.router.navigate([BolloRepertoriazioneComponent.ABSULTE_PATH, task.model_id]);
+    }
+
+    if (task.workflow_transition == EmissioneComponent.WORKFLOW_ACTION){
+      this.router.navigate([EmissioneComponent.ABSULTE_PATH, task.model_id]);
+    }
+
+    if (task.workflow_transition == PagamentoComponent.WORKFLOW_ACTION){
+      this.router.navigate([PagamentoComponent.ABSULTE_PATH, task.model_id]);
+    }
+  }
+
+  onOpen(task){
+    //a quale entità è riferito
+    //model_type: "App\Convenzione"
+    //model_type: "App\Scadenza"
+    if (task.model_type == 'App\\Convenzione'){
+      this.router.navigate(['home/convenzioni', task.model_id]);
+    }
+    if (task.model_type == 'App\\Scadenza'){
+      this.router.navigate(['home/scadenze', task.model_id]);
     }
 
   }

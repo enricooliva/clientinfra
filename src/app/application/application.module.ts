@@ -39,8 +39,31 @@ import { SottoscrizioneComponent } from './pages/sottoscrizione.component';
 import { FirmaControparteComponent } from './pages/firmacontroparte.component';
 import { FirmaDirettoreComponent } from './pages/firmadirettore.component';
 import { AziendaLocComponent } from './components/convenzione/aziendaloc.component';
-import { AziendeLocComponent } from './components/convenzione/aziendeloc.component';
 import { AziendaLocService } from './aziendaloc.service';
+import { PersoneinterneTitulus } from './pages/personeinterne-titulus.component';
+import { PersonaInternaService } from './personainterna.service';
+import { StruttureInterneTitulus } from './pages/struttureinterne-titulus.component';
+import { StrutturaInternaService } from './strutturainterna.service';
+import { ClassificazioneComponent } from './components/classif/classificazione.component';
+import { ClassificazioniComponent } from './components/classif/classificazioni.component';
+import { MappingUfficiTitulus } from './components/mapping/mappinguffici.component';
+import { MappingUfficioService } from './mappingufficio.service';
+import { MappingUfficioTitulus } from './components/mapping/mappingufficio.component';
+import { UnitaOrganizzativaService } from './unitaorganizzativa.service';
+import { StruttureEsterneTitulus } from './pages/struttureesterne-titulus.component';
+import { StrutturaEsternaService } from './strutturaesterna.service';
+import { DocumentoService } from './documento.service';
+import { DocumentiTitulus } from './pages/documenti-titulus.component';
+import { AziendeLocComponent } from './components/convenzione/aziendeloc.component';
+import { ScadenzaComponent } from './components/scadenza/scadenza.component';
+import { ScadenzeComponent } from './components/scadenza/scadenze.component';
+import { ScadenzaService } from './scadenza.service';
+import { BolloRepertoriazioneComponent } from './pages/bollorepertoriazione.component';
+import { RichiestaEmissioneComponent } from './pages/richiestaemissione.component';
+import { EmissioneComponent } from './pages/emissione.component';
+import { PagamentoComponent } from './pages/pagamento.component';
+import { InvioRichiestaPagamentoComponent } from './pages/inviorichiestapagamento.component';
+
 registerLocaleData(localeIt);
 @NgModule({
   imports: [
@@ -58,7 +81,10 @@ registerLocaleData(localeIt);
     ConvenzioneComponent,
     HomeComponent, UserComponent, ConvenzioniComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent,
-    TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent
+    TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
+    PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent,
+    InvioRichiestaPagamentoComponent,
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -66,13 +92,24 @@ registerLocaleData(localeIt);
     AssignmentDetailPageComponent,    
     HomeComponent, UsersComponent, UserComponent, MultistepSchematipoComponent, AllegatiComponent, UploadfileComponent, UserTaskDetailComponent, 
     RoleComponent, PermissionComponent, RolesComponent, PermissionsComponent, TipoPagamentiComponent, TipoPagamentoComponent, TaskComponent, TasksComponent,
-    ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent
+    ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
+    PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
+    DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent, 
+    InvioRichiestaPagamentoComponent,
+
   ],
   providers: [ 
     { provide: LOCALE_ID, useValue: 'it' },
     ApplicationService,
     UserTaskService,
     AziendaLocService,
+    PersonaInternaService,
+    StrutturaInternaService,   
+    MappingUfficioService, 
+    UnitaOrganizzativaService,
+    StrutturaEsternaService,
+    DocumentoService,
+    ScadenzaService
   ], 
 })
 export class ApplicationModule { }

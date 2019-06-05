@@ -18,22 +18,6 @@ export class PermissionsComponent extends BaseResearchComponent {
   
   isLoading = false;
   fieldsRow: FormlyFieldConfig[] = [
-    {
-      key: 'data',
-      type: 'datatablelookup',
-      wrappers: ['accordion'],      
-      templateOptions: {
-        label: 'Permessi',   
-        columnMode: 'force',
-        scrollbarH: false,        
-        page: new Page(25),
-        hidetoolbar: true,      
-        onDblclickRow: (event) => this.onDblclickRow(event),
-        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
-      },
-      fieldArray: {
-        fieldGroupClassName: 'row',   
-        fieldGroup: [
           {
             key: 'id',
             type: 'number',
@@ -62,12 +46,29 @@ export class PermissionsComponent extends BaseResearchComponent {
               column: { cellTemplate: 'valuecolumn'}
             }
           }
-        ]
+        ];
+  
+
+  resultMetadata = [
+    {
+      key: 'data',
+      type: 'datatablelookup',
+      wrappers: ['accordion'],      
+      templateOptions: {
+        label: 'Permessi',   
+        columnMode: 'force',
+        scrollbarH: false,        
+        page: new Page(25),
+        hidetoolbar: true,      
+        onDblclickRow: (event) => this.onDblclickRow(event),
+        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
+      },
+      fieldArray: {
+        fieldGroupClassName: 'row',   
+        fieldGroup: this.fieldsRow,
       }
     }
   ];
-
-  resultMetadata = this.fieldsRow;
 
   constructor(protected service: PermissionService, protected router: Router, protected route: ActivatedRoute,)  {    
     super(router,route)

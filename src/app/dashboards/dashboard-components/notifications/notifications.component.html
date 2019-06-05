@@ -8,21 +8,47 @@
               <!-- Comment Row -->                    
             <ul class="list-task todo-list list-group m-b-0" data-role="notifications" >       
                 <div *ngFor="let notification of model | async">  
-                    <li class="list-group-item list-group-item-action todo-item" data-role="notification">                               
+                    <li class="list-group-item list-group-item-action todo-item" data-role="notification" >                               
                         <div class="todo-label" style="padding-left: 25px;">
                             <span class="todo-desc">{{ notification.data.message }}</span>
-                            <span class="badge badge-pill badge-danger float-right" i18n>{notification.type, select, App\Notifications\ConvenzioneApprovata {ConvenzioneApprovata}}</span>
-                        </div>                    
-                        <ul class="list-style-none assignedto">
-                            <!-- <li class="assignee">
-                                <img class="assignee-img" src="assets/images/users/1.jpg" alt="user" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Steave">
-                            </li>                       -->
-                        </ul>
-                        <div class="item-date">{{notification.created_at | date:'d MMMM, yyyy'}}</div>
+                            <span *ngIf="notification.type == 'App\\\Notifications\\\ConvenzioneApprovata'" class="badge badge-pill badge-success float-right">Convenzione Approvata</span>
+                            <span *ngIf="notification.type == 'App\\\Notifications\\\ConvenzioneRepertoriata'" class="badge badge-pill badge-success float-right">Convenzione Repertoriata</span>                           
+                        </div>                                                                
+                        <div class="item-date">{{notification.created_at | date:'d MMMM, yyyy'}}</div>   
+                                                
+                            <div class="button-group mt-1 pt-1 ml-4">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="open(content, notification)" data-toggle="tooltip" title="Apre attività">
+                                Dettagli
+                                <i class="ti-pencil-alt"></i>
+                            </button>                          
+                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onOpen(notification)" data-toggle="tooltip"  title="Apre entità">
+                                Apri
+                                <i class="ti-arrow-top-right"></i>
+                            </button>
+                        </div>                        
+                    
                     </li>
                 </div>   
             </ul>
         </div>
     </div>
 </div>
+
+<ng-template #content let-c="close">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Dettagli notifica</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>        
+    <div class="modal-body">
+            <form [formGroup]="form">
+                    <formly-form [model]="modelNotification" [fields]="fields" [form]="form">
+
+                    </formly-form>
+            </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>

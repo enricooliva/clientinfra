@@ -3,8 +3,11 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceEntity } from '../query-builder/query-builder.interfaces';
-import { Subject } from 'rxjs';
+import { Subject, Observable, Subscription } from 'rxjs';
 import { InfraMessageType } from '../message/message';
+import { filter } from 'rxjs/operators';
+import {Location} from '@angular/common';
+import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   template: `NOT UI`
@@ -27,7 +30,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   options: FormlyFormOptions = {
     formState: {
       model: this.model,
-      isLoading: false,
+      isLoading: this.isLoading,
     },
   };
 
@@ -43,29 +46,86 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   
   newPath: string = null;
 
-  constructor(protected route: ActivatedRoute, protected router: Router) {
+  isRemovable = false;
+
+  private sub: Subscription;
+
+  returnUrl: string = null;
+
+  locationBack: Boolean = true;
+
+  constructor(protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+
   }
 
-  ngOnInit() {    
-    this.route.params.subscribe(params => {      
-      this.service.clearMessage();
-      if (params['id']){
-        this.service.getById(params['id']).subscribe((data) => {
-          this.isLoading = false;
-          this.model = JSON.parse(JSON.stringify(data));
-          this.postGetById();
+  ngOnInit() {        
+    this.isLoading = true;
+    this.options.formState.isLoading = true;
+    //se apro con i parametri returnUrl e initObj 
+    //nascondere pulsante nuovo e ricerca e all'aggiorna tornare 
+    //indietro se salvataggio è andato a buon fine
+    let initObj: any = null;
+    this.route.queryParams
+      .subscribe(params => {    
+        if (params.returnUrl){
+          this.returnUrl = params.returnUrl;      
+        }
+        if (params.initObj){
+          //setTimeout(()=> {
+            this.model = JSON.parse(params.initObj);            
+            initObj = JSON.parse(params.initObj);
+          //}, 0);     
+        }        
+    });
+
+    this.sub = this.route.params.subscribe(params => {      
+      this.service.clearMessage();      
+
+      //NB params['id'] ha valore new 
+      if (params['id']){        
+        if (params['id']=='new'){
+          //se sono in nuovo il pulsante nuovo lo disattivo
+          this.activeNew = false;
+        }
+
+        this.isLoading = true;
+        this.options.formState.isLoading = true;
+        //params['id'] coneitene il parametro letto dalla url, può contenere un id o anche la parola new
+        this.service.getById(params['id']).subscribe({
+          next: (data) => {    
+            setTimeout(()=> {
+              if (initObj)
+                this.model = { ...JSON.parse(JSON.stringify(data)), ...initObj};
+              else 
+                this.model = JSON.parse(JSON.stringify(data));
+                
+              //aggiornamento riferimento nel formstate
+              this.options.formState.model = this.model;
+
+              this.isLoading = false;
+              this.options.formState.isLoading = false;
+              this.postGetById();       
+            });                                        
+          },
+          // complete: () => {
+          //   this.isLoading = false;
+          //   this.options.formState.isLoading = false;
+          // }
         });
       }else{          
         this.additionalFormInitialize();             
         this.isLoading = false;
+        this.options.formState.isLoading = false;
       }
       
-    });
+    });    
   }  
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+    if (this.sub)
+      this.sub.unsubscribe();    
   }
 
   protected postGetById(){}// hook for child
@@ -73,8 +133,9 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   protected postOnSubmit() {}
 
   onNew(){    
-    if (this.newPath){
-      this.router.navigate([this.newPath]);        
+    if (this.newPath){      
+      //eliminare  oggetto di init      
+      this.router.navigate([this.newPath]);                    
     }else{
       this.model = {};
       this.form.reset();
@@ -83,14 +144,38 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
     
   }
 
+  public openConfirmationDialog() {
+    
+  }
+
+
   onRemove() {
+
+    //console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)')
+    this.service.confirmationDialogService.confirm('Conferma', "Vuoi procedere con l'operazione di elminazione?" )
+      .then((confirmed) => {
+        if (confirmed){
+          this.remove();        
+        }
+        console.log(confirmed);        
+      })
+      .catch(() => {});
+    
+  }
+
+  remove(){
+    this.isLoading = true;
     this.service.remove(this.model['id']).subscribe(
       prop => {
+        this.isLoading = false; 
         this.model = null;
-        //impostare come se fosse in nuovo
+        if (this.returnUrl)
+          this.onBack();
+        else
+          this.onResearch(); //impostare come se fosse in nuovo
       },
       error => { // error path        
-
+        this.isLoading = false; 
       }
     );
   }
@@ -109,6 +194,10 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
           this.options.resetModel(result);
           this.options.updateInitialValue();
           this.postOnSubmit();
+
+          if (!this.activeNew && this.returnUrl){
+            this.onBack();
+          }
 
         },
         error => {
@@ -136,6 +225,18 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
     if (this.researchPath){
       this.router.navigate([this.researchPath]);    
     }
+  }
+
+  onBack(){
+    if (this.returnUrl){
+      this.router.navigate([this.returnUrl]);
+    } else {
+      this.goBack();
+    }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   public onValidate() {

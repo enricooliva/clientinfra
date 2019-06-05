@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { ServiceQuery } from '..';
+import { ServiceQuery, IQueryMetadata } from '..';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import ControlUtils from '../dynamic-form/control-utils';
@@ -19,6 +19,7 @@ export class LookupComponent implements OnInit {
   @Input() entityName; 
   @Input() entityLabel;
   @Input() rules;
+  @Input() enableNew = false;
 
   isLoading: boolean = false;
   service: ServiceQuery;
@@ -38,8 +39,12 @@ export class LookupComponent implements OnInit {
   ngOnInit(): void {    
     const servicename = ControlUtils.getServiceName(this.entityName)
     this.service = this.injector.get(servicename) as ServiceQuery;
-
-    this.researchMetadata = this.service.getMetadata();
+    
+    if ('getQueryMetadata' in this.service ){
+      this.researchMetadata = (this.service as IQueryMetadata).getQueryMetadata();
+    }else {
+      this.researchMetadata = this.service.getMetadata();
+    }
     this.resultMetadata =  [
       {
           key: 'data',
@@ -58,7 +63,7 @@ export class LookupComponent implements OnInit {
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
-            fieldGroup: this.researchMetadata
+            fieldGroup: this.service.getMetadata()
           }
         }
       ];
@@ -73,7 +78,6 @@ export class LookupComponent implements OnInit {
   
   }  
 
-
   close(){
     if (this.resultMetadata[0].templateOptions.selected.length>0)
       this.activeModal.close(this.resultMetadata[0].templateOptions.selected[0]);
@@ -85,6 +89,10 @@ export class LookupComponent implements OnInit {
     }
   }
   
+  onNew(event) {        
+    this.activeModal.close('new');    
+  }
+
   onFind(model){
     this.querymodel.rules = model.rules;  
     this.isLoading = true;        
@@ -92,7 +100,7 @@ export class LookupComponent implements OnInit {
     this.service.query(this.querymodel).subscribe((data) => {
       const to = this.resultMetadata[0].templateOptions;
       this.isLoading = false;   
-      this.model=  {
+      this.model = {
         data: data.data
       }
       to.page.totalElements = data.total; 

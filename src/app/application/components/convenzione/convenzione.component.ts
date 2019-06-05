@@ -1,6 +1,6 @@
 
 import { Component, OnInit, OnDestroy, Input, TemplateRef, ViewChild, Sanitizer } from '@angular/core';
-import { FormGroup, FormControl, FormArray, NgForm, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, NgForm, Validators, Form } from '@angular/forms';
 import { ApplicationService } from '../../application.service';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,11 @@ import { encode, decode } from 'base64-arraybuffer';
 import { takeUntil, startWith, tap, distinctUntilChanged, filter, map, finalize } from 'rxjs/operators';
 import { UploadfileComponent } from './uploadfile.component';
 import { NgbModal, NgbActiveModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { MycurrencyPipe } from 'src/app/shared/pipe/custom.currencypipe';
+import { HttpParams } from '@angular/common/http';
+import {Location} from '@angular/common';
+import { InfraMessageType } from 'src/app/shared/message/message';
 
 
 @Component({
@@ -24,51 +29,72 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   // 'resp_scientifico',
   // 'ambito',
   // 'durata',
-  // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convezione',
+  // 'prestazioni','corrispettivo','azienda_id_esterno','importo','stato_avanzamento','tipopagamenti_codice','path_convenzione',  
+  @ViewChild('statetemplate') statetemplate: TemplateRef<any>;
+  @ViewChild('stateattivita') stateattivita: TemplateRef<any>;
 
   @ViewChild('tabs')
   private tabs: NgbTabset;
 
   onDestroy$ = new Subject<void>();
-  form =new FormArray([0,1,2,3].map(() => new FormGroup({})));
+  form = new FormArray([0, 1, 2, 3, 4].map(() => new FormGroup({})));
 
   model: Convenzione;
   modelUserTaskDetail: any;
 
   transitions = new Subject<any>();
 
+  currency = new MycurrencyPipe();
+
+  returnUrl: string = null;
+
+  locationBack: Boolean = true;
+
   //caricati dal service
-  fields: FormlyFieldConfig[]= [
+  fields: FormlyFieldConfig[] = [
+    {
+      key: 'id',
+      type: 'input',       
+      className: 'col-md-4', 
+      templateOptions: {
+        label: 'Codice convenzione',
+        disabled: true
+      },
+      hideExpression(model,formState){
+        return !model.id;
+      }
+    },
     {
       className: 'section-label',
-      template: '<h5>Fasi processo</h5>',
+      template: '<h5>Fase processo</h5>',
     },
-    {      
+    {
       type: 'select',
       key: 'transition',
       defaultValue: 'self_transition',
       templateOptions: {
         label: 'Stato',
         options: [],
-      }, 
+      },
       // expressionProperties: {
       //   'templateOptions.disabled': (model: any, formState: any) => {                        
       //       return !model.id
       //   },
       // },
-      lifecycle: {
-        onInit: (form, field) => {          
+      hooks: {
+        onInit: (field) => {
           this.transitions.subscribe(d => {
             field.templateOptions.options = d;
             field.templateOptions.disabled = false;
             field.formControl.setValue('self_transition');
           }
-          );          
+          );
         }
       }
 
     },
   ];
+  
   fieldsattachment: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -76,10 +102,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     },
     {
       type: 'button',
-      className: "col-md-4",
       templateOptions: {
-        text: 'Inserisci allegato',
-        btnType: 'primary',
+        text: 'Nuovo',
+        btnType: 'btn btn-outline-primary btn-sm border-0 rounded-0',
+        icon: 'oi oi-document',
         onClick: ($event) => this.open()
       },
     },
@@ -106,55 +132,140 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         return this.model.attachments == null || this.model.attachments.length == 0
       },
       fieldArray: {
-        template: '<hr />',
-        fieldGroupClassName: 'row',
+        template: '<hr />',       
         fieldGroup: [
+          //nome allegato, tipo allegato, data ora creazione
           {
-            className: 'col-md-1',
-            type: 'input',
-            key: 'id',
-            hide: true,
-            templateOptions: {
-              label: "Id",
-              hidden: true,
-              disabled: true,
+            fieldGroupClassName: 'row',            
+            fieldGroup: [
+              {
+                className: 'col-md-1',
+                type: 'input',
+                key: 'id',
+                hide: true,
+                templateOptions: {
+                  label: "Id",
+                  hidden: true,
+                  disabled: true,
+                },
+              },
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'filename',
+                templateOptions: {
+                  label: "Nome dell'allegato",
+                  disabled: true,
+                },
+              },
+              {
+                type: 'input',
+                key: 'attachmenttype.descrizione',
+                className: 'col-md-3',
+                templateOptions: {
+                  label: 'Tipologia',
+                  disabled: true,
+                },
+              },
+              {
+                type: 'input',
+                key: 'created_at',
+                className: 'col-md-3',
+                templateOptions: {
+                  label: 'Data e ora di creazione',
+                  disabled: true,
+                },
+              },
+              {
+              fieldGroupClassName: 'btn-toolbar',   
+              className: 'col-md-3 btn-group',
+              fieldGroup: [
+              {
+                type: 'button',
+                className: "mt-4 pt-2",
+                templateOptions: {
+                  btnType: 'primary oi oi-data-transfer-download',
+                  title: 'Scarica documento',
+                  //icon: 'oi oi-data-transfer-download'
+                  onClick: ($event, model) => this.download($event, model),
+                },
+                hideExpression: (model: any, formState: any) => {
+                  return model.filetype == 'link';
+               },                                
+              },
+              {
+                type: 'button',
+                className: "ml-2 mt-4 pt-2",
+                templateOptions: {
+                  btnType: 'primary oi oi-external-link',
+                  title: 'Apri pagina esterna',
+                  //icon: 'oi oi-data-transfer-download'
+                  onClick: ($event, model) => {
+                    
+                    // let params = new HttpParams()
+                    //   .set('verbo', 'queryplain')
+                    //   .set('codammaoo', 'UNURCLE')
+                    //   .set('query', '[//@physdoc]=823284');
+                    let titulus = window.open('', '_blank'); 
+                    this.service.getTitulusDocumentURL(model.id).subscribe(
+                      (data)=> titulus.location.href = data.url, //window.open(data.url, '_blank'),
+                      (error) => { 
+                        titulus.close(); 
+                        console.log(error);
+                      }                                            
+                    );
+                    
+                  },
+                },      
+                hideExpression: (model: any, formState: any) => {
+                  return !model.num_prot;
+               },          
+              },
+            ],
             },
+            ],
           },
+          //numero protocolollo e data protocollo
           {
-            className: 'col-md-3',
-            type: 'input',
-            key: 'filename',
-            templateOptions: {
-              label: "Nome dell'allegato",
-              disabled: true,
-            },
-          },
-          {
-            type: 'input',
-            key: 'attachmenttype.descrizione',
-            className: 'col-md-3',
-            templateOptions: {
-              label: 'Tipologia',
-              disabled: true,
-            },
-          },
-          {
-            type: 'input',
-            key: 'created_at',
-            className: 'col-md-3',
-            templateOptions: {
-              label: 'Data e ora di creazione',
-              disabled: true,
-            },
-          },
-          {
-            type: 'button',
-            className: "col-md-2 d-flex align-items-start mt-4 pt-2",          
-            templateOptions: {              
-              btnType: 'primary oi oi-data-transfer-download',            
-             //icon: 'oi oi-data-transfer-download'
-              onClick: ($event, model) => this.download($event, model),
-            },
+            fieldGroupClassName: 'row',
+            fieldGroup: [
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'num_prot',
+                templateOptions: {
+                  label: "Numero protocollo",
+                  disabled: true,
+                },
+                hideExpression(model,formState){
+                  return !model.num_prot;
+                }
+              },
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'emission_date',
+                templateOptions: {
+                  label: "Data protocollo",
+                  disabled: true,
+                },
+                hideExpression(model,formState){
+                  return !model.emission_date;
+                }
+              },
+              {
+                className: 'col-md-3',
+                type: 'input',
+                key: 'num_rep',
+                templateOptions: {
+                  label: "Numero repertorio",
+                  disabled: true,
+                },
+                hideExpression(model,formState){
+                  return !model.num_rep;
+                }
+              },
+            ]
           }
         ],
       }
@@ -172,11 +283,12 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         btnHidden: true,
         label: 'Attività associate',
         hidetoolbar: true,
+        limit: "20",
         onDblclickRow: (event) => {
           //leggi dettagli 
           //crea la form
-          if (event.row.id) {            
-            this.router.navigate(['home/tasks/', event.row.id]);            
+          if (event.row.id) {
+            this.router.navigate(['home/tasks/', event.row.id]);
           }
         },
         columns: [
@@ -230,6 +342,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         btnHidden: true,
         label: 'Storia eventi',
         hidetoolbar: true,
+        limit: "20",
         columns: [
           { name: 'Utente', prop: 'user_id', wrapper: 'value' },
           { name: 'Transizione', prop: 'transition_leave', wrapper: 'value' },
@@ -269,19 +382,91 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     }
 
   ];
+  fieldscadenze: FormlyFieldConfig[] = [
+    {
+      className: 'section-label',
+      template: '<h5>Scadenze</h5>',
+    },
+    {
+      type: 'button',
+      templateOptions: {
+        text: 'Nuova',
+        btnType: 'btn btn-outline-primary btn-sm border-0 rounded-0',
+        icon: 'oi oi-document',
+        onClick: ($event) => {
+          this.router.navigate(['home/scadenze/new'], {
+            queryParams: {
+              returnUrl: this.router.url,
+              initObj: JSON.stringify({ convenzione: { id: this.model.id, descrizione_titolo: this.model.descrizione_titolo } })
+            }
+          });
+        }
+      },
+    },
+    {
+      key: 'scadenze',
+      type: 'datatablegroup', //'repeat',      
+      templateOptions: {
+        btnHidden: true,
+        label: 'Scadenze',
+        hidetoolbar: true,   
+        limit: "20",
+        groupRowsBy: 'state',
+        groupExpansionDefault: true,
+        enableSummary: true,
+        summaryPosition:'bottom',
+        groupHeaderTitle: (group) => this.groupHeaderTitle(group),
+        columns: [
+          { name: 'Id', prop: 'id', wrapper: 'value', summaryFunc:  null, },
+          { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value', summaryFunc:  null, },
+          { name: 'Stato', prop: 'state', wrapper: 'value', summaryFunc: null },
+          { 
+            name: 'Importo', prop: 'dovuto_tranche', wrapper: 'value', 
+            cellClass: "text-right", summaryFunc: (cells) => this.sumImporto(cells), maxWidth:'150', pipe: this.currency,
+          },
+       
+          //{ name: 'Azione', prop: 'action_button' },
+        ],
+        onDblclickRow: (event) => {
+          //leggi dettagli 
+          //crea la form
+          if (event.row.id) {
+            this.router.navigate(['home/scadenze', event.row.id], {
+              queryParams: {
+                returnUrl: this.router.url,
+              }
+            });
+          }
+        },
+      },
+      fieldArray: {
+        fieldGroup: [
+          {
+            type: 'button',
+            key: 'action_button',
+            templateOptions: {
+              btnType: 'primary oi oi-data-transfer-download',
+              onClick: ($event) => this.open()
+            },
+          },
+        ]
+      }
+    }
 
-  options: Array<FormlyFormOptions> = [0,1,2,3].map(() => ({
+  ];
+
+  options: Array<FormlyFormOptions> = [0, 1, 2, 3, 4].map(() => ({
     formState: {
       isLoading: false,
     },
-  })); 
+  }));
 
   // options: FormlyFormOptions = {
   //   formState: {
   //     isLoading: false,
   //   },
   // }
-    
+
   private id: number;
 
   defaultColDef = { editable: true };
@@ -295,10 +480,13 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   set isLoading(value: boolean) {
     this._isLoading = value;
     //this.options.formState.isLoading = value;
-    this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);    
+    this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);
   }
 
-  constructor(private service: ApplicationService, private route: ActivatedRoute, protected router: Router, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private service: ApplicationService, private route: ActivatedRoute, protected router: Router, private modalService: NgbModal, 
+    public activeModal: NgbActiveModal,        
+    protected location: Location) 
+  {
 
     //modello vuoto
     this.model = {
@@ -313,10 +501,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       user: { id: null, name: null },
       dipartimento: { cd_dip: null, nome_breve: '' },
       stato_avanzamento: null,
-      convezione_type: 'TO',
+      convenzione_type: 'TO',
       tipopagamento: { codice: null, descrizione: '' },
-      azienda: { id_esterno: null, denominazione: '' },
+      azienda: { id: null, denominazione: '' },
       unitaorganizzativa_uo: '',
+      aziende: [],
     }
 
     this.fields = this.fields.concat(service.getInformazioniDescrittiveFields(this.model)); //.concat(service.getConvenzioneFields(this.model));
@@ -326,30 +515,37 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     return this.model == null || this.model.id == null
   }
 
-  ngOnInit(){    
+  ngOnInit() {
+
+    let cols: (Array<any>) = this.fieldscadenze.find(x => x.key == "scadenze").templateOptions.columns;
+    cols.find(x => x.prop == 'state').cellTemplate = this.statetemplate;
+
+    cols= this.fieldsusertask.find(x => x.key == "usertasks").templateOptions.columns;
+    cols.find(x => x.prop == 'state').cellTemplate = this.stateattivita;
+
     this.route.params.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       if (params['id']) {
         this.isLoading = true;
         this.service.clearMessage();
         this.service.getConvenzioneById(params['id']).subscribe((data) => {
           try {
-            if (!data.azienda){
-              data.azienda = { id_esterno: null, denominazione: '' };            
-            }                     
+            if (!data.azienda) {
+              data.azienda = { id: null, denominazione: '' };
+            }
 
             this.updateTransition(data.id);
 
             //this.options.every(tabOptions => { if (tabOptions.resetModel) return false; else return true; } )
 
             //Nota viene creata solo l'option del ng-tab attivo. Evito di fare il ciclo sulle tab.
-            if (this.options[0].resetModel){
+            if (this.options[0].resetModel) {
               //la resetmodel imposta tutti i valori del modello.
-              this.options[0].resetModel(data)              
-            }else{
-              this.model = data;
+              this.options[0].resetModel(data)
+            } else {
+              this.model = data;              
             }
-            
-      
+
+
             this.isLoading = false;
           } catch (e) {
             console.log(e);
@@ -376,10 +572,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.service.getConvenzioneById(this.model.id).subscribe((data) => {
         //this.options.resetModel(data);
-        if (!data.azienda){
-          data.azienda = { id_esterno: null, descrizione: null };
+        if (!data.azienda) {
+          data.azienda = { id: null, descrizione: null };
         }
-        this.options.forEach(tabOptions => tabOptions.resetModel(data));         
+        this.options.forEach(tabOptions => tabOptions.resetModel(data));
         this.isLoading = false;
       });
     }
@@ -393,32 +589,31 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         result => {
           //this.options.resetModel(result);
           try {
-            if (!result.azienda){
-              result.azienda = { id_esterno: null, descrizione: null };
+            if (!result.azienda) {
+              result.azienda = { id: null, descrizione: null };
             }
-            
-            this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result)});               
+
+            this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result); });
             this.updateTransition(result.id);
 
-            this.isLoading = false;                            
+            this.isLoading = false;
           } catch (error) {
             this.onError(error);
           }
         },
         error => this.onError(error),
-        );
+      );
     }
   }
 
-  protected updateTransition(id){
-     //caricamento transisioni successive
-     this.service.getNextActions(id).subscribe((data)=>{                            
+  protected updateTransition(id) {        
+    this.service.getNextActions(id).subscribe((data) => {
       this.transitions.next([]);
-      this.transitions.next(data);                       
+      this.transitions.next(data);
     });
   }
 
-  private onError(error){
+  private onError(error) {
     this.isLoading = false;
     this.service.messageService.error(error);
     console.log(error)
@@ -471,14 +666,14 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     );
   }
 
-  download(event, model){
+  download(event, model) {
     //console.log(model);
     this.service.download(model.id).subscribe(file => {
       if (file.filevalue)
         var blob = new Blob([decode(file.filevalue)]);
-        saveAs(blob, file.filename);
-      },
-      e => {  console.log(e); }  
+      saveAs(blob, file.filename);
+    },
+      e => { console.log(e); }
     );
 
   }
@@ -490,5 +685,43 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   //     "Object " + pdfurl + " failed" +
   //     "</object>");
   // }
+
+  private groupHeaderTitle(group){
+    const totale = this.currency.transform(this.sumImporto(group.value.map(x=>x.dovuto_tranche)));
+    return `Stato ${group.value[0].state} ${totale}`
+  }
+
+  private sumImporto(cells: number[]): number {
+    const filteredCells = cells.filter(cell => !!cell);
+    let total = filteredCells.reduce((sum, cell) => sum += Number(cell), 0);
+    return total; // `Totale: ${total}`;
+  }
+
+  onBack(){
+    if (this.returnUrl){
+      this.router.navigate([this.returnUrl]);
+    } else {
+      this.goBack();
+    }
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  public onValidate() {
+    const invalid = [];
+    const controls = (this.form.at(0) as FormGroup).controls;
+    this.service.clearMessage();
+    for (const name in controls) {        
+        if (controls[name].invalid) {
+            for (const error in controls[name].errors){
+              this.service.messageService.add(InfraMessageType.Error, name + " " + error, false);
+              invalid.push(name +" " + controls[name].getError(error));
+            }          
+        }
+    }
+    //console.log(invalid);    
+  }
 
 }

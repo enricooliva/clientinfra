@@ -17,10 +17,8 @@ import { map } from 'rxjs/operators';
   <div *ngFor="let subfield of field.fieldGroup; let i = index;">
       <formly-group     
         [model]="model[i]"          
-        [field]="subfield"
-        [options]="options"
-        [form]="formControl">
-        <div class="col-md-2 d-flex align-self-center">
+        [field]="subfield">
+        <div *ngIf="!to.btnRemoveHidden" class="col-md-2 d-flex align-self-center">
         <div class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onRemoveRepeat(i)"  >              
           <span class="oi oi-trash"></span>  
           <span class="ml-2">Rimuovi</span>
@@ -37,15 +35,20 @@ import { map } from 'rxjs/operators';
 })
 
 export class RepeatTypeComponent extends FieldArrayType {
-  constructor(builder: FormlyFormBuilder, private cd: ChangeDetectorRef) {
-    super(builder);            
+  constructor(private cd: ChangeDetectorRef) {
+    super();            
   }
 
-  ngOnInit(){
+  ngOnInit(){    
+    let count= 0;
+    if (this.model)
+      count = this.model.length;
+
     if (this.to.min && this.to.min>0){
-      for (let index = 0; index < this.to.min; index++) {
-        this.add();        
+      for (let index = count; index < this.to.min; index++) {
+        setTimeout(()=> { this.add();  },0);            
       }
+      this.cd.detectChanges();    
     }
   }  
 

@@ -7,9 +7,13 @@ import { FieldType, FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
   <ng-container *ngFor="let f of field.fieldGroup">
     <ng-container [ngSwitch]="f.type">
       <formly-field *ngSwitchCase="'input'" [field]="f"></formly-field>
+      <formly-field *ngSwitchCase="'string'" [field]="f"></formly-field>
+      <formly-field *ngSwitchCase="'number'" [field]="f"></formly-field>
       <formly-field *ngSwitchCase="'select'" [field]="f"></formly-field>
       <formly-field *ngSwitchCase="'textarea'" [field]="f"></formly-field>   
-      <formly-field *ngSwitchCase="'externalquery'" [field]="f"></formly-field>         
+      <formly-field *ngSwitchCase="'externalquery'" [field]="f"></formly-field>   
+      <formly-field *ngSwitchCase="'datepicker'" [field]="f"></formly-field>         
+      <formly-field *ngSwitchCase="'date'" [field]="f"></formly-field>               
     </ng-container>
   </ng-container>
   `,

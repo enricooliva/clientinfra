@@ -7,6 +7,8 @@ import { error } from 'util';
 import { AppConstants } from '../app-constants';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { throwError } from 'rxjs';
+
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -32,9 +34,15 @@ export class TokenInterceptor implements HttpInterceptor {
                 window.location.href = AppConstants.baseURL + '/loginSaml'; 
                 //router.navigateByUrl(); 
                 break;            
+              case 500:
+                //filtrare errori oracle di login 
+                // if (error.message){
+                //   this.toastr.error(error.error.message);                                                                   
+                // }
+                break;
             }
           }
-          return Observable.throw(error);
+          return throwError(error);
         })
       );
   }

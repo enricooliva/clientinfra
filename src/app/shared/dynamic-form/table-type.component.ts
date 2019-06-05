@@ -1,21 +1,18 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef, KeyValueDiffers } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FieldArrayType, FormlyFormBuilder } from '@ngx-formly/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { FormlyFieldConfig, FieldArrayType } from '@ngx-formly/core';
 import { TableColumn } from '@swimlane/ngx-datatable/release/types';
-import { Router } from '@angular/router';
-import { isEmpty } from 'rxjs/operators';
-import { element } from 'protractor';
+
 
 @Component({
   selector: 'app-table-type',
   template: `
   <div class="btn-toolbar mb-2" role="toolbar" *ngIf="!to.hidetoolbar">
     <div class="btn-group btn-group-sm">    
-        <button class="btn btn-outline-primary border-0 rounded-0" (click)="addFirst()"  >              
+        <button type="button" class="btn btn-outline-primary border-0 rounded-0" (click)="addFirst()"  >              
             <span class="oi oi-plus"></span>
             <span class="ml-2">Aggiungi</span>
         </button>    
-        <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="to.selected.length == 0" (click)="removeSelected()"  >              
+        <button type="button" class="btn btn-outline-primary border-0 rounded-0" [disabled]="to.selected.length == 0" (click)="removeSelected()"  >              
             <span class="oi oi-trash"></span>  
             <span class="ml-2">Rimuovi</span>
         </button>
@@ -39,36 +36,22 @@ import { element } from 'protractor';
   (sort)="onSort($event)"
   (select)='onSelect($event)'
   (activate)='onEvents($event)'>     
-  
-  <ng-template #defaultcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
-    <formly-field             
-      [model]="getModel(model,column,rowIndex)"
-      [field]="getFields(field,column, rowIndex)"
-      [options]="options"
-      [form]="formControl">
-    </formly-field>
-  </ng-template>  
-  
-  <ng-template #valuecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
-    {{ value }}    
-  </ng-template>  
-
-
 </ngx-datatable>
+  
+<ng-template #defaultcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
+<formly-field [field]="getField(field, column, rowIndex)"></formly-field>
+</ng-template>  
+
+<ng-template #valuecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
+{{ value }}    
+</ng-template>  
+
 `
 })
 
 // <h1>Model</h1>
 // <pre>{{ model | json }}</pre>
-export class TableTypeComponent extends FieldArrayType {
-  differ: any;
-
-  constructor(builder: FormlyFormBuilder, private differs: KeyValueDiffers) {    
-    super(builder);
-    
-		this.differ = differs.find({}).create();
-  }
-
+export class TableTypeComponent extends FieldArrayType {  
   
   @ViewChild('defaultcolumn') public defaultColumn: TemplateRef<any>;
   @ViewChild('valuecolumn') public valuecolumn: TemplateRef<any>;
@@ -137,7 +120,7 @@ export class TableTypeComponent extends FieldArrayType {
     
   }
 
-  getFields( field: FormlyFieldConfig, column: TableColumn, rowIndex: number ) : any {         
+  getField( field: FormlyFieldConfig, column: TableColumn, rowIndex: number ) : any {         
     let result = field.fieldGroup[rowIndex].fieldGroup.find(f => f.key === column.prop);
     return result;
   }

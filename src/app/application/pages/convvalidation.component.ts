@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
 import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
 import { FileDetector } from 'protractor';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-convvalidation',
   template: `
@@ -30,6 +30,7 @@ import { FileDetector } from 'protractor';
       <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options">
       </formly-form>
   </form>
+  
   <button class="btn btn-primary mt-3" type="button" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()">Salva</button>
   </div>
   `,
@@ -39,7 +40,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
 
   public static WORKFLOW_ACTION: string = 'store_validazione'; //TRASITION
   public static ABSULTE_PATH: string = 'home/validazione';
-
+  
   fields: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -55,6 +56,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
         required: true,
         entityName: 'application',
         entityLabel: 'Convenzione',
+        entityPath: 'home/convenzioni',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
         isLoading: false,    
@@ -104,38 +106,38 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           {
             fieldGroupClassName: 'row',
             fieldGroup:[
-          {
-            key: 'attachmenttype_codice',
-            type: 'select',
-            defaultValue: 'DSA',
-            className: "col-md-5",
-            templateOptions: {
-              //todo chiedere lato server 
-              options: [
-                { codice: 'DSA', descrizione: 'Delibera Senato Accademico' },
-                { codice: 'DCA', descrizione: 'Delibera Consiglio di Amministrazione' },
-                { codice: 'DR', descrizione: 'Decreto Rettorale' },
-                { codice: 'DRU', descrizione: "Decreto Rettorale d'urgenza" },
-              ],
-              valueProp: 'codice',
-              labelProp: 'descrizione',
-              label: 'Tipologia atto di approvazione',
-              required: true,
-            }
-          },
-          {
-            key: 'filename',
-            type: 'fileinput',
-            className: "col-md-5",
-            templateOptions: {
-              label: 'Scegli documento',
-              type: 'input',              
-              placeholder: 'Scegli file documento',
-              accept: 'application/pdf,.p7m', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-              required: true,
-              onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+            {
+              key: 'attachmenttype_codice',
+              type: 'select',
+              defaultValue: 'DSA',
+              className: "col-md-5",
+              templateOptions: {
+                //todo chiedere lato server 
+                options: [
+                  { codice: 'DSA', descrizione: 'Delibera Senato Accademico' },
+                  { codice: 'DCA', descrizione: 'Delibera Consiglio di Amministrazione' },
+                  { codice: 'DR', descrizione: 'Decreto Rettorale' },
+                  { codice: 'DRU', descrizione: "Decreto Rettorale d'urgenza" },
+                ],
+                valueProp: 'codice',
+                labelProp: 'descrizione',
+                label: 'Tipologia atto di approvazione',
+                required: true,
+              }
             },
-          },   
+            {
+              key: 'filename',
+              type: 'fileinput',
+              className: "col-md-5",
+              templateOptions: {
+                label: 'Scegli documento',
+                type: 'input',              
+                placeholder: 'Scegli file documento',
+                accept: 'application/pdf,.p7m', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                required: true,
+                onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
+              },
+            },   
         ],
         },
         {
@@ -198,6 +200,8 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           let result = await ControlUtils.parsePdf(e.target.result);     
           field.formControl.parent.get('docnumber').setValue(result.docnumber);
           field.formControl.parent.get('data_emissione').setValue(result.converted);
+
+          field.formControl.markAsDirty();         
         } catch (error) {
           console.log(error);
           this.isLoading = false;
@@ -217,8 +221,8 @@ export class ConvvalidationComponent extends BaseEntityComponent {
 
   }
   
-  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router) {
-    super(route, router)
+  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route, router, location)
     this.isLoading = false;
   }
 

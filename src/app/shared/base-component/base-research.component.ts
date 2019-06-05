@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceQuery } from '../query-builder/query-builder.interfaces';
@@ -16,6 +16,8 @@ export class BaseResearchComponent implements OnInit {
   protected isLoading = false;
   protected fieldsRow: FormlyFieldConfig[] = [];
 
+  builderoptions: FormlyTemplateOptions;
+  
   form = new FormGroup({});
 
   protected model = {
@@ -36,6 +38,9 @@ export class BaseResearchComponent implements OnInit {
 
   protected service: ServiceQuery;
 
+  //sessionId ricerca titulus 
+  protected sessionId: null;
+
   constructor(protected router: Router, protected route: ActivatedRoute) {       
   }
 
@@ -55,8 +60,11 @@ export class BaseResearchComponent implements OnInit {
   }
 
 
-  onFind(model) {
+  onFind(model, reset=true) {
     this.querymodel.rules = model.rules;
+
+    if (reset)
+      this.resetQueryModel();
 
     this.isLoading = true;
     //this.service.clearMessage();
@@ -67,6 +75,8 @@ export class BaseResearchComponent implements OnInit {
         this.model = {
           data: data.data
         }
+
+        this.sessionId = data.sessionId;        
 
         to.page.totalElements = data.total; // data.to;
         to.page.pageNumber = data.current_page - 1;
@@ -83,14 +93,20 @@ export class BaseResearchComponent implements OnInit {
   }
 
   onSetPage(pageInfo) {
+    if (this.sessionId)
+      this.querymodel['sessionId'] = this.sessionId;
     if (pageInfo.limit)
       this.querymodel['limit'] = pageInfo.limit;
     if (this.model.data.length > 0) {
       this.querymodel['page'] = pageInfo.offset + 1;
-      this.onFind(this.querymodel);
+      this.onFind(this.querymodel, false);
     }
   }
 
+  protected resetQueryModel(){    
+    this.querymodel['sessionId'] = null;    
+    this.querymodel['page'] = null;
+  }
 
 
 }

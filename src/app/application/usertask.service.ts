@@ -7,6 +7,7 @@ import { ArrayControl } from '../shared/dynamic-form/control-array';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Cacheable } from 'ngx-cacheable';
+import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 
 
 const httpOptions = {
@@ -27,8 +28,8 @@ export class UserTaskService extends BaseService {
   }
 
 
-  constructor(protected http: HttpClient, public messageService: MessageService) {
-    super(http, messageService);
+  constructor(protected http: HttpClient, public messageService: MessageService, public confirmationDialogService: ConfirmationDialogService) {
+    super(http, messageService,confirmationDialogService);
     this.basePath = 'usertask';
   }
 
@@ -48,20 +49,20 @@ export class UserTaskService extends BaseService {
 
   @Cacheable()
   getValidationOffices(): Observable<any> {
-    return this.http.get(this._baseURL + '/convenzioni/validationoffices/', httpOptions).pipe(
-      catchError(this.handleError('getValidationOfficesPersonale', []))
+    return this.http.get(this._baseURL + '/convenzioni/uffici/'+'validazione', httpOptions).pipe(
+      catchError(this.handleError('getValidationOffices', []))
     );
   }
 
   @Cacheable()
-  getValidationOfficesPersonale(id): Observable<any> {
+  getPersonaleUfficio(id): Observable<any> {
     if (id){
-      return this.http.get<any>(this._baseURL + '/convenzioni/validationoffices/' + id.toString(), httpOptions)
+      return this.http.get<any>(this._baseURL + '/convenzioni/personaleufficio/' + id.toString(), httpOptions)
       .pipe(
         map(x => {
           return x.map(el => {el.id = parseInt(el.id); return el; })
          }),
-        catchError(this.handleError('getValidationOfficesPersonale', []))
+        catchError(this.handleError('getPersonaleUfficio', []))
       );
     } 
     return of([]);
@@ -90,8 +91,20 @@ export class UserTaskService extends BaseService {
   }
 
 
-  getNextActions(id): Observable<any> {
-    const url = `${this._baseURL}/convenzioni/${id}/actions`
+  getNextActions(id,model_type): Observable<any> {
+    let url = null;
+    switch (model_type) {
+      case 'App\\Convenzione':
+        url = `${this._baseURL}/convenzioni/${id}/actions`    
+        break;
+      case 'App\\Scadenza':
+        url = `${this._baseURL}/scadenze/${id}/actions`    
+        break;
+
+      default:
+        break;
+    }
+    
     return this.http.get(url, httpOptions);
   }
 

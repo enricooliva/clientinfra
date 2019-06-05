@@ -35,6 +35,11 @@ export class GlobalErrorHandlerService implements ErrorHandler {
                 //this.showError(error.message);
                 this.toastr.error('Richiesta errata', 'Oops!');
                 break;            
+            case 500:
+                if (error.error.message){
+                    this.toastr.error(error.error.message);
+                    //router.navigateByUrl("/unauthorized");
+                }
             default:
                 //this.toastr.error(GlobalErrorHandlerService.DEFAULT_ERROR_TITLE, 'Oops!');
         }

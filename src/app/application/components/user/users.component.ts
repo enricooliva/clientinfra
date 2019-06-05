@@ -19,28 +19,6 @@ export class UsersComponent extends BaseResearchComponent {
   
   isLoading = false;
   fieldsRow: FormlyFieldConfig[] = [
-    {
-      key: 'data',
-      type: 'datatablelookup',
-      wrappers: ['accordion'],      
-      templateOptions: {
-        label: 'Utenti',   
-        columnMode: 'force',
-        scrollbarH: false,        
-        page: new Page(25),
-        hidetoolbar: true,      
-        // modalità implicità di costruzione delle colonne 
-        // columns: [
-        //   { name: 'Id', prop: 'id', width: 10},
-        //   { name: 'Nome utente', prop: 'name' },
-        //   { name: 'Email', prop: 'email' },
-        // ],
-        onDblclickRow: (event) => this.onDblclickRow(event),
-        onSetPage: (pageInfo) => this.onSetPage(pageInfo),       
-      },
-      fieldArray: {
-        fieldGroupClassName: 'row',   
-        fieldGroup: [
           {
             key: 'id',
             type: 'number',            
@@ -68,13 +46,36 @@ export class UsersComponent extends BaseResearchComponent {
               column: { cellTemplate: 'valuecolumn'}
             }
           }
-        ]
-      }
-    }
-  ];
-  resultMetadata: FormlyFieldConfig[] = this.fieldsRow;
+        ];
 
-  constructor(protected service: UserService, protected router: Router, protected route: ActivatedRoute, ) {
+
+  resultMetadata: FormlyFieldConfig[] = [
+    {
+      key: 'data',
+      type: 'datatablelookup',
+      wrappers: ['accordion'],      
+      templateOptions: {
+        label: 'Utenti',   
+        columnMode: 'force',
+        scrollbarH: false,        
+        page: new Page(25),
+        hidetoolbar: true,      
+        // modalità implicità di costruzione delle colonne 
+        // columns: [
+        //   { name: 'Id', prop: 'id', width: 10},
+        //   { name: 'Nome utente', prop: 'name' },
+        //   { name: 'Email', prop: 'email' },
+        // ],
+        onDblclickRow: (event) => this.onDblclickRow(event),
+        onSetPage: (pageInfo) => this.onSetPage(pageInfo),       
+      },
+      fieldArray: {
+        fieldGroupClassName: 'row',   
+        fieldGroup: this.fieldsRow,
+      }
+    }];
+
+  constructor(protected service: UserService, protected router: Router, protected route: ActivatedRoute) {
     super(router,route);
     this.routeAbsolutePath = 'home/users'
     //this.title = "utenti"

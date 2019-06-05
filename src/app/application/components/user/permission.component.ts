@@ -4,7 +4,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { PermissionService } from '../../permission.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseEntityComponent } from 'src/app/shared';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-permission',
   templateUrl: '../../../shared/base-component/base-entity.component.html'
@@ -68,8 +68,8 @@ export class PermissionComponent extends BaseEntityComponent {
   ];
 
 
-  constructor(protected service: PermissionService, protected route: ActivatedRoute, protected router: Router) {
-    super(route,router)
+  constructor(protected service: PermissionService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+    super(route,router, location)
     //this.title = 'Permesso'
     this.activeNew =true;
     this.researchPath = 'home/permissions'

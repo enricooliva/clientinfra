@@ -9,6 +9,7 @@ export interface ResultParse{
 }
 
 const PDFJS: PDFJSStatic = require('pdfjs-dist');
+
 export default class ControlUtils {
 
   static getServiceName(entityName: string) {
@@ -91,7 +92,7 @@ export default class ControlUtils {
 
   public static async parsePdf(data): Promise<ResultParse>{
     let text = '';
-    const result: ResultParse = <ResultParse> {};
+    const result: ResultParse = <ResultParse> {};    
     await PDFJS.getDocument({ data: data }).then(async (doc) => {
       let counter: number = 1;
       counter = counter > doc.numPages ? doc.numPages : counter;

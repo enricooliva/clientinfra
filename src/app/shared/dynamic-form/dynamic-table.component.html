@@ -1,10 +1,10 @@
 <div class="btn-toolbar mb-4" role="toolbar">
     <div class="btn-group">    
-        <button class="btn btn-outline-primary" (click)="add()"  >              
+        <button type="button" class="btn btn-outline-primary" (click)="add()"  >              
             <span class="oi oi-plus"></span>
             <span class="ml-2">Aggiungi</span>
         </button>    
-        <button class="btn btn-outline-primary" [disabled]="selected.length == 0" (click)="remove()"  >              
+        <button type="button" class="btn btn-outline-primary" [disabled]="selected.length == 0" (click)="remove()"  >              
             <span class="oi oi-trash"></span>  
             <span class="ml-2">Rimuovi</span>
         </button>
@@ -40,10 +40,11 @@
         <app-show-errors [control]="getControl(rowIndex,column)"></app-show-errors>             
     </ng-template> 
 
+    <!--placeholder="dd-mm-yyyy"-->
     <ng-template  #datecolumn ngx-datatable-cell-template let-rowIndex="rowIndex" 
         let-value="value" let-row="row" let-column="column" let-sort="sortFn" let-sortDir="sortDir" >                              
     <div class="input-group" [formGroupName]="rowIndex">
-        <input class="form-control" placeholder="dd-mm-yyyy" container='body' [formControlName]="column.prop"  [displayMonths]="displayMonths" 
+        <input class="form-control" container='body' [formControlName]="column.prop"  [displayMonths]="displayMonths" 
             [navigation]="navigation"
             [outsideDays]="outsideDays" [showWeekNumbers]="showWeekNumbers" placement="top" ngbDatepicker #d="ngbDatepicker" 
             [ngClass]="getCellClass(rowIndex,column)">

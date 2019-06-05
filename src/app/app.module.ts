@@ -30,9 +30,21 @@ import { environment } from 'src/environments/environment';
 import { APP_BASE_HREF } from '@angular/common';
 import { RoleService } from './application/role.service';
 import { PermissionService } from './application/permission.service';
-import { TipoPagamentoService } from './application/tipopagamento.service';
+
 import { ToastrModule } from 'ngx-toastr';
 import { AziendaLocService } from './application/aziendaloc.service';
+import { PersonaInternaService } from './application/personainterna.service';
+import { StrutturaInternaService } from './application/strutturainterna.service';
+import { ClassificazioneService } from './application/classificazione.service';
+import { MappingUfficioService } from './application/mappingufficio.service';
+import { TipoPagamentoService } from './application/tipopagamento.service';
+import { UnitaOrganizzativaService } from './application/unitaorganizzativa.service';
+import { StrutturaEsternaService } from './application/strutturaesterna.service';
+import { DocumentoService } from './application/documento.service';
+import { LoginActivate } from './core/login.activate';
+import { ScadenzaService } from './application/scadenza.service';
+import { ConfirmationDialogService } from './shared/confirmation-dialog/confirmation-dialog.service';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 
 
 export function tokenGetter() {
@@ -44,8 +56,7 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent,
-    TableTypeComponent,
+    NotFoundComponent,    
     TestTabComponent,    
 ],
   imports: [
@@ -63,6 +74,7 @@ export function tokenGetter() {
   providers: [
     NgbActiveModal,
     AuthGuard,  
+    LoginActivate,
     ApplicationService,
     UserService,
     AziendaService,
@@ -70,21 +82,30 @@ export function tokenGetter() {
     MessageCacheService,  
     RoleService,
     PermissionService,
-    TipoPagamentoService,      
+    TipoPagamentoService,
+    ClassificazioneService,     
+    ConfirmationDialogService, 
     { provide: RequestCache, useClass: RequestCacheWithMap },
     HttpInterceptorProviders,
     GlobalErrorHandlerProviders,        
+    {provide: 'documentoService', useClass: DocumentoService },
     {provide: 'userService', useClass: UserService},
     {provide: 'applicationService', useClass: ApplicationService},
     {provide: 'aziendaService', useClass: AziendaService},
     {provide: 'aziendaLocService', useClass: AziendaLocService},
+    {provide: 'personainternaService', useClass: PersonaInternaService},
+    {provide: 'strutturainternaService', useClass: StrutturaInternaService},
+    {provide: 'strutturaesternaService', useClass: StrutturaEsternaService},
+    {provide: 'mapppingufficititulusService', useClass: MappingUfficioService},
+    {provide: 'unitaorganizzativaService', useClass: UnitaOrganizzativaService},
+    {provide: 'scadenzaService', useClass: ScadenzaService},    
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     {provide: APP_BASE_HREF, useValue: environment.baseHref},
     
   ],
   bootstrap: [AppComponent],
-  entryComponents: [UploadfileComponent],
+  entryComponents: [UploadfileComponent, ConfirmationDialogComponent],
 })
 
 
