@@ -1,6 +1,6 @@
 
 import { Component, OnInit, OnDestroy, Input, TemplateRef, ViewChild, Sanitizer } from '@angular/core';
-import { FormGroup, FormControl, FormArray, NgForm, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, NgForm, Validators, Form } from '@angular/forms';
 import { ApplicationService } from '../../application.service';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { MycurrencyPipe } from 'src/app/shared/pipe/custom.currencypipe';
 import { HttpParams } from '@angular/common/http';
 import {Location} from '@angular/common';
+import { InfraMessageType } from 'src/app/shared/message/message';
 
 
 @Component({
@@ -80,8 +81,8 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       //       return !model.id
       //   },
       // },
-      lifecycle: {
-        onInit: (form, field) => {
+      hooks: {
+        onInit: (field) => {
           this.transitions.subscribe(d => {
             field.templateOptions.options = d;
             field.templateOptions.disabled = false;
@@ -270,7 +271,6 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       }
     }
   ]
-
   fieldsusertask: FormlyFieldConfig[] = [
     {
       className: 'section-label',
@@ -542,7 +542,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               //la resetmodel imposta tutti i valori del modello.
               this.options[0].resetModel(data)
             } else {
-              this.model = data;
+              this.model = data;              
             }
 
 
@@ -593,7 +593,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
               result.azienda = { id: null, descrizione: null };
             }
 
-            this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result) });
+            this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(result); });
             this.updateTransition(result.id);
 
             this.isLoading = false;
@@ -708,4 +708,20 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   goBack(): void {
     this.location.back();
   }
+
+  public onValidate() {
+    const invalid = [];
+    const controls = (this.form.at(0) as FormGroup).controls;
+    this.service.clearMessage();
+    for (const name in controls) {        
+        if (controls[name].invalid) {
+            for (const error in controls[name].errors){
+              this.service.messageService.add(InfraMessageType.Error, name + " " + error, false);
+              invalid.push(name +" " + controls[name].getError(error));
+            }          
+        }
+    }
+    //console.log(invalid);    
+  }
+
 }

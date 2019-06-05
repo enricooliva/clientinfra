@@ -14,6 +14,10 @@
         <span class="oi oi-reload iconic" title="reload" aria-hidden="true" ></span>
         <span class="ml-2">Ricarica</span>
     </button>   
+    <button class="btn btn-outline-primary border-0 rounded-0" (click)="onValidate()" >              
+      <span class="oi oi-flash"></span>  
+      <span class="ml-2">Valida</span>              
+    </button> 
     <!-- <button class="btn btn-outline-primary border-0 rounded-0">
         <span class="oi oi-magnifying-glass"></span>
         <span class="ml-2">Ricerca</span>
@@ -46,7 +50,7 @@
         <form *ngIf="model" [formGroup]="form.at(1)" class="mt-1" >
         <formly-form  [model]="model" [fields]="fieldsattachment" [form]="form.at(1)" [options]="options[1]">  
         </formly-form>       
-        <!-- <p>Form value: {{ form.at(1).value | json }}</p> -->
+        <!-- <p>Form value: {{ form.at(1).value | json }}</p> -->        
         </form> 
     </ng-template>
   </ngb-tab>

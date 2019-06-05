@@ -6,7 +6,7 @@ import ControlUtils from '../../../shared/dynamic-form/control-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 import { Page } from '../../../shared/lookup/page';
-import { ApplicationService } from '../..';
+
 
 
 
@@ -32,7 +32,7 @@ import { ApplicationService } from '../..';
 
 export class ConvenzioniComponent implements OnInit {
   isLoading: boolean = false;
-  //service: ServiceQuery;
+  service: ServiceQuery;
 
   researchMetadata: FormlyFieldConfig[];
   form = new FormGroup({});
@@ -104,12 +104,12 @@ export class ConvenzioniComponent implements OnInit {
     },
   ];
   
-  constructor(private injector: Injector, private router: Router, private service: ApplicationService ) { }
+  constructor(private injector: Injector, private router: Router) { }
 
   ngOnInit() {
 
-    // const servicename = ControlUtils.getServiceName('application');
-    // this.service = this.injector.get(servicename) as ServiceQuery;
+    const servicename = ControlUtils.getServiceName('application');
+    this.service = this.injector.get(servicename) as ServiceQuery;
 
     this.researchMetadata = this.service.getMetadata();
     this.resultMetadata =  [

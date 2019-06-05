@@ -191,6 +191,36 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           },
         ]
       },
+      //NOTA BENE
+      //Attenzione il componente datepicker con valore '' 
+      //imposta uno stato invalido può generare l'errore di expressionchange 
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'data_inizio_conv',
+            type: 'datepicker',
+            className: "col-md-6",
+            templateOptions: {                
+              label: 'Data inizio convenzione',
+            },
+            hideExpression: (model: any, formState: any) => {
+              return !model.id;
+            }   
+          },
+          {
+            key: 'data_fine_conv',
+            type: 'datepicker',
+            className: "col-md-6",        
+            templateOptions: {        
+              label: 'Data fine convenzione',
+            },   
+            hideExpression: (model: any, formState: any) => {
+              return !model.id;
+            }      
+          }            
+        ]       
+      },
       {
         className: 'section-label',
         template: '<h5>Aziende</h5>',
@@ -489,7 +519,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         templateOptions: {
           label: 'Data inizio',
           required: true,
-        },
+        },        
       },  
       {
         key: 'data_fine_conv',
@@ -498,7 +528,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         templateOptions: {
           label: 'Data fine',
           required: true,
-        },
+        },       
       },     
       {
         key: 'current_place',
