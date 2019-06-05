@@ -60,9 +60,10 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
           alwaysenabled: false,
           text: 'Apri ricerca', 
-          onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open()},
+          onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open();},
       }
     ];
+    
     if (this.to.entityPath){
       //extra bottone sulla destra per aprire la gestione
       this.field.fieldGroup[0].templateOptions.addonRights = [
@@ -71,12 +72,13 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
           class: 'btn btn-outline-secondary oi oi-external-link d-flex align-items-center',    
           alwaysenabled: true,
           text: 'Apri gestione',              
-          onClick: (to, fieldType, $event) => {this.openEntity()},
+          onClick: (to, fieldType, $event) => { this.openEntity(); },
         }
       ];      
     }
+
     if (this.codeField.templateOptions.addonRights) {
-      this.codeField.wrappers = ['form-field','addonRights']//[...(this.codeField.wrappers || []), 'addonRight1'];
+      this.codeField.wrappers = ['form-field','addonRights']; //[...(this.codeField.wrappers || []), 'addonRight1'];
     }
 
     this.field.fieldGroup[0].templateOptions.keyup = (field, event: KeyboardEvent) => {

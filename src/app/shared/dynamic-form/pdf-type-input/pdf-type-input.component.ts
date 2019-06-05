@@ -4,10 +4,8 @@ import { encode, decode } from 'base64-arraybuffer';
 @Component({
   selector: 'app-pdf-type-input',
   template: `
-  <formly-group [model]="model"
-    [field]="field"
-    [options]="options"
-    [form]="formControl">  
+  <formly-group 
+    [field]="field">  
   </formly-group>     
   `,
   styles: []

@@ -17,9 +17,7 @@ import { map } from 'rxjs/operators';
   <div *ngFor="let subfield of field.fieldGroup; let i = index;">
       <formly-group     
         [model]="model[i]"          
-        [field]="subfield"
-        [options]="options"
-        [form]="formControl">
+        [field]="subfield">
         <div *ngIf="!to.btnRemoveHidden" class="col-md-2 d-flex align-self-center">
         <div class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onRemoveRepeat(i)"  >              
           <span class="oi oi-trash"></span>  
