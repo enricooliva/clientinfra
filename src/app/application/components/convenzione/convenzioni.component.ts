@@ -131,7 +131,7 @@ export class ConvenzioniComponent implements OnInit {
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
-            fieldGroup: this.researchMetadata.map(x => {
+            fieldGroup: this.researchMetadata.filter(x=>x.key != 'aziende.id').map(x => {
               x.templateOptions.column = { cellTemplate: 'valuecolumn'};
               return x;
             })

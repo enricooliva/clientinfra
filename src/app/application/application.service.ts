@@ -452,13 +452,13 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         }
       },
       {
-        key: 'azienda',
+        key: 'aziende.id',
         type: 'external',
         className: "col-md-6",
         templateOptions: {
           label: 'Azienda',
           type: 'string',
-          entityName: 'azienda',
+          entityName: 'aziendaLoc',
           entityLabel: 'Aziende',
           codeProp: 'id',
           descriptionProp: 'denominazione',
