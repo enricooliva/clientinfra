@@ -189,9 +189,9 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
                   //icon: 'oi oi-data-transfer-download'
                   onClick: ($event, model) => this.download($event, model),
                 },
-                hideExpression: (model: any, formState: any) => {
-                  return model.filetype == 'link';
-               },                                
+              //   hideExpression: (model: any, formState: any) => {
+              //     return model.filetype == 'link';
+              //  },                                
               },
               {
                 type: 'button',
@@ -669,9 +669,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
   download(event, model) {
     //console.log(model);
     this.service.download(model.id).subscribe(file => {
-      if (file.filevalue)
-        var blob = new Blob([decode(file.filevalue)]);
-      saveAs(blob, file.filename);
+      if (file.filevalue){
+        var blob = new Blob([decode(file.filevalue)]);             
+        saveAs(blob, file.filename);                  
+      }
     },
       e => { console.log(e); }
     );
