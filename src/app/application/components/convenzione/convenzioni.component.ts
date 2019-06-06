@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { ServiceQuery } from '../../../shared';
@@ -24,6 +24,34 @@ import { Page } from '../../../shared/lookup/page';
     
   </formly-form> 
   </form>
+
+  <ng-template #detailRow
+    let-row="row"
+    let-expanded="expanded"
+    ngx-datatable-row-detail-template>
+
+    <!-- Esempio di uso tabella di riga di dettaglio
+    <ngx-datatable #mydatatable class="bootstrap" [headerHeight]="20" [limit]="5" [columnMode]="'standard'" [footerHeight]="0" [rowHeight]="'auto'" [rows]="row.aziende">
+      <ngx-datatable-column name="Codice azienda" [width]="200" prop="id"></ngx-datatable-column>
+      <ngx-datatable-column name="Denominazione" [width]="400" prop="denominazione"></ngx-datatable-column>
+    </ngx-datatable> -->
+
+  <div *ngFor="let azienda of row.aziende" style="padding-left: 35px" class="m-t-5">
+    <div><strong>Azienda</strong></div>        
+    <div class="container-fluid">
+      <div class="row">
+          <label class="control-label mr-1">Codice:</label>
+          <div class="mr-2">{{ azienda.id }} </div>
+          <label class="control-label mr-1">Denominazione:</label>
+          <div class=" mr-1">{{ azienda.denominazione }} </div>
+      </div>
+    </div>
+    <!--<div>{{ azienda.id }}, {{ azienda.denominazione }}</div>-->
+  </div>
+
+  </ng-template>
+
+
   `,
   styles: []
 })
@@ -34,6 +62,8 @@ export class ConvenzioniComponent implements OnInit {
   isLoading: boolean = false;
   service: ServiceQuery;
 
+  @ViewChild('detailRow') detailRow: TemplateRef<any>;
+  
   researchMetadata: FormlyFieldConfig[];
   form = new FormGroup({});
 
@@ -124,6 +154,7 @@ export class ConvenzioniComponent implements OnInit {
             footerHeight: 50,            
             scrollbarH: true,             
             hidetoolbar: true, 
+            detailRow: this.detailRow,
             selected: [],                        
             page: new Page(25),       
             onDblclickRow: (event) => this.onDblclickRow(event),
@@ -131,10 +162,24 @@ export class ConvenzioniComponent implements OnInit {
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
-            fieldGroup: this.researchMetadata.filter(x=>x.key != 'aziende.id').map(x => {
-              x.templateOptions.column = { cellTemplate: 'valuecolumn'};
+            fieldGroup: Array<any>(
+              {                                                                               
+                templateOptions: {                    
+                  column: {  
+                    minWidth: 50,
+                    resizable: false,
+                    canAutoResize: false,              
+                    cellTemplate: 'expaderdetailcolumn',
+                  }
+                },
+              }              
+            ).concat(this.researchMetadata.filter(x=>x.key != 'aziende.id').map(x => {
+              x.templateOptions.column = { 
+                cellTemplate: 'valuecolumn',
+                //minWidth: 200
+              };
               return x;
-            })
+            }))
           }
         }
       ];
