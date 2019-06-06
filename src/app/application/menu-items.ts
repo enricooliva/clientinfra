@@ -11,7 +11,16 @@ export const ROUTES: RouteInfo[] = [
     submenu: [
       {
         path: 'dashboard/dashboard1',
-        title: 'Dashboard',
+        title: 'Dashboard attività',
+        icon: '',
+        class: '',
+        permissions: ['ADMIN'],
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: 'dashboard/dashboard2',
+        title: 'Dashboard convenzioni',
         icon: '',
         class: '',
         permissions: ['ADMIN'],

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -19,6 +19,9 @@ import { LoadingModule } from 'ngx-loading';
 import { NotificationsComponent } from './dashboard-components/notifications/notifications.component';
 import { SharedModule } from '../shared';
 import { TableTypeComponent } from '../shared/dynamic-form/table-type.component';
+import { ConvenzioniresultComponent } from './dashboard-components/convenzioniresult/convenzioniresult.component';
+import { Dashboard2Component } from './dashboard2/dashboard2.component';
+import { ScadenzeresultComponent } from './dashboard-components/scadenzeresult/scadenzeresult.component';
 
 @NgModule({
   imports: [  
@@ -34,12 +37,16 @@ import { TableTypeComponent } from '../shared/dynamic-form/table-type.component'
   ],
   declarations: [
     Dashboard1Component,
+    Dashboard2Component,
     InfocardComponent,
     TaskListComponent,
     NotificationsComponent,
+    ConvenzioniresultComponent,
+    ScadenzeresultComponent,
   ],
   providers: [ 
     DashboardService,
+    DatePipe,
   ]
 })
 export class DashboardModule {}

@@ -29,7 +29,7 @@ export class ScadenzeComponent extends BaseResearchComponent {
           },
           {
             key: 'data_tranche',
-            type: 'string',
+            type: 'date',
             templateOptions: {
               label: 'Tranche prevista',
               required: true,

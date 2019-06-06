@@ -1,0 +1,72 @@
+<!-- ============================================================== -->
+<!-- Info card -->
+<!-- ============================================================== -->
+<!--<app-info-card></app-info-card>-->
+<!-- ============================================================== -->
+<!-- Info card -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Notifiche -->
+<!-- ============================================================== -->
+
+
+
+<div class="card">
+        <div class="card-body">
+            <!-- title -->
+            <div class="d-md-flex align-items-center">
+                <div>
+                    <h4 class="card-title">Convenzioni in esecuzione</h4>
+                    <!-- <h5 class="card-subtitle">Elenco delle convenzioni </h5> -->
+                </div>
+            </div>
+            <!-- title -->
+        </div>
+        <app-convenzioniresult></app-convenzioniresult>
+    </div>            
+<!-- ============================================================== -->
+<!-- Notifiche -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!--Lista task-->
+<!-- ============================================================== -->
+
+<div class="row">
+    <!-- column -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <!-- title -->
+                <div class="d-md-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">Scadenze</h4>
+                        <h5 class="card-subtitle">Tranche prossime alla scadenza</h5>
+                    </div>
+                </div>
+                <!-- title -->
+            </div>
+            <app-scadenzeresult [querymodel]="queryinscadenza"></app-scadenzeresult >
+        </div>            
+    </div>
+    <!-- column -->
+    <div class="col-lg-6">     
+        <div class="card">
+            <div class="card-body">
+                <!-- title -->
+                <div class="d-md-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">Scadenze</h4>
+                        <h5 class="card-subtitle">Tranche scadute ma non incassate</h5>
+                    </div>
+                </div>
+                <!-- title -->
+            </div>
+            <app-scadenzeresult [querymodel]="queryscadute"></app-scadenzeresult >
+        </div>                        
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Lista task -->
+<!-- ============================================================== -->
