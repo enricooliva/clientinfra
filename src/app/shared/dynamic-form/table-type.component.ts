@@ -35,7 +35,16 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
   [selectionType]="'single'"
   (sort)="onSort($event)"
   (select)='onSelect($event)'
-  (activate)='onEvents($event)'>     
+  (activate)='onEvents($event)'>
+  
+  <!-- Row Detail Template -->
+  <ngx-datatable-row-detail
+    [rowHeight]="100"
+    #myDetailRow
+    (toggle)="onDetailToggle($event)"
+  > 
+  </ngx-datatable-row-detail>
+
 </ngx-datatable>
   
 <ng-template #defaultcolumn ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-column="column" >
@@ -46,20 +55,39 @@ import { TableColumn } from '@swimlane/ngx-datatable/release/types';
 {{ value }}    
 </ng-template>  
 
+
+<ng-template #expaderdetailcolumn let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+  <div style="padding-left:5px;">
+    <a    
+      [class.datatable-icon-right]="!expanded"
+      [class.datatable-icon-down]="expanded"
+      title="Expand/Collapse Row"
+      (click)="toggleExpandRow(row)">      
+    </a>                          
+  </div> 
+</ng-template>
+
 `
 })
 
 // <h1>Model</h1>
 // <pre>{{ model | json }}</pre>
 export class TableTypeComponent extends FieldArrayType {  
-  
+  @ViewChild('table') table: any;
+
   @ViewChild('defaultcolumn') public defaultColumn: TemplateRef<any>;
-  @ViewChild('valuecolumn') public valuecolumn: TemplateRef<any>;
+  @ViewChild('valuecolumn') public valuecolumn: TemplateRef<any>;  
+  @ViewChild('expaderdetailcolumn') public expaderdetailcolumn: TemplateRef<any>;  
+    
   //descrizione delle colonne della tabella
   columns: TableColumn[];
   //selected = [];
 
   ngOnInit() {    
+
+    if(this.to.detailRow){
+      this.table.rowDetail.template = this.to.detailRow;
+    }
 
     if (!('selected' in this.to)){
       Object.defineProperty(this.to,'selected',{
@@ -176,5 +204,14 @@ export class TableTypeComponent extends FieldArrayType {
     //let ma = this.model as Array<any>;    
     //this.model = ma.filter(x => Object.keys(x).length !== 0);    
      
-	}
+  }
+
+  onDetailToggle(event) {
+    //console.log('Detail Toggled', event);
+  }
+
+  toggleExpandRow(row) {
+    //console.log('Toggled Expand Row!', row);
+    this.table.rowDetail.toggleExpandRow(row);
+  }
 }

@@ -32,8 +32,27 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
   [offset]="to.page.pageNumber"
   [limit]="to.page.size"
   (page)='setPage($event)'>     
-      
+
+  <!-- Row Detail Template -->
+  <ngx-datatable-row-detail
+    [rowHeight]="100"
+    #myDetailRow
+    (toggle)="onDetailToggle($event)"
+  > 
+  </ngx-datatable-row-detail>
+
 </ngx-datatable>
+
+<ng-template #expaderdetailcolumn let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+  <div style="padding-left:5px;">
+    <a    
+      [class.datatable-icon-right]="!expanded"
+      [class.datatable-icon-down]="expanded"
+      title="Espandi/Chiudi riga"
+      (click)="toggleExpandRow(row)">      
+    </a>                          
+  </div> 
+</ng-template>
 
 `
 })
@@ -43,6 +62,9 @@ import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 
 export class TableLookupTypeComponent extends FieldArrayType {  
 
+  @ViewChild('table') table: any;
+  @ViewChild('expaderdetailcolumn') public expaderdetailcolumn: TemplateRef<any>;     
+
   constructor(builder: FormlyFormBuilder, private differs: KeyValueDiffers) {    
     super(builder);        
   
@@ -50,6 +72,10 @@ export class TableLookupTypeComponent extends FieldArrayType {
         
   ngOnInit() {      
     this.setPage({ offset: 0, limit: this.to.page.size});
+
+    if(this.to.detailRow){
+      this.table.rowDetail.template = this.to.detailRow;
+    }
 
     if (!('selected' in this.to)){
       Object.defineProperty(this.to,'selected',{
@@ -78,7 +104,22 @@ export class TableLookupTypeComponent extends FieldArrayType {
           prop: el.key,                                          
         }
         el.templateOptions.label = "";
-                       
+           
+        
+        if ('column' in el.templateOptions){
+          //copio tutte le proprietà relativa alla colonna 
+          Object.keys(el.templateOptions.column).forEach(prop => {
+            if (prop=='cellTemplate'){
+              if (this[el.templateOptions.column.cellTemplate])
+                c['cellTemplate'] = this[el.templateOptions.column.cellTemplate]
+            }else{
+              c[prop] = el.templateOptions.column[prop]
+            }
+          }
+          );
+        }
+
+
         return c;
       });
       
@@ -130,5 +171,14 @@ export class TableLookupTypeComponent extends FieldArrayType {
   setPage(pageInfo){    
     this.to.page.pageNumber = pageInfo.offset;
     this.to.onSetPage(pageInfo);      
+  }
+
+  onDetailToggle(event) {
+    //console.log('Detail Toggled', event);
+  }
+
+  toggleExpandRow(row) {
+    //console.log('Toggled Expand Row!', row);
+    this.table.rowDetail.toggleExpandRow(row);
   }
 }
