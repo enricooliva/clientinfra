@@ -14,7 +14,7 @@ export abstract class RequestCache {
   abstract put(req: HttpRequest<any>, response: HttpResponse<any>): void
 }
 
-const maxAge = 20000; // maximum cache age (ms)
+const maxAge = 5000; // maximum cache age (ms)
 
 @Injectable()
 export class RequestCacheWithMap implements RequestCache {
