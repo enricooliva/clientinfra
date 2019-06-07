@@ -222,6 +222,22 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         ]       
       },
       {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            key: 'num_bolli',
+            type: 'number',
+            className: "col-md-6",
+            templateOptions: {                
+              label: 'Numero bolli',
+            },
+            hideExpression: (model: any, formState: any) => {
+              return !(model.id && model.num_bolli);
+            }   
+          },
+        ]
+      },
+      {
         className: 'section-label',
         template: '<h5>Aziende</h5>',
       },
@@ -540,7 +556,8 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             { value: 'approvato', label: 'Approvato' }, 
             { value: 'inapprovazione', label: 'In approvazione' },            
             { value: 'da_firmare_direttore2', label: 'Da controfirmare UniUrb' },
-            { value: 'da_firmare_cotroparte2', label: 'Da controfirmare controparte' },            
+            { value: 'da_firmare_cotroparte2', label: 'Da controfirmare controparte' },   
+            { value: 'repertoriato', label: 'Repertoriata' },            
           ],
           label: 'Stato',
           required: true,

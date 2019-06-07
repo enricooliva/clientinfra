@@ -86,6 +86,15 @@ export class TableLookupTypeComponent extends FieldArrayType {
       this.to.selected= [];
     }
 
+
+    //costruzione dinamica delle colonne partendo dai campi aggiunta eventuali proprietà 
+    //di colonna all'interno delle template option dei campi
+
+    //la generazione automatica parte dal template del campo ng-formly
+    //dove si possono specificare le proprietà della colonna nel campo column (width, resizable...)
+    //
+    //cellTemplate accetta una stringa che è il nome del template da associare alla colonna
+    //
     if (typeof this.to.columns == 'undefined'){
       //configurazione basata sulla dichiarazione delle colonne nel json 
       // modalità implicità di costruzione delle colonne 
@@ -93,19 +102,14 @@ export class TableLookupTypeComponent extends FieldArrayType {
         //   { name: 'Id', prop: 'id', width: 10},
         //   { name: 'Nome utente', prop: 'name' },
         //   { name: 'Email', prop: 'email' },
-        // ],      
-      //costruzione dinamica delle colonne partendo dai campi aggiunta eventuali proprietà 
-      //di colonna all'interno delle template option dei campi
-      //
+        // ],          
       this.to.columns =  this.field.fieldArray.fieldGroup.map(el => {      
         
         let c = { 
           name: el.templateOptions.label, 
           prop: el.key,                                          
         }
-        el.templateOptions.label = "";
-           
-        
+        el.templateOptions.label = "";                   
         if ('column' in el.templateOptions){
           //copio tutte le proprietà relativa alla colonna 
           Object.keys(el.templateOptions.column).forEach(prop => {
@@ -118,12 +122,23 @@ export class TableLookupTypeComponent extends FieldArrayType {
           }
           );
         }
-
-
         return c;
-      });
-      
-    }   
+      });      
+    }  //fine costruzione dinamica
+
+    //se c'è la riga di dettaglio aggiungere come prima colonna l'expander
+    if (this.to.detailRow){
+      this.to.columns = [
+        {
+          minWidth: 50, 
+          canAutoResize:false,
+          cellTemplate: this.expaderdetailcolumn,
+          resizable: false,
+        },
+        ...this.to.columns
+      ]
+    }
+
     
   }
 

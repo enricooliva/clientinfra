@@ -162,24 +162,13 @@ export class ConvenzioniComponent implements OnInit {
           },
           fieldArray: {
             fieldGroupClassName: 'row',   
-            fieldGroup: Array<any>(
-              {                                                                               
-                templateOptions: {                    
-                  column: {  
-                    minWidth: 50,
-                    resizable: false,
-                    canAutoResize: false,              
-                    cellTemplate: 'expaderdetailcolumn',
-                  }
-                },
-              }              
-            ).concat(this.researchMetadata.filter(x=>x.key != 'aziende.id').map(x => {
+            fieldGroup: this.researchMetadata.filter(x=>x.key != 'aziende.id').map(x => {
               x.templateOptions.column = { 
                 cellTemplate: 'valuecolumn',
                 //minWidth: 200
               };
               return x;
-            }))
+            })
           }
         }
       ];

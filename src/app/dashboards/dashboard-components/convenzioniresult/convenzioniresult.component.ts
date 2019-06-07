@@ -48,29 +48,22 @@ export class ConvenzioniresultComponent implements OnInit {
             selected: [],                        
             page: new Page(25),       
             onDblclickRow: (event) => this.onDblclickRow(event),
-            onSetPage: (pageInfo) => this.onSetPage(pageInfo)                                     
+            onSetPage: (pageInfo) => this.onSetPage(pageInfo),
+            columns:[              
+              {name: "Id", prop: "id"},
+              {name: "Codice utente", prop: "user_id"},
+              {name: "Descrizione Titolo", prop: "descrizione_titolo"},
+              {name: "Dipartimento", prop: "dipartimemto_cd_dip"},
+              {name: "Responsabile scientifico", prop: "resp_scientifico"},
+              {name: "Tipo convenzione", prop: "convenzione_type"},
+              {name: "Ambito", prop: "ambito"},
+              {name: "Modalità di pagamento", prop: "tipopagamenti_codice"},
+              {name: "Corrispettivo iva esclusa se applicabile", prop: "corrispettivo"},
+              {name: "Data inizio", prop: "data_inizio_conv"},
+              {name: "Data fine", prop: "data_fine_conv"},
+              {name: "Stato", prop: "current_place"},
+            ]                                     
           },
-          fieldArray: {
-            fieldGroupClassName: 'row',   
-            fieldGroup: Array<any>(
-              {                                                                               
-                templateOptions: {                    
-                  column: {  
-                    minWidth: 50,
-                    resizable: false,
-                    canAutoResize: false,              
-                    cellTemplate: 'expaderdetailcolumn',
-                  }
-                },
-              }              
-            ).concat(this.researchMetadata.filter(x=>x.key != 'aziende.id').map(x => {
-              x.templateOptions.column = { 
-                cellTemplate: 'valuecolumn',
-                //minWidth: 200
-              };
-              return x;
-            }))
-          }
         }
       ];
 
