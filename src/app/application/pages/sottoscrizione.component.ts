@@ -328,31 +328,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                   },                            
                 },
               ],
-            },
-            // {
-            //   fieldGroupClassName: 'row',
-            //   fieldGroup: [
-            //     {
-            //       key: 'docnumber',
-            //       type: 'input',
-            //       className: "col-md-5",
-            //       templateOptions: {
-            //         label: 'Numero',
-            //         //required: true,                               
-            //       },
-            //     },
-
-            //     {
-            //       key: 'data_emissione',
-            //       type: 'datepicker',
-            //       className: "col-md-5",
-            //       templateOptions: {
-            //         label: 'Data',
-            //         //required: true,                               
-            //       },
-            //     },
-            //   ],
-            // },
+            },      
           ],
         },
         {
@@ -390,38 +366,6 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
         },
       ],
     },
-
-
-
-
-    // {
-    //   fieldGroupClassName: 'row',
-    //   hideExpression: (model, formstate) => {
-    //     return formstate.model.stipula_format === 'cartaceo';
-    //   },
-    //   fieldGroup: [
-    //     {
-    //       key: 'docnumber',
-    //       type: 'input',
-    //       className: "col-md-5",
-    //       templateOptions: {
-    //         label: 'Numero',
-    //         //required: true,                               
-    //       },
-    //     },
-
-    //     {
-    //       key: 'data_emissione',
-    //       type: 'datepicker',
-    //       className: "col-md-5",
-    //       templateOptions: {
-    //         label: 'Data',
-    //         //required: true,                               
-    //       },
-    //     },
-    //   ],
-    // },
-
     {
       hideExpression: (model, formstate) => {
         return !(formstate.model.stipula_format === 'digitale' && formstate.model.stipula_type === 'uniurb');
@@ -439,78 +383,14 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
             //required: true,                               
           },          
         },
-
-        // {
-        //   key: 'subject',
-        //   type: 'input',
-        //   templateOptions: {
-        //     label: 'Oggetto',
-        //     //required: true,                               
-        //   },
-        // },
-        // {
-        //   key: 'note',
-        //   type: 'textarea',
-        //   templateOptions: {
-        //     label: 'Note',
-        //     rows: 2,
-        //     //required: true,                               
-        //   },
-        // },
       ],
     },
-    
-    //Inserimento allegati
-    // {
-    //   key: 'otherattachments',
-    //   type: 'repeat',
-    //   templateOptions: {
-    //     label: 'Allegati',
-    //   },    
-    //   hideExpression: (model, formstate) => {
-    //     return !(formstate.model.stipula_format === 'digitale');
-    //   },      
-    //   fieldArray: {
-    //     fieldGroupClassName: 'row',
-    //     fieldGroup:  [
-    //       {
-    //         key: 'attachmenttype_codice',
-    //         type: 'select',
-    //         className: "col-md-5",
-    //         defaultValue: 'GEN_ALLEGATO',
-    //         templateOptions: {
-    //           //todo chiedere lato server 
-    //           required: true,  
-    //           options: [{ stipula_type: 'ditta', codice: 'GEN_ALLEGATO', descrizione: 'Allegato' }],
-    //           valueProp: 'codice',
-    //           labelProp: 'descrizione',
-    //           label: 'Tipo documento',
-    //         },
-    //       },          
-    //       {
-    //         key: 'filename',
-    //         type: 'fileinput',
-    //         className: "col-md-5",
-    //         templateOptions: {
-    //           required: true,  
-    //           label: 'Scegli il documento',
-    //           type: 'input',
-    //           placeholder: 'Scegli file documento',
-    //           accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
-    //           onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
-    //         },  
-    //       },
-
-    //     ],
-        
-    //   },
-    // },
   ]
 
   onSelectCurrentFile(currentSelFile, field: FormlyFieldConfig) {
 
 
-    let currentAttachment = field.formControl.parent.value;
+    let currentAttachment = field.parent.model; //field.formControl.parent.value;
     if (currentSelFile == null) {
       //caso di cancellazione
       currentAttachment.filevalue = null;
@@ -527,16 +407,6 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
 
       currentAttachment.filevalue = encode(e.target.result);
       //field.formControl.parent.get('filevalue').setValue(encode(e.target.result));
-      // if (currentSelFile.name.search('pdf')>0){
-      //   try {
-      //     let result = await ControlUtils.parsePdf(e.target.result);     
-      //     field.formControl.parent.get('docnumber').setValue(result.docnumber);
-      //     field.formControl.parent.get('data_emissione').setValue(result.converted);
-      //   } catch (error) {
-      //     console.log(error);
-      //     this.isLoading = false;
-      //   }
-      // }
 
       if (!currentAttachment.filevalue) {
         this.isLoading = false;
