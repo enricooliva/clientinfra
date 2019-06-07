@@ -139,6 +139,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         type: 'number',
         className: 'col-md-4',        
         templateOptions: {
+          required: true,
           label: 'Numero bolli applicati',
           description: 'Calcolare un bollo ogni 100 righe di convenzione',       
         },
@@ -158,7 +159,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
         expressionProperties: {
           'templateOptions.template': () => `           
             <h6 class="panel-title">
-             Numero di pagine ${this.numPages} e numero linee calcolate ${this.numLines}
+             Numero di pagine ${this.numPages} e numero righe calcolate ${this.numLines}
             </h6>
           `
         }
@@ -209,8 +210,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
               expressionProperties: {
                 'templateOptions.required': (model: any, formState: any) => { return !(formState.model.bollo_virtuale == true && formState.model.stipula_format == 'digitale') },
               },            
-            },
-      
+            },        
           ],
         },
       ],  
@@ -219,7 +219,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
 
   onSelectCurrentFile(currentSelFile, field: FormlyFieldConfig){    
   
-    let currentAttachment = field.formControl.parent.value;
+    let currentAttachment = field.parent.model; //.formControl.parent.value;
     if (currentSelFile == null) {
       //caso di cancellazione
       currentAttachment.filevalue = null;
@@ -264,7 +264,12 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
       for (var i = 1; i <= counter; i++) {
         let pageText = await doc.getPage(i).then(pageData => ControlUtils.render_page(pageData)) as string;
 
-        linecount += pageText.split('\n').length;
+        linecount += pageText.split('\n').filter(x=>{
+          if (x.trim().length == 0)
+            return false;
+
+          return true;
+        }).length;
        
       }    
             
@@ -317,6 +322,7 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
+      tosubmit.attachment1 = {...this.model.attachment1, ...this.form.value.attachment1};
       tosubmit.transition = this.workflowAction;
       this.service.bolloRepertoriazioneStep(tosubmit,true).subscribe(
         result => {          
