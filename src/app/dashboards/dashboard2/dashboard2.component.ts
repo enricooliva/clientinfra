@@ -12,6 +12,7 @@ export class Dashboard2Component implements OnInit, AfterViewInit {
 
   public queryinscadenza: any = {};
   public queryscadute: any = {};
+  public queryconvinesecuzione: any = {};
 
   constructor(public service: DashboardService, private datePipe: DatePipe) {}
 
@@ -32,7 +33,10 @@ export class Dashboard2Component implements OnInit, AfterViewInit {
         { value: 'pagato', field: "state", operator: "!=", type: "string" }
       ];     
       
-    
+      this.queryconvinesecuzione.rules = [        
+          { value: today, operator: "<=", field: "data_inizio_conv",  type: "date" },
+          { value: today,  operator: ">=", field: "data_fine_conv", type: "date" }        
+      ];
   }
 
   // x.namelist = x.assignments.reduce(function(acc, el){

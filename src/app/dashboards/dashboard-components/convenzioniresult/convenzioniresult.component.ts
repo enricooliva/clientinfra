@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
 import { ApplicationService } from 'src/app/application';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
@@ -13,8 +13,12 @@ import { DatePipe } from '@angular/common';
 })
 export class ConvenzioniresultComponent implements OnInit {
   isLoading: boolean = false;
+
   @ViewChild('detailRow') detailRow: TemplateRef<any>;
-  
+
+  @Input() 
+  querymodel: any;
+
   researchMetadata: FormlyFieldConfig[];
   form = new FormGroup({});
 
@@ -70,11 +74,6 @@ export class ConvenzioniresultComponent implements OnInit {
         }
       ];
 
-      const today = this.datePipe.transform(Date.now(), 'dd-MM-yyyy')   
-      this.querymodel.rules =  [
-        { value: today, field: "data_inizio_conv", operator: ">=", type: "date" },
-        { value: today, field: "data_fine_conv", operator: "<=", type: "date" }
-      ],     
       this.onFind(this.querymodel);
       
   }
@@ -85,10 +84,6 @@ export class ConvenzioniresultComponent implements OnInit {
       this.router.navigate(['home/convenzioni', event.row.id]);
     }
   }
-  
-  querymodel = {
-    rules: Array<any>()
-  };
 
   onSetPage(pageInfo){      
     if (pageInfo.limit)

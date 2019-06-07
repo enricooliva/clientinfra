@@ -6,6 +6,7 @@ import { Page } from 'src/app/shared/lookup/page';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ScadenzaService } from 'src/app/application/scadenza.service';
+import { MycurrencyPipe } from 'src/app/shared/pipe/custom.currencypipe';
 
 @Component({
   selector: 'app-scadenzeresult',
@@ -14,7 +15,9 @@ import { ScadenzaService } from 'src/app/application/scadenza.service';
 })
 export class ScadenzeresultComponent implements OnInit {
   isLoading: boolean = false;
-  @ViewChild('detailRow') detailRow: TemplateRef<any>;
+  currency = new MycurrencyPipe();
+  
+  @ViewChild('statetemplate') statetemplate: TemplateRef<any>;
     
   @Input() 
   querymodel: any;
@@ -24,87 +27,6 @@ export class ScadenzeresultComponent implements OnInit {
     data: new Array<any>(),
   }; 
   
-  fieldsRow: FormlyFieldConfig[] = [
-          {
-            key: 'id',
-            type: 'number',                              
-            templateOptions: {
-              label: 'Codice',
-              disabled: true,              
-              column: { width: 50, cellTemplate: 'valuecolumn'}
-            }
-          },
-          {
-            key: 'data_tranche',
-            type: 'date',
-            templateOptions: {
-              label: 'Tranche prevista',
-              required: true,
-              column: { cellTemplate: 'valuecolumn'}
-            }
-          },
-          {
-            key: 'dovuto_tranche',
-            type: 'number',
-            templateOptions: {
-              label: 'Importo',
-              required: true,
-              column: { cellTemplate: 'valuecolumn'}
-            }
-          },
-          // {
-          //   key: 'convenzione.id',
-          //   type: 'external',
-          //   templateOptions: {
-          //     label: 'Convenzione',
-          //     type: 'string',
-          //     required: true,
-          //     entityName: 'application',
-          //     entityLabel: 'Convenzione',
-          //     codeProp: 'id',
-          //     descriptionProp: 'descrizione_titolo',
-          //     isLoading: false, 
-          //     column: { cellTemplate: 'valuecolumn'}
-          //   }   
-          // },
-          // {
-          //   key: 'convenzione.id',
-          //   type: 'external',
-          //   templateOptions: {
-          //     label: 'Codice convenzione',
-          //     required: true,
-          //     column: { cellTemplate: 'valuecolumn'}
-          //   }
-          // },
-          {
-            key: 'convenzione.descrizione_titolo',
-            type: 'string',
-            templateOptions: {
-              label: 'Titolo convenzione',
-              required: true,
-              column: { cellTemplate: 'valuecolumn'}
-            }
-          },
-          {
-            key: 'state',
-            type: 'select',
-            templateOptions: {
-              label: 'Stato',         
-              options: [
-                { label: 'Attiva', value: 'attivo' },
-                { label: 'In emissione', value: 'inemissione' },
-                //{ label: 'Emessa', value: 'emesso' },
-                { label: 'In pagamento ', value: 'inpagamento' },
-                { label: 'Pagata ', value: 'pagato' },
-              ],
-              required: true,
-              column: { cellTemplate: 'valuecolumn'}
-            }
-          }
-
-        ];
-
- 
   resultMetadata = [
     {
       key: 'data',
@@ -117,12 +39,20 @@ export class ScadenzeresultComponent implements OnInit {
         page: new Page(25),
         hidetoolbar: true,      
         onDblclickRow: (event) => this.onDblclickRow(event),
-        onSetPage: (pageInfo) => this.onSetPage(pageInfo),      
-      },
-      fieldArray: {
-        fieldGroupClassName: 'row',   
-        fieldGroup: this.fieldsRow,
-      }
+        onSetPage: (pageInfo) => this.onSetPage(pageInfo),   
+        columns: [
+          { name: 'Id', prop: 'id', wrapper: 'value',  maxWidth:'50' },
+          { name: 'Tranche prevista', prop: 'data_tranche', wrapper: 'value' },
+          { name: 'Titolo convenzione', prop:'convenzione.descrizione_titolo',  width:'300', wrapper: 'value'},
+          { name: 'Stato', prop: 'state', wrapper: 'value' },
+          { 
+            name: 'Importo', prop: 'dovuto_tranche', wrapper: 'value', 
+            maxWidth:'100', pipe: this.currency,
+          },
+       
+          //{ name: 'Azione', prop: 'action_button' },
+        ],   
+      },    
     }
   ];
   
@@ -130,14 +60,10 @@ export class ScadenzeresultComponent implements OnInit {
 
   ngOnInit() { 
   
-      if (!this.querymodel){
-        const today = this.datePipe.transform(Date.now(), 'dd-MM-yyyy')   
-        this.querymodel.rules =  [
-          { value: today, field: "data_tranche", operator: ">=", type: "date" },
-          { value: 'pagato', field: "stato", operator: "!=", type: "string" }
-        ];           
-      }
-      this.onFind(this.querymodel);
+    let cols: (Array<any>) = this.resultMetadata.find(x => x.key == "data").templateOptions.columns;
+    cols.find(x => x.prop == 'state').cellTemplate = this.statetemplate;
+      
+    this.onFind(this.querymodel);
       
   }
 
