@@ -130,7 +130,7 @@ export class TableLookupTypeComponent extends FieldArrayType {
     if (this.to.detailRow){
       this.to.columns = [
         {
-          minWidth: 50, 
+          width: 50, 
           canAutoResize:false,
           cellTemplate: this.expaderdetailcolumn,
           resizable: false,
