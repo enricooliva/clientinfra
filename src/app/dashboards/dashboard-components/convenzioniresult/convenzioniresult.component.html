@@ -32,3 +32,10 @@
   </div>
 
   </ng-template>
+ 
+  <ng-template #converter ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" >
+      <span [ngSwitch]="value">                        
+          <span *ngSwitchCase="'TO'">Titolo oneroso</span>                        
+          <span *ngSwitchCase="'TG'">Titolo gratuito</span> 
+      </span>
+  </ng-template>  

@@ -4,7 +4,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { Page } from 'src/app/shared/lookup/page';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
+import { MycurrencyPipe } from 'src/app/shared/pipe/custom.currencypipe';
 
 @Component({
   selector: 'app-convenzioniresult',
@@ -15,23 +16,24 @@ export class ConvenzioniresultComponent implements OnInit {
   isLoading: boolean = false;
 
   @ViewChild('detailRow') detailRow: TemplateRef<any>;
+  @ViewChild('converter') converter: TemplateRef<any>;  
 
-  @Input() 
-  querymodel: any;
+  @Input() querymodel: any;
 
-  researchMetadata: FormlyFieldConfig[];
   form = new FormGroup({});
-
   model = {
     data: new Array<any>(),
   };
   resultMetadata: FormlyFieldConfig[];
-  
+
+  currency = new MycurrencyPipe();
+  titlecase = new TitleCasePipe()
+
+
   constructor(private service: ApplicationService, private router: Router, private datePipe: DatePipe) { }
 
   ngOnInit() {
-
-    this.researchMetadata = this.service.getMetadata();
+   
     this.resultMetadata =  [
       {
           key: 'data',
@@ -50,15 +52,15 @@ export class ConvenzioniresultComponent implements OnInit {
             onDblclickRow: (event) => this.onDblclickRow(event),
             onSetPage: (pageInfo) => this.onSetPage(pageInfo),
             columns:[              
-              {name: "Id", prop: "id"},
-              {name: "Codice utente", prop: "user_id"},
-              {name: "Descrizione Titolo", prop: "descrizione_titolo"},
-              {name: "Dipartimento", prop: "dipartimemto_cd_dip"},
+              {name: "Codice", prop: "id"},
+              //{name: "Codice utente", prop: "user_id"},
+              {name: "Descrizione Titolo", prop: "descrizione_titolo", width: 300},
+              //{name: "Dipartimento", prop: "dipartimemto_cd_dip"},
               {name: "Responsabile scientifico", prop: "resp_scientifico"},
-              {name: "Tipo convenzione", prop: "convenzione_type"},
-              {name: "Ambito", prop: "ambito"},
-              {name: "Modalità di pagamento", prop: "tipopagamenti_codice"},
-              {name: "Corrispettivo iva esclusa se applicabile", prop: "corrispettivo"},
+              {name: "Tipo convenzione", prop: "convenzione_type", cellTemplate: this.converter},
+              {name: "Ambito", prop: "ambito", pipe: this.titlecase},
+              {name: "Modalità di pagamento", prop: "tipopagamento.descrizione", width: 200},
+              {name: "Corrispettivo iva esclusa se applicabile", prop: "corrispettivo",  pipe: this.currency,},
               {name: "Data inizio", prop: "data_inizio_conv"},
               {name: "Data fine", prop: "data_fine_conv"},
               {name: "Stato", prop: "current_place"},

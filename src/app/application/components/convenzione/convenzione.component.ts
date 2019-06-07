@@ -144,7 +144,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
                 key: 'id',
                 hide: true,
                 templateOptions: {
-                  label: "Id",
+                  label: "Codice",
                   hidden: true,
                   disabled: true,
                 },
