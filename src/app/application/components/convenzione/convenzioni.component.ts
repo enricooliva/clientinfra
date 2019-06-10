@@ -40,7 +40,7 @@ import { Page } from '../../../shared/lookup/page';
     <div><strong>Azienda</strong></div>        
     <div class="container-fluid">
       <div class="row">
-          <label class="control-label mr-1">Codice:</label>
+          <label class="control-label mr-1">Codice:</label> 
           <div class="mr-2">{{ azienda.id }} </div>
           <label class="control-label mr-1">Denominazione:</label>
           <div class=" mr-1">{{ azienda.denominazione }} </div>

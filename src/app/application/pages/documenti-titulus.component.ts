@@ -53,7 +53,7 @@ export class DocumentiTitulus extends BaseResearchComponent {
       }
     },    
     {
-      key: 'oggetto',
+      key: 'doc_oggetto',
       type: 'string',
       templateOptions: {
         label: 'Oggetto',

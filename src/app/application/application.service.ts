@@ -139,7 +139,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           {
             key: 'convenzione_type',
             type: 'select',
-            className: "col-md-4",
+            className: "col-md-4",  
             defaultValue: 'TO',
             templateOptions: {
               options: [
@@ -553,10 +553,11 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         templateOptions: {
           options: [
             { value: 'proposta', label: 'Proposta' }, 
-            { value: 'approvato', label: 'Approvato' }, 
-            { value: 'inapprovazione', label: 'In approvazione' },            
-            { value: 'da_firmare_direttore2', label: 'Da controfirmare UniUrb' },
-            { value: 'da_firmare_cotroparte2', label: 'Da controfirmare controparte' },   
+            { value: 'approvato', label: 'Approvata' }, 
+            { value: 'inapprovazione', label: 'In approvazione' },                        
+            { value: 'da_firmare_direttore', label: 'Firmata da controparte' }, //Da controfirmare UniUrb
+            { value: 'da_firmare_cotroparte2', label: 'Firmata da UniUrb' },  //Da controfirmare controparte
+            { value: 'firmato', label: 'Firmata' },  
             { value: 'repertoriato', label: 'Repertoriata' },            
           ],
           label: 'Stato',
