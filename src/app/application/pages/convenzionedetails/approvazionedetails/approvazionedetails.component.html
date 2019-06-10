@@ -1,0 +1,55 @@
+                        <!--APPROVAZIONE CONFORME-->
+                        <!--visualizzabile se lo stato della convenzione è approvato-->
+                                      
+                          <h3 class="box-title m-t-40">
+                              Approvazione
+                          </h3>
+                          <div *ngIf="conv.schematipotipo=='schematipo'">       
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>                                           
+                                            <td width="390"> Non richiesta ulterirore approvazione degli organi </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>{{appr.docAppr.descrDocumento}}</td>
+                                            <td>n. {{appr.docAppr.numero}} del {{appr.docAppr.data}}</td>
+                                        </tr>                                      
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--FINE APPROVAZIONE CONFORME-->
+
+                        <!--APPROVAZIONE NON CONFORME-->
+                        <!--visualizzabile se lo stato della convenzione è inapprovazione o approvato o oltre-->
+                        <div *ngIf="conv.schematipotipo=='daapprovare'">                          
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>                                            
+                                            <td width="390">Richiesta approvazione degli organi                                                
+                                                <span [ngSwitch]="conv.current_place">                        
+                                                  <span *ngSwitchCase="'inapprovazione'" class="label label-rounded label-warning ml-1">In approvazione</span>                                                                          
+                                                </span>                                                  
+                                            </td>
+                                            <td></td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td>Richiesta approvazione inviata a</td>
+                                            <td>{{appr?.richiestaname}}</td>
+                                        </tr> 
+                                        <tr *ngIf="appr.docAppr">
+                                            <td>{{appr.docAppr.descrDocumento}}</td>
+                                            <td>n. {{appr.docAppr.numero}} del {{appr.docAppr.data}}</td>
+                                        </tr> 
+                                        <tr *ngIf="appr.docApprOrgani">
+                                            <td>{{appr.docApprOrgani.descrDocumento}}</td>
+                                            <td>n. {{appr.docApprOrgani.numero}} del {{appr.docApprOrgani.data}}</td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--FINE APPROVAZIONE NON CONFORME-->

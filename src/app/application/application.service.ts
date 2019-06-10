@@ -555,8 +555,8 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             { value: 'proposta', label: 'Proposta' }, 
             { value: 'approvato', label: 'Approvata' }, 
             { value: 'inapprovazione', label: 'In approvazione' },                        
-            { value: 'da_firmare_direttore', label: 'Firmata da controparte' }, //Da controfirmare UniUrb
-            { value: 'da_firmare_cotroparte2', label: 'Firmata da UniUrb' },  //Da controfirmare controparte
+            { value: 'da_firmare_direttore', label: 'Stipula controparte' }, //Da controfirmare UniUrb
+            { value: 'da_firmare_cotroparte2', label: 'Stipula UniUrb' },  //Da controfirmare controparte
             { value: 'firmato', label: 'Firmata' },  
             { value: 'repertoriato', label: 'Repertoriata' },            
           ],

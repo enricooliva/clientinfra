@@ -483,7 +483,10 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     this.options.forEach(tabOptions => tabOptions.formState.isLoading = value);
   }
 
-  constructor(private service: ApplicationService, private route: ActivatedRoute, protected router: Router, private modalService: NgbModal, 
+  constructor(private service: ApplicationService, 
+    private route: ActivatedRoute, 
+    protected router: Router, 
+    private modalService: NgbModal, 
     public activeModal: NgbActiveModal,        
     protected location: Location) 
   {

@@ -1,0 +1,53 @@
+                   
+    <h3 class="box-title m-t-40">
+        Sottoscrizione
+    </h3>
+    <div *ngIf="conv.stipula_type=='uniurb'">       
+      <div class="table-responsive">
+          <table class="table">
+              <tbody>
+                  <tr>                                           
+                      <td width="390"> Stipula UniUrb 
+                          <span [ngSwitch]="conv.current_place">                        
+                              <span *ngSwitchCase="'da_firmare_controparte2'" class="label label-rounded label-warning ml-1">In attesa di firma della controparte</span>                                                                          
+                          </span>         
+                      </td>
+                      <td></td>
+                  </tr>                    
+                  <tr>                                           
+                      <td> Spedita alla controparte </td>
+                      <td>prot. {{sottr.speditaDitta.numero}} del {{sottr.speditaDitta.data}}</td>
+                  </tr>
+                  <tr *ngIf="sottr.restituita">                                           
+                      <td> Restituita  </td>
+                      <td>prot. {{sottr.restituita.numero}} del {{sottr.restituita.data}}</td>
+                  </tr>    
+              </tbody>
+          </table>
+      </div>
+    </div>
+    
+    <div *ngIf="conv.stipula_type=='controparte'">       
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>                                           
+                        <td width="390"> Stipula controparte 
+                            <span [ngSwitch]="conv.current_place">                        
+                                <span *ngSwitchCase="'da_firmare_direttore'" class="label label-rounded label-warning ml-1">In attesa di firma UniUrb</span>                                                                          
+                            </span>         
+                        </td>
+                        <td></td>                                                
+                    </tr>         
+                    <tr>                                           
+                        <td> Arrivata  </td>
+                        <td>prot. {{sottr.arrivata.numero}} del {{sottr.arrivata.data}}</td>
+                    </tr>
+                    <tr *ngIf="sottr.rispedita">                                           
+                        <td> Rispedita  </td>
+                        <td>prot. {{sottr.rispedita.numero}} del {{sottr.rispedita.data}}</td>
+                    </tr>          
+                </tbody>
+            </table>
+        </div>
+      </div>

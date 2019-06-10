@@ -1,4 +1,5 @@
 import { BaseEntity } from "../core/base-entity";
+import { ExcelNumberFormat } from "ag-grid-community";
 
 export interface FileInfra {
     filename: string,
@@ -25,6 +26,8 @@ export interface Convenzione extends BaseEntity {
     attachments?: FileAttachment[],
     assignments?: any[],
     unitaorganizzativa_uo: string,
+    usertasks?: any[];
+    stipula_type?: string; // uniurb, controparte
 }
 
 export interface Owner{
@@ -42,8 +45,9 @@ export interface FileAttachment {
     // per visualizzare il pdf | string è in base64 
     filevalue?: ArrayBuffer | string,
     filepath?: string,
-    number?: string,
+    docnumber?: string,
     emission_date?: Date,
+    num_prot?: string,
 }
 
 

@@ -1,0 +1,57 @@
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Convenzione</h3>
+                <h6 class="card-subtitle">Dettagli convenzione</h6>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <!--ANAGRAFICA-->
+                        <h3 class="box-title m-t-40">Anagrafica</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td width="390">Ambito</td>
+                                        <td> {{conv?.ambito}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ditta</td>
+                                        <td>{{ denominazione }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Titolo</td>
+                                        <td>{{conv?.descrizione_titolo}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Resp. Scientifico</td>
+                                        <td>{{conv?.resp_scientifico}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Importo</td>
+                                        <td>{{conv?.corrispettivo}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Durata</td>
+                                        <td>{{conv?.durata}} mesi</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fascicolo</td>
+                                        <td>{{conv?.titolario_classificazione}} {{conv?.oggetto_fascicolo}}
+                                            {{conv?.numero}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--FINE ANAGRAFICA-->
+                        <app-approvazionedetails *ngIf="conv"  [conv]="conv"></app-approvazionedetails>
+                        
+                        <app-sottoscrizionedetails *ngIf="conv"  [conv]="conv"></app-sottoscrizionedetails>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>

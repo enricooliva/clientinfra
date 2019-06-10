@@ -46,6 +46,7 @@ import { RichiestaEmissioneComponent } from '../application/pages/richiestaemiss
 import { EmissioneComponent } from '../application/pages/emissione.component';
 import { PagamentoComponent } from '../application/pages/pagamento.component';
 import { InvioRichiestaPagamentoComponent } from '../application/pages/inviorichiestapagamento.component';
+import { ConvenzionedetailsComponent } from '../application/pages/convenzionedetails/convenzionedetails.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -74,6 +75,16 @@ const routes: Routes = [
         path: 'convenzioni/:id',  component: ConvenzioneComponent,  canActivate:[AuthGuard],
         data: {
           title: 'Convenzione',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Convenzione' }
+          ]
+        } 
+      },     
+      { 
+        path: 'convdetails/:id',  component: ConvenzionedetailsComponent,  canActivate:[AuthGuard],
+        data: {
+          title: 'Dettagli convenzione',
           urls: [
             { title: 'Home', url: '/home' },
             { title: 'Convenzione' }

@@ -584,8 +584,8 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
       var tosubmit: Convenzione = { ...this.model, ...this.form.value };
 
       var file = this.mapAttachment.get(MultistepSchematipoComponent.DELIBERA_CONSIGLIO_DIPARTIMENTO);
-      file.number = this.model['docnumber'];
-      file.emission_date = this.model['emission_date'];
+      file.docnumber = this.model['docnumber'];
+      file.emission_date = this.model['data_emissione'];
 
       //aggiungo tutti gli allegati      
       tosubmit.attachments = [];
