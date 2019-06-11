@@ -32,6 +32,10 @@ export class TaskComponent extends BaseEntityComponent {
       template: '<h5>Dettaglio attività</h5>',
     },
     {
+      className: 'section-label',
+      template: '<div class="mb-2">Finestra per la gestione di una attivià non per la sua esecuzione</div>',
+    },    
+    {
       fieldGroupClassName: 'row',
       fieldGroup:
         [

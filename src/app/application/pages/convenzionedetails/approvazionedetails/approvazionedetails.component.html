@@ -1,15 +1,19 @@
                         <!--APPROVAZIONE CONFORME-->
-                        <!--visualizzabile se lo stato della convenzione è approvato-->
-                                      
-                          <h3 class="box-title m-t-40">
-                              Approvazione
-                          </h3>
+                        <!--visualizzabile se lo stato della convenzione è approvato-->                        
+                        <div class="d-flex align-items-center box-title m-t-40">
+                            <!-- <div *ngIf="executed()" class="m-r-10">
+                                <a class="btn btn-circle btn-success text-white"><i class="fa fa-check"></i></a>
+                            </div> -->
+                            <div class="">
+                                <h3 class="m-b-0">Approvazione</h3>
+                            </div>
+                        </div>                                                                                           
                           <div *ngIf="conv.schematipotipo=='schematipo'">       
                             <div class="table-responsive">
                                 <table class="table">
                                     <tbody>
                                         <tr>                                           
-                                            <td width="390"> Non richiesta ulterirore approvazione degli organi </td>
+                                            <td width="390">Approvata</td>
                                             <td></td>
                                         </tr>
                                         <tr *ngIf="appr.docAppr">

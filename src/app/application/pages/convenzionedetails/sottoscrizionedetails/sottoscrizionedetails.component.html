@@ -1,7 +1,11 @@
-                   
-    <h3 class="box-title m-t-40">
-        Sottoscrizione
-    </h3>
+    <div class="d-flex align-items-center box-title m-t-40">
+        <!-- <div *ngIf="executed()" class="m-r-10">
+            <a class="btn btn-circle btn-success text-white"><i class="fa fa-check"></i></a>
+        </div> -->
+        <div class="">
+            <h3 class="m-b-0">Sottoscrizione</h3>
+        </div>
+    </div>               
     <div *ngIf="conv.stipula_type=='uniurb'">       
       <div class="table-responsive">
           <table class="table">
@@ -40,9 +44,9 @@
                         <td></td>                                                
                     </tr>         
                     <tr>                                           
-                        <td> Arrivata  </td>
-                        
-                        <td>prot. {{sottr.arrivata.numero}} del {{sottr.arrivata.data}}</td>
+                        <td> Arrivata  </td>        
+                        <td><app-rangedetails [labeln]="'prot.'" [numero]="sottr.arrivata?.numero" [data]="sottr.arrivata?.data"></app-rangedetails></td>                
+                        <!-- <td>prot. {{sottr.arrivata.numero}} del {{sottr.arrivata.data}}</td> -->
                     </tr>
                     <tr *ngIf="sottr.rispedita">                                           
                         <td> Rispedita  </td>

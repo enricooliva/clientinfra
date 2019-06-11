@@ -77,4 +77,5 @@ export class ConvenzionedetailsComponent implements OnInit {
   onBack(){
     this.location.back();
   }
+  
 }

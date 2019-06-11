@@ -19,11 +19,10 @@ import { UserTaskService } from '../../usertask.service';
     </button>   
   </div>
 </div>
-
-  <form *ngIf='model' [formGroup]="form">
-    <formly-form  [model]="model" [fields]="fields" [form]="form" [options]="options">  
-    </formly-form> 
-  </form>      
+<form *ngIf='model' [formGroup]="form">
+  <formly-form  [model]="model" [fields]="fields" [form]="form" [options]="options">  
+  </formly-form> 
+</form>      
   `,
   styles: []
 })

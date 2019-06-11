@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Convenzione } from 'src/app/application/convenzione';
+import { ConvenzionedetailsComponent } from '../convenzionedetails.component';
 
 interface IInfoSottoscrizione {  
   speditaDitta: IDoc;
@@ -74,6 +75,10 @@ export class SottoscrizionedetailsComponent implements OnInit {
 
 
 
+  }
+
+  executed(){
+    return ConvenzionedetailsComponent.executed(this.conv.current_place,'firmato');
   }
 
 }
