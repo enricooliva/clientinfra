@@ -713,6 +713,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  onDescr(){
+    this.router.navigate(['home/convdetails', this.model.id]);
+  }
+
+
   public onValidate() {
     const invalid = [];
     const controls = (this.form.at(0) as FormGroup).controls;
