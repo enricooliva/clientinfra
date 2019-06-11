@@ -12,9 +12,9 @@
                                             <td width="390"> Non richiesta ulterirore approvazione degli organi </td>
                                             <td></td>
                                         </tr>
-                                        <tr>
+                                        <tr *ngIf="appr.docAppr">
                                             <td>{{appr.docAppr.descrDocumento}}</td>
-                                            <td>n. {{appr.docAppr.numero}} del {{appr.docAppr.data}}</td>
+                                            <td><app-rangedetails [numero]="appr.docAppr.numero" [data]="appr.docAppr.data"></app-rangedetails></td>
                                         </tr>                                      
                                     </tbody>
                                 </table>
@@ -41,12 +41,12 @@
                                             <td>{{appr?.richiestaname}}</td>
                                         </tr> 
                                         <tr *ngIf="appr.docAppr">
-                                            <td>{{appr.docAppr.descrDocumento}}</td>
-                                            <td>n. {{appr.docAppr.numero}} del {{appr.docAppr.data}}</td>
+                                            <td>{{appr.docAppr.descrDocumento}}</td>                                            
+                                            <td><app-rangedetails [numero]="appr.docAppr.numero" [data]="appr.docAppr.data"></app-rangedetails></td>
                                         </tr> 
                                         <tr *ngIf="appr.docApprOrgani">
                                             <td>{{appr.docApprOrgani.descrDocumento}}</td>
-                                            <td>n. {{appr.docApprOrgani.numero}} del {{appr.docApprOrgani.data}}</td>
+                                            <td><app-rangedetails [numero]="appr.docApprOrgani.numero" [data]="appr.docApprOrgani.data"></app-rangedetails></td>                                            
                                         </tr> 
                                     </tbody>
                                 </table>

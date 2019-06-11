@@ -26,8 +26,9 @@ export interface Convenzione extends BaseEntity {
     attachments?: FileAttachment[],
     assignments?: any[],
     unitaorganizzativa_uo: string,
-    usertasks?: any[];
-    stipula_type?: string; // uniurb, controparte
+    usertasks?: any[],
+    stipula_type?: string, // uniurb, controparte
+    current_place?: string  //
 }
 
 export interface Owner{
@@ -48,6 +49,7 @@ export interface FileAttachment {
     docnumber?: string,
     emission_date?: Date,
     num_prot?: string,
+    num_rep?: string,
 }
 
 

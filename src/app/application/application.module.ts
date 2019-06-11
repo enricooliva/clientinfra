@@ -66,6 +66,10 @@ import { InvioRichiestaPagamentoComponent } from './pages/inviorichiestapagament
 import { ConvenzionedetailsComponent } from './pages/convenzionedetails/convenzionedetails.component';
 import { ApprovazionedetailsComponent } from './pages/convenzionedetails/approvazionedetails/approvazionedetails.component';
 import { SottoscrizionedetailsComponent } from './pages/convenzionedetails/sottoscrizionedetails/sottoscrizionedetails.component';
+import { RepertoriazionedetailsComponent } from './pages/convenzionedetails/repertoriazionedetails/repertoriazionedetails.component';
+import { ScadenzedetailsComponent } from './pages/convenzionedetails/scadenzedetails/scadenzedetails.component';
+import { EsecuzionedetailsComponent } from './pages/convenzionedetails/esecuzionedetails/esecuzionedetails.component';
+import { RangedetailsComponent } from './pages/convenzionedetails/rangedetails/rangedetails.component';
 
 registerLocaleData(localeIt);
 @NgModule({
@@ -98,7 +102,7 @@ registerLocaleData(localeIt);
     ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
     DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent, 
-    InvioRichiestaPagamentoComponent, ConvenzionedetailsComponent, ApprovazionedetailsComponent, SottoscrizionedetailsComponent,
+    InvioRichiestaPagamentoComponent, ConvenzionedetailsComponent, ApprovazionedetailsComponent, SottoscrizionedetailsComponent, RepertoriazionedetailsComponent, ScadenzedetailsComponent, EsecuzionedetailsComponent, RangedetailsComponent,
 
   ],
   providers: [ 

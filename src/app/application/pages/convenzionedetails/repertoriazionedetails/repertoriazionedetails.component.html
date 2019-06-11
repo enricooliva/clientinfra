@@ -1,0 +1,19 @@
+<h3 class="box-title m-t-40">
+  Conservazione
+</h3>
+<div *ngIf="executed()">       
+<div class="table-responsive">
+    <table class="table">
+        <tbody>            
+            <tr *ngIf="conv.bollo_virtuale">                                           
+              <td width="390">Bollo virtuale</td>
+              <td>n. {{conv.num_bolli}}</td>
+            </tr>                        
+            <tr>                                           
+                <td width="390">Repertoriato</td>
+                <td><app-rangedetails [numero]="rep.repertorio.numero" [data]="rep.repertorio.data"></app-rangedetails></td>                 
+            </tr>           
+        </tbody>
+    </table>
+</div>
+</div>

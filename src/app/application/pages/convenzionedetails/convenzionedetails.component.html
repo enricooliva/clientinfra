@@ -1,10 +1,22 @@
+
 <div class="row">
     <!-- Column -->
+    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onModify()" >              
+                                <span class="oi oi-document"></span>
+                                <span class="ml-2">Modifica</span>
+                            </button>  
+                        <button class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onBack()">
+                            <span class="oi oi-arrow-left"></span>
+                            <span class="ml-2">Ritorna</span>
+                        </button>
+                    </div>                
                 <h3 class="card-title">Convenzione</h3>
-                <h6 class="card-subtitle">Dettagli convenzione</h6>
+                <h6 class="card-subtitle">Dettagli convenzione</h6>                              
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <!--ANAGRAFICA-->
@@ -48,6 +60,12 @@
                         <app-approvazionedetails *ngIf="conv"  [conv]="conv"></app-approvazionedetails>
                         
                         <app-sottoscrizionedetails *ngIf="conv"  [conv]="conv"></app-sottoscrizionedetails>
+
+                        <app-repertoriazionedetails *ngIf="conv"  [conv]="conv"></app-repertoriazionedetails>
+
+                        <app-esecuzionedetails *ngIf="conv"  [conv]="conv"></app-esecuzionedetails>
+
+                        <app-scadenzedetails *ngIf="conv"  [conv]="conv"></app-scadenzedetails>
                     </div>
                 </div>
             </div>

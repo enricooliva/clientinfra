@@ -178,7 +178,7 @@ export class ConvenzioniComponent implements OnInit {
   onDblclickRow(event) {
     //, {relativeTo: this.route}
     if (event.type === 'dblclick') {          
-      this.router.navigate(['home/convenzioni', event.row.id]);
+      this.router.navigate(['home/convdetails', event.row.id]);
     }
   }
   
