@@ -28,7 +28,14 @@ export interface Convenzione extends BaseEntity {
     unitaorganizzativa_uo: string,
     usertasks?: any[],
     stipula_type?: string, // uniurb, controparte
-    current_place?: string  //
+    current_place?: string,  //
+    ambito?: string,
+    resp_scientifico?: string,
+    corrispettivo?: number,
+    durata?: number,
+    titolario_classificazione?: string,
+    oggetto_fascicolo?: string,
+    numero?:string,
 }
 
 export interface Owner{
