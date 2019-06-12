@@ -59,7 +59,7 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
       {
           class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
           alwaysenabled: false,
-          text: 'Apri ricerca', 
+          text: 'Ricerca', 
           onClick: (to, fieldType, $event) => {if (!this.codeField.templateOptions.disabled) this.open();},
       }
     ];

@@ -331,7 +331,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             type: 'string',            
             className: "col-md-6",                   
             templateOptions: {              
-              label: 'Numero protocollo',              
+              label: 'Fascicolo',              
               disabled: true,     
             },
             hideExpression: (model: any, formState: any) => {

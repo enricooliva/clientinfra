@@ -102,7 +102,7 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     this.field.templateOptions.addonRights = [{
       class: 'btn btn-outline-secondary oi oi-eye d-flex align-items-center',
       alwaysenabled: false,
-      text: 'Apri ricerca',
+      text: 'Ricerca',
       onClick: (to, fieldType, $event) => this.open(),
     }];
     if (this.to.entityPath){
