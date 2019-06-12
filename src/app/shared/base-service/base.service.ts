@@ -89,7 +89,8 @@ export class BaseService extends CoreSevice implements ServiceQuery, ServiceEnti
     return this.http
       .post<any>(this._baseURL + `/${this.basePath}/query`, model, httpOptions).pipe(
         tap(sub => this.messageService.info('Ricerca effettuata con successo')),
-        catchError(this.handleError('query'))
+        //NB. modifico aggiungendo la throw a true per rilanciare l'errore al chiamante come la finestra di lookup
+        catchError(this.handleError('query',null,true))
       );
   } 
 

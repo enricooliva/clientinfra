@@ -23,12 +23,12 @@ export class DocumentoService extends BaseService implements IQueryMetadata{
   getQueryMetadata(): FormlyFieldConfig[] {
     return [
       {
-        key: '/doc/@num_prot',
+        key: 'docnumprot',//'/doc/@num_prot',
         type: 'string',
-        hideExpression: false,
         templateOptions: {
-          label: 'Numero protocollo',
-          disabled: true,
+          type: 'index',
+          label: 'Numero protocollo',   
+          required: true, 
           column: { width: 10, cellTemplate: 'valuecolumn'}
         }
       },
@@ -51,13 +51,14 @@ export class DocumentoService extends BaseService implements IQueryMetadata{
         key: 'doc_anno',
         type: 'string',
         templateOptions: {
+          type: 'index',
           label: 'Anno',
           required: true,
           column: { cellTemplate: 'valuecolumn'}
         }
       },    
       {
-        key: 'oggetto',
+        key: 'doc_oggetto',
         type: 'string',
         templateOptions: {
           label: 'Oggetto',

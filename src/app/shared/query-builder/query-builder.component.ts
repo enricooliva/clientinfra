@@ -25,6 +25,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
 
   public defaultOperatorMap: {[key: string]: Operator[]} = {
     string: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'contiene', value:'contains'}],
+    index: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'inizia per', value:'contains'}],
     textarea: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'contiene', value:'contains'}],
     number: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'maggiore', value:'>'}, {label:'maggiore uguale', value:'>='}, {label:'minore', value:'<'}, {label:'minore uguale', value:'<='}],
     time: [{label:'uguale', value:'='}, {label:'diverso', value:'!='}, {label:'maggiore', value:'>'}, {label:'maggiore uguale', value:'>='}, {label:'minore', value:'<'}, {label:'minore uguale', value:'<='}],
@@ -71,7 +72,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                   startWith(model.field),              
                   tap(selectedField => {                                     
                     field.formControl.setValue('');
-                    if (this.keymetadata[selectedField] )                     
+                    if (this.keymetadata[selectedField] )                                  
                       field.templateOptions.options = this.getOperators(selectedField,field.model);  
                       if (field.templateOptions.options[0] !== undefined) 
                         field.formControl.setValue(field.templateOptions.options[0].value);                                                                           
@@ -172,7 +173,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
 
   ngOnInit() {   
     if (this.rules)
-      this.model.rules = this.rules;
+      Object.assign(this.model.rules, this.rules);
 
     if (this.builderoptions){
       this.fields[0].templateOptions.min = this.builderoptions.min;
@@ -228,6 +229,9 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
         
       if (type === 'input')
         type = (fieldObject.templateOptions.type || 'string');
+
+      if (fieldObject.templateOptions.type && fieldObject.templateOptions.type=='index')
+        type = (fieldObject.templateOptions.type || 'index');  
 
       operators = (this.defaultOperatorMap[type] || this.defaultEmptyList);
       if (operators.length === 0) {

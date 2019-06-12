@@ -94,6 +94,9 @@ export class LookupComponent implements OnInit {
   }
 
   onFind(model){
+    
+    console.log(model.rules);
+
     this.querymodel.rules = model.rules;  
     this.isLoading = true;        
     try{
@@ -108,11 +111,13 @@ export class LookupComponent implements OnInit {
       to.page.size = data.per_page;        
         
       }, err => {
-        this.isLoading=false;
+        this.isLoading=false;       
+        this.reset();   
         console.error('Oops:', err.message);
       });
     }catch(e){
-      this.isLoading = false;
+      this.isLoading = false;            
+      this.reset();   
       console.error(e);
     }
   }
@@ -130,6 +135,14 @@ export class LookupComponent implements OnInit {
     }
   }
 
+  reset(){
+    const to = this.resultMetadata[0].templateOptions;
+    this.model = {
+      data: new Array<any>()
+    }
+    to.page = new Page(20);
+    
+  }
 
 
   // private getDismissReason(reason: any): string {
