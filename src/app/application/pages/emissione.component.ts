@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
 import { ScadenzaService } from '../scadenza.service';
 import {Location} from '@angular/common';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-emissione',
   template: `
@@ -45,12 +47,57 @@ export class EmissioneComponent extends BaseEntityComponent {
     return EmissioneComponent.WORKFLOW_ACTION;
   }
 
+  taskemission = new Subject<any>();
+  attachid = null;
 
   fields: FormlyFieldConfig[] = [
     {
       className: 'section-label',
       template: '<h5></h5>',
     },
+    {
+      fieldGroupClassName: 'display-flex',      
+      fieldGroup: [
+        {
+          type: 'button',         
+          className: 'ml-1 pl-1',     
+          templateOptions: {        
+            text: 'Scarica convenzione repertoriata',            
+            btnType: 'btn btn-primary btn-sm border-0 rounded-0',       
+            title: 'Scarica convenzione',
+            //icon: 'oi oi-data-transfer-download'
+            onClick: ($event, model) => this.download($event, model),
+          },
+          hideExpression: (model: any, formState: any) => {
+            return !this.attachid;
+          },                                     
+        },
+        // {                    
+        //     type: 'button',         
+        //     className: 'ml-1 pl-1',     
+        //     templateOptions: {        
+        //       text: 'Apri pagina di archiviazione',            
+        //       btnType: 'btn btn-primary btn-sm border-0 rounded-0',  
+        //        title: 'Apri pagina esterna',                  
+        //         onClick: ($event, model) => {                                        
+        //         let titulus = window.open('', '_blank'); 
+        //         this.service.getTitulusDocumentURL(this.attachid.id).subscribe(
+        //           (data)=> titulus.location.href = data.url, 
+        //           (error) => { 
+        //             titulus.close(); 
+        //             console.log(error);
+        //           }                                            
+        //         );
+              
+        //     },
+        //   },      
+        //   hideExpression: (model: any, formState: any) => {
+        //     return this.attachid;
+        //   },          
+        // },
+      ],
+    },
+
     {
       key: 'id',
       type: 'external',
@@ -65,6 +112,9 @@ export class EmissioneComponent extends BaseEntityComponent {
         descriptionProp: 'dovuto_tranche',
         descriptionFunc: (data) => {
             if (data && data.dovuto_tranche){
+              if (data.convenzione && data.convenzione.attachments && data.convenzione.attachments.length > 0){
+                this.attachid = data.convenzione.attachments.find(x => x.attachmenttype_codice == 'DOC_BOLLATO_FIRMATO');
+              }
               this.model.attachment1.attachmenttype_codice = data.tipo_emissione;
               return data.dovuto_tranche +' - ' + 'Convenzione n. '+data.convenzione.id+' - '+data.convenzione.descrizione_titolo;
             }
@@ -138,6 +188,7 @@ export class EmissioneComponent extends BaseEntityComponent {
                 entityName: 'documento',
                 entityLabel: 'Documenti',
                 codeProp: 'num_prot',
+                required: true,
                 descriptionProp: 'oggetto',
                 isLoading: false,
                 rules: [{ value: "partenza", field: "doc_tipo", operator: "=" }],
@@ -156,26 +207,44 @@ export class EmissioneComponent extends BaseEntityComponent {
       fieldGroup: [    
         {
           key: 'data_fattura',
-          type: 'datepicker',
-          className: "col-md-5",          
+          type: 'datepicker',          
+          className: "col-md-6",          
           templateOptions: {
+            required: true,
             label: 'Data fattura',          
           },        
         },
         {
           key: 'num_fattura',
           type: 'input',
-          className: "col-md-5",          
+          className: "col-md-6",          
           templateOptions: {
+            required: true,
             label: 'Numero fattura',                    
           },        
-        },    
+        },     
     ],
     hideExpression: (model, formState) => {
       return formState.model.attachment1 != null && formState.model.attachment1.attachmenttype_codice !== 'FATTURA_ELETTRONICA';
     },
 
     },
+    {       
+      type: 'template',    
+      templateOptions: {      
+        template: '',              
+      },   
+      expressionProperties: {
+        'templateOptions.template': this.taskemission.pipe(map(x=>{
+            return `<h5 class="panel-title">
+              Messaggio
+            </h5>          
+            <div class="mb-1">
+              ${x.data ? x.data.description : ''}    
+            </div>
+          `}))                            
+      },
+    },       
     
   ]
 
@@ -207,6 +276,8 @@ export class EmissioneComponent extends BaseEntityComponent {
     reader.readAsArrayBuffer(currentSelFile);
   }
   
+
+
   constructor(protected service: ApplicationService, protected scadService: ScadenzaService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
     super(route, router, location)
     this.isLoading = false;
@@ -225,7 +296,15 @@ export class EmissioneComponent extends BaseEntityComponent {
               if (result){            
                 setTimeout(() => {
                   this.model = {...this.model, ...result};   
-                  this.options.formState.model = this.model;                           
+                  this.options.formState.model = this.model; 
+
+                  if (this.model.usertasks){
+                    //prendo l'ultimo attivo //TODO valutare che il messaggio richiesta emissione vada nella scadenza...
+                    const task = (this.model.usertasks as Array<any>).filter(x => x.workflow_place == 'inemissione' && (x.state == 'aperto'))[0];
+                    if (task)
+                     this.taskemission.next(task);
+                  }
+                  
                 },0);
               }
               this.isLoading=false;
@@ -238,7 +317,8 @@ export class EmissioneComponent extends BaseEntityComponent {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };      
+      var tosubmit = { ...this.model, ...this.form.value };  
+      tosubmit.convenzione = undefined;
       tosubmit.attachment1 = {...this.model.attachment1, ...this.form.value.attachment1 }
       tosubmit.attachment1.doc = {...this.model.attachment1.doc, ...this.form.value.attachment1.doc }
 
@@ -252,5 +332,20 @@ export class EmissioneComponent extends BaseEntityComponent {
           //this.service.messageService.error(error);          
         });
     }
+  }
+
+  download(event, model) {
+    //console.log(model);
+    if (!this.attachid)
+      return;
+
+    this.service.download(this.attachid.id).subscribe(file => {
+      if (file.filevalue)
+        var blob = new Blob([decode(file.filevalue)]);
+      saveAs(blob, file.filename);
+    },
+      e => { console.log(e); }
+    );
+
   }
 }
