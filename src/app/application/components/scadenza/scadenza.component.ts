@@ -8,6 +8,8 @@ import { ScadenzaService } from '../../scadenza.service';
 import { ApplicationService } from '../../application.service';
 import {Location} from '@angular/common';
 import { encode, decode } from 'base64-arraybuffer';
+import { of, Observable, Subject } from 'rxjs';
+import { map, first } from 'rxjs/operators';
 @Component({
   selector: 'app-scadenza', 
   templateUrl: '../../../shared/base-component/base-entity.component.html',
@@ -21,6 +23,8 @@ import { encode, decode } from 'base64-arraybuffer';
 
 export class ScadenzaComponent extends BaseEntityComponent {
   
+  taskemission = new Subject<any>();
+
   isLoading = true;
   fields: FormlyFieldConfig[] = [    
     {
@@ -200,6 +204,23 @@ export class ScadenzaComponent extends BaseEntityComponent {
     return model.tipo_emissione !== 'FATTURA_ELETTRONICA';
   },
   },
+  //richiesta emissione
+  {       
+    type: 'template',    
+    templateOptions: {      
+      template: '',              
+    },   
+    expressionProperties: {
+      'templateOptions.template': this.taskemission.pipe(map(x=>{
+          return `<h5 class="panel-title">
+            Messaggio richiesta emissione 
+          </h5>          
+          <div class="mb-1">
+            ${x.data ? x.data.description : ''}    
+          </div>
+        `}))                            
+    },
+  },                  
   {
     className: 'section-label',
     template: '<h5>Incassi e prelievi</h5>',
@@ -310,9 +331,9 @@ export class ScadenzaComponent extends BaseEntityComponent {
                     //icon: 'oi oi-data-transfer-download'
                     onClick: ($event, model) => this.download($event, model),
                   },
-                  hideExpression: (model: any, formState: any) => {
-                    return model.filetype == 'link';
-                  },                                
+                  // hideExpression: (model: any, formState: any) => {
+                  //   return model.filetype == 'link';
+                  // },                                
                 },
                 {
                   type: 'button',
@@ -391,6 +412,15 @@ export class ScadenzaComponent extends BaseEntityComponent {
     //   'convenzione': { 'id':'', descrizione_titolo:'' }
     // };
 
+  }
+
+  protected postGetById(){
+    if (this.model.usertasks){
+       const task = (this.model.usertasks as Array<any>).filter(x => x.workflow_place == 'inemissione' && (x.state == 'aperto' || x.state=='completato'))[0];
+       if (task)
+        this.taskemission.next(task);
+    }
+    
   }
 
   open() {
