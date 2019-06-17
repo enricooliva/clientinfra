@@ -264,7 +264,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
               entityPath: 'home/aziendeloc',
               codeProp: 'id',
               enableNew: true,
-              //required: true,
+              required: true,
               descriptionProp: 'denominazione',
             },
             // validation: {
