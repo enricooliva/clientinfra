@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
 import {Location} from '@angular/common';
+import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: 'app-firmadirettore',
@@ -379,7 +380,8 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
     reader.readAsArrayBuffer(currentSelFile);
   }
   
-  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location,
+    protected confirmationDialogService: ConfirmationDialogService) {
     super(route, router, location)
     this.isLoading = false;
   }
@@ -431,8 +433,12 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
       tosubmit.transition = this.workflowAction;
       this.service.complSottoscrizioneStep(tosubmit,true).subscribe(
         result => {          
-          this.isLoading = false;          
-          this.router.navigate(['home/dashboard/dashboard1']);                
+          this.confirmationDialogService.confirm("Finestra messaggi", result.message, "Chiudi", null, 'lg').then(
+            () => this.router.navigate(['home/dashboard/dashboard1']),
+            () => this.router.navigate(['home/dashboard/dashboard1']))
+          .catch(() => {           
+          });
+          this.isLoading = false;                                 
         },
         error => {
           this.isLoading = false;

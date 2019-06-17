@@ -161,7 +161,7 @@ export class PagamentoComponent extends BaseEntityComponent {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };      
+      var tosubmit = { id: this.model.id, ...this.form.value };      
       this.service.pagamentoStep(tosubmit,true).subscribe(
         result => {          
           this.isLoading = false;          

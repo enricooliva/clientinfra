@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { encode, decode } from 'base64-arraybuffer';
 import { takeUntil, startWith, tap } from 'rxjs/operators';
 import {Location} from '@angular/common';
+import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: 'app-sottoscrizione',
@@ -421,7 +422,11 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
 
   }
 
-  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, private injector: Injector, protected location: Location) {
+  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, 
+      private injector: Injector, 
+      protected location: Location,
+      protected confirmationDialogService: ConfirmationDialogService) {
+
     super(route, router, location)
     this.isLoading = false;
   }
@@ -467,8 +472,15 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
 
       this.service.sottoscrizioneStep(tosubmit, true).subscribe(
         result => {
+
+          
+          this.confirmationDialogService.confirm("Finestra messaggi", result.message, "Chiudi", null, 'lg').then(
+            () => this.router.navigate(['home/dashboard/dashboard1']),
+            () => this.router.navigate(['home/dashboard/dashboard1']))
+          .catch(() => {           
+          });
+
           this.isLoading = false;
-          this.router.navigate(['home/dashboard/dashboard1']);
         },
         error => {
           this.isLoading = false;

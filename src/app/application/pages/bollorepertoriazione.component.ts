@@ -7,6 +7,7 @@ import { encode, decode } from 'base64-arraybuffer';
 import {Location} from '@angular/common';
 import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
 import { PDFJSStatic } from "pdfjs-dist";
+import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/confirmation-dialog.service';
 
 const PDFJS: PDFJSStatic = require('pdfjs-dist');
 
@@ -291,7 +292,8 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
   }
 
 
-  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+  constructor(protected service: ApplicationService, protected route: ActivatedRoute, protected router: Router, protected location: Location,
+    protected confirmationDialogService: ConfirmationDialogService) {
     super(route, router, location)
     this.isLoading = false;
   }
@@ -326,8 +328,12 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
       tosubmit.transition = this.workflowAction;
       this.service.bolloRepertoriazioneStep(tosubmit,true).subscribe(
         result => {          
-          this.isLoading = false;          
-          this.router.navigate(['home/dashboard/dashboard1']);                
+          this.confirmationDialogService.confirm("Finestra messaggi", result.message, "Chiudi", null, 'lg').then(
+            () => this.router.navigate(['home/dashboard/dashboard1']),
+            () => this.router.navigate(['home/dashboard/dashboard1']))
+          .catch(() => {           
+          });
+          this.isLoading = false;                    
         },
         error => {
           this.isLoading = false;

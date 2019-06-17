@@ -188,7 +188,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
         type: 'datepicker',
         className: "col-md-6",
         templateOptions: {
-          label: 'Data fattura',          
+          label: 'Data ',          
         },        
       },
       {
@@ -196,12 +196,12 @@ export class ScadenzaComponent extends BaseEntityComponent {
         type: 'input',
         className: "col-md-6",
         templateOptions: {
-          label: 'Numero fattura',                    
+          label: 'Numero ',                    
         },        
       },    
   ],  
   hideExpression: (model, formState) => {
-    return model.tipo_emissione !== 'FATTURA_ELETTRONICA';
+    return model.tipo_emissione == 'RICHIESTA_PAGAMENTO';
   },
   },
   //richiesta emissione

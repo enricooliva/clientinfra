@@ -211,7 +211,7 @@ export class EmissioneComponent extends BaseEntityComponent {
           className: "col-md-6",          
           templateOptions: {
             required: true,
-            label: 'Data fattura',          
+            label: 'Data',          
           },        
         },
         {
@@ -220,12 +220,12 @@ export class EmissioneComponent extends BaseEntityComponent {
           className: "col-md-6",          
           templateOptions: {
             required: true,
-            label: 'Numero fattura',                    
+            label: 'Numero',                    
           },        
         },     
     ],
     hideExpression: (model, formState) => {
-      return formState.model.attachment1 != null && formState.model.attachment1.attachmenttype_codice !== 'FATTURA_ELETTRONICA';
+      return formState.model.attachment1 != null && formState.model.attachment1.attachmenttype_codice == 'RICHIESTA_PAGAMENTO';
     },
 
     },
@@ -294,7 +294,7 @@ export class EmissioneComponent extends BaseEntityComponent {
           this.scadService.getById(params['id']).subscribe(
             result => {
               if (result){            
-                setTimeout(() => {
+                setTimeout(() => {                  
                   this.model = {...this.model, ...result};   
                   this.options.formState.model = this.model; 
 
