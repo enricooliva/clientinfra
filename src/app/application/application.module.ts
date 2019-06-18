@@ -70,6 +70,8 @@ import { RepertoriazionedetailsComponent } from './pages/convenzionedetails/repe
 import { ScadenzedetailsComponent } from './pages/convenzionedetails/scadenzedetails/scadenzedetails.component';
 import { EsecuzionedetailsComponent } from './pages/convenzionedetails/esecuzionedetails/esecuzionedetails.component';
 import { RangedetailsComponent } from './pages/convenzionedetails/rangedetails/rangedetails.component';
+import { LogAttivitaComponent } from './pages/logattivita.component';
+import { LogAttivitaService } from './logattivita.service';
 
 registerLocaleData(localeIt);
 @NgModule({
@@ -91,7 +93,7 @@ registerLocaleData(localeIt);
     TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
     DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent,
-    InvioRichiestaPagamentoComponent,
+    InvioRichiestaPagamentoComponent, LogAttivitaComponent
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -102,7 +104,8 @@ registerLocaleData(localeIt);
     ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent,  AziendaLocComponent, AziendeLocComponent,
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
     DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent, 
-    InvioRichiestaPagamentoComponent, ConvenzionedetailsComponent, ApprovazionedetailsComponent, SottoscrizionedetailsComponent, RepertoriazionedetailsComponent, ScadenzedetailsComponent, EsecuzionedetailsComponent, RangedetailsComponent,
+    InvioRichiestaPagamentoComponent, ConvenzionedetailsComponent, ApprovazionedetailsComponent, SottoscrizionedetailsComponent, RepertoriazionedetailsComponent, 
+    ScadenzedetailsComponent, EsecuzionedetailsComponent, RangedetailsComponent, LogAttivitaComponent
 
   ],
   providers: [ 
@@ -116,7 +119,8 @@ registerLocaleData(localeIt);
     UnitaOrganizzativaService,
     StrutturaEsternaService,
     DocumentoService,
-    ScadenzaService
+    ScadenzaService,
+    LogAttivitaService
   ], 
 })
 export class ApplicationModule { }

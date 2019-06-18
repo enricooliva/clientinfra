@@ -47,6 +47,7 @@ import { EmissioneComponent } from '../application/pages/emissione.component';
 import { PagamentoComponent } from '../application/pages/pagamento.component';
 import { InvioRichiestaPagamentoComponent } from '../application/pages/inviorichiestapagamento.component';
 import { ConvenzionedetailsComponent } from '../application/pages/convenzionedetails/convenzionedetails.component';
+import { LogAttivitaComponent } from '../application/pages/logattivita.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -582,7 +583,16 @@ const routes: Routes = [
           ]
         }
       },
-     
+      { 
+        path: 'logattivita',  component: LogAttivitaComponent,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Log attività',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Log attività' }
+          ]
+        }
+      },
 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 

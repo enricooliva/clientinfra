@@ -72,6 +72,15 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
         permissions: ['ADMIN'], 
+      }, 
+      {
+        path: 'logattivita',
+        title: 'Log',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN'], 
       },  
     ]}, //chiude gestione utenti
     {
