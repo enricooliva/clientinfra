@@ -262,8 +262,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
     key: 'note',
     type: 'textarea',
     templateOptions: {      
-      label: 'Note',
-      maxLength: 200,
+      label: 'Note',   
       rows: 5,     
     },        
   },

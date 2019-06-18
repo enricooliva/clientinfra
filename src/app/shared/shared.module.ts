@@ -72,6 +72,24 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: true,
   minScrollbarLength: 20
 };
+
+export function minlengthValidationMessage(err, field) {
+  return `Inserire almeno ${field.templateOptions.minLength} caratteri`;
+}
+
+export function maxlengthValidationMessage(err, field) {
+  return `Inserire un valore inferiore a ${field.templateOptions.maxLength} caratteri`;
+}
+
+export function minValidationMessage(err, field) {
+  return `Inserire un valore maggiore di ${field.templateOptions.min}`;
+}
+
+export function maxValidationMessage(err, field) {
+  return `Inserire un valore minore di ${field.templateOptions.max}`;
+}
+
+
 @NgModule({
   imports: [
     CommonModule, 
@@ -206,6 +224,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         { name: 'notfound', message: 'Non trovato' },     
         { name: 'filevalidation', message: 'Documento non valido' },   
         { name: 'pattern', message: 'Formato non valido' },   
+        { name: 'minlength', message: minlengthValidationMessage },
+        { name: 'maxlength', message: maxlengthValidationMessage },
+        { name: 'min', message: minValidationMessage },
+        { name: 'max', message: maxValidationMessage },
       ]
     }),
     FormlyBootstrapModule,

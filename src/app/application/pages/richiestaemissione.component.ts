@@ -247,9 +247,8 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
           key: 'description',
           type: 'textarea',  
           templateOptions: {
-            label: 'Note',
-            maxLength: 200,
-            rows: 6,
+            label: 'Note',           
+            rows: 10,
             required: true,
           },         
         }
