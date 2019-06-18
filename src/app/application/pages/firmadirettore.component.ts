@@ -409,14 +409,14 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
         this.service.getAziende(this.model.convenzione_id).subscribe(
           result => { 
             setTimeout(()=> {
-              let control = this.form.get('email');
-              if (control){
-                if (result && result[0] && control)
-                  control.setValue(result[0].pec_email);
-                  //this.model.email = result[0].pec_email; 
-                else 
-                  control.setValue('email non associata');
+              if (result && result[0]){  
+                const emails = (result.map(it => it.pec_email)).join(', ');
+                this.model.email = emails;
+                if (this.form.get('email'))
+                  this.form.get('email').setValue(emails);
               }
+              else 
+                this.model.email = 'email non associata';
             },0);
           }
         );

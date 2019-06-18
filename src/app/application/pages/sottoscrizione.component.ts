@@ -266,7 +266,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                   key: 'attachmenttype_codice',
                   type: 'select',
                   className: "col-md-5",
-                  defaultValue: 'LTE_FIRM_CONTR',
+                  defaultValue: 'LTE_FIRM_CONTR_PROT',
                   templateOptions: {
                     //todo chiedere lato server 
                     options: [
