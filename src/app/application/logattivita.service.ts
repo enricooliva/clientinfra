@@ -151,7 +151,7 @@ export class LogAttivitaService extends BaseService implements IQueryMetadata{
       templateOptions: {
         label: 'Codice utente',
         required: true,
-        column: { cellTemplate: 'valuecolumn' }
+        column: { width: 30, cellTemplate: 'valuecolumn' }
       }
     },
   ];

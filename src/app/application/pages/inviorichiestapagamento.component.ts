@@ -10,6 +10,7 @@ import { FormlyFieldConfigCache } from '@ngx-formly/core/lib/components/formly.f
 import { takeUntil, startWith, tap, filter, map, distinct } from 'rxjs/operators';
 import { ScadenzaService } from '../scadenza.service';
 import { Location } from '@angular/common';
+import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: 'app-inviorichiestapagamento',
@@ -176,7 +177,8 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
     reader.readAsArrayBuffer(currentSelFile);
   }
   
-  constructor(protected service: ApplicationService, protected scadService: ScadenzaService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+  constructor(protected service: ApplicationService, protected scadService: ScadenzaService, protected route: ActivatedRoute, protected router: Router, 
+    protected location: Location, protected confirmationDialogService: ConfirmationDialogService) {
     super(route, router, location)
     this.isLoading = false;
   }
@@ -238,8 +240,14 @@ export class InvioRichiestaPagamentoComponent extends BaseEntityComponent {
       
       this.service.invioRichiestaPagamentoStep(tosubmit,true).subscribe(
         result => {          
-          this.isLoading = false;          
-          this.router.navigate(['home/dashboard/dashboard1']);                
+          
+          this.confirmationDialogService.confirm("Finestra messaggi", result.message, "Chiudi", null, 'lg').then(
+            () => this.router.navigate(['home/dashboard/dashboard1']),
+            () => this.router.navigate(['home/dashboard/dashboard1']))
+          .catch(() => {           
+          });
+
+          this.isLoading = false;         
         },
         error => {
           this.isLoading = false;
