@@ -79,13 +79,18 @@ export class LogAttivitaService extends BaseService implements IQueryMetadata{
       },
       {
         key: 'user_id',
-        type: 'string',
+        type: 'external',
+        wrappers: [],
         templateOptions: {
           label: 'Codice utente',
-          required: true,
+          type: 'string',
+          entityName: 'user',
+          entityLabel: 'Utenti',
+          codeProp: 'id',
+          descriptionProp: 'name',
           column: { cellTemplate: 'valuecolumn' }
-        }
-      },
+        },
+      }      
     ];
   }
 

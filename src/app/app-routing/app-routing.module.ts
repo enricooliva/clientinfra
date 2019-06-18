@@ -576,10 +576,10 @@ const routes: Routes = [
       { 
         path: 'pagamento/:id',  component: PagamentoComponent,  canActivate:[AuthGuard], 
         data: {
-          title: 'Registrazione prelievo',
+          title: 'Registrazione incasso',
           urls: [
             { title: 'Home', url: '/home' },
-            { title: 'Registrazione prelievo' }
+            { title: 'Registrazione incasso' }
           ]
         }
       },

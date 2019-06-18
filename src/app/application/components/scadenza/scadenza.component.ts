@@ -54,7 +54,31 @@ export class ScadenzaComponent extends BaseEntityComponent {
             return !model.id ||
               (model.id && model.state != 'attivo');
           }, 
-        },         
+        },
+        {           
+          type: 'button',                              
+          templateOptions: {        
+            text: 'Visualizza richiesta emissione',
+            btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
+            onClick: ($event) => this.openTaskRichiestaEmissione()
+          },
+          hideExpression: (model: any) => {
+            return !model.id ||
+              (model.id && model.state != 'inemissione');
+          }, 
+        }, 
+        {           
+          type: 'button',                              
+          templateOptions: {        
+            text: 'Registra incasso',
+            btnType: 'btn btn-primary btn-sm border-0 rounded-0',        
+            onClick: ($event) => this.openRegistrazioneIncasso()
+          },
+          hideExpression: (model: any) => {
+            return !model.id ||
+              (model.id && model.state != 'inpagamento');
+          }, 
+        },          
       ]
     },
     {
@@ -421,6 +445,22 @@ export class ScadenzaComponent extends BaseEntityComponent {
     }
     
   }
+
+  openTaskRichiestaEmissione(){
+    if (this.model.usertasks){
+      const task =(this.model.usertasks as Array<any>).find(x => x.workflow_place == "inemissione")
+      if (task){
+        this.router.navigate(['home/tasks', task.id]);
+      }
+    }
+  }
+
+  openRegistrazioneIncasso(){
+    if(this.model.id){      
+      this.router.navigate(['home/pagamento', this.model.id]);
+    }
+  }
+
 
   open() {
     if(this.model.convenzione){

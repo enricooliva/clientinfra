@@ -47,6 +47,7 @@ export class LogAttivitaComponent extends BaseResearchComponent {
   constructor(protected service: LogAttivitaService, router: Router, route: ActivatedRoute,)  {    
     super(router,route);    
     
+    this.fieldsRow = service.getQueryMetadata();
     this.resultMetadata[0].fieldArray.fieldGroup = service.getMetadata();        
 
     this.routeAbsolutePath = 'home/logattivita'     
