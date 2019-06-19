@@ -35,8 +35,9 @@
             <!-- End User Profile-->
         </li>
         <!-- First level menu -->
-        <li class="sidebar-item" [class.selected]="showMenu === sidebarnavItem.title" *ngFor="let sidebarnavItem of sidebarnavItems"
-            [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">            
+        <div *ngFor="let sidebarnavItem of sidebarnavItems">
+        <li class="sidebar-item" *ngxPermissionsOnly="sidebarnavItem.permissions" [class.selected]="showMenu === sidebarnavItem.title"        
+            [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">                
             <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">
                 <i [ngClass]="[sidebarnavItem.icon]"></i>
                 <span class="hide-menu">{{sidebarnavItem.title}}</span>
@@ -68,7 +69,8 @@
                     </ul>                
                 </li>
                 </div>
-            </ul>
+            </ul>          
         </li>
+        </div>
     </ul>
 </nav>
