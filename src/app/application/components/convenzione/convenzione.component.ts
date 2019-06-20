@@ -118,12 +118,13 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         onRemove: (id) => {
           this.isLoading = true;
           return this.service.deleteFile(id).pipe(
-            finalize(() => {
+            tap(() => {
               this.tabs.select('tab-selectbyconvenzione');
               this.isLoading = false;
               //this.tabs.select('tab-selectbyallegati');
-            }
-            ))
+            }),
+            finalize(() =>  this.isLoading = false)
+          );
         },
         //(index, callback, context) => this.onRemoveFile(index, callback, context),
         //onAddInitialModel: (event) => this.onAddInitialModel(event),

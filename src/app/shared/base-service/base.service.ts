@@ -138,7 +138,7 @@ export class BaseService extends CoreSevice implements ServiceQuery, ServiceEnti
         this.messageService.info('Eliminazione effettuata con successo')
       }),
       catchError(
-        this.handleError("remove", null)
+        this.handleError("remove", null, true)
       )
     );
   }

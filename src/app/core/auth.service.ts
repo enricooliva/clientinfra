@@ -70,7 +70,8 @@ export class AuthService {
       const decodedToken = helper.decodeToken(localStorage.getItem('token'));
       this._email = decodedToken['email'];
       this._username = decodedToken['name'];
-      this._roles = decodedToken['roles'];      
+      this._roles = decodedToken['roles']; 
+      console.log(this.roles);     
       this._id = decodedToken['id'];    
       this.permissionsService.loadPermissions(this._roles);
     }

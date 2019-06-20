@@ -8,7 +8,7 @@
                 <span class="oi oi-document"></span>
                 <span class="ml-2">Nuovo</span>
             </button> 
-            <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()"  *ngxPermissionsOnly="['ADMIN']">
+            <button class="btn btn-outline-primary border-0 rounded-0" [disabled]="!form.valid || !form.dirty" (click)="onSubmit()"  *ngxPermissionsOnly="['ADMIN','SUPER-ADMIN']">
                 <span class="oi oi-arrow-top"></span>
                 <span class="ml-2">Aggiorna</span>
             </button>
@@ -20,7 +20,7 @@
                 <span class="oi oi-magnifying-glass"></span>
                 <span class="ml-2">Ricerca</span>
             </button>
-            <button *ngIf="isRemovable" class="btn btn-outline-primary border-0 rounded-0" (click)="onRemove()">
+            <button *ngIf="isRemovable && activeNew" class="btn btn-outline-primary border-0 rounded-0" (click)="onRemove()">
                 <span class="oi oi-trash"></span>  
                 <span class="ml-2">Rimuovi</span>
             </button>

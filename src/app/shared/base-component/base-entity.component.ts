@@ -157,13 +157,17 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
         if (confirmed){
           this.remove();        
         }
-        console.log(confirmed);        
+        //console.log(confirmed);        
       })
-      .catch(() => {});
+      .catch(() => {
+        this.isLoading = false;
+      });
     
   }
 
   remove(){
+    if (!this.model['id'])
+      return;
     this.isLoading = true;
     this.service.remove(this.model['id']).subscribe(
       prop => {
@@ -175,6 +179,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
           this.onResearch(); //impostare come se fosse in nuovo
       },
       error => { // error path        
+        console.log(error);
         this.isLoading = false; 
       }
     );

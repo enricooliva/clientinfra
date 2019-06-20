@@ -681,7 +681,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         tap(sub =>
           this.messageService.info('Eliminazione documento effettuata con successo')
         ),
-        catchError(this.handleError('cancellazione documento', null))
+        catchError(this.handleError('deleteFile', null, true))
       );
     return res;
   }
@@ -870,7 +870,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
 
   download(id): Observable<any>{
     if (id) {
-      return this.http.get(this._baseURL + '/attachments/download/' + id.toString(), httpOptions);
+      return this.http.get(this._baseURL + '/attachments/download/' + id.toString(), httpOptions).pipe(catchError(this.handleError('download', null, false)));
     }
     return of([]);
   }
