@@ -10,6 +10,7 @@ import { takeUntil, startWith, filter, tap, map, distinct } from 'rxjs/operators
 import { Observable, Subject } from 'rxjs';
 import {Location} from '@angular/common';
 import { ApplicationService } from '../../application.service';
+import { convertToR3QueryMetadata } from '@angular/core/src/render3/jit/directive';
 
 @Component({
   selector: 'app-task',
@@ -22,6 +23,20 @@ import { ApplicationService } from '../../application.service';
 //ng g c submission/components/user -s true --spec false -t true
 
 export class TaskComponent extends BaseEntityComponent {
+
+
+  protected actions: {[key: string]:string} = {
+    'approvato': 'Sottoscrizione',
+    'store_validazione': 'Validazione',
+    'repertorio': 'Apposizione bollo e repertoriazione',
+    'firma_da_direttore2': 'Firma da UniUrb',
+    'firma_da_controparte2': 'Firma della controparte',
+
+    'emissione': 'Richiesta di emissione',
+    'registrazionepagamento': 'In pagamento',
+
+  }
+  
 
   subject = new Subject<any>();
  
@@ -98,7 +113,8 @@ export class TaskComponent extends BaseEntityComponent {
     //     },
     {      
       type: 'select',
-      key: 'model_type',     
+      key: 'model_type',    
+      defaultValue:  'App\\Convenzione', 
       templateOptions: {
         label: 'Tipo di entità a cui associare una attività',              
         options: [
@@ -112,14 +128,61 @@ export class TaskComponent extends BaseEntityComponent {
         'templateOptions.disabled': (model: any, formState: any) => {                        
             return model.id
         },
-      },                   
+      }, 
+      hooks: {
+        onInit: (field) => {
+          field.formControl.valueChanges.pipe(
+            takeUntil(this.onDestroy$),
+            distinct(),
+            tap(x => {             
+            })
+          ).subscribe();
+        }
+      }               
     },
     //se il task è associato ad una convenzione
     {
       key: 'model',
-      type: 'externalobject',   
-      hide: true,   
+      type: 'externalobject',     
       templateOptions: {
+        disabled: true,
+        label: 'Convenzione',
+        type: 'string',
+        entityName: 'application',
+        entityLabel: 'Convenzione',
+        entityPath: 'home/convenzioni',
+        codeProp: 'id',
+        descriptionProp: 'descrizione_titolo',       
+        isLoading: false,        
+      },
+      hideExpression: (model: any, formState: any) => {
+        return !formState.model.id || (formState.model.model_type != 'App\\Convenzione' && formState.model.id);
+      },  
+
+    },
+    {
+      key: 'model',
+      type: 'externalobject',     
+      templateOptions: {
+        disabled: true,
+        label: 'Scadenza',
+        type: 'string',
+        entityName: 'scadenza',
+        entityLabel: 'Scadenza',
+        entityPath: 'home/scadenze',
+        codeProp: 'id',
+        descriptionProp: 'dovuto_tranche',       
+        isLoading: false,        
+      },
+      hideExpression: (model: any, formState: any) => {
+        return !formState.model.id || (formState.model.model_type != 'App\\Scadenza' && formState.model.id);
+      },  
+
+    },
+    {
+      key: 'modelconvenzione',
+      type: 'externalobject',         
+      templateOptions: {        
         label: 'Convenzione',
         type: 'string',
         entityName: 'application',
@@ -127,24 +190,25 @@ export class TaskComponent extends BaseEntityComponent {
         entityPath: 'home/convenzioni',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
+        descriptionFunc: (data) => {
+          if (data && data.descrizione_titolo){
+            this.updateAzioni(data.id); 
+            return data.descrizione_titolo;
+          }
+          return '';
+        },
         isLoading: false,        
       },
       hideExpression: (model: any, formState: any) => {
-        return formState.model.model_type != 'App\\Convenzione';
-      },  
-      expressionProperties: {
-        'templateOptions.disabled': (model: any, formState: any) => {                        
-            return model.id
-        },
-      },          
+        return formState.model.id  || (formState.model.model_type != 'App\\Convenzione' && !formState.model.id);
+      },        
     },
-
     //se il task è associato ad una scadenza
     {
-      key: 'model',
-      type: 'externalobject',
-      hide: true,
+      key: 'modelscadenza',
+      type: 'externalobject',      
       templateOptions: {
+        disabled: true,
         label: 'Scadenza',
         type: 'string',
         entityName: 'scadenza',
@@ -152,16 +216,18 @@ export class TaskComponent extends BaseEntityComponent {
         entityPath: 'home/scadenze',
         codeProp: 'id',
         descriptionProp: 'dovuto_tranche',
+        descriptionFunc: (data) => {
+          if (data && data.dovuto_tranche){
+            this.updateAzioni(data.id); 
+            return data.dovuto_tranche;
+          }
+          return '';
+        },
         isLoading: false,        
       },
       hideExpression: (model: any, formState: any) => {
-        return formState.model.model_type != 'App\\Scadenza';
-      },  
-      expressionProperties: {
-        'templateOptions.disabled': (model: any, formState: any) => {                        
-            return model.id
-        },
-      },          
+        return formState.model.id || (formState.model.model_type != 'App\\Scadenza' && !formState.model.id);
+      },                
     },
 
     //esendo polimorfica le prossime azioni da compiere possono essere verso convenzione o scadenza
@@ -171,35 +237,12 @@ export class TaskComponent extends BaseEntityComponent {
       //defaultValue: 'self_transition',
       templateOptions: {
         label: 'Azione da compiere',      
-        options: [],
-        disabled: true,
+        required: true,
+        options: [],        
       },
       hideExpression: (model: any, formState: any) => {
         return model.id;
-      },                   
-      hooks: {        
-        onInit: (field) => {
-          //va costruita solo se sono nello stato nuovo          
-          if (!this.activeNew){
-            field.form.get('model').get('id').valueChanges.pipe(
-              takeUntil(this.onDestroy$),    
-              distinct(),                  
-              //startWith(form.get('unitaorganizzativa_uo').value),
-              filter(ev => ev !== null),
-              tap(id => {                 
-                if (id){
-                  field.templateOptions.options = this.service.getNextActions(id,this.model.model_type).pipe(
-                    map(x => x.filter(y => y.value != 'self_transition')),
-                    tap(x => field.templateOptions.disabled = false )
-                  );                                  
-                  //field.formControl.setValue('self_transition');
-                }
-              })
-            ).subscribe();
-          }
-        }
-      }
-
+      },                         
     },
     // {
     //   className: 'col-md-6',
@@ -349,6 +392,13 @@ export class TaskComponent extends BaseEntityComponent {
     this.newPath = 'home/tasks/new'    
     
     this.model.model = { id: null, desctizione_titolo: null };
+    this.model.modelconvenzione = { id: null, desctizione_titolo: null };
+    this.model.modelscadenza = { id: null, dovuto_tranche: null };
+
+    this.initObj = {
+      modelconvenzione: { id: null, desctizione_titolo: null },
+      modelscadenza: { id: null, dovuto_tranche: null }
+    }
   }
 
 
@@ -371,6 +421,17 @@ export class TaskComponent extends BaseEntityComponent {
     }   
   }
 
+  protected preOnSubmit(){
+    if (this.model.id == undefined){
+      if (this.model.model_type == 'App\\Convenzione' ){
+        this.model.model_id = this.model.modelconvenzione.id 
+      }else{
+        this.model.model_id = this.model.modelscadenza.id 
+      }
+      
+    }        
+        
+  }
   //richiamato nella init dopo aver caricato il modello
   protected postGetById(){
     this.updateTransitions();  
@@ -380,5 +441,23 @@ export class TaskComponent extends BaseEntityComponent {
   protected postOnSubmit(){
     this.updateTransitions();
   }
+
+  protected updateAzioni(id){
+    let f = this.fields.find(x=> x.key == 'workflow_transition');
+    f.formControl.setValue(null);
+    f.templateOptions.options = this.service.getNextActions(id, this.model.model_type).pipe(
+      map(x => this. assignName(x)),      
+    );                                  
+  }
   
+  private assignName(list){
+    let result = list.filter(y => y.value != 'self_transition').map(element => {
+      element.label = this.actions[element.value];
+      return element;
+    });   
+
+    return result;
+  }
+
+
 }

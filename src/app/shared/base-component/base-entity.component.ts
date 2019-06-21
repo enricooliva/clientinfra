@@ -54,17 +54,19 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
 
   locationBack: Boolean = true;
 
+  public initObj: any = null;
+
   constructor(protected route: ActivatedRoute, protected router: Router, protected location: Location) {
 
   }
+
 
   ngOnInit() {        
     this.isLoading = true;
     this.options.formState.isLoading = true;
     //se apro con i parametri returnUrl e initObj 
     //nascondere pulsante nuovo e ricerca e all'aggiorna tornare 
-    //indietro se salvataggio è andato a buon fine
-    let initObj: any = null;
+    //indietro se salvataggio è andato a buon fine    
     this.route.queryParams
       .subscribe(params => {    
         if (params.returnUrl){
@@ -73,7 +75,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
         if (params.initObj){
           //setTimeout(()=> {
             this.model = JSON.parse(params.initObj);            
-            initObj = JSON.parse(params.initObj);
+            this.initObj = JSON.parse(params.initObj);
           //}, 0);     
         }        
     });
@@ -93,9 +95,9 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
         //params['id'] coneitene il parametro letto dalla url, può contenere un id o anche la parola new
         this.service.getById(params['id']).subscribe({
           next: (data) => {    
-            setTimeout(()=> {
-              if (initObj)
-                this.model = { ...JSON.parse(JSON.stringify(data)), ...initObj};
+            setTimeout(()=> {              
+              if (this.initObj)
+                this.model = { ...JSON.parse(JSON.stringify(data)), ...this.initObj};
               else 
                 this.model = JSON.parse(JSON.stringify(data));
                 
@@ -131,6 +133,7 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   protected postGetById(){}// hook for child
   protected additionalFormInitialize() {}
   protected postOnSubmit() {}
+  protected preOnSubmit() {}
 
   onNew(){    
     if (this.newPath){      
@@ -188,7 +191,8 @@ export class BaseEntityComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       this.isLoading = true;
-      var tosubmit = { ...this.model, ...this.form.value };
+      this.preOnSubmit();
+      var tosubmit = { ...this.model, ...this.form.value };      
       this.service.update(tosubmit, tosubmit.id ? tosubmit.id : null , true).subscribe(
         result => {
           
