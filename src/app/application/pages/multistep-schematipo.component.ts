@@ -373,7 +373,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                 type: 'repeat',          
                 hideExpression: 'formState.model.schematipotipo == "schematipo"',                         
                 templateOptions: {                  
-                  label: 'Ulteriori assegnatari',                                                                                        
+                  label: 'Operatori',                                                                                        
                 },   
                 validators: {
                   unique: {
@@ -404,7 +404,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     type: 'select',
                     className: "col-md-8",
                     templateOptions: {
-                      label: 'Assegnamento attività',
+                      label: 'Operatore attività',
                       valueProp: 'id',
                       labelProp: 'descr',  
                       required: true,                     
@@ -445,7 +445,6 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
         ]
       }];
   }
-
 
   public onValidate() {
     const invalid = [];

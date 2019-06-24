@@ -61,7 +61,7 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
             type: 'select',
             className: "col-md-2",            
             templateOptions: {
-              label: 'Operatore',          
+              label: 'Criterio',          
               required: true
             },
             lifecycle: {

@@ -24,7 +24,7 @@ export class NotificationsComponent implements OnInit{
   modelNotification: any = {};
   options: FormlyFormOptions = {};
 
-  fields: FormlyFieldConfig[] = [
+  fields: FormlyFieldConfig[] = [  
     {
       key: 'subject',
       type: 'input',
