@@ -48,6 +48,14 @@ export class UserTaskService extends BaseService {
   }
 
   @Cacheable()
+  getOffices(category): Observable<any> {
+    //'validazione','inemsissione','tutti'
+    return this.http.get(this._baseURL + '/convenzioni/uffici/'+category, httpOptions).pipe(
+      catchError(this.handleError('getOffices', []))
+    );
+  }
+
+  @Cacheable()
   getValidationOffices(): Observable<any> {
     return this.http.get(this._baseURL + '/convenzioni/uffici/'+'validazione', httpOptions).pipe(
       catchError(this.handleError('getValidationOffices', []))

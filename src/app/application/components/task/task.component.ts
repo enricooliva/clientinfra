@@ -207,8 +207,7 @@ export class TaskComponent extends BaseEntityComponent {
     {
       key: 'modelscadenza',
       type: 'externalobject',      
-      templateOptions: {
-        disabled: true,
+      templateOptions: {        
         label: 'Scadenza',
         type: 'string',
         entityName: 'scadenza',
@@ -269,7 +268,7 @@ export class TaskComponent extends BaseEntityComponent {
           return this.model['unitaOrganizzativa'];
         },
         populateAsync: () => {          
-          return this.service.getValidationOffices();
+          return this.service.getOffices('tutti');
         }
       },          
       expressionProperties: {
@@ -446,15 +445,25 @@ export class TaskComponent extends BaseEntityComponent {
     let f = this.fields.find(x=> x.key == 'workflow_transition');
     f.formControl.setValue(null);
     f.templateOptions.options = this.service.getNextActions(id, this.model.model_type).pipe(
-      map(x => this. assignName(x)),      
-    );                                  
+      map(x => this.assignName(x)),      
+      tap(x => this.checkMessage(x,f))
+    ); 
+        
   }
   
+  private checkMessage(result, field){
+    if (result && result.length >0){
+      field.templateOptions.description = "";
+    }else{
+      field.templateOptions.description = "Nessuna azione disponibile";
+    }
+  }
+
   private assignName(list){
     let result = list.filter(y => y.value != 'self_transition').map(element => {
       element.label = this.actions[element.value];
       return element;
-    });   
+    });       
 
     return result;
   }
