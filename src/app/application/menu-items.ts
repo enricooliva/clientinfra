@@ -83,7 +83,7 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: [],
-        permissions: ['ADMIN','SUPER-ADMIN','VALIDATORE'],
+        permissions: ['ADMIN','SUPER-ADMIN','OP_APPROVAZIONE'],
       },     
       {
         path: '',
@@ -149,6 +149,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['ADMIN','SUPER-ADMIN'],
       },     
+      {
+        path: 'emissione',
+        title: 'Emissione',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['ADMIN','SUPER-ADMIN','OP_CONTABILITA'],
+      },   
 
     ]
   },
