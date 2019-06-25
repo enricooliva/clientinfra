@@ -22,6 +22,7 @@ import { TableTypeComponent } from '../shared/dynamic-form/table-type.component'
 import { ConvenzioniresultComponent } from './dashboard-components/convenzioniresult/convenzioniresult.component';
 import { Dashboard2Component } from './dashboard2/dashboard2.component';
 import { ScadenzeresultComponent } from './dashboard-components/scadenzeresult/scadenzeresult.component';
+import { NotificationService } from './notification.service';
 
 @NgModule({
   imports: [  
@@ -46,6 +47,7 @@ import { ScadenzeresultComponent } from './dashboard-components/scadenzeresult/s
   ],
   providers: [ 
     DashboardService,
+    NotificationService,
     DatePipe,
   ]
 })

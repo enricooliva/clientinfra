@@ -6,8 +6,8 @@
         <h4 class="card-title">Lista notifiche</h4>
         <div class="todo-widget scrollable"  style="height:300px;" [perfectScrollbar]="config">
               <!-- Comment Row -->                    
-            <ul class="list-task todo-list list-group m-b-0" data-role="notifications" >       
-                <div *ngFor="let notification of model | async">  
+            <ul *ngIf="model" class="list-task todo-list list-group m-b-0" data-role="notifications" >       
+                <div *ngFor="let notification of model "> <!--| async-->  
                     <li class="list-group-item list-group-item-action todo-item" data-role="notification" >                               
                         <div class="todo-label" style="padding-left: 25px;">
                             <span class="todo-desc">{{ notification.data.message }}</span>
@@ -30,8 +30,9 @@
                     </li>
                 </div>   
             </ul>
-        </div>
+        </div>       
     </div>
+    <ngb-pagination *ngIf="page" class="mr-3 d-flex justify-content-end" [collectionSize]="page.totalElements" [pageSize]="page.size" [(page)]="page.pageNumber" [maxSize]="7" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
 </div>
 
 <ng-template #content let-c="close">

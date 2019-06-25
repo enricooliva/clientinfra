@@ -118,7 +118,6 @@ export class QueryBuilderComponent implements OnInit, OnChanges {
                         field.templateOptions.labelProp = this.keymetadata[selectedField].templateOptions.labelProp;                        
                         field.templateOptions.label = 'Valore'
 
-
                         field.templateOptions.disabled = false;
                       }
                     }),
