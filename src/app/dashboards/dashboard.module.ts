@@ -47,7 +47,7 @@ import { NotificationService } from './notification.service';
   ],
   providers: [ 
     DashboardService,
-    NotificationService,
+    NotificationService,    
     DatePipe,
   ]
 })

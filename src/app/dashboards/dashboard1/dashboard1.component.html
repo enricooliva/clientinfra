@@ -20,11 +20,11 @@
 <div class="row">
     <!-- column -->
     <div class="col-lg-6">
-        <app-tasklist [title]="'Attività recenti ufficio'" [model]="myofficetasks" [isLoading]="isLoadingOfficeTask"></app-tasklist>        
+        <app-tasklist [title]="'Attività recenti ufficio'" [typeresearch]="'myofficetasks'"></app-tasklist>        
     </div>
     <!-- column -->
     <div class="col-lg-6">
-        <app-tasklist [title]="'Attività assegnate a te'" [model]="mytasks" [isLoading]="isLoadingTask"></app-tasklist>
+        <app-tasklist [title]="'Attività assegnate a te'" [typeresearch]="'mytasks'" ></app-tasklist>
     </div>
 </div>
 <!-- ============================================================== -->

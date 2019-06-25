@@ -21,21 +21,21 @@ export class DashboardService extends CoreSevice {
     super(http,messageService)
   }
   
-  getUserTaskByCurrentUser(): Observable<any> {
+  getUserTaskByCurrentUser(pageNumer): Observable<any> {
     const url = `${this._baseURL}/usertask/users/${this.auth._id}/tasks`;
     let headers = httpOptions.headers.append('x-refresh','true');
     return this.http        
-      .get(url, { headers: headers }).pipe(
+      .get(url, { headers: headers, params: { page: pageNumer } }).pipe(
           catchError(this.handleError('getUserTaskByCurrentUser')),
       );
   }
  
   
-  getUserTaskByCurrentUserOffice(): Observable<any> {
+  getUserTaskByCurrentUserOffice(pageNumer): Observable<any> {
     const url = `${this._baseURL}/usertask/users/${this.auth._id}/office/tasks`;
     let headers = httpOptions.headers.append('x-refresh','true');
     return this.http        
-      .get(url, { headers: headers }).pipe(
+      .get(url, { headers: headers, params: { page: pageNumer } }).pipe(
           catchError(this.handleError('getUserTaskByUserOffice')),
       );
   }
