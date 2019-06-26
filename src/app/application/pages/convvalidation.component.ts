@@ -7,6 +7,7 @@ import { encode, decode } from 'base64-arraybuffer';
 import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
 import { FileDetector } from 'protractor';
 import {Location} from '@angular/common';
+import { MultistepSchematipoComponent } from './multistep-schematipo.component';
 @Component({
   selector: 'app-convvalidation',
   template: `
@@ -41,7 +42,28 @@ export class ConvvalidationComponent extends BaseEntityComponent {
   public static WORKFLOW_ACTION: string = 'store_validazione'; //TRASITION
   public static ABSULTE_PATH: string = 'home/validazione';
   
+  protected docappid = null
+
   fields: FormlyFieldConfig[] = [
+    {
+      fieldGroupClassName: 'display-flex',      
+      fieldGroup: [
+        {
+          type: 'button',         
+          className: 'ml-1 pl-1',     
+          templateOptions: {        
+            text: 'Scarica convenzione formato word',            
+            btnType: 'btn btn-primary btn-sm border-0 rounded-0',       
+            title: 'Scarica convenzione',
+            //icon: 'oi oi-data-transfer-download'
+            onClick: ($event, model) => this.download(this.docappid),
+          },
+          hideExpression: (model: any, formState: any) => {
+            return !this.docappid;
+          },                                     
+        },
+      ]
+    },
     {
       className: 'section-label',
       template: '<h5>Inserimento documenti di approvazione</h5>',
@@ -59,6 +81,13 @@ export class ConvvalidationComponent extends BaseEntityComponent {
         entityPath: 'home/convenzioni',
         codeProp: 'id',
         descriptionProp: 'descrizione_titolo',
+        descriptionFunc: (data) => {          
+            if (data  && data.attachments && data.attachments.length > 0){
+              this.docappid = data.attachments.find(x => x.attachmenttype_codice == MultistepSchematipoComponent.DOC_APP);
+              return data.descrizione_titolo;          
+            }
+            return data.descrizione_titolo ? data.descrizione_titolo : '';            
+        },
         isLoading: false,    
         rules: [{value: "inapprovazione", field: "current_place", operator: "="}],
       },  
@@ -149,7 +178,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
               className: "col-md-5",
               templateOptions: {
                 label: 'Numero',
-                //required: true,                               
+                required: true,                               
               },
             },
             {
@@ -158,7 +187,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
               className: "col-md-5",
               templateOptions: {
                 label: 'Data',
-                //required: true,                               
+                required: true,                               
               },
             },
             {
@@ -250,4 +279,23 @@ export class ConvvalidationComponent extends BaseEntityComponent {
         });
     }
   }
+
+
+  download(attachId) {
+    //console.log(model);
+    if (!attachId)
+      return;
+
+    this.service.download(attachId.id).subscribe(file => {
+      if (file.filevalue)
+        var blob = new Blob([decode(file.filevalue)]);
+      saveAs(blob, file.filename);
+    },
+      e => { console.log(e); }
+    );
+
+  }
+  
+
+
 }
