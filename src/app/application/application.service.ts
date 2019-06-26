@@ -306,7 +306,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
       },            
       {
         className: 'section-label',
-        template: '<h5>Aziende</h5>',
+        template: '<h5>Aziende o enti</h5>',
       },
       {
         key: 'aziende',
@@ -324,10 +324,10 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             className: "col-md-12",
             defaultValue: { id: null, denominazione: '' },
             templateOptions: {             
-              label: 'Azienda',
+              label: 'Azienda o ente',
               type: 'string',
               entityName: 'aziendaLoc',
-              entityLabel: 'Aziende',
+              entityLabel: 'Aziende o enti',
               entityPath: 'home/aziendeloc',
               codeProp: 'id',
               enableNew: true,
