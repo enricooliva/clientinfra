@@ -36,6 +36,8 @@ export interface Convenzione extends BaseEntity {
     titolario_classificazione?: string,
     oggetto_fascicolo?: string,
     numero?:string,
+    bollo_virtuale?: boolean,
+    bolli?: any[]
 }
 
 export interface Owner{

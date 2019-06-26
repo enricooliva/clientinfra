@@ -12,7 +12,15 @@
         <tbody>            
             <tr *ngIf="conv.bollo_virtuale">                                           
               <td width="390">Bollo virtuale</td>
-              <td>n. {{conv.num_bolli}}</td>
+              <td>
+                <div *ngFor="let bollo of rep?.bolli">
+                    <span [ngSwitch]="bollo.codice">                        
+                        <span *ngSwitchCase="'BOLLO_TEC_ALLEGATO'">Tecnici n. </span>   
+                        <span *ngSwitchDefault>n. </span>                                                                       
+                    </span> 
+                    <span>{{ bollo.num_bolli }}</span>
+                </div>
+              </td>
             </tr>                        
             <tr>                                           
                 <td width="390">Repertoriato</td>

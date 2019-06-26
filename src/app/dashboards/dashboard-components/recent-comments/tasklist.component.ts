@@ -28,8 +28,6 @@ export class TaskListComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() 
   typeresearch: string;
 
-
-
   model: any;
 
   page: {
@@ -42,7 +40,6 @@ export class TaskListComponent implements OnInit, AfterViewInit, OnDestroy {
   protected onDestroy$ = new Subject<void>();
   
   constructor(protected service: DashboardService, protected router: Router) {}
-
 
   ngOnInit(): void {         
     this.loadData();        

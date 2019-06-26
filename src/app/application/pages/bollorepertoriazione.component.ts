@@ -134,23 +134,90 @@ export class BolloRepertoriazioneComponent extends BaseEntityComponent {
           //se non è valorizzato lo stipula_format o 
           //return !model.stipula_format || (model.stipula_format && model.stipula_format == 'cartaceo')
         //},
-      },
+      }],
+    },
+    {
+      fieldGroupClassName: 'row',
+      fieldGroup: [
       {
-        key: 'num_bolli',
-        type: 'number',
-        className: 'col-md-4',        
-        templateOptions: {
-          required: true,
-          label: 'Numero bolli applicati',
-          description: 'Calcolare un bollo ogni 100 righe di convenzione',       
+        key: 'bolli',
+        type: 'repeat',
+        className: 'col-md-8', 
+        templateOptions: {                    
+          min: 1,                   
+        },  
+        fieldArray: {
+          fieldGroupClassName: 'row',          
+          fieldGroup: [{
+            key: 'num_bolli',
+            type: 'number',
+            className: 'col-md-4',        
+            templateOptions: {
+              required: true,
+              label: 'Numero bolli',
+              description: 'Calcolare un bollo ogni 100 righe di convenzione',       
+            },           
+            expressionProperties: {
+              'templateOptions.description': (model: any, formState: any) => 
+              { 
+                return (model.tipobolli_codice == 'BOLLO_ATTI') ?  'Calcolare un bollo ogni 100 righe di convenzione' : '';
+              },
+            }
+          }, 
+          {
+            key: 'tipobolli_codice',
+            type: 'select',
+            className: "col-md-6",
+            defaultValue: 'BOLLO_ATTI',            
+            templateOptions: {              
+              options: [
+                { label: 'Atti e provvedimenti', value: 'BOLLO_ATTI' },
+                { label: 'Allegati tecnici', value: 'BOLLO_TEC_ALLEGATO' },
+              ],
+              label: 'Applicazione',
+              required: true,
+            },
+            // hooks: {
+            //   onInit: (field) => {
+            //     field.formControl.setValue('BOLLO_ALLEGATO');
+            //   }
+            // }
+          },
+         
+        ],          
         },
         hideExpression: (model, formstate) => {
           return (formstate.model.bollo_virtuale == false);
         },
+        validators: {
+          unique: {
+            expression: (c) => {           
+              if (c.value)  {                              
+                var valueArr = c.value.map(function(item){ return item.tipobolli_codice }).filter(x => x != null );
+                var isDuplicate = valueArr.some(function(item, idx){ 
+                    return valueArr.indexOf(item) != idx 
+                });              
+                return !isDuplicate;
+              }
+              return true;
+            },
+            message: (error, field: FormlyFieldConfig) => `Tipo bollo ripetuto`,
+          },
+          atleasttype: {
+            expression: (c) => { 
+              const f = c.value.find(x => x.tipobolli_codice == 'BOLLO_ATTI');  
+              if (f){
+                return true;
+              }
+              return false;
+            },
+            message: (error, field: FormlyFieldConfig) => `Richiesto il bollo 'Atti e provvedimenti'`,
+          }        
+        },
       },
       {
         type: 'template',
-        className: 'col-md-6 mt-4 pt-3',       
+        className: 'col-md-4 mt-4 pt-3',       
         templateOptions: {          
           template: '',
         },

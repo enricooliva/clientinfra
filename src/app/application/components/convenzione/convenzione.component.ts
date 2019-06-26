@@ -579,7 +579,7 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
         if (!data.azienda) {
           data.azienda = { id: null, descrizione: null };
         }
-        this.options.forEach(tabOptions => tabOptions.resetModel(data));
+        this.options.forEach(tabOptions => { if (tabOptions.resetModel) tabOptions.resetModel(data); });
         this.isLoading = false;
       });
     }

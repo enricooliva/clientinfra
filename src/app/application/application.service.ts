@@ -9,6 +9,7 @@ import { Convenzione, FileAttachment } from './convenzione';
 import { saveAs } from 'file-saver';
 import { Cacheable } from 'ngx-cacheable';
 import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
+import { truncate } from 'fs';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -221,22 +222,88 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           }            
         ]       
       },
-      {
+      {                
         fieldGroupClassName: 'row',
         fieldGroup: [
-          {
-            key: 'num_bolli',
-            type: 'number',
-            className: "col-md-6",
-            templateOptions: {                
-              label: 'Numero bolli',
+        {
+          key: 'bolli',
+          type: 'repeat',
+          className: 'col-md-8', 
+          templateOptions: {                    
+            min: 1,         
+            label: 'Bolli'          
+          },  
+          fieldArray: {
+            fieldGroupClassName: 'row',          
+            fieldGroup: [{
+              key: 'num_bolli',
+              type: 'number',
+              className: 'col-md-4',        
+              templateOptions: {
+                required: true,
+                label: 'Numero bolli',
+                description: 'Calcolare un bollo ogni 100 righe di convenzione',       
+              },           
+              expressionProperties: {
+                'templateOptions.description': (model: any, formState: any) => 
+                { 
+                  return (model.tipobolli_codice == 'BOLLO_ATTI') ?  'Calcolare un bollo ogni 100 righe di convenzione' : '';
+                },
+              }
+            }, 
+            {
+              key: 'tipobolli_codice',
+              type: 'select',
+              className: "col-md-6",
+              defaultValue: 'BOLLO_ATTI',            
+              templateOptions: {              
+                options: [
+                  { label: 'Atti e provvedimenti', value: 'BOLLO_ATTI' },
+                  { label: 'Allegati tecnici', value: 'BOLLO_TEC_ALLEGATO' },
+                ],
+                label: 'Applicazione',
+                required: true,
+              },
+              // hooks: {
+              //   onInit: (field) => {
+              //     field.formControl.setValue('BOLLO_ALLEGATO');
+              //   }
+              // }
             },
-            hideExpression: (model: any, formState: any) => {
-              return !(model.id && model.num_bolli);
-            }   
+           
+          ],          
           },
-        ]
-      },
+          hideExpression: (model, formstate) => {
+            return (!comp.id) || (comp.id && comp.bollo_virtuale == false);
+          },
+          validators: {
+            unique: {
+              expression: (c) => {           
+                if (c.value)  {                              
+                  var valueArr = c.value.map(function(item){ return item.tipobolli_codice }).filter(x => x != null );
+                  var isDuplicate = valueArr.some(function(item, idx){ 
+                      return valueArr.indexOf(item) != idx 
+                  });              
+                  return !isDuplicate;
+                }
+                return true;
+              },
+              message: (error, field: FormlyFieldConfig) => `Tipo bollo ripetuto`,
+            },
+            atleasttype: {
+              expression: (c) => { 
+                const f = c.value.find(x => x.tipobolli_codice == 'BOLLO_ATTI');  
+                if (f){
+                  return true;
+                }
+                return false;
+              },
+              message: (error, field: FormlyFieldConfig) => `Richiesto il bollo 'Atti e provvedimenti'`,
+            }
+          },
+        },             
+      ]
+      },            
       {
         className: 'section-label',
         template: '<h5>Aziende</h5>',

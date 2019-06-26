@@ -4,11 +4,12 @@ import { ConvenzionedetailsComponent } from '../convenzionedetails.component';
 
 interface IInfoRepertorio {  
   repertorio: IDoc;  
+  bolli?: any[];
 };
 
 interface IDoc{  
   numero: string;
-  data: string;
+  data: string;   
 }
 
 
@@ -27,7 +28,17 @@ export class RepertoriazionedetailsComponent implements OnInit {
 
   ngOnInit() {
     this.rep = new Object() as IInfoRepertorio;
-   
+    this.rep.bolli = [];
+
+    if (this.conv.bolli){
+       this.rep.bolli = this.conv.bolli.map(x => {
+         return {
+          codice: x.tipobolli_codice,
+          num_bolli: x.num_bolli
+         }
+       });
+    }
+
     const file = this.conv.attachments.find(x => x.attachmenttype_codice == 'DOC_BOLLATO_FIRMATO')
     if (file) {
       let repertorio = {       
