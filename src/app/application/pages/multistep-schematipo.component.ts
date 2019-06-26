@@ -239,7 +239,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     className: "col-md-4",
                     templateOptions: {
                       label: 'Numero',
-                      //required: true,                               
+                      required: true,                               
                     },
                   },
                   {
@@ -248,7 +248,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
                     className: "col-md-8",
                     templateOptions: {
                       label: 'Data',
-                      //required: true,                               
+                      required: true,                               
                     },
                   },
                 ]

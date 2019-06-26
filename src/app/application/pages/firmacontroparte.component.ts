@@ -208,7 +208,7 @@ export class FirmaControparteComponent extends BaseEntityComponent {
               className: "col-md-5",
               defaultValue: 'CONV_FIRM_ENTRAMBI',
               templateOptions: {
-                required: true,                
+                //required: true,                
                 options: [{ stipula_type: 'ditta', codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata dalla controparte' }],
                 valueProp: 'codice',
                 labelProp: 'descrizione',
@@ -220,7 +220,7 @@ export class FirmaControparteComponent extends BaseEntityComponent {
               type: 'fileinput',
               className: "col-md-5",
               templateOptions: {
-                required: true,  
+                //required: true,  
                 label: 'Scegli il documento',
                 type: 'input',
                 placeholder: 'Scegli file documento',
