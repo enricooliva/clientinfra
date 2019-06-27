@@ -8,9 +8,17 @@ import { UserTaskService } from '../../usertask.service';
 import { of } from 'rxjs/internal/observable/of';
 import { takeUntil, startWith, filter, tap, map, distinct } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
-import {Location} from '@angular/common';
+import {Location, getLocaleDateTimeFormat, DatePipe} from '@angular/common';
 import { ApplicationService } from '../../application.service';
 import { convertToR3QueryMetadata } from '@angular/core/src/render3/jit/directive';
+import { SottoscrizioneComponent } from '../../pages/sottoscrizione.component';
+import { FirmaControparteComponent } from '../../pages/firmacontroparte.component';
+import { FirmaDirettoreComponent } from '../../pages/firmadirettore.component';
+import { BolloRepertoriazioneComponent } from '../../pages/bollorepertoriazione.component';
+import { EmissioneComponent } from '../../pages/emissione.component';
+import { PagamentoComponent } from '../../pages/pagamento.component';
+import { ConvvalidationComponent } from '../../pages/convvalidation.component';
+
 
 @Component({
   selector: 'app-task',
@@ -24,10 +32,44 @@ import { convertToR3QueryMetadata } from '@angular/core/src/render3/jit/directiv
 
 export class TaskComponent extends BaseEntityComponent {
 
+  //associazione tra task e pagine esecuzione attività
+  public static pathEsecuzioneTask(workflow_transition, workflow_place){                                        
+    if (workflow_transition == ConvvalidationComponent.WORKFLOW_ACTION){
+        return ConvvalidationComponent.ABSULTE_PATH;
+    }
+
+    if (!workflow_transition  && workflow_place == SottoscrizioneComponent.STATE){
+        return SottoscrizioneComponent.ABSULTE_PATH;
+    }
+
+    if (workflow_transition == FirmaControparteComponent.WORKFLOW_ACTION){
+        return FirmaControparteComponent.ABSULTE_PATH;
+    }
+
+    if (workflow_transition == FirmaDirettoreComponent.WORKFLOW_ACTION){
+        return FirmaDirettoreComponent.ABSULTE_PATH;
+    }
+
+    if (workflow_transition == BolloRepertoriazioneComponent.WORKFLOW_ACTION){
+        return BolloRepertoriazioneComponent.ABSULTE_PATH;
+    }
+
+    if (workflow_transition == EmissioneComponent.WORKFLOW_ACTION){
+        return EmissioneComponent.ABSULTE_PATH;
+    }
+
+    if (workflow_transition == PagamentoComponent.WORKFLOW_ACTION){
+        return PagamentoComponent.ABSULTE_PATH;
+    }          
+
+    return null;
+  }
+
+
 
   protected actions: {[key: string]:string} = {
     'approvato': 'Sottoscrizione',
-    'store_validazione': 'Validazione',
+    'store_validazione': 'Approvazione',
     'repertorio': 'Apposizione bollo e repertoriazione',
     'firma_da_direttore2': 'Firma da UniUrb',
     'firma_da_controparte2': 'Firma della controparte',
@@ -49,7 +91,31 @@ export class TaskComponent extends BaseEntityComponent {
     {
       className: 'section-label',
       template: '<div class="mb-2">Finestra per la gestione di una attivià non per la sua esecuzione</div>',
-    },    
+    }, 
+    {
+      fieldGroupClassName: 'display-flex',      
+      fieldGroup: [
+        {
+          type: 'button',                  
+          templateOptions: {        
+            text: 'Esegui attività',            
+            btnType: 'btn btn-primary btn-sm border-0 rounded-0',       
+            title: 'Esegui attività',
+            //icon: 'oi oi-data-transfer-download'
+            onClick: ($event, model) => this.open(),
+          },
+          hideExpression: (model: any, formState: any) => {
+            return !model.id && model.state !== 'aperto'
+          },   
+          expressionProperties: {
+            'templateOptions.disabled': (model: any, formState: any) => {                        
+              return model.state !== 'aperto';
+            },
+          }                                  
+        },
+      ]
+    },
+    
     {
       fieldGroupClassName: 'row',
       fieldGroup:
@@ -66,16 +132,7 @@ export class TaskComponent extends BaseEntityComponent {
               return !model.id;
            },   
           },
-
-          // {
-          //   className: 'col-md-5',
-          //   type: 'input',
-          //   key: 'state',
-          //   templateOptions: {
-          //     label: 'Stato',
-          //     disabled: true,
-          //   },    
-          // },
+       
           {
             className: 'col-md-5',
             type: 'select',
@@ -87,30 +144,25 @@ export class TaskComponent extends BaseEntityComponent {
             }, 
             hideExpression: (model: any, formState: any) => {
               return !model.id;
-            },              
-            // expressionProperties: {
-            //   'templateOptions.options': (model: any, formState: any) => {
-            //     if (model['transitions']) {
-            //       return model['transitions'];
-            //     }
-            //   }
-            // }
+            },                         
           },
+          {            
+            key: 'created_at',
+            className: 'col-md-5',
+            type: 'input',                 
+            templateOptions:{
+              label: 'Data di creazione',
+              disabled: true
+            },
+            // expressionProperties: {        
+            //   template: m =>this.datePipe.transform(m.created_at, 'dd-MM-yyyy')
+            // },
+            hideExpression: (model: any, formState: any) => {
+              return !model.id;
+            },         
+          },     
         ],
-    },
-    //{
-    // fieldGroupClassName: 'row',
-    // fieldGroup:
-    //   [
-    //     {
-    //       className: 'col-md-6',
-    //       type: 'input',
-    //       key: 'workflow_place',
-    //       templateOptions: {
-    //         label: 'Flusso',
-    //         disabled: true,
-    //       },
-    //     },
+    },  
     {      
       type: 'select',
       key: 'model_type',    
@@ -383,7 +435,7 @@ export class TaskComponent extends BaseEntityComponent {
     },
   ];
 
-  constructor(protected service: UserTaskService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+  constructor(protected service: UserTaskService, protected route: ActivatedRoute, protected router: Router, protected location: Location, protected datePipe: DatePipe) {
     super(route, router, location)
     //this.title = 'Permesso IN LAVORAZIONE'
     this.activeNew = true;
@@ -468,5 +520,14 @@ export class TaskComponent extends BaseEntityComponent {
     return result;
   }
 
+  protected open(){
+    if (this.model.state !== 'aperto'){
+      return;
+    }
+
+    const path = TaskComponent.pathEsecuzioneTask(this.model.workflow_transition,this.model.workflow_place);
+    if (path != null)
+      this.router.navigate([path, this.model.model_id]);
+  }
 
 }

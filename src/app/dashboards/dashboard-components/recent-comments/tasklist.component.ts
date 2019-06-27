@@ -4,11 +4,8 @@ import { DashboardService } from '../../dashboard.service';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { FirmaControparteComponent } from 'src/app/application/pages/firmacontroparte.component';
-import { FirmaDirettoreComponent } from 'src/app/application/pages/firmadirettore.component';
-import { BolloRepertoriazioneComponent } from 'src/app/application/pages/bollorepertoriazione.component';
-import { EmissioneComponent } from 'src/app/application/pages/emissione.component';
-import { PagamentoComponent } from 'src/app/application/pages/pagamento.component';
+import { AppConstants } from 'src/app/app-constants';
+import { TaskComponent } from 'src/app/application/components/task/task.component';
 
 
 @Component({
@@ -63,33 +60,10 @@ export class TaskListComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    if (task.workflow_transition == 'store_validazione'){
-      this.router.navigate(['home/validazione', task.model_id]);
-    }
-
-    if (!task.workflow_transition  && task.workflow_place == 'approvato'){
-      this.router.navigate(['home/sottoscrizione', task.model_id]);
-    }
-
-    if (task.workflow_transition == FirmaControparteComponent.WORKFLOW_ACTION){
-      this.router.navigate([FirmaControparteComponent.ABSULTE_PATH, task.model_id]);
-    }
-
-    if (task.workflow_transition == FirmaDirettoreComponent.WORKFLOW_ACTION){
-      this.router.navigate([FirmaDirettoreComponent.ABSULTE_PATH, task.model_id]);
-    }
-
-    if (task.workflow_transition == BolloRepertoriazioneComponent.WORKFLOW_ACTION){
-      this.router.navigate([BolloRepertoriazioneComponent.ABSULTE_PATH, task.model_id]);
-    }
-
-    if (task.workflow_transition == EmissioneComponent.WORKFLOW_ACTION){
-      this.router.navigate([EmissioneComponent.ABSULTE_PATH, task.model_id]);
-    }
-
-    if (task.workflow_transition == PagamentoComponent.WORKFLOW_ACTION){
-      this.router.navigate([PagamentoComponent.ABSULTE_PATH, task.model_id]);
-    }
+    const path = TaskComponent.pathEsecuzioneTask(task.workflow_transition,task.workflow_place);
+    if (path != null)
+      this.router.navigate([path, task.model_id]);
+    
   }
 
   onOpen(task){
@@ -111,7 +85,6 @@ export class TaskListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadData();
     }
   }
-
 
   loadData() {        
     this.isLoading = true;

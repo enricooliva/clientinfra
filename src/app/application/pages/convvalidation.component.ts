@@ -49,8 +49,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
       fieldGroupClassName: 'display-flex',      
       fieldGroup: [
         {
-          type: 'button',         
-          className: 'ml-1 pl-1',     
+          type: 'button',                    
           templateOptions: {        
             text: 'Scarica convenzione formato word',            
             btnType: 'btn btn-primary btn-sm border-0 rounded-0',       
@@ -86,7 +85,10 @@ export class ConvvalidationComponent extends BaseEntityComponent {
               this.docappid = data.attachments.find(x => x.attachmenttype_codice == MultistepSchematipoComponent.DOC_APP);
               return data.descrizione_titolo;          
             }
-            return data.descrizione_titolo ? data.descrizione_titolo : '';            
+            if (data){
+              return data.descrizione_titolo ? data.descrizione_titolo : '';            
+            }
+            return '';
         },
         isLoading: false,    
         rules: [{value: "inapprovazione", field: "current_place", operator: "="}],

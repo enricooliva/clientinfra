@@ -55,7 +55,47 @@ export class TasksComponent extends BaseResearchComponent {
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
-          }
+          },
+          {
+            key: 'workflow_transition',
+            type:'select',
+            templateOptions: {
+              label: 'Azione',
+              options: [
+                { value:'approvato', label:'Sottoscrizione'},
+                { value:'store_validazione', label:'Approvazione'},
+                { value:'repertorio', label:'Apposizione bollo e repertoriazione'},
+                { value:'firma_da_direttore2', label:'Firma da UniUrb'},
+                { value:'firma_da_controparte2', label:'Firma della controparte'},            
+                { value:'emissione', label:'Richiesta di emissione'},
+                { value:'registrazionepagamento', label:'In pagamento'},
+              ]
+            }
+            
+          },
+          {
+            key: 'model_type',
+            type: 'select',
+            templateOptions: {
+              label: 'Tipo collegato',
+              options: [
+                { label: 'Convenzione', value: 'App\\Convenzione' },
+                { label: 'Scadenza', value: 'App\\Scadenza' },
+              ],
+              required: true,
+              column: { cellTemplate: 'valuecolumn'}
+            }
+          },
+          {
+            key: 'created_at',
+            type: 'date',
+            className: "col-md-6",
+            templateOptions: {
+              label: 'Data creazione',
+              required: true,
+            },        
+          },  
+
 
           // {
           //   key: 'tasktype.descrizione',

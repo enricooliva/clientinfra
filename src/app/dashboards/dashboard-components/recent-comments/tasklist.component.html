@@ -17,7 +17,7 @@
                 <h6 *ngIf="task.namelist" class="font-medium">{{task.namelist | titlecase}}</h6>                
                 <span class="m-b-15 d-block">{{task.subject}}</span>                    
                 <div class="comment-footer">
-                    <span class="text-muted float-right">{{task.created_at | date:'d MMMM, yyyy' }}</span>                  
+                    <span class="text-muted float-right">{{ task.readable_created_at.date | date:'d MMMM, yyyy' }}</span>                  
                     <span [ngSwitch]="task.state">                        
                         <span *ngSwitchCase="'aperto'" class="label label-rounded label-primary">{{task.state}}</span>                        
                         <span *ngSwitchCase="'inlavorazione'" class="label label-rounded label-warning">{{task.state}}</span> 

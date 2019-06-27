@@ -1,6 +1,6 @@
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 //services
@@ -120,7 +120,8 @@ registerLocaleData(localeIt);
     StrutturaEsternaService,
     DocumentoService,
     ScadenzaService,
-    LogAttivitaService
+    LogAttivitaService,
+    DatePipe,
   ], 
 })
 export class ApplicationModule { }
