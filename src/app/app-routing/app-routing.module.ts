@@ -48,6 +48,8 @@ import { PagamentoComponent } from '../application/pages/pagamento.component';
 import { InvioRichiestaPagamentoComponent } from '../application/pages/inviorichiestapagamento.component';
 import { ConvenzionedetailsComponent } from '../application/pages/convenzionedetails/convenzionedetails.component';
 import { LogAttivitaComponent } from '../application/pages/logattivita.component';
+import { MappingRuoli } from '../application/components/mappingruoli/mappingruoli.component';
+import { MappingRuolo } from '../application/components/mappingruoli/mappingruolo.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -478,6 +480,38 @@ const routes: Routes = [
           urls: [
             { title: 'Home', url: '/home' },
             { title: 'Nuova associazione uffici' }
+          ]
+        }
+      }, 
+
+      //mapping ruoli
+      { 
+        path: 'mappingruoli',  component: MappingRuoli,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Associazioni ruoli',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca associazione ruoli' }
+          ]
+        }
+      }, 
+      { 
+        path: 'mappingruoli/:id',  component: MappingRuolo,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Associazioni ruoli',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Ricerca associazioni ruoli' }
+          ]
+        }
+      }, 
+      { 
+        path: 'mappingruoli/new',  component: MappingRuolo,  canActivate:[AuthGuard], 
+        data: {
+          title: 'Nuova associazione ruolo',
+          urls: [
+            { title: 'Home', url: '/home' },
+            { title: 'Nuova associazione ruolo' }
           ]
         }
       }, 

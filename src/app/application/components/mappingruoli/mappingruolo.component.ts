@@ -7,8 +7,9 @@ import { BaseEntityComponent } from 'src/app/shared/base-component/base-entity.c
 import { ClassificazioneService } from '../../classificazione.service';
 import { MappingUfficioService } from '../../mappingufficio.service';
 import {Location} from '@angular/common';
+import { MappingRuoloService } from '../../mappingruolo.service';
 @Component({
-  selector: 'app-mappingufficio', 
+  selector: 'app-ruolo', 
   templateUrl: '../../../shared/base-component/base-entity.component.html',
 })
 
@@ -18,7 +19,7 @@ import {Location} from '@angular/common';
 
 //ng g c application/components/MappingUfficioComponent -s true --spec false -t true
 
-export class MappingUfficioTitulus extends BaseEntityComponent {
+export class MappingRuolo extends BaseEntityComponent {
   
   isLoading = true;
   fields: FormlyFieldConfig[] = [
@@ -37,7 +38,14 @@ export class MappingUfficioTitulus extends BaseEntityComponent {
             codeProp: 'uo',        
             descriptionProp: 'descr',
             initdescription: 'descrizione_uo',
-            description: 'Descrizione'
+            description: 'Descrizione',
+            descriptionFunc: (data) => {              
+              if (data && data.descr){    
+                this.model.descrizione_uo = data.descr                        
+                return data.descr;
+              }
+              return null;
+            }
           },      
         },    
       ]
@@ -46,17 +54,17 @@ export class MappingUfficioTitulus extends BaseEntityComponent {
       fieldGroupClassName: 'row',
       fieldGroup: [
         {
-          key: 'strutturainterna_cod_uff',
+          key: 'role_id',
           className: "col-md-12",
           type: 'external',          
           templateOptions: {
-            label: 'Riferimento struttura interna',
+            label: 'Ruolo',
             type: 'string',
-            entityName: 'strutturainterna',
-            entityLabel: 'Struttura interna',
-            codeProp: 'cod_uff',        
-            descriptionProp: 'nome',
-            initdescription: 'descrizione_uff',
+            entityName: 'role',
+            entityLabel: 'Ruolo',
+            codeProp: 'id',        
+            descriptionProp: 'name',
+            initdescription: 'role.name',
             description: 'Descrizione'
           },      
         },    
@@ -64,11 +72,11 @@ export class MappingUfficioTitulus extends BaseEntityComponent {
     }     
   ];  
 
-  constructor(protected service: MappingUfficioService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
+  constructor(protected service: MappingRuoloService, protected route: ActivatedRoute, protected router: Router, protected location: Location) {
     super(route,router,location);    
     this.activeNew =true;
     this.isRemovable = true;
-    this.researchPath = 'home/mappinguffici';
+    this.researchPath = 'home/mappingruoli';
     this.newPath = this.researchPath+'/new';
   }
 

@@ -72,6 +72,9 @@ import { EsecuzionedetailsComponent } from './pages/convenzionedetails/esecuzion
 import { RangedetailsComponent } from './pages/convenzionedetails/rangedetails/rangedetails.component';
 import { LogAttivitaComponent } from './pages/logattivita.component';
 import { LogAttivitaService } from './logattivita.service';
+import { MappingRuoli } from './components/mappingruoli/mappingruoli.component';
+import { MappingRuolo } from './components/mappingruoli/mappingruolo.component';
+import { MappingRuoloService } from './mappingruolo.service';
 
 registerLocaleData(localeIt);
 @NgModule({
@@ -93,7 +96,7 @@ registerLocaleData(localeIt);
     TasksComponent, ConvvalidationComponent, SottoscrizioneComponent, FirmaControparteComponent, FirmaDirettoreComponent, AziendaLocComponent, AziendeLocComponent, 
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
     DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent,
-    InvioRichiestaPagamentoComponent, LogAttivitaComponent
+    InvioRichiestaPagamentoComponent, LogAttivitaComponent, MappingRuoli, MappingRuolo
   ],
   declarations: [        
     ConvenzioneComponent,
@@ -105,7 +108,7 @@ registerLocaleData(localeIt);
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
     DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent, 
     InvioRichiestaPagamentoComponent, ConvenzionedetailsComponent, ApprovazionedetailsComponent, SottoscrizionedetailsComponent, RepertoriazionedetailsComponent, 
-    ScadenzedetailsComponent, EsecuzionedetailsComponent, RangedetailsComponent, LogAttivitaComponent
+    ScadenzedetailsComponent, EsecuzionedetailsComponent, RangedetailsComponent, LogAttivitaComponent, MappingRuoli, MappingRuolo
 
   ],
   providers: [ 
@@ -115,7 +118,8 @@ registerLocaleData(localeIt);
     AziendaLocService,
     PersonaInternaService,
     StrutturaInternaService,   
-    MappingUfficioService, 
+    MappingUfficioService,
+    MappingRuoloService, 
     UnitaOrganizzativaService,
     StrutturaEsternaService,
     DocumentoService,

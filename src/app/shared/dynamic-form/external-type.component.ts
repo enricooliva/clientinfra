@@ -170,10 +170,11 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
     //verifico in caso di cache e non se il modello è inizializzato
     if (!this.initdesc && this.field.key in this.model && this.model[this.field.key]){    
       this.initdesc = true;
-      if (typeof this.field.templateOptions.descriptionFunc === 'function'){
-        this.extDescription = this.field.templateOptions.descriptionFunc(this.model);    
-      }else if (this.field.templateOptions.initdescription in this.model){      
+      
+      if (this.field.templateOptions.initdescription in this.model){      
         this.extDescription = this.model[this.field.templateOptions.initdescription];        
+      }else if (typeof this.field.templateOptions.descriptionFunc === 'function'){        
+          this.extDescription = this.field.templateOptions.descriptionFunc(this.model);    
       } else if (!this.extDescription){
         //far scattare la decodifica 
         setTimeout(() => { this.isLoading = true; }, 0);

@@ -45,6 +45,7 @@ import { LoginActivate } from './core/login.activate';
 import { ScadenzaService } from './application/scadenza.service';
 import { ConfirmationDialogService } from './shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
+import { MappingRuoloService } from './application/mappingruolo.service';
 
 
 export function tokenGetter() {
@@ -99,6 +100,8 @@ export function tokenGetter() {
     {provide: 'mapppingufficititulusService', useClass: MappingUfficioService},
     {provide: 'unitaorganizzativaService', useClass: UnitaOrganizzativaService},
     {provide: 'scadenzaService', useClass: ScadenzaService},    
+    {provide: 'mappingruoloService', useClass: MappingRuoloService},
+    {provide: 'roleService', useClass: RoleService},    
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     {provide: APP_BASE_HREF, useValue: environment.baseHref},

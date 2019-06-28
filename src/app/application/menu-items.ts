@@ -215,6 +215,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
         permissions: ['SUPER-ADMIN'], 
       },  
+      {
+        path: 'mappingruoli',
+        title: 'Associazione ruoli',
+        icon: '',
+        class: '',
+        extralink: false,
+        submenu: [],
+        permissions: ['SUPER-ADMIN'],
+      }, 
     ]}, //chiude gestione utenti
     {
       path: '',

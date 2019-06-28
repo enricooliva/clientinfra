@@ -5,15 +5,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'src/app/shared/lookup/page';
 import { BaseResearchComponent } from 'src/app/shared';
 import { MappingUfficioService } from '../../mappingufficio.service';
+import { MappingRuoloService } from '../../mappingruolo.service';
 
 
 @Component({
-  selector: 'app-mappinguffici', 
+  selector: 'app-mappingruoli', 
   templateUrl: '../../../shared/base-component/base-research.component.html',
 })
 
 //ng g c application/pages/mappinguffici -s true --spec false -t true
-export class MappingUfficiTitulus extends BaseResearchComponent {
+export class MappingRuoli extends BaseResearchComponent {
   
   isLoading = false;
   
@@ -25,33 +26,23 @@ export class MappingUfficiTitulus extends BaseResearchComponent {
             templateOptions: {
               label: 'Codice unità organizzativa',
               disabled: true,
-              column: { width: 10, cellTemplate: 'valuecolumn'}
+              column: { width: 5, cellTemplate: 'valuecolumn'}
             }
           },
           {
             key: 'descrizione_uo',
             type: 'string',
             templateOptions: {
-              label: 'Descrizione unità organizzativa',
+              label: 'Descrizione',
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
-          },        
+          },                 
           {
-            key: 'strutturainterna_cod_uff',
-            type: 'string',
-            hideExpression: false,
+            key: 'role_id',
+            type: 'number',
             templateOptions: {
-              label: 'Codice struttura interna',
-              disabled: true,
-              column: { width: 10, cellTemplate: 'valuecolumn'}
-            }
-          },
-          {
-            key: 'descrizione_uff',
-            type: 'string',
-            templateOptions: {
-              label: 'Descrizione struttura interna',
+              label: 'Codice ruolo',
               required: true,
               column: { cellTemplate: 'valuecolumn'}
             }
@@ -64,7 +55,7 @@ export class MappingUfficiTitulus extends BaseResearchComponent {
     type: 'datatablelookup',
     wrappers: ['accordion'],      
     templateOptions: {      
-      label: 'Associazioni strutture',   
+      label: 'Associazione ruoli',   
       columnMode: 'force',
       scrollbarH: false,        
       page: new Page(25),
@@ -82,12 +73,12 @@ export class MappingUfficiTitulus extends BaseResearchComponent {
     min: 0
   }
 
-  constructor(protected service: MappingUfficioService, router: Router, route: ActivatedRoute,)  {    
+  constructor(protected service: MappingRuoloService, router: Router, route: ActivatedRoute,)  {    
     super(router,route);    
     
     this.resultMetadata[0].fieldArray.fieldGroup = service.getMetadata();        
 
-    this.routeAbsolutePath = 'home/mappinguffici'     
+    this.routeAbsolutePath = 'home/mappingruoli'     
     
   }
  
