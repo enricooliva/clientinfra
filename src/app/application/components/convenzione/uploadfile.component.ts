@@ -6,6 +6,8 @@ import { FileAttachment } from '../../convenzione';
 import { encode, decode } from 'base64-arraybuffer';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ApplicationService } from '../../application.service';
+import { map, catchError, tap, startWith, takeUntil, publishReplay, refCount, filter } from 'rxjs/operators';
+import { StartEditingCellParams } from 'ag-grid-community';
 
 //https://weasyprint.org/
 
@@ -43,14 +45,37 @@ export class UploadfileComponent implements OnInit {
   form = new FormGroup({});
   modelfile: { filename: '', attachmenttype_codice: ''};
   currentSelFile: File;
+  nrecord: string;
+  emission_date: Date;
   isLoading: boolean;
 
-  fields: FormlyFieldConfig[] = [
 
+  public static codeWithDateNumber: Array<string> = ['DDD', 'DCD', 'DR', 'DRU', 'DSA', 'DCA'];
+  public static withProtocol: Array<string> = ['LTE_FIRM_CONTR_PROT', 'LTU_FIRM_ENTRAMBI_PROT', 'LTE_FIRM_ENTRAMBI_PROT'];
+
+
+  public static fileToBeUploaded = UploadfileComponent.codeWithDateNumber.concat(UploadfileComponent.withProtocol);
+  //'LTU_FIRM_ENTRAMBI_PROT' inviata via email
+
+  fields: FormlyFieldConfig[] = [
+        {
+          key: 'attachmenttype_codice',
+          type: 'select',          
+          templateOptions: {
+            options: this.service.getAttachemntTypes().pipe(
+              map(x => 
+                x.filter(element => UploadfileComponent.fileToBeUploaded.includes(element.codice))
+              )                           
+            ), //TODO tipi di allegati
+            valueProp: 'codice',
+            labelProp: 'descrizione_compl',
+            label: 'Tipologia allegato',
+            required: true,
+          }
+        },
         {
           key: 'filename',
-          type: 'fileinput',
-          className: "col-md-5",
+          type: 'fileinput',          
           templateOptions: {
             label: 'Scegli documento',
             type: 'input',
@@ -59,35 +84,70 @@ export class UploadfileComponent implements OnInit {
             required: true,
             onSelected: (selFile) => { this.onSelectCurrentFile(selFile) }
           },
+          hideExpression: (model, formState) => {
+            if (model)
+              return UploadfileComponent.withProtocol.includes(model.attachmenttype_codice); 
+            return true;
+          },
         },
         {
-          key: 'attachmenttype_codice',
-          type: 'select',
-          className: "col-md-5",
+          key: 'num_prot',
+          type: 'external',          
           templateOptions: {
-            options: this.service.getAttachemntTypes(), //TODO tipi di allegati
-            valueProp: 'codice',
-            labelProp: 'descrizione',
-            label: 'Tipologia allegato',
-            required: true,
-          }
+            label: 'Numero di protocollo',
+            required: true,      
+            type: 'string',
+            entityName: 'documento',
+            entityLabel: 'Documenti',
+            codeProp: 'num_prot',
+            descriptionProp: 'oggetto',
+            descriptionFunc: (data) => {
+              if (data && data.oggetto){
+                this.nrecord = data.nrecord;
+                this.emission_date = data.data_prot;
+                return data.oggetto
+              }
+              return '';
+            },
+            isLoading: false,  
+            //rules: [{value: "arrivo", field: "doc_tipo", operator: "="}],                       
+          },      
+          hideExpression: (model, formState) => {
+            if (model)
+              return !UploadfileComponent.withProtocol.includes(model.attachmenttype_codice); 
+            return true;
+          },
+        },       
+        {
+          fieldGroupClassName: 'row',           
+          fieldGroup: [
+            {
+              key: 'docnumber',
+              type: 'input',
+              className: "col-md-4",
+              templateOptions: {
+                label: 'Numero',
+                required: true,                               
+              },
+            },
+            {
+              key: 'emission_date',
+              type: 'datepicker',
+              className: "col-md-8",
+              templateOptions: {
+                label: 'Data',
+                required: true,                               
+              },
+            },
+          ],  
+          hideExpression: (model: any, formState: any) => {
+            if (model)
+              return !UploadfileComponent.codeWithDateNumber.includes(model.attachmenttype_codice); 
+            return true;
+         },           
         },
-        //bottone spostato nell'area in basso
-        // {
-        //   type: 'button',
-        //   className: "col-md-2",
-        //   templateOptions: {
-        //     text: 'Carica',
-        //     btnType: 'primary',            
-        //     onClick: ($event) => this.addfile(),
-        //   },
-        //   expressionProperties: {
-        //     'templateOptions.disabled':(model: any, formState: any) => {
-        //       // access to the main model can be through `this.model` or `formState` or `model
-        //       return !this.form.valid
-        //     },
-        //   },            
-        //},     
+      
+   
   ];
 
 
@@ -110,16 +170,26 @@ export class UploadfileComponent implements OnInit {
     this.isLoading = true;
     let currentAttachment: FileAttachment = {
       model_id: this.model_id,
-      model_type: 'convenzione',
-      filename: this.currentSelFile.name,
+      model_type: 'App\\Convenzione',
+      filename: this.currentSelFile ? this.currentSelFile.name : null,      
       attachmenttype_codice: this.form.get('attachmenttype_codice').value,
     }
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      currentAttachment.filevalue = encode(e.target.result);
+    currentAttachment = {...currentAttachment, ...this.form.value } 
+
+    //carica il file se non c'è numero di protocollo
+    if (!currentAttachment.num_prot){
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        currentAttachment.filevalue = encode(e.target.result);
+        this.callUpdate(currentAttachment);
+      }
+      reader.readAsArrayBuffer(this.currentSelFile);       
+    }else{
+      currentAttachment.filename = null;
+      currentAttachment.nrecord = this.nrecord;
+      currentAttachment.emission_date = this.emission_date
       this.callUpdate(currentAttachment);
     }
-    reader.readAsArrayBuffer(this.currentSelFile); 
   }
 
   private callUpdate(currentFile: FileAttachment) {

@@ -117,7 +117,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
             }
             return true;
           },
-          message: (error, field: FormlyFieldConfig) => `Nome ripetuto`,
+          message: (error, field: FormlyFieldConfig) => `Tipo atto ripetuto`,
         },
         atleastone: {
           expression: (c) => {
@@ -184,7 +184,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
               },
             },
             {
-              key: 'data_emissione',
+              key: 'emission_date',
               type: 'datepicker',
               className: "col-md-5",
               templateOptions: {
@@ -230,7 +230,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
         try {
           let result = await ControlUtils.parsePdf(e.target.result);     
           field.formControl.parent.get('docnumber').setValue(result.docnumber);
-          field.formControl.parent.get('data_emissione').setValue(result.converted);
+          field.formControl.parent.get('emission_date').setValue(result.converted);
 
           field.formControl.markAsDirty();         
         } catch (error) {

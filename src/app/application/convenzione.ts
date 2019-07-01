@@ -59,6 +59,7 @@ export interface FileAttachment {
     emission_date?: Date,
     num_prot?: string,
     num_rep?: string,
+    nrecord?: string,
 }
 
 

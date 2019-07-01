@@ -114,6 +114,11 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
       type: 'repeat',
       templateOptions: {
         btnHidden: true,
+        btnRemoveHiddenFunc: (raw) => {
+          if (raw.attachmenttype_codice)
+            return  !UploadfileComponent.fileToBeUploaded.includes(raw.attachmenttype_codice);
+          return false;
+        },
         label: 'Gestione allegati',
         onRemove: (id) => {
           this.isLoading = true;
@@ -243,11 +248,23 @@ export class ConvenzioneComponent implements OnInit, OnDestroy {
                 }
               },
               {
+                key: 'docnumber',
+                type: 'input',
+                className:'col-md-3',
+                templateOptions: {
+                  label: 'Numero',
+                  disabled: true,                                                 
+                },
+                hideExpression(model,formState){
+                  return !model.docnumber;
+                }
+              },
+              {
                 className: 'col-md-3',
                 type: 'input',
                 key: 'emission_date',
                 templateOptions: {
-                  label: "Data protocollo",
+                  label: "Data emissione",
                   disabled: true,
                 },
                 hideExpression(model,formState){

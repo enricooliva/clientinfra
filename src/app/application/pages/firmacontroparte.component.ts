@@ -317,16 +317,6 @@ export class FirmaControparteComponent extends BaseEntityComponent {
       //currentAttachment.filevalue = encode(e.target.result);
 
       field.formControl.parent.get('filevalue').setValue(encode(e.target.result));
-      // if (currentSelFile.name.search('pdf') > 0) {
-      //   try {
-      //     let result = await ControlUtils.parsePdf(e.target.result);
-      //     field.formControl.parent.get('docnumber').setValue(result.docnumber);
-      //     field.formControl.parent.get('data_emissione').setValue(result.converted);
-      //   } catch (error) {
-      //     console.log(error);
-      //     this.isLoading = false;
-      //   }
-      // }
 
       if (!currentAttachment.filevalue) {
         this.isLoading = false;

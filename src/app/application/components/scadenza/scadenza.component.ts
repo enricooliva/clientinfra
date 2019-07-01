@@ -257,6 +257,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
         type: 'datepicker',
         className: "col-md-6",
         templateOptions: {
+          required: true,
           label: 'Data ordinativo incasso',          
         },        
       },
@@ -265,6 +266,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
         type: 'input',
         className: "col-md-6",
         templateOptions: {
+          required: true,
           label: 'Numero ordinativo incasso',                    
         },        
       },    
