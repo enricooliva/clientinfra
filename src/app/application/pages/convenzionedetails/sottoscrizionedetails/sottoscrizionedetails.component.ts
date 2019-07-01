@@ -49,6 +49,12 @@ export class SottoscrizionedetailsComponent implements OnInit {
             numero: filerest.num_prot        
           }
           this.sottr.restituita = restituita;                      
+        }else{
+          const restituita = {        
+            data: this.conv.data_sottoscrizione.toString(),
+            numero: null            
+          }
+          this.sottr.restituita = restituita;               
         }
       } 
 
@@ -56,7 +62,7 @@ export class SottoscrizionedetailsComponent implements OnInit {
       if (this.conv.stipula_type=='controparte'){
         const file = this.conv.attachments.find(x => x.attachmenttype_codice == 'LTE_FIRM_CONTR' || x.attachmenttype_codice == 'LTE_FIRM_CONTR_PROT')
         if (file) {
-          let arrivata = {       
+          const arrivata = {       
             data: file.emission_date.toString(),
             numero: file.num_prot        
           }
@@ -65,7 +71,7 @@ export class SottoscrizionedetailsComponent implements OnInit {
         //LTE_FIRM_ENTRAMBI_PROT LTE_FIRM_ENTRAMBI
         const filerest = this.conv.attachments.find(x => x.attachmenttype_codice == 'LTU_FIRM_ENTRAMBI_PROT' ||  x.attachmenttype_codice == 'LTU_FIRM_ENTRAMBI')
         if (filerest) {
-          let rispedita = {        
+          const rispedita = {        
             data: filerest.emission_date.toString(),
             numero: filerest.num_prot        
           }

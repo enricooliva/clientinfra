@@ -38,6 +38,7 @@ export interface Convenzione extends BaseEntity {
     numero?:string,
     bollo_virtuale?: boolean,
     bolli?: any[]
+    data_sottoscrizione?: Date,
 }
 
 export interface Owner{

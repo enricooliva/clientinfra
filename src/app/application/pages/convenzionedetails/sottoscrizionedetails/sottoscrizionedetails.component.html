@@ -23,8 +23,9 @@
                       <td>prot. {{sottr.speditaDitta.numero}} del {{sottr.speditaDitta.data}}</td>
                   </tr>
                   <tr *ngIf="sottr.restituita">                                           
-                      <td> Restituita  </td>
-                      <td>prot. {{sottr.restituita.numero}} del {{sottr.restituita.data}}</td>
+                      <td> Restituita  </td>                      
+                      <td *ngIf="sottr.restituita.numero"> prot. {{sottr.restituita.numero}} del {{sottr.restituita.data}}</td>
+                      <td *ngIf="!sottr.restituita.numero"> il {{sottr.restituita.data}}</td>                      
                   </tr>    
               </tbody>
           </table>
