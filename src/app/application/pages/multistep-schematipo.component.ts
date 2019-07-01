@@ -166,21 +166,7 @@ export class MultistepSchematipoComponent implements OnInit, OnDestroy {
           },
           {
             wrappers: ['accordioninfo'],
-            fieldGroup: [
-      
-              // {
-              //   key: 'file_CB',
-              //   type: 'pdfviewerinput',
-              //   className: "col-md-5",
-              //   templateOptions: {
-              //     label: 'Seleziona convenzione',              
-              //     filevalue: 'filevalue',
-              //     filename: 'filename',
-              //     onSelected: (selFile) => { 
-              //       this.onSelectCurrentFile(selFile, MultistepSchematipoComponent.CONV_BOZZA) 
-              //     }
-              //   },
-              // },      
+            fieldGroup: [          
               {
                 fieldGroupClassName: 'row',
                 fieldGroup: [
