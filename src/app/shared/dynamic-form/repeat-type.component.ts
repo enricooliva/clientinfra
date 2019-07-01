@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
         [model]="model[i]"          
         [field]="subfield">
         <div *ngIf="!to.btnRemoveHidden" class="col-md-2 d-flex align-self-center">
-        <div class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onRemoveRepeat(i)"  >              
+        <div *ngIf="!btnRemoveHiddenFunc(model[i])" class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onRemoveRepeat(i)"  >              
           <span class="oi oi-trash"></span>  
           <span class="ml-2">Rimuovi</span>
         </div>
@@ -60,6 +60,13 @@ export class RepeatTypeComponent extends FieldArrayType {
       this.add();
       this.cd.detectChanges();     
     }    
+  }
+  
+  btnRemoveHiddenFunc(model){
+    if (this.to.btnRemoveHiddenFunc){
+      return this.to.btnRemoveHiddenFunc(model);
+    }
+    return false;
   }
 
   onRemoveRepeat(index){
