@@ -256,8 +256,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
         key: 'data_ordincasso',
         type: 'datepicker',
         className: "col-md-6",
-        templateOptions: {
-          required: true,
+        templateOptions: {         
           label: 'Data ordinativo incasso',          
         },        
       },
@@ -265,8 +264,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
         key: 'num_ordincasso',
         type: 'input',
         className: "col-md-6",
-        templateOptions: {
-          required: true,
+        templateOptions: {          
           label: 'Numero ordinativo incasso',                    
         },        
       },    

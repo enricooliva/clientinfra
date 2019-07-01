@@ -93,6 +93,7 @@ export class PagamentoComponent extends BaseEntityComponent {
           type: 'datepicker',
           className: "col-md-5",
           templateOptions: {
+            required: true,
             label: 'Data ordinativo incasso',          
           },        
         },
@@ -101,6 +102,7 @@ export class PagamentoComponent extends BaseEntityComponent {
           type: 'input',
           className: "col-md-5",
           templateOptions: {
+            required: true,
             label: 'Numero ordinativo incasso',                    
           },        
         },    

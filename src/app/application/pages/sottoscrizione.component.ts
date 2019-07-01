@@ -314,7 +314,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                   hideExpression: (model, formState) => {
                     return (formState.model.digitale_controparte.attachment1.attachmenttype_codice !== 'LTE_FIRM_CONTR_PROT');
                   },
-                },                
+                },                                
                 {
                   key: 'data_sottoscrizione',
                   type: 'datepicker',
