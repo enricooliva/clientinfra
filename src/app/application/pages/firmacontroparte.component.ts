@@ -208,25 +208,31 @@ export class FirmaControparteComponent extends BaseEntityComponent {
               className: "col-md-5",
               defaultValue: 'CONV_FIRM_ENTRAMBI',
               templateOptions: {
-                //required: true,                
-                options: [{ stipula_type: 'ditta', codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata dalla controparte' }],
+                required: true,                
+                options: [{ stipula_type: 'ditta', codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata da entrambi' }],
                 valueProp: 'codice',
                 labelProp: 'descrizione',
                 label: 'Tipo documento',
               },
+              expressionProperties: {
+                'templateOptions.required': (model: any, formState: any) => formState.model.stipula_format == 'digitale',
+              }, 
             },
             {
               key: 'filename',
               type: 'fileinput',
               className: "col-md-5",
               templateOptions: {
-                //required: true,  
+                required: true,  
                 label: 'Scegli il documento',
                 type: 'input',
                 placeholder: 'Scegli file documento',
                 accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
                 onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
               },
+              expressionProperties: {
+                'templateOptions.required': (model: any, formState: any) => formState.model.stipula_format == 'digitale',
+              },            
             },
             {
               key: 'filevalue',

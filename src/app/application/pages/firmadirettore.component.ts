@@ -187,11 +187,14 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
               defaultValue: 'CONV_FIRM_ENTRAMBI',
               templateOptions: {                
                 //required: true,  
-                options: [{ stipula_type: 'ditta', codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata dalla controparte' }],
+                options: [{ stipula_type: 'ditta', codice: 'CONV_FIRM_ENTRAMBI', descrizione: 'Convenzione firmata da entrambi' }],
                 valueProp: 'codice',
                 labelProp: 'descrizione',
                 label: 'Tipo documento',
               },
+              expressionProperties: {
+                'templateOptions.required': (model: any, formState: any) => formState.model.stipula_format == 'digitale',
+              },  
             },
             {
               key: 'filename',
@@ -205,7 +208,10 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
                 accept: 'application/pdf', //.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,            
                 onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
               },
-            },
+              expressionProperties: {
+                'templateOptions.required': (model: any, formState: any) => formState.model.stipula_format == 'digitale',
+              },  
+            },            
             {
               key: 'filevalue',
               type: 'textarea',               
