@@ -44,7 +44,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
   //azioni possibili 
 
   //stato di partenza 'approvato'
-  //firma_da_controparte1 --> stipula ditta --> ricevuta lettera con convenzione firmata dalla ditta
+  //firma_da_controparte1 --> stipula azienda o ente --> ricevuta lettera con convenzione firmata dalla ditta
   //firma_da_direttore1 --> stipula uniurb --> ricevuta la convenzione firmata dal dipartimento
 
   labelButton = "Salva";
@@ -99,7 +99,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
       templateOptions: {
         options: [
           { codice: 'uniurb', descrizione: 'Stipula UniUrb' },
-          { codice: 'controparte', descrizione: 'Stipula ditta' },
+          { codice: 'controparte', descrizione: 'Stipula Azienda o Ente' },
         ],
         valueProp: 'codice',
         labelProp: 'descrizione',
