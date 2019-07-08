@@ -113,7 +113,7 @@ export const ROUTES: RouteInfo[] = [
           },
           {
             path: 'firmadirettore',
-            title: 'Completa direttore',
+            title: 'Completa UniUrb',
             icon: '',
             class: '',
             extralink: false,
