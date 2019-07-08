@@ -44,7 +44,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
   //azioni possibili 
 
   //stato di partenza 'approvato'
-  //firma_da_controparte1 --> stipula azienda o ente --> ricevuta lettera con convenzione firmata dalla ditta
+  //firma_da_controparte1 --> stipula azienda o ente --> ricevuta lettera con convenzione firmata dalla dall'azienda o ente
   //firma_da_direttore1 --> stipula uniurb --> ricevuta la convenzione firmata dal dipartimento
 
   labelButton = "Salva";
@@ -151,7 +151,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                         field.templateOptions.options = [{ stipula_type: 'uniurb', codice: 'LTU_FIRM_UNIURB', descrizione: 'Lettera di trasmissione' }];                        
                       } else {
                         field.templateOptions.options = [
-                          { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Lettera ricevuta dalla ditta' },
+                          { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: "Lettera ricevuta dall'Azienda o Ente"},
                           { stipula_type: 'controparte', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
                         ];
                       }
@@ -271,7 +271,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
                     //todo chiedere lato server 
                     options: [
                       { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR_PROT', descrizione: 'Lettera ricevuta via PEC già protocollata' },
-                      { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: 'Lettera ricevuta dalla ditta' },
+                      { stipula_type: 'controparte', codice: 'LTE_FIRM_CONTR', descrizione: "Lettera ricevuta dall'Azienda o Ente" },
                       { stipula_type: 'controparte', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
                     ],
                     valueProp: 'codice',
@@ -379,7 +379,7 @@ export class SottoscrizioneComponent extends BaseEntityComponent {
           key: 'email',
           type: 'input',          
           templateOptions: {
-            label: 'Email ditta',
+            label: 'Email Azienda o Ente',
             disabled: true,
             //required: true,                               
           },          

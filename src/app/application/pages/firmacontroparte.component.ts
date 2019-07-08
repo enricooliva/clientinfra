@@ -105,7 +105,7 @@ export class FirmaControparteComponent extends BaseEntityComponent {
                     //todo chiedere lato server 
                     options: [
                       { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI_PROT', descrizione: 'Lettera ricevuta via PEC già protocollata' },
-                      { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera ricevuta dalla ditta' },
+                      { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI', descrizione: "Lettera ricevuta dall'Azienda o Ente" },
                       { stipula_type: 'controparte', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
                     ],
                     valueProp: 'codice',
@@ -123,12 +123,12 @@ export class FirmaControparteComponent extends BaseEntityComponent {
                           if (type == 'digitale') {
                             field.templateOptions.options = [
                               { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI_PROT', descrizione: 'Lettera ricevuta via PEC già protocollata' },
-                              { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera ricevuta dalla ditta' },
+                              { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI', descrizione: "Lettera ricevuta dall'Azienda o Ente" },
                               { stipula_type: 'controparte', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
                             ];
                           } else {
                             field.templateOptions.options = [
-                              { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI', descrizione: 'Lettera ricevuta dalla ditta' },
+                              { stipula_type: 'controparte', codice: 'LTE_FIRM_ENTRAMBI', descrizione: "Lettera ricevuta dall'Azienda o Ente" },
                               { stipula_type: 'controparte', codice: 'NESSUN_DOC', descrizione: 'Nessun documento di accompagnamento' }
                             ];
                           }
