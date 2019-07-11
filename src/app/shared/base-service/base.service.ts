@@ -50,7 +50,7 @@ export class CoreSevice
   }
 }
 
-const cacheBusterNotifier = new Subject();
+export const cacheBusterNotifier = new Subject();
 @Injectable()
 export class BaseService extends CoreSevice implements ServiceQuery, ServiceEntity {
   

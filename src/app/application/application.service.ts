@@ -7,9 +7,10 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppConstants } from '../app-constants';
 import { Convenzione, FileAttachment } from './convenzione';
 import { saveAs } from 'file-saver';
-import { Cacheable } from 'ngx-cacheable';
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
 import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 import { truncate } from 'fs';
+import { cacheBusterNotifier } from '../shared/base-service/base.service'
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -804,6 +805,9 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
   }
 
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBusterNotifier
+  })
   richiestaEmissioneStep(data: any, retrow: boolean = false): Observable<any>{
     const url = `${this._baseURL + '/convenzioni/richiestaemissionestep'}`;
     let res = this.http.post(url, data, httpOptions)
@@ -816,6 +820,9 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBusterNotifier
+  })
   invioRichiestaPagamentoStep(data: any, retrow: boolean = false): Observable<any>{
     const url = `${this._baseURL + '/convenzioni/inviorichiestapagamentostep'}`;
     let res = this.http.post(url, data, httpOptions)
@@ -828,7 +835,9 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
   
-
+  @CacheBuster({
+    cacheBusterNotifier: cacheBusterNotifier
+  })
   emissioneStep(data: any, retrow: boolean = false): Observable<any>{
     const url = `${this._baseURL + '/convenzioni/emissionestep'}`;
     let res = this.http.post(url, data, httpOptions)
@@ -841,6 +850,9 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
     return res;
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBusterNotifier
+  })
   pagamentoStep(data: any, retrow: boolean = false): Observable<any>{
     const url = `${this._baseURL + '/convenzioni/pagamentostep'}`;
     let res = this.http.post(url, data, httpOptions)
