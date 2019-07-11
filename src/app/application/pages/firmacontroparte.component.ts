@@ -377,7 +377,11 @@ export class FirmaControparteComponent extends BaseEntityComponent {
         ...this.form.value,         
       };
       tosubmit.attachment1.doc = {...this.model.attachment1.doc, ...this.form.value.attachment1.doc }
-      
+
+      if (!tosubmit.convenzione_id){
+        tosubmit.convenzione_id = this.model.convenzione.id;
+      }
+
       tosubmit.transition = this.workflowAction;
       this.service.complSottoscrizioneStep(tosubmit, true).subscribe(
         result => {

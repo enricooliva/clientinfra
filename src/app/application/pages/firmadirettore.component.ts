@@ -436,7 +436,12 @@ export class FirmaDirettoreComponent extends BaseEntityComponent {
     if (this.form.valid) {
       this.isLoading = true;
       var tosubmit = { ...this.model, ...this.form.value };
-      tosubmit.transition = this.workflowAction;
+      
+      if (!tosubmit.convenzione_id){
+        tosubmit.convenzione_id = this.model.convenzione.id;
+      }
+
+      tosubmit.transition = this.workflowAction;      
       this.service.complSottoscrizioneStep(tosubmit,true).subscribe(
         result => {          
           this.confirmationDialogService.confirm("Finestra messaggi", result.message, "Chiudi", null, 'lg').then(
