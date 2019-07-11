@@ -3,7 +3,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'notfound',
   template: `
-  <p>I'm sorry, nothing to see here..</p>
+  <div class="jumbotron text-center">
+      <h1>Ooops...</h1>
+      <p>Pagina non trovata
+      (<a routerLink="/">home</a>).</p>
+    </div>  
   `
 })
 export class NotFoundComponent {}
