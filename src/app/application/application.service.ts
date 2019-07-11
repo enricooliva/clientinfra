@@ -177,11 +177,12 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
           },
           {
             key: 'corrispettivo',
-            type: 'number',
+            type: 'number',                    
             className: "col-md-4",
-            templateOptions: {
+            templateOptions: {              
               label: 'Corrispettivo iva esclusa se applicabile',
               required: true,
+              min: 0,                
             },
             expressionProperties: {
               'templateOptions.disabled': 'model.convenzione_type == "TG"',
