@@ -129,6 +129,7 @@ export class ScadenzaComponent extends BaseEntityComponent {
             codeProp: 'id',
             descriptionProp: 'descrizione_titolo',
             isLoading: false,
+            required: true,
             //rules: [{ value: this.STATE, field: "current_place", operator: "=" }],
           },
           expressionProperties: {

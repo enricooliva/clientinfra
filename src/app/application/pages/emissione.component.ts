@@ -120,6 +120,7 @@ export class EmissioneComponent extends BaseEntityComponent {
             }
             return '';
         },
+        rules: [{value: this.STATE, field: "state", operator: "="}],
         copymodel: true,
         isLoading: false,          
       },

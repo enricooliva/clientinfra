@@ -597,6 +597,16 @@ const routes: Routes = [
           ]
         }
       },      
+      // { 
+      //   path: 'emissione',  component: EmissioneComponent,  canActivate:[AuthGuard], 
+      //   data: {
+      //     title: 'Emissione',
+      //     urls: [
+      //       { title: 'Home', url: '/home' },
+      //       { title: 'Emissione' }
+      //     ]
+      //   }
+      // },
       { 
         path: 'emissione/:id',  component: EmissioneComponent,  canActivate:[AuthGuard], 
         data: {
