@@ -24,7 +24,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
 
   _baseURL: string;
 
-  constructor(private http: HttpClient, public messageService: MessageService, public confirmationDialogService: ConfirmationDialogService) {
+  constructor(protected http: HttpClient, public messageService: MessageService, public confirmationDialogService: ConfirmationDialogService) {
     this._baseURL = AppConstants.baseApiURL;
   }
 
