@@ -53,6 +53,7 @@ export class CoreSevice
 export const cacheBusterNotifier = new Subject();
 @Injectable()
 export class BaseService extends CoreSevice implements ServiceQuery, ServiceEntity {
+
   
   protected basePath: string;
   
@@ -94,6 +95,16 @@ export class BaseService extends CoreSevice implements ServiceQuery, ServiceEnti
       );
   } 
 
+  export(model): Observable<any> {   
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    return this.http
+      .post(this._baseURL + `/${this.basePath}/export`, model,{ headers, responseType: 'text'}).pipe(
+        tap(sub => this.messageService.info('Export effettuato con successo')),
+        catchError(this.handleError('export'))
+      );
+  }
 
   store(model: any, retrow: boolean = false): Observable<any>{
     //crea il modello

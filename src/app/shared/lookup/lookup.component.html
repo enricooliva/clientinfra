@@ -20,7 +20,7 @@
   </div> 
 
   <app-query-builder [rules]="rules" [metadata]="researchMetadata" (find)="onFind($event)"></app-query-builder>
-
+  
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <h4>Risultati</h4>
   <form [formGroup]="form">

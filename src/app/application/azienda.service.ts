@@ -127,6 +127,17 @@ export class AziendaService implements ServiceQuery {
       );
   }
 
+  export(model): Observable<any> {   
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    return this.http
+      .post(this._baseURL + '/aziende/export', model,{ headers, responseType: 'text'}).pipe(
+        tap(sub => this.messageService.info('Export effettuato con successo')),
+        catchError(this.handleError('export'))
+      );
+  }
+
   getAzienda(id: number): Observable<any> {
     return this.http
       .get(this._baseURL+'/aziende/'+id.toString(),httpOptions).pipe(

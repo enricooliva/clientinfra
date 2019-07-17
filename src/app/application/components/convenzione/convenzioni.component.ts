@@ -6,7 +6,7 @@ import ControlUtils from '../../../shared/dynamic-form/control-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 import { Page } from '../../../shared/lookup/page';
-
+import { encode, decode } from 'base64-arraybuffer';
 
 
 
@@ -17,6 +17,15 @@ import { Page } from '../../../shared/lookup/page';
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '4px' }"></ngx-loading>
   
   <app-query-builder [metadata]="researchMetadata" (find)="onFind($event)" ></app-query-builder>
+
+  <div  class="btn-toolbar float-right" role="toolbar">
+    <div *ngIf="enabledExport" class="btn-group btn-group-sm float-right">  
+      <button type="button" [disabled]="model.data.length==0" class="btn btn-outline-primary border-0 rounded-0" (click)="onExport()">
+        <span class="oi oi-document"></span>
+        <span class="ml-2">Scarica</span>
+      </button>  
+    </div>
+  </div> 
 
   <h4>Risultati</h4>  
   <form [formGroup]="form" >
@@ -61,6 +70,8 @@ import { Page } from '../../../shared/lookup/page';
 export class ConvenzioniComponent implements OnInit {
   isLoading: boolean = false;
   service: ServiceQuery;
+
+  enabledExport = true;
 
   @ViewChild('detailRow') detailRow: TemplateRef<any>;
   
@@ -195,7 +206,6 @@ export class ConvenzioniComponent implements OnInit {
     }
   }
 
-
   onFind(model){
     this.querymodel.rules = model.rules;  
 
@@ -223,4 +233,21 @@ export class ConvenzioniComponent implements OnInit {
     }
   }
 
+
+  onExport(){
+    //richiamare export dal service
+    if (this.model.data.length>0){
+      this.isLoading = true;
+      this.service.export(this.querymodel).subscribe(file => {
+        this.isLoading = false;      
+
+        var blob = new Blob([file]);
+        saveAs(blob, "convenzioni.csv");
+
+      },
+        e => {  this.isLoading = false; console.log(e); }
+      );
+      
+    }
+  }
 }

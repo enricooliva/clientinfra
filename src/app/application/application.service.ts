@@ -648,6 +648,18 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
       );
   }
 
+  export(model): Observable<any> {   
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    return this.http
+      .post(this._baseURL + '/convenzioni/export', model,{ headers, responseType: 'text'}).pipe(
+        tap(sub => this.messageService.info('Export effettuato con successo')),
+        catchError(this.handleError('export'))
+      );
+  }
+
+
 
   getConvenzioneById(id: number): Observable<any> {
     return this.http
