@@ -120,7 +120,7 @@ export class AziendaLocComponent extends BaseEntityComponent {
           type: 'input',      
           className: "col-md-6",    
           templateOptions: {
-            label: 'Partita iva',                
+            label: 'Partita IVA',                
           },
         }]
     },

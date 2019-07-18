@@ -181,7 +181,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
             type: 'number',                    
             className: "col-md-4",
             templateOptions: {              
-              label: 'Corrispettivo iva esclusa se applicabile',
+              label: 'Corrispettivo IVA esclusa se applicabile',
               required: true,
               min: 0,                
             },
@@ -593,7 +593,7 @@ export class ApplicationService implements ServiceQuery, ServiceEntity {
         type: 'input',
         className: "col-md-6",
         templateOptions: {
-          label: 'Corrispettivo iva esclusa se applicabile',
+          label: 'Corrispettivo IVA esclusa se applicabile',
           required: true,
         },
       },

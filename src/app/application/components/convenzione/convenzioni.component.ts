@@ -20,9 +20,9 @@ import { encode, decode } from 'base64-arraybuffer';
 
   <div  class="btn-toolbar float-right" role="toolbar">
     <div *ngIf="enabledExport" class="btn-group btn-group-sm float-right">  
-      <button type="button" [disabled]="model.data.length==0" class="btn btn-outline-primary border-0 rounded-0" (click)="onExport()">
+      <button type="button"  [disabled]="model.data.length==0" class="btn btn-outline-primary border-0 rounded-0" (click)="onExport()">
         <span class="oi oi-document"></span>
-        <span class="ml-2">Scarica</span>
+        <span class="ml-2">Scarica CSV</span>
       </button>  
     </div>
   </div> 

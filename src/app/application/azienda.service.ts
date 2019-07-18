@@ -88,7 +88,7 @@ export class AziendaService implements ServiceQuery {
         key: 'part_iva',
         type: 'string',
         templateOptions: {
-          label: 'Partita iva',
+          label: 'Partita IVA',
           required: true,
           column: { cellTemplate: 'valuecolumn'}
         }
