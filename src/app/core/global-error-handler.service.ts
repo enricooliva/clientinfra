@@ -8,7 +8,7 @@ import { ToastrService, Toast } from 'ngx-toastr';
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {
 
-    static readonly DEFAULT_ERROR_TITLE: string = "Qualcosa è andato storto";
+    static readonly DEFAULT_ERROR_TITLE: string = "Ooops...";
 
     constructor(private injector: Injector, private toastr: ToastrService){
 

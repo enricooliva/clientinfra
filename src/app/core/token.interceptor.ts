@@ -35,10 +35,12 @@ export class TokenInterceptor implements HttpInterceptor {
                 //router.navigateByUrl(); 
                 break;            
               case 500:
-                //filtrare errori oracle di login 
-                // if (error.message){
-                //   this.toastr.error(error.error.message);                                                                   
-                // }
+                //errore login oracle
+                if ((error.error.message as string).includes('ORA-01017')){
+                  const router = this.injector.get(Router);
+                  //this.toastr.error(error.error.message);
+                  router.navigate(['error']);
+                }
                 break;
             }
           }

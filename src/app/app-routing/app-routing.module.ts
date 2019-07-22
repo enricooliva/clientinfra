@@ -50,6 +50,7 @@ import { ConvenzionedetailsComponent } from '../application/pages/convenzionedet
 import { LogAttivitaComponent } from '../application/pages/logattivita.component';
 import { MappingRuoli } from '../application/components/mappingruoli/mappingruoli.component';
 import { MappingRuolo } from '../application/components/mappingruoli/mappingruolo.component';
+import { SystemErrorComponent } from '../shared/system-error-component/system-error.component';
 
 const externalLoginUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
@@ -640,6 +641,7 @@ const routes: Routes = [
 
       { path: 'test',  component: TestTabComponent,  canActivate:[AuthGuard] },     
   ]}, 
+  { path: 'error', component: SystemErrorComponent },
   { path: '**', component: NotFoundComponent }
 ];
 
