@@ -90,7 +90,16 @@ export class LogAttivitaService extends BaseService implements IQueryMetadata{
           descriptionProp: 'name',
           column: { cellTemplate: 'valuecolumn' }
         },
-      }      
+      },
+      {
+        key: 'created_at',
+        type: 'date',
+        templateOptions: {
+          label: 'Data operazione',
+          required: true,
+          column: { cellTemplate: 'valuecolumn' }
+        }
+      }
     ];
   }
 
@@ -157,6 +166,15 @@ export class LogAttivitaService extends BaseService implements IQueryMetadata{
         label: 'Codice utente',
         required: true,
         column: { width: 30, cellTemplate: 'valuecolumn' }
+      }
+    },
+    {
+      key: 'created_at',
+      type: 'string',
+      templateOptions: {
+        label: 'Data operazione',
+        required: true,
+        column: { cellTemplate: 'valuecolumn' }
       }
     },
   ];

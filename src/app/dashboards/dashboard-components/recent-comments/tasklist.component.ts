@@ -117,6 +117,11 @@ export class TaskListComponent implements OnInit, AfterViewInit, OnDestroy {
           size: res.per_page,
           previousPage:  res.current_page,
         }        
+      },
+      (error) => {
+        setTimeout(()=> {
+          this.isLoading = false;
+        }, 0);
       }
     );
   }
