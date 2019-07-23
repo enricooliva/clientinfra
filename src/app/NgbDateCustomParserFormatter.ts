@@ -7,6 +7,7 @@ import { toInteger, isNumber, padNumber } from './shared/dynamic-form/utils';
 export class NgbDateCustomParserFormatter extends NgbDateParserFormatter {
   parse(value: string): NgbDateStruct {
     if (value) {
+      value = value.split('/').join('-');
       const dateParts = value.trim().split('-');
       if (dateParts.length === 1 && isNumber(dateParts[0])) {
         return {day: toInteger(dateParts[0]), month: null, year: null};
@@ -14,7 +15,7 @@ export class NgbDateCustomParserFormatter extends NgbDateParserFormatter {
         return {day: toInteger(dateParts[0]), month: toInteger(dateParts[1]), year: null};
       } else if (dateParts.length === 3 && isNumber(dateParts[0]) && isNumber(dateParts[1]) && isNumber(dateParts[2])) {
         return {day: toInteger(dateParts[0]), month: toInteger(dateParts[1]), year: toInteger(dateParts[2])};
-      }
+      }      
     }
     return null;
   }
