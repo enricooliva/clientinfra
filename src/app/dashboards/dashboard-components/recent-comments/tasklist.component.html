@@ -1,7 +1,10 @@
 
 <div class="card">
     <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
-    <div class="card-body">
+    <div class="card-body"  [ngClass]="{
+        'bg-light-warning': typeresearch == 'myofficetasks',
+        'bg-light-danger': typeresearch == 'mytasks'
+      }">
         <h4 class="card-title">{{title}}</h4>
     </div>
     <div class="comment-widgets" [perfectScrollbar]="config">

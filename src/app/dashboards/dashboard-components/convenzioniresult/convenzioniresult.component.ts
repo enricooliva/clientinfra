@@ -38,7 +38,7 @@ export class ConvenzioniresultComponent implements OnInit {
       {
           key: 'data',
           type: 'datatablelookup',
-          wrappers: ['accordion'],      
+          //wrappers: ['accordion'],      
           templateOptions: {
             label: 'Risultati',   
             columnMode: 'force',

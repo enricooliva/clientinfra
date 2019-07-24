@@ -23,6 +23,7 @@ import { ConvenzioniresultComponent } from './dashboard-components/convenzionire
 import { Dashboard2Component } from './dashboard2/dashboard2.component';
 import { ScadenzeresultComponent } from './dashboard-components/scadenzeresult/scadenzeresult.component';
 import { NotificationService } from './notification.service';
+import { CollapseWrapperComponent } from './dashboard-components/collapse-wrapper/collapse-wrapper.component';
 
 @NgModule({
   imports: [  
@@ -44,6 +45,7 @@ import { NotificationService } from './notification.service';
     NotificationsComponent,
     ConvenzioniresultComponent,
     ScadenzeresultComponent,
+    CollapseWrapperComponent,
   ],
   providers: [ 
     DashboardService,
