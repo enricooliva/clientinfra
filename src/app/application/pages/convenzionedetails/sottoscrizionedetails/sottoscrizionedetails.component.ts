@@ -83,8 +83,22 @@ export class SottoscrizionedetailsComponent implements OnInit {
 
   }
 
-  executed(){
+  executed(){    
     return ConvenzionedetailsComponent.executed(this.conv.current_place,'firmato');
+  }
+
+
+  executedtype() {    
+    //se la conv è in stato repertoriato 
+    const delta = this.executed();
+
+    if (delta >= 0){      
+      return 'info';    
+    }else if (delta == -1 || delta == -2 || delta==-3){
+      return 'warning';
+    }
+    return 'normal';
+          
   }
 
 }

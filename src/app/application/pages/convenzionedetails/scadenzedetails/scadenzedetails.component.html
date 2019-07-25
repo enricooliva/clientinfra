@@ -1,9 +1,8 @@
-<h3 class="box-title m-t-40">
-  Pagamento
-</h3>
-<div *ngIf="executed()">       
+
+<app-fase-wrapper [options]="{title: 'Pagamento', type: this.executedtype()}">
+<div *ngIf="executed()>=0">       
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-hover">
         <tbody>            
             <tr>                                           
               <td width="390">Tipo pagamento</td>
@@ -13,7 +12,7 @@
     </table>
 </div>
 <div class="table-responsive">
-  <table class="table">      
+  <table class="table table-hover">      
           <thead>
               <tr>
                   <th scope="col">Tranche prevista</th>
@@ -51,3 +50,4 @@
   </table>
 </div>
 </div>
+</app-fase-wrapper>

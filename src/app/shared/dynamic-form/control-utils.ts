@@ -117,4 +117,10 @@ export default class ControlUtils {
     });
     return result;   
   }
+
+  //date nel formato gg-mm-aaaa
+  public static toDate(date: string): Date{
+    const comp_date = date.split('-');      
+    return new Date(Number.parseInt(comp_date[2]), Number.parseInt(comp_date[1])-1, Number.parseInt(comp_date[0]));
+  }
 }

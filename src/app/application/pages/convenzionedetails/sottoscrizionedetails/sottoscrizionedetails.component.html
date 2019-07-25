@@ -1,14 +1,9 @@
-    <div class="d-flex align-items-center box-title m-t-40">
-        <!-- <div *ngIf="executed()" class="m-r-10">
-            <a class="btn btn-circle btn-success text-white"><i class="fa fa-check"></i></a>
-        </div> -->
-        <div class="">
-            <h3 class="m-b-0">Sottoscrizione</h3>
-        </div>
-    </div>               
+
+
+<app-fase-wrapper [options]="{title: 'Sottoscrizione', type: this.executedtype()}">  
     <div *ngIf="conv.stipula_type=='uniurb'">       
       <div class="table-responsive">
-          <table class="table">
+          <table class="table table-hover">
               <tbody>
                   <tr>                                           
                       <td width="390"> Stipula UniUrb 
@@ -34,7 +29,7 @@
     
     <div *ngIf="conv.stipula_type=='controparte'">       
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
                 <tbody>
                     <tr>                                           
                         <td width="390"> Stipula controparte 
@@ -57,3 +52,4 @@
             </table>
         </div>
       </div>
+</app-fase-wrapper>   

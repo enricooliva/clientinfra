@@ -66,6 +66,7 @@ import { MycurrencyPipe } from './pipe/custom.currencypipe';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FormlyFieldTemplate } from './dynamic-form/template.type.component';
 import { SystemErrorComponent } from './system-error-component/system-error.component';
+import { CollapseWrapperComponent } from './collapse-wrapper/collapse-wrapper.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -283,6 +284,7 @@ export function maxValidationMessage(err, field) {
     ConfirmationDialogComponent,
     FormlyFieldTemplate,  
     SystemErrorComponent,
+    CollapseWrapperComponent,
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -316,6 +318,7 @@ export function maxValidationMessage(err, field) {
     ConfirmationDialogComponent,
     FormlyFieldTemplate,
     SystemErrorComponent,
+    CollapseWrapperComponent,
   ],
   entryComponents: [LookupComponent]
 })

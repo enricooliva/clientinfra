@@ -37,8 +37,11 @@ export interface Convenzione extends BaseEntity {
     oggetto_fascicolo?: string,
     numero?:string,
     bollo_virtuale?: boolean,
-    bolli?: any[]
+    bolli?: any[],
     data_sottoscrizione?: Date,
+    scadenze?: any[]
+    data_inizio_conv?: any,
+    data_fine_conv?: any,
 }
 
 export interface Owner{

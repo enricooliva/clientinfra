@@ -16,8 +16,8 @@ export class ConvenzionedetailsComponent implements OnInit {
   static keyValueState:{ [key: string]: number}={
     'start': 0, 
     'proposta': 1, 
-    'approvato': 2,
-    'inapprovazione': 3,
+    'inapprovazione': 2,
+    'approvato': 3,    
     'da_firmare_direttore': 4,
     'da_firmare_controparte2': 5,
     'firmato': 6, 
@@ -64,10 +64,13 @@ export class ConvenzionedetailsComponent implements OnInit {
     const current = ConvenzionedetailsComponent.keyValueState[currentstate];
     const comparevalue = ConvenzionedetailsComponent.keyValueState[value];
 
-    if (current >= comparevalue){
-      return true;
-    }
-    return false;
+    // if (current > comparevalue){
+    //   return 1;
+    // }
+    // if (current == comparevalue){
+    //   return 0;
+    // }
+    return current - comparevalue;
   }
 
   onModify(){

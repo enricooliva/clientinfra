@@ -75,6 +75,7 @@ import { LogAttivitaService } from './logattivita.service';
 import { MappingRuoli } from './components/mappingruoli/mappingruoli.component';
 import { MappingRuolo } from './components/mappingruoli/mappingruolo.component';
 import { MappingRuoloService } from './mappingruolo.service';
+import { FaseWrapperComponent } from './pages/convenzionedetails/fase-wrapper/fase-wrapper.component';
 
 registerLocaleData(localeIt);
 @NgModule({
@@ -108,7 +109,7 @@ registerLocaleData(localeIt);
     PersoneinterneTitulus, StruttureInterneTitulus, ClassificazioneComponent, ClassificazioniComponent, MappingUfficiTitulus, MappingUfficioTitulus, StruttureEsterneTitulus,
     DocumentiTitulus, ScadenzaComponent, ScadenzeComponent, BolloRepertoriazioneComponent, RichiestaEmissioneComponent, EmissioneComponent, PagamentoComponent, 
     InvioRichiestaPagamentoComponent, ConvenzionedetailsComponent, ApprovazionedetailsComponent, SottoscrizionedetailsComponent, RepertoriazionedetailsComponent, 
-    ScadenzedetailsComponent, EsecuzionedetailsComponent, RangedetailsComponent, LogAttivitaComponent, MappingRuoli, MappingRuolo
+    ScadenzedetailsComponent, EsecuzionedetailsComponent, RangedetailsComponent, LogAttivitaComponent, MappingRuoli, MappingRuolo, FaseWrapperComponent
 
   ],
   providers: [ 

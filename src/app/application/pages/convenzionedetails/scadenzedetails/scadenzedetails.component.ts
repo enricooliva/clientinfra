@@ -26,4 +26,18 @@ export class ScadenzedetailsComponent implements OnInit {
     return ConvenzionedetailsComponent.executed(this.conv.current_place,'repertoriato');
   }
 
+  executedtype() {
+    //se la conv è in stato repertoriato 
+    const delta = this.executed()
+    if (delta >= 0){
+      if (this.conv.scadenze.every(x => x.state == 'pagato')){
+        //tutte le scadenze sono in stato pagato 
+        return 'info';    
+      }
+      return 'warning';
+    }
+      
+    return 'normal'
+  }
+
 }

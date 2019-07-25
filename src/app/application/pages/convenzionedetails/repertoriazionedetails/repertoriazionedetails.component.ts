@@ -49,8 +49,9 @@ export class RepertoriazionedetailsComponent implements OnInit {
     }
   }
 
-  executed(){
+  executed(){    
     return ConvenzionedetailsComponent.executed(this.conv.current_place,'repertoriato');
   }
 
+  
 }

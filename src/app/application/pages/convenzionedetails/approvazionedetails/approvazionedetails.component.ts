@@ -76,7 +76,7 @@ export class ApprovazionedetailsComponent implements OnInit {
 
   }
 
-  executed(){
+  executed(){      
     return ConvenzionedetailsComponent.executed(this.conv.current_place,'approvato');
   }
 
