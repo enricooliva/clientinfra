@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
   template: `  
   <div class="mb-2">  
     <div *ngIf="to.label">{{to.label}} </div> 
-    <button *ngIf="!to.btnHidden" type="button" [disabled]="to.disabled" class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onAddNew()"  >              
+    <button *ngIf="!to.btnHidden" type="button" [disabled]="checkAddButtonDisability()" class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onAddNew()"  >              
       <span class="oi oi-plus"></span>
       <span class="ml-2">Aggiungi</span>
     </button>  
@@ -17,15 +17,17 @@ import { map } from 'rxjs/operators';
   <div *ngFor="let subfield of field.fieldGroup; let i = index;">
       <formly-group     
         [model]="model[i]"          
-        [field]="subfield">
-        <div *ngIf="!to.btnRemoveHidden" class="col-md-2 d-flex align-self-center">
-        <div *ngIf="!btnRemoveHiddenFunc(model[i])" class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onRemoveRepeat(i)"  >              
+        [field]="subfield">              
+      </formly-group>              
+      <div *ngIf="!to.btnRemoveHidden" class="mb-2">
+        <button *ngIf="!btnRemoveHiddenFunc(model[i])" type="button" class="btn btn-sm btn-outline-primary border-0 rounded-0" (click)="onRemoveRepeat(i)"  >              
           <span class="oi oi-trash"></span>  
           <span class="ml-2">Rimuovi</span>
-        </div>
-        </div>            
-      </formly-group>    
+        </button>
+      </div>    
       <div *ngIf="subfield.template" [innerHTML]="subfield.template">                           
+      </div> 
+      <div *ngIf="to.template" [innerHTML]="to.template">                           
       </div>    
   </div>
   <div *ngIf="showError" class="invalid-feedback" [style.display]="'block'">
@@ -52,7 +54,15 @@ export class RepeatTypeComponent extends FieldArrayType {
     }
   }  
 
-  onAddNew(){
+  checkAddButtonDisability(){
+    if (this.model)
+      return this.to.disabled || //se il componente è disabilitato
+        (!this.to.disabled && (this.to.max != null ? this.model.length == this.to.max : false));
+    else 
+      return this.to.disabled;
+  }
+
+  onAddNew(){    
     if (this.to.onAddInitialModel){
       let init = this.to.onAddInitialModel();
       this.add(null,init);
