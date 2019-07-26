@@ -8,6 +8,7 @@ import ControlUtils from 'src/app/shared/dynamic-form/control-utils';
 import { FileDetector } from 'protractor';
 import {Location} from '@angular/common';
 import { MultistepSchematipoComponent } from './multistep-schematipo.component';
+import { template } from '@angular/core/src/render3';
 @Component({
   selector: 'app-convvalidation',
   template: `
@@ -62,11 +63,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           },                                     
         },
       ]
-    },
-    {
-      className: 'section-label',
-      template: '<h5>Inserimento documenti di approvazione</h5>',
-    },  
+    },     
     {
 
       key: 'convenzione_id',
@@ -104,6 +101,8 @@ export class ConvvalidationComponent extends BaseEntityComponent {
       templateOptions: {        
         label: 'Documenti di approvazione',
         min: 1,
+        max: 4,
+        template: "<hr></hr>",   
       },
       validators: {
         unique: {
@@ -132,7 +131,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
           message: (error, field: FormlyFieldConfig) => `Inserire almeno un documento`,
         }
       },
-      fieldArray: {               
+      fieldArray: {                     
         fieldGroup: [
           {
             fieldGroupClassName: 'row',
@@ -141,7 +140,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
               key: 'attachmenttype_codice',
               type: 'select',
               defaultValue: 'DSA',
-              className: "col-md-5",
+              className: "col-md-6",
               templateOptions: {
                 //todo chiedere lato server 
                 options: [
@@ -159,7 +158,7 @@ export class ConvvalidationComponent extends BaseEntityComponent {
             {
               key: 'filename',
               type: 'fileinput',
-              className: "col-md-5",
+              className: "col-md-6",
               templateOptions: {
                 label: 'Scegli documento',
                 type: 'input',              
@@ -169,40 +168,41 @@ export class ConvvalidationComponent extends BaseEntityComponent {
                 onSelected: (selFile, field) => { this.onSelectCurrentFile(selFile, field); }
               },
             },   
+            ],
+          },
+          {
+            fieldGroupClassName: 'row',
+            fieldGroup: [
+              {
+                key: 'docnumber',
+                type: 'input',
+                className: "col-md-6",
+                templateOptions: {
+                  label: 'Numero',
+                  required: true,                               
+                },
+              },
+              {
+                key: 'emission_date',
+                type: 'datepicker',
+                className: "col-md-6",
+                templateOptions: {
+                  label: 'Data',
+                  required: true,                               
+                },
+              },
+              {
+                key: 'filevalue',
+                type: 'textarea',               
+                hide: true,             
+                templateOptions: {                
+                  //required: true,                               
+                },
+              },
+            ],
+          },                             
         ],
-        },
-        {
-          fieldGroupClassName: 'row',
-          fieldGroup: [
-            {
-              key: 'docnumber',
-              type: 'input',
-              className: "col-md-5",
-              templateOptions: {
-                label: 'Numero',
-                required: true,                               
-              },
-            },
-            {
-              key: 'emission_date',
-              type: 'datepicker',
-              className: "col-md-5",
-              templateOptions: {
-                label: 'Data',
-                required: true,                               
-              },
-            },
-            {
-              key: 'filevalue',
-              type: 'textarea',               
-              hide: true,             
-              templateOptions: {                
-                //required: true,                               
-              },
-            },
-          ],
-        },        
-        ],              
+                  
       },     
     },
   ]

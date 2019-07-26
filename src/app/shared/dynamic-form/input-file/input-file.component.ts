@@ -29,15 +29,15 @@ export class InputFileComponent extends FieldType implements OnInit{
       if (!this.to.accept) {
         this.to.accept = 'application/pdf';
       }
-   
+         
       this.field.templateOptions.addonRight.onClick = (to, fieldType, $event) => this.reset();      
       this.field.templateOptions.addonLeft.onClick = (to, fieldType, $event) => { 
-        this.fileInput.nativeElement.click();             
+          this.openDialogSelectFile();         
       }
     
       this.field.templateOptions.keyup = (field, event: KeyboardEvent) => {
         if (event.key == "F2") {
-          this.fileInput.nativeElement.click();
+            this.openDialogSelectFile();
         }
       };          
       this.inputField = this.field;                   
@@ -77,9 +77,18 @@ export class InputFileComponent extends FieldType implements OnInit{
 
     field.templateOptions.addonLeft= {
       class: 'btn btn-outline-secondary oi oi-folder d-flex align-items-center',
-      onClick: (to, fieldType, $event) => this.fileInput.nativeElement.click()
+      onClick: (to, fieldType, $event) => { 
+        this.openDialogSelectFile();
+      }
     };      
 
+  }
+
+  protected openDialogSelectFile(){
+    if (!this.model.filename){
+      this.fileInput.nativeElement.value = null;
+    }
+    this.fileInput.nativeElement.click(); 
   }
 
   
