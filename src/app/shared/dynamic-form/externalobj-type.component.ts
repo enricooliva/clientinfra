@@ -109,7 +109,8 @@ export class ExternalobjTypeComponent extends FieldType implements OnInit, OnDes
                       field.formControl.setErrors({ notfound: true });                    
                       return;
                     }
-                    this.setDescription(data);
+                    //NB usare la stessa funzione richiamata dal ritorno della lookup
+                    this.init(data);                  
                   });
 
                 } else {

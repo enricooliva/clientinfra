@@ -138,8 +138,8 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
               this.formControl.setErrors({ notfound: true });
               return;
             }
-            //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione
-            this.setDescription(data);            
+            //il parametro decriptionProp contiene il nome della proprità che contiene la descrizione            
+            this.setresult(data);
           });
 
         } else {
@@ -190,6 +190,8 @@ export class ExternalTypeComponent extends FieldType implements OnInit, OnDestro
         });
       }
     } else {
+      //caso vuoto
+      this.initdesc = true;
       this.setDescription(null);
     }
     return this.initdesc;
