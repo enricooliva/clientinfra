@@ -91,6 +91,9 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
             copymodel: true,
             isLoading: false,          
           },
+          expressionProperties: {
+            'templateOptions.disabled': 'formState.disabled_scadenza_id',
+          },
         },
       ]
     },    
@@ -138,18 +141,18 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
   // }, 
     {
       fieldGroup: [
-      {
-        key: 'unitaorganizzativa_uo',
-        type: 'select',               
-        templateOptions: {
-          label: 'Ufficio affidatario procedura',
-          required: true,                 
-          options: this.service.getUfficiFiscali(),          
-          valueProp: 'uo',
-          labelProp: 'descr',
-        },
-      },              
-      {
+        {
+          key: 'unitaorganizzativa_uo',
+          type: 'select',               
+          templateOptions: {
+            label: 'Ufficio affidatario procedura',
+            required: true,                 
+            options: this.service.getUfficiFiscali(),          
+            valueProp: 'uo',
+            labelProp: 'descr',
+          },
+        },              
+        {
           key: 'respons_v_ie_ru_personale_id_ab',
           type: 'select',                
           templateOptions: {
@@ -190,68 +193,72 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
           },
         },
         {
-          key: 'assignments',
-          type: 'repeat',                                        
-          templateOptions: {                  
-            label: 'Operatori',                                                                                        
-          },   
-          validators: {
-            unique: {
-              expression: (c) => {           
-                if (c.value)  {                              
-                  var valueArr = c.value.map(function(item){ return item.v_ie_ru_personale_id_ab }).filter(x => x != null );
-                  var isDuplicate = valueArr.some(function(item, idx){ 
-                      return valueArr.indexOf(item) != idx 
-                  });              
-                  return !isDuplicate;
-                }
-                return true;
-              },
-              message: (error, field: FormlyFieldConfig) => `Nome ripetuto`,
-            },
-          },
-          expressionProperties: {
-            'templateOptions.disabled': (model: any, formState: any) => {
-              // access to the main model can be through `this.model` or `formState` or `model
-              return formState.model.respons_v_ie_ru_personale_id_ab == null || formState.model.respons_v_ie_ru_personale_id_ab == '';
-            },
-          },            
-          fieldArray: {                  
-            fieldGroupClassName: 'row',
-            fieldGroup: [
+          fieldGroup: [          
             {
-              key: 'v_ie_ru_personale_id_ab',
-              type: 'select',
-              className: "col-md-8",
-              templateOptions: {
-                label: 'Operatore attività',
-                valueProp: 'id',
-                labelProp: 'descr',  
-                required: true,                     
-              },
-              lifecycle: {
-                onInit: (form, field, model) => {                                              
-                  //field.formControl.setValue('');
-                  field.templateOptions.options = this.service.getPersonaleUfficio(this.model.unitaorganizzativa_uo).pipe(
-                    // map(items => {
-                    //   return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
-                    // }),                         
-                  );                      
+              key: 'assignments',
+              type: 'repeat',                                        
+              templateOptions: {                  
+                label: 'Operatori',                                                                                        
+              },   
+              validators: {
+                unique: {
+                  expression: (c) => {           
+                    if (c.value)  {                              
+                      var valueArr = c.value.map(function(item){ return item.v_ie_ru_personale_id_ab }).filter(x => x != null );
+                      var isDuplicate = valueArr.some(function(item, idx){ 
+                          return valueArr.indexOf(item) != idx 
+                      });              
+                      return !isDuplicate;
+                    }
+                    return true;
+                  },
+                  message: (error, field: FormlyFieldConfig) => `Nome ripetuto`,
                 },
               },
+              expressionProperties: {
+                'templateOptions.disabled': (model: any, formState: any) => {
+                  // access to the main model can be through `this.model` or `formState` or `model
+                  return formState.model.respons_v_ie_ru_personale_id_ab == null || formState.model.respons_v_ie_ru_personale_id_ab == '';
+                },
+              },            
+              fieldArray: {                  
+                fieldGroupClassName: 'row',
+                fieldGroup: [
+                {
+                  key: 'v_ie_ru_personale_id_ab',
+                  type: 'select',
+                  className: "col-md-8",
+                  templateOptions: {
+                    label: 'Operatore attività',
+                    valueProp: 'id',
+                    labelProp: 'descr',  
+                    required: true,                     
+                  },
+                  lifecycle: {
+                    onInit: (form, field, model) => {                                              
+                      //field.formControl.setValue('');
+                      field.templateOptions.options = this.service.getPersonaleUfficio(this.model.unitaorganizzativa_uo).pipe(
+                        // map(items => {
+                        //   return items.filter(x => x.cd_tipo_posizorg !== 'RESP_UFF' &&  x.cd_tipo_posizorg !== 'COOR_PRO_D');
+                        // }),                         
+                      );                      
+                    },
+                  },
+                },
+                ],   
+              },
             },
-            ],   
-          },
+            {
+              key: 'description',
+              type: 'textarea',  
+              templateOptions: {
+                label: 'Note',           
+                rows: 10,
+                required: true,
+              },         
+            }
+          ]
         },
-        {
-          key: 'description',
-          type: 'textarea',  
-          templateOptions: {
-            label: 'Note',           
-            rows: 10,
-            required: true,
-          },         
-        }
       ],
     }
 
@@ -298,7 +305,7 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
         this.model = this.service.getRichiestaEmissioneData();
         if (this.model){
           this.options.formState.model = this.model;
-          this.options.formState.disabled_covenzione_id = true;
+          this.options.formState.disabled_scadenza_id = true;
         }else{
           this.isLoading=true;
           this.model = { convenzione: {}};
@@ -308,6 +315,7 @@ export class RichiestaEmissioneComponent extends BaseEntityComponent {
               if (result){            
                   this.model = result;   
                   this.options.formState.model = this.model;         
+                  this.options.formState.disabled_scadenza_id = true;
               }
               this.isLoading=false;
             }
