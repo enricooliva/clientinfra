@@ -8,6 +8,7 @@ export const environment = {
   baseHref: '/',   
   whitelistedDomains: ['localhost:4200', 'pcoliva.uniurb.it'],
   blacklistedRoutes: ['localhost:4200/auth/'],
+  documentation: 'https://enoliva.bitbucket.io/index.html'
 };
 
 /*
