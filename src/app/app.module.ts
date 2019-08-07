@@ -46,13 +46,14 @@ import { ScadenzaService } from './application/scadenza.service';
 import { ConfirmationDialogService } from './shared/confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { MappingRuoloService } from './application/mappingruolo.service';
+import { FORMLY_CONFIG } from '@ngx-formly/core';
+import { registerTranslateExtension } from './shared/translate.extension';
+import { TranslateService } from '@ngx-translate/core';
 
 
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
-
-
 
 @NgModule({
   declarations: [
@@ -61,9 +62,8 @@ export function tokenGetter() {
     TestTabComponent,    
 ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), 
-    AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(), PdfViewerModule, ToastrModule.forRoot(), 
-    
+    BrowserModule, FormsModule, HttpClientModule, ApplicationModule, ReactiveFormsModule, SharedModule.forRoot(), NgbModule.forRoot(), 
+    AppRoutingModule, CoreModule, NgxDatatableModule,  NgxPermissionsModule.forRoot(), PdfViewerModule, ToastrModule.forRoot(),     
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -104,18 +104,23 @@ export function tokenGetter() {
     {provide: 'roleService', useClass: RoleService},    
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
-    {provide: APP_BASE_HREF, useValue: environment.baseHref},
-    
+    {provide: APP_BASE_HREF, useValue: environment.baseHref},        
   ],
   bootstrap: [AppComponent],
   entryComponents: [UploadfileComponent, ConfirmationDialogComponent],
 })
 
 
+
+
 export class AppModule {
    // Diagnostic only: inspect router configuration
-  constructor(router: Router) {
-    //console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
+  constructor(translate: TranslateService) {    
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('it');
+
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('it');
   }
 }
 

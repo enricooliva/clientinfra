@@ -120,7 +120,8 @@ export class AziendaLocComponent extends BaseEntityComponent {
           type: 'input',      
           className: "col-md-6",    
           templateOptions: {
-            label: 'Partita IVA',                
+            translate: true,
+            label: 'AZIENDALOC.PARTIVA',                
           },
         }]
     },
@@ -132,7 +133,8 @@ export class AziendaLocComponent extends BaseEntityComponent {
           type: 'input',      
           className: "col-md-5",    
           templateOptions: {
-            label: 'Indirizzo',                
+            translate: true,
+            label: 'AZIENDALOC.INDIRIZZO',                   
             description: 'Via e località'
           },
         },

@@ -68,12 +68,26 @@ import { FormlyFieldTemplate } from './dynamic-form/template.type.component';
 import { SystemErrorComponent } from './system-error-component/system-error.component';
 import { CollapseWrapperComponent } from './collapse-wrapper/collapse-wrapper.component';
 
+import { FORMLY_CONFIG } from '@ngx-formly/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateService } from '@ngx-translate/core';
+
+import { registerTranslateExtension } from './translate.extension';
+import { HttpClient } from '@angular/common/http';
+import { ModuleWithProviders } from '@angular/compiler/src/core';
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 1,
   wheelPropagation: true,
   minScrollbarLength: 20
 };
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient, 'assets/i18n/');
+}
 
 export function minlengthValidationMessage(err, field) {
   return `Inserire almeno ${field.templateOptions.minLength} caratteri`;
@@ -234,9 +248,16 @@ export function maxValidationMessage(err, field) {
     }),
     FormlyBootstrapModule,
     PdfViewerModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
-    { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
+    { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },   
   ],
   exports: [     
     UserLoginComponent,     
@@ -285,6 +306,7 @@ export function maxValidationMessage(err, field) {
     FormlyFieldTemplate,  
     SystemErrorComponent,
     CollapseWrapperComponent,
+    TranslateModule,
   ],
   declarations: [
     UserLoginComponent, UserLoginComponent, ShowErrorsComponent, 
@@ -323,4 +345,14 @@ export function maxValidationMessage(err, field) {
   entryComponents: [LookupComponent]
 })
 
-export class SharedModule { }
+export class SharedModule { 
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [
+        { provide: FORMLY_CONFIG, multi: true, useFactory: registerTranslateExtension, deps: [TranslateService] },
+      ]
+    };
+  }
+
+}
