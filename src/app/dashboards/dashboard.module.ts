@@ -34,7 +34,7 @@ import { NotificationService } from './notification.service';
     RouterModule.forChild(DashboardRoutes),
     PerfectScrollbarModule,    
     NgxDatatableModule,        
-    SharedModule,
+    SharedModule.forRoot(),
   ],
   declarations: [
     Dashboard1Component,

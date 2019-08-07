@@ -2,6 +2,11 @@
     "AZIENDALOC":{
         "INDIRIZZO": "Indirizzo",
         "PARTIVA": "Partita IVA"
+    },
+
+    "DASHBOARD1":{      
+        "TITLE_ATTIVITA_UFFICIO": "Attività recenti ufficio",
+        "TITLE_MIE_ATTIVITA": "Attività assegnate a te"
     }
 }
   

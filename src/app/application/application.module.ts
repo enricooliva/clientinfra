@@ -9,7 +9,7 @@ import { ApplicationService } from './application.service';
 //components
 import { ConvenzioneComponent } from './components/convenzione/convenzione.component';
 import { AssignmentDetailPageComponent } from './pages/assignment-detail-page/assignment-detail-page.component';
-import { SharedModule } from '../shared';
+import { SharedModule, HttpLoaderFactory } from '../shared';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, CoreModule } from '../core';
@@ -76,6 +76,8 @@ import { MappingRuoli } from './components/mappingruoli/mappingruoli.component';
 import { MappingRuolo } from './components/mappingruoli/mappingruolo.component';
 import { MappingRuoloService } from './mappingruolo.service';
 import { FaseWrapperComponent } from './pages/convenzionedetails/fase-wrapper/fase-wrapper.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
 
 registerLocaleData(localeIt);
 @NgModule({

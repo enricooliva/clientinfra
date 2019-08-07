@@ -3,7 +3,7 @@ import {NgbModule, NgbDateParserFormatter, NgbDateAdapter, NgbActiveModal} from 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HttpClient} from '@angular/common/http';
 import { ApplicationModule } from './application/application.module';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -11,7 +11,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AppComponent } from './app.component';
 import { ApplicationService } from './application/application.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule, HttpLoaderFactory } from './shared/shared.module';
 import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
 import { NotFoundComponent } from './not-found-component/not-found.component';
 import { CoreModule, HttpInterceptorProviders, AuthGuard, MessageCacheService, RequestCache, RequestCacheWithMap, GlobalErrorHandlerProviders } from './core';
@@ -48,7 +48,7 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
 import { MappingRuoloService } from './application/mappingruolo.service';
 import { FORMLY_CONFIG } from '@ngx-formly/core';
 import { registerTranslateExtension } from './shared/translate.extension';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 
 export function tokenGetter() {
@@ -70,7 +70,14 @@ export function tokenGetter() {
         whitelistedDomains: environment.whitelistedDomains, // ['localhost:4200', 'pcoliva.uniurb.it','unidemdev.uniurb.it'],
         blacklistedRoutes: environment.blacklistedRoutes, //['localhost:4200/auth/']
       }
-    })   
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }), 
   ],  
   providers: [
     NgbActiveModal,
@@ -115,12 +122,13 @@ export function tokenGetter() {
 
 export class AppModule {
    // Diagnostic only: inspect router configuration
-  constructor(translate: TranslateService) {    
+   constructor(translate: TranslateService) {    
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('it');
 
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('it');
   }
+
 }
 

@@ -248,13 +248,7 @@ export function maxValidationMessage(err, field) {
     }),
     FormlyBootstrapModule,
     PdfViewerModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    TranslateModule,
   ],
   providers: [
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },   
@@ -349,10 +343,19 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [
-        { provide: FORMLY_CONFIG, multi: true, useFactory: registerTranslateExtension, deps: [TranslateService] },
+      providers: [        
+        { provide: FORMLY_CONFIG, multi: true, useFactory: registerTranslateExtension, deps: [TranslateService] },        
       ]
     };
+  }
+
+    // Diagnostic only: inspect router configuration
+  constructor(translate: TranslateService) {    
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('it');
+
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('it');
   }
 
 }
