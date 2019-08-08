@@ -347,15 +347,5 @@ export class SharedModule {
         { provide: FORMLY_CONFIG, multi: true, useFactory: registerTranslateExtension, deps: [TranslateService] },        
       ]
     };
-  }
-
-    // Diagnostic only: inspect router configuration
-  constructor(translate: TranslateService) {    
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('it');
-
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('it');
-  }
-
+  }   
 }
